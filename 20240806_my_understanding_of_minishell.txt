@@ -1,0 +1,4 @@
+Write a program that - in the subject boundaries - behaves almost exactly like bash.
+- The program is launched by ./minishell
+- Once started its a fully functional environment where i can run Programms, start vs-code and work with git.
+

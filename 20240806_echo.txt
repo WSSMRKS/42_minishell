@@ -1,0 +1,57 @@
+Builtin
+!!!! Caution: Bash and zsh behave differently !!!!
+Difficulty: easy
+Things to find out: Escaping characters
+
+Echo behaviour with pipes: echo will be outputted to the pipe
+
+Tests bash:
+------
+c4a10c2% bash
+maweiss@c4a10c2:~$ echo bla
+bla
+maweiss@c4a10c2:~$ echo -n bla
+blamaweiss@c4a10c2:~$ echo -n bla
+blamaweiss@c4a10c2:~$ echo -n bla
+blamaweiss@c4a10c2:~$ echo -n bla
+blamaweiss@c4a10c2:~$ echo -n bla
+blamaweiss@c4a10c2:~$ echo -n bla
+blamaweiss@c4a10c2:~$ echo -n bla\n
+blanmaweiss@c4a10c2:~$ echo -n bla\\n
+bla\nmaweiss@c4a10c2:~$ echo -n bla\\n
+bla\nmaweiss@c4a10c2:~$ echo -n blabla
+blablamaweiss@c4a10c2:~$ echo -n blabla\n
+blablanmaweiss@c4a10c2:~$ echo -n "blabla\n"
+blabla\nmaweiss@c4a10c2:~$ echo -n 'blabla\n'
+blabla\nmaweiss@c4a10c2:~$ echo -n blabla\n
+blablanmaweiss@c4a10c2:~$ ^C
+maweiss@c4a10c2:~$
+------
+
+Tests zsh:
+-----------
+c4a10c2% echo bla
+bla
+c4a10c2% echo $PATH
+/home/maweiss/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+c4a10c2% echo "$PATH"
+/home/maweiss/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+c4a10c2% echo '$PATH'
+$PATH
+c4a10c2% echo $PATH
+/home/maweiss/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+c4a10c2% echo
+
+c4a10c2% echo -n bla
+bla%                                                                                                    c4a10c2% echo -n bla\n
+blan%                                                                                                   c4a10c2% echo -n 'bla\n'
+bla
+c4a10c2% echo -n "bla\n"
+bla
+c4a10c2% echo -n "bla\n$PATH"
+bla
+/home/maweiss/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin%                                                                                           c4a10c2% echo -n 'bla\n$PATH'
+bla
+$PATH%                                                                                                  c4a10c2% echo -n bla\n$PATH
+blan/home/maweiss/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin%                                                                                       c4a10c2%
+---------------
