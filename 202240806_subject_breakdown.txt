@@ -20,7 +20,7 @@ Shell should:
 	- Display a prompt when waiting for a new command
 	- Have a working history
 	- Search and launch the right executable based on PATH
-	- Avoid using more than one global variable to indicate received signal. Consider the omplications:
+	- Avoid using more than one global variable to indicate received signal. Consider the implications:
 		This approach ensures that your signal handler will not access your main data structures.
 		Warning:	Be careful. This global variable cannot provide any other
 					information or data access than the number of a received signal.
