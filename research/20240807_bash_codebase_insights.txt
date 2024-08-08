@@ -1,0 +1,18 @@
+By going through the echo.def and its associated Header files:
+
+- Builtins are written in .def files.
+	advantage: Modular codebase. By different compiler Flags and defines one can specify if a particular codesnippet is included in the final executable.
+- Command structure and linkedlist as a carrier of the prompt.
+	- List as the upper struct.
+		Structure:
+		/* A structure which represents a word. */
+		typedef struct word_desc {
+		  char *word;		/* Zero terminated string. */
+		  int flags;		/* Flags associated with this word. */
+		} WORD_DESC;
+
+		/* A linked list of words. */
+		typedef struct word_list {
+		  struct word_list *next;
+		  WORD_DESC *word;
+		} WORD_LIST;

@@ -2,8 +2,11 @@ Workpackages:
 - UI
 	- display prompt with Current directory, Display Username@Computername
 	- Command History
-	- interactive mode implement ctrl-D, ctrl-C and ctrl-\
-	
+	- interactive mode implement ctrl-D, ctrl-C and ctrl-\ --> use signals
+- Parsing:
+	- tokenizing:
+		
+
 
 
 
