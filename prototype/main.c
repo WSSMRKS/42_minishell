@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/07 16:28:22 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/08 11:27:39 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,14 @@
 
 int	main(int argc, char **argv, char **envp)
 {
+	char	*cmd;
+
 	(void)argc;
 	(void)argv;
 	(void)envp;
-
-	char *cmd;
-
-	while(1)
+	while (1) // read eval print loop REPL
 	{
-		cmd = readline("minishell$");
+		cmd = readline("minishell$ ");
 		if (!cmd)
 			break ;
 		if (strcmp(cmd, "exit") == 0)
