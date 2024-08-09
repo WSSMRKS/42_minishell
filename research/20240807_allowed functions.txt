@@ -19,44 +19,49 @@ Pipex functions:
 	perror
 	wait
 	waitpid
--->	wait3
--->	wait4
+Useless afaik:
+	-->	wait3
+	-->	wait4
 
-Readline functions:
--->	readline
--->	rl_clear_history
--->	rl_on_new_line
--->	rl_replace_line
--->	rl_redisplay
--->	add_history
-
-Signal handling:
--->	signal
--->	sigaction
--->	sigemptyset
--->	sigaddset
+New:
+	getenv - Important, shortcut to environmental variables
+	Readline functions:
+	-->	readline
+	-->	rl_clear_history
+	-->	rl_on_new_line
+	-->	rl_replace_line
+	-->	rl_redisplay
+	-->	add_history
+	Signal handling:
+	-->	signal
+	-->	sigaction
+	-->	sigemptyset
+	-->	sigaddset
+	important to implement cd:
+	--> opendir
+	--> readdir
+	--> closedir
 
 kill
-
 getcwd
 chdir
 stat
 lstat
 fstat
-opendir
-readdir
-closedir
 
-isatty
-ttyname
-ttyslot
-ioctl
-getenv
-tcsetattr
-tcgetattr
-tgetent
-tgetflag
-tgetnum
-tgetstr
-tgoto
-tputs
+No need to use those:
+	ioctl - configuring hardware devices. No need to use in minishell
+Termios Library: Switch between raw and canonical mode (waiting for ctrl-C or enter or not)
+	tcsetattr
+	tcgetattr
+Termcap library: Outdated library. Readline is sufficient. No need to use those.
+	tgetent
+	tgetflag
+	tgetnum
+	tgetstr
+	tgoto
+	tputs
+Only for debugging purposes:
+	isatty - no clue yet probably debugging
+	ttyname - no clue yet probably debugging
+	ttyslot - no clue yet probably debugging
