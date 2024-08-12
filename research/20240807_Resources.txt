@@ -10,3 +10,5 @@ https://www.gnu.org/software/bash/manual/bash.html
 Signals for crtl-C and so on:
 https://linux.die.net/Bash-Beginners-Guide/sect_12_01.html
 
+minishell eval sheet:
+https://42evals.com/common-core/minishell
