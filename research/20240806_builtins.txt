@@ -36,6 +36,13 @@ echo:
 	blabla\nmaweiss@c4a10c2:~$ echo -n blabla\n
 	blablanmaweiss@c4a10c2:~$ ^C
 	maweiss@c4a10c2:~$
+	dkoca@c3a1c7:~$ echo a{d,c,b}e
+	ade ace abe
+	dkoca@c3a1c7:~$ echo a{ d, c, b}e
+	a{ d, c, b}e
+	dkoca@c3a1c7:~$ echo a{ d,c,b}e
+	a{ d,c,b}e
+
 	------
 
 	Tests zsh:

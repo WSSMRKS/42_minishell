@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/08 11:27:39 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/14 17:20:38 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	main(int argc, char **argv, char **envp)
 		cmd = readline("minishell$ ");
 		if (!cmd)
 			break ;
-		if (strcmp(cmd, "exit") == 0)
+		if (strcmp(cmd, "exit\n") == 0)
 		{
 			free(cmd);
 			break ;
