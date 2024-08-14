@@ -6,7 +6,7 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/14 17:20:38 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/08/14 22:24:26 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include <sys/wait.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <sys/types.h>
+#include <dirent.h>
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -31,7 +33,8 @@ int	main(int argc, char **argv, char **envp)
 		cmd = readline("minishell$ ");
 		if (!cmd)
 			break ;
-		if (strcmp(cmd, "exit\n") == 0)
+		printf("cmd = %s", cmd);
+		if (strcmp(cmd, "exit") == 0)
 		{
 			free(cmd);
 			break ;
