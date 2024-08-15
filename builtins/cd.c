@@ -6,7 +6,7 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 20:04:35 by dkoca             #+#    #+#             */
-/*   Updated: 2024/08/15 01:14:09 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/08/15 20:06:52 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int _cd(const char *path)
 	int ret = 0;
 	char *cur_dir;
 	
-	// if (*path == '-')
 		// go back to the previous cd (could look up in readline history?)
 	ret = chdir(path);
 	if (ret != 0)
@@ -57,8 +56,10 @@ int builtin_cwd(char **cmd)
 		ft_printf("minishell: cd: too many arguments");
 	while (cmd && *cmd && ft_isspace(**cmd))
 		cmd[0]++;	
-	if (*cmd == NULL || **cmd == '~' || **cmd == '\0')
+	if ((*cmd == NULL || **cmd == '~' || **cmd == '\0') && get_env_var("USER") != NULL)
 		path = ft_strjoin("/home/", get_env_var("USER"));
+	else if (**cmd == '-' && get_env_var("OLDPWD") != NULL)
+		path = get_env_var("OLDPWD");
 	else
 		path = *cmd;
 	return (_cd(path));
@@ -68,9 +69,9 @@ int main()
 {
 	// _cd("testdir");
 	char *cmd[3] = {"ls", "-l"};
-	char *path[3] = {"cd", "/////"};
-	// printf("user = %s\n", getenv("HOME"));
+	char *path[3] = {"cd", "-"};
+	printf("user = %s\n", getenv("OLDPWD"));
 	printf("ret = %i\n", builtin_cwd(path));
-	execvp("/usr/bin/ls", cmd);
+	// execvp("/usr/bin/ls", cmd);
 	return (0);
 }
