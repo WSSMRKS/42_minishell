@@ -1,0 +1,35 @@
+Head Node:
+
+	/* What a command looks like. */
+	typedef struct command {
+	enum command_type type;	/* FOR CASE WHILE IF CONNECTION or SIMPLE. */
+	int flags;			/* Flags controlling execution environment. */
+	int line;			/* line number the command starts on */
+	REDIRECT *redirects;		/* Special redirects for FOR CASE, etc. */
+	union {
+		struct for_com *For;
+		struct case_com *Case;
+		struct while_com *While;
+		struct if_com *If;
+		struct connection *Connection;
+		struct simple_com *Simple;
+		struct function_def *Function_def;
+		struct group_com *Group;
+	#if defined (SELECT_COMMAND)
+		struct select_com *Select;
+	#endif
+	#if defined (DPAREN_ARITHMETIC)
+		struct arith_com *Arith;
+	#endif
+	#if defined (COND_COMMAND)
+		struct cond_com *Cond;
+	#endif
+	#if defined (ARITH_FOR_COMMAND)
+		struct arith_for_com *ArithFor;
+	#endif
+		struct subshell_com *Subshell;
+		struct coproc_com *Coproc;
+	} value;
+	} COMMAND;
+
+
