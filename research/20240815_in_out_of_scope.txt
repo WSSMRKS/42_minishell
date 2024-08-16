@@ -5,12 +5,19 @@ Command Line Interpreter:
 		- Display a prompt when waiting for a new command
 		- working history (how to handle heredoc in history?)
 		- execute programs from the $PATH environment
+		- handle single quotes (prevent the shell from interpreting the meta-characters)
+		- handle double quotes (prevent the shell from interpreting the meta-characters except from $)
+		- implement redirections:
+			> >> < <<
+		- implement pipes
+		- handle env. variables $ plus $?
+		- handle ctrl-C, ctrl-D, ctrl-\
 	out of scope:
 		interpreting unclosed quotes or special characters not explicitly required by the subject.
 			such as:
 				- \
 				- ;
-				
+
 
 parsing:
 	in scope:
