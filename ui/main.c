@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/19 12:58:07 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/19 13:11:01 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,22 @@
 char	*choose_prompt(int mode)
 {
 	if (mode == 0)
-		return(readline("minishell$ "));
+		return (readline("minishell$ "));
 	else
-		return(readline("> "));
+		return (readline("> "));
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	char			*cmd;
 	int				mode;
-	s_minishell		*minishell;
+	t_minishell		*minishell;
 
 	(void)argc;
 	(void)argv;
 	(void)envp;
 	mode = 0;
-	ft_init_ms()
+	ft_init_ms(*minishell, envp);
 	while (1) // read eval print loop REPL
 	{
 		cmd = choose_prompt(mode);
@@ -44,7 +44,7 @@ int	main(int argc, char **argv, char **envp)
 			free(cmd);
 			break ;
 		}
-		ft_front_end(cmd)
+		ft_front_end(cmd);
 		printf("cmd: %s\n", cmd);
 		free(cmd);
 	}
