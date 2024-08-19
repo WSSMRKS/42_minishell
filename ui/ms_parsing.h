@@ -6,14 +6,15 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:56:05 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/19 12:55:20 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/19 13:10:23 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+/* ms_parsing.h: Header file responsible for all the structures necessary to
+ create the abstract symbol table (ast). */
+
 #ifndef MS_PARSING_H
 # define MS_PARSING_H
-
-
 
 enum	e_command_type {
 	cmd_connection,
