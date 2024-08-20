@@ -1,0 +1,33 @@
+special cases:
+ here_doc:
+	when whereever in the input a "<<" is contained start the here_doc-protocol. receive the multiline-Input until EOF is detected.
+	->
+		- prompt containing "<<"
+		- process delimiter
+		- wait until input is finished containing the EOF delimiter.
+		- put input to tempfile
+		- process during execution.
+	Example:
+		maweiss@c4a12c10:~/mw/minishell/minishell_ui/ui$ cat >infile; <infile cat | grep bla | cat >outfile_cat | <<EOF cat >outfile
+		> this is an interesting example of the bash priorities.
+		> This is heredoc handled first
+		> EOF
+		This is the cat command expecting bla
+		This line won't be in the output
+		this one is bla
+		maweiss@c4a12c10:~/mw/minishell/minishell_ui/ui$ cat outfile
+		outfile      outfile_cat
+		maweiss@c4a12c10:~/mw/minishell/minishell_ui/ui$ cat outfile
+		this is an interesting example of the bash priorities.
+		This is heredoc handled first
+		maweiss@c4a12c10:~/mw/minishell/minishell_ui/ui$ cat outfile
+		outfile      outfile_cat
+		maweiss@c4a12c10:~/mw/minishell/minishell_ui/ui$ cat outfile_cat
+		This is the cat command expecting bla
+		this one is bla
+		maweiss@c4a12c10:~/mw/minishell/minishell_ui/ui$
+
+Priority for executor:
+	a chain of simple commands
+
+	

@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:56:05 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/19 13:10:23 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/20 13:11:43 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,21 @@
 #ifndef MS_PARSING_H
 # define MS_PARSING_H
 
+typedef struct s_word_desc {
+	char	*word;
+	int		flags;
+}				t_word_desc;
+
 enum	e_command_type {
 	cmd_connection,
 	cmd_simple,
 	cmd_subshell
 };
+
+typedef struct s_list_words {
+	struct s_list_words	*next;
+	t_word_desc			*word;
+}				t_list_words;
 
 
 /*command struct: the root node of any command.
@@ -34,6 +44,26 @@ typedef struct s_command {
 	} u_value;
 }				t_command;
 
+typedef union u_redir_aim {
+	int			fd;
+	t_word_desc	*filename;
+}				t_redir_aim;
+
+enum	e_redir_type {
+	redir_output,
+	redir_input,
+	redir_append,
+	redir_here_doc
+};
+
+typedef struct s_redir {
+	struct s_redir		*next;
+	t_redir_aim			*from;
+	enum e_redir_type	instruction;
+	t_redir_aim			*to;
+	char				*here_doc_del;
+}				t_redir;
+
 /*simple command struct: all commands that are without subshells and connections
 	flags:
 	words: words the command consists of.
@@ -44,15 +74,6 @@ typedef struct s_simple_com {
 	t_redir			*redirects;
 }				t_simple_com;
 
-typedef struct s_list_words {
-	struct s_list_words	*next;
-	t_word_desc			*word;
-}				t_list_words;
-
-typedef struct s_word_desc {
-	char	*word;
-	int		flags;
-}				t_word_desc;
 
 /* content of flags field in t_word_desc */
 # define WORD_DOLLAR			1		/* (1 << 0)		Dollar sign present. */
@@ -70,25 +91,5 @@ typedef struct s_word_desc {
 # define WORD_ASSIGNARG			4096	/* (1 << 12)	word is assignment argument to command */
 # define WORD_HASQUOTEDNULL		8192	/* (1 << 13)	word contains a quoted null character */
 # define WORD_SAWQUOTEDNULL		16384	/* (1 << 14)	word contained a quoted null that was removed */
-
-typedef struct s_redir {
-	struct s_redir		*next;
-	t_redir_aim			*from;
-	enum e_redir_type	instruction;
-	t_redir_aim			*to;
-	char				*here_doc_del;
-}				t_redir;
-
-enum	e_redir_type {
-	redir_output,
-	redir_input,
-	redir_append,
-	redir_here_doc
-};
-
-typedef union u_redir_aim {
-	int			fd;
-	t_word_desc	*filename;
-}				t_redir_aim;
 
 #endif

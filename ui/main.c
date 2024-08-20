@@ -6,11 +6,22 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/19 13:11:01 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/20 13:13:08 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	ft_init_ms(t_minishell *minishell, char **envp)
+{
+	(void) minishell;
+	(void) envp;
+}
+
+void	ft_front_end(char *cmd)
+{
+	(void) cmd;
+}
 
 char	*choose_prompt(int mode)
 {
@@ -30,7 +41,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	(void)envp;
 	mode = 0;
-	ft_init_ms(*minishell, envp);
+	ft_init_ms(minishell, envp);
 	while (1) // read eval print loop REPL
 	{
 		cmd = choose_prompt(mode);
