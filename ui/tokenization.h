@@ -6,7 +6,7 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 05:06:08 by dkoca             #+#    #+#             */
-/*   Updated: 2024/08/25 05:23:24 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/08/26 08:07:55 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,19 @@
 # define	TOKENIZATION_H
 
 #include "minishell.h"
+
+int current_command_line_count;
+
+/* The number of lines in a command saved while we run parse_and_execute */
+int saved_command_line_count;
+
+/* The token that currently denotes the end of parse. */
+int shell_eof_token;
+
+/* The token currently being read. */
+int current_token;
+
+int last_was_backslash;
 
 typedef enum e_token_type
 {
@@ -40,7 +53,10 @@ typedef struct s_token
 {
 	t_token_type type;
 	t_tok_span cmd;
+	// int quoted;
 	struct s_token *next;
 }	t_token;
 
+/******** FUNCTIONS *********/
+t_token *add_token(char *content, int type, int len, t_token **prev_next_ptr);
 #endif

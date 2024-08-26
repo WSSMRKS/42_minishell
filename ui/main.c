@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/20 13:13:08 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/25 05:39:15 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,11 @@ int	main(int argc, char **argv, char **envp)
 	t_minishell		*minishell;
 
 	(void)argc;
+	if (argc >= 2)
+	{
+		return (127);
+		// save exit code? 127?
+	}
 	(void)argv;
 	(void)envp;
 	mode = 0;
