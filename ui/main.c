@@ -6,13 +6,13 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/20 13:13:08 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/26 19:21:03 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../headers/minishell.h"
 
-void	ft_init_ms(t_minishell *minishell, char **envp)
+void	ft_init_ms(t_ms *minishell, char **envp)
 {
 	(void) minishell;
 	(void) envp;
@@ -35,7 +35,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	char			*cmd;
 	int				mode;
-	t_minishell		*minishell;
+	t_ms			*minishell;
 
 	(void)argc;
 	(void)argv;
