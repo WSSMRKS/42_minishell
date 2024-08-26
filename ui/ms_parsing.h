@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:56:05 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/26 15:21:48 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/26 16:59:01 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,25 +44,31 @@ typedef struct s_command {
 	} u_value;
 }				t_command;
 
+/* file redirects always get priority??? */
 typedef union u_redir_aim {
 	int			fd;
 	t_word_desc	*filename;
 }				t_redir_aim;
 
+/* Instead of input use infile/inpipe to distinguish.*/
 enum	e_redir_type {
-	redir_output,
-	redir_input,
+	// redir_output,
+	// redir_input,
 	redir_append,
-	redir_here_doc
+	redir_here_doc,
+	redir_infile,
+	redir_outfile,
+	redir_inpipe,
+	redir_outpipe
 };
 
-typedef struct s_redir {
+typedef struct s_list_redir {
 	struct s_redir		*next;
-	t_redir_aim			*from;
 	enum e_redir_type	instruction;
+	t_redir_aim			*from;
 	t_redir_aim			*to;
 	char				*here_doc_del;
-}				t_redir;
+}				t_list_redir;
 
 /*simple command struct: all commands that are without subshells and connections
 	flags:
@@ -71,7 +77,7 @@ typedef struct s_redir {
 typedef struct s_simple_com {
 	int				flags;
 	t_list_words	*words;
-	t_redir			*redirects;
+	t_list_redir	*redirects;
 }				t_simple_com;
 
 
