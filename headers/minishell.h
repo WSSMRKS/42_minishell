@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/19 13:08:05 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/26 18:36:04 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,11 @@ in minishell.h */
 
 
 /* minishell struct. Main struct that is passed throughout the whole program. */
-typedef struct s_minishell {
+typedef struct s_ms {
 	char			*cmd;
 	t_symtab_stack	*global_symtab;
-	t_command		*curr_comm;
-}				t_minishell;
+	t_cmd_list		*cmds;
+	int				global_flags;
+}				t_ms;
 
 #endif
