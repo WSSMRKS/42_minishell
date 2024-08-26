@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:56:05 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/20 13:11:43 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/26 15:21:48 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,3 +93,40 @@ typedef struct s_simple_com {
 # define WORD_SAWQUOTEDNULL		16384	/* (1 << 14)	word contained a quoted null that was removed */
 
 #endif
+
+
+/*example commands
+
+cat >infile.txt
+This is an infile.
+This line should be visible when using grep bla
+This line should be visible as well using grep bla
+This line will not show up.
+That is our infile.
+
+"<infile.txt cat | grep bla >outfile"
+
+representation in the AST:
+t_command		cmd;
+t_simple_com	simple;
+t_list_words	words;
+
+
+cmd.type = cmd_simple;
+cmd.simple = ;
+
+first.flags = ??
+first.words =
+
+typedef struct s_simple_com {
+	int				flags;
+	t_list_words	*words;
+	t_redir			*redirects;
+}				t_simple_com;
+
+typedef struct s_list_words {
+	struct s_list_words	*next;
+	t_word_desc			*word;
+}				t_list_words;
+
+*/
