@@ -6,7 +6,7 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 05:06:08 by dkoca             #+#    #+#             */
-/*   Updated: 2024/08/26 08:07:55 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/08/26 12:31:24 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,5 @@ typedef struct s_token
 
 /******** FUNCTIONS *********/
 t_token *add_token(char *content, int type, int len, t_token **prev_next_ptr);
+int tokenizer(char *line);
 #endif

@@ -6,7 +6,7 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/25 05:39:15 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/08/26 12:31:34 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	ft_init_ms(t_minishell *minishell, char **envp)
 void	ft_front_end(char *cmd)
 {
 	(void) cmd;
+	tokenizer(cmd);
 }
 
 char	*choose_prompt(int mode)

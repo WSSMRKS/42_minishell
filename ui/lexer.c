@@ -6,7 +6,7 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 06:07:52 by dkoca             #+#    #+#             */
-/*   Updated: 2024/08/26 12:30:13 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/08/26 12:33:04 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,13 @@ int tokenize_operator(char **chr_itr, t_token *prev_token)
 	return (token);
 }
 
-t_token *tokenize_word(char **chr_itr, t_token *prev_token)
-{
-	t_token *token;
+// t_token *tokenize_word(char **chr_itr, t_token *prev_token)
+// {
+// 	t_token *token;
 	
-	// check for double and single quotes
-	return (token);
-}
+// 	// check for double and single quotes
+// 	return (token);
+// }
 
 t_token *scan(int c, char *chr_itr, t_token *prev_token)
 {
@@ -65,7 +65,7 @@ t_token *scan(int c, char *chr_itr, t_token *prev_token)
 	
 	if (ft_strchr("|<>()", c))
 		token = tokenize_operator(&chr_itr, prev_token);
-	else
+	// else
 		//tokenize_word
 	return (token);
 }
@@ -84,6 +84,7 @@ int tokenizer(char *line)
 	int cur_char;
 	
 	ft_strtrim(line, " \t");
+	chr_itr = ft_calloc(ft_strlen(line), sizeof(char));
 	chr_itr = line;
 	prev_tok = NULL;
 	while (is_not_end(chr_itr))
@@ -92,10 +93,7 @@ int tokenizer(char *line)
 		if (!is_not_end(chr_itr))
 			break;
 		cur_char = lookahead(chr_itr, line);
-		// new_tok = scan(prev_tok)
+		new_tok = scan(cur_char, chr_itr, prev_tok);
 		prev_tok = new_tok;
 	}
-	
-	
-	//start of lexical analysis, find out type and create token
 }
