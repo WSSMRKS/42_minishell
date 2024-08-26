@@ -1,0 +1,6 @@
+[ ] add single commands
+[ ] add infile + single command
+[ ] add outfile + single command
+[ ] add infile single command outfile
+[ ] enhance heredoc
+

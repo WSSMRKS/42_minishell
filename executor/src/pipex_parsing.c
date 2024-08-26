@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 23:21:53 by maweiss           #+#    #+#             */
-/*   Updated: 2024/06/14 19:24:23 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/26 14:56:16 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,12 @@
 /* Function checks minimum number of arguments and if here_doc flag is set.*/
 void	ft_validate_args(t_pipex *pipex)
 {
-	if (pipex->argc < 5)
+	if (pipex->argc < 2)
 	{
-		ft_printf_err("Error: Wrong number of arguments\n");
+		ft_printf_err("Error: wrong input\n");
+		ft_printf_err("syntax: ./pipex [mode] [command list]\n");
+		ft_printf_err("[mode]: 1 = single command, 2 = single command with infile, 3 = single command with outfile, 4 = here_doc, 5 = several commands with or without here_doc\n");
+		ft_printf_err("[command list] = \"cmd1\" | \"cmd2\" \">outfile\" \"<infile\" \n");
 		pipex->mode = error_case;
 		exit(1);
 	}
@@ -113,7 +116,7 @@ int	ft_parse_cmds(t_pipex *pipex)
 	return (0);
 }
 
-/* Function checks if the command built from the environmental variable 
+/* Function checks if the command built from the environmental variable
 and the pipex argument is valid by using the access function*/
 char	*ft_search_cmd(t_pipex *pipex, int nbcmd)
 {
