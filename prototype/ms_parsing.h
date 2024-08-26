@@ -1,25 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_parsing.h                                :+:      :+:    :+:   */
+/*   ms_parsing.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:56:05 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/19 11:53:13 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/26 16:59:01 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_PARSING_H
-# define MINISHELL_PARSING_H
+/* ms_parsing.h: Header file responsible for all the structures necessary to
+ create the abstract symbol table (ast). */
 
+#ifndef MS_PARSING_H
+# define MS_PARSING_H
 
+typedef struct s_word_desc {
+	char	*word;
+	int		flags;
+}				t_word_desc;
 
 enum	e_command_type {
 	cmd_connection,
 	cmd_simple,
 	cmd_subshell
 };
+
+typedef struct s_list_words {
+	struct s_list_words	*next;
+	t_word_desc			*word;
+}				t_list_words;
 
 
 /*command struct: the root node of any command.
@@ -33,6 +44,32 @@ typedef struct s_command {
 	} u_value;
 }				t_command;
 
+/* file redirects always get priority??? */
+typedef union u_redir_aim {
+	int			fd;
+	t_word_desc	*filename;
+}				t_redir_aim;
+
+/* Instead of input use infile/inpipe to distinguish.*/
+enum	e_redir_type {
+	// redir_output,
+	// redir_input,
+	redir_append,
+	redir_here_doc,
+	redir_infile,
+	redir_outfile,
+	redir_inpipe,
+	redir_outpipe
+};
+
+typedef struct s_list_redir {
+	struct s_redir		*next;
+	enum e_redir_type	instruction;
+	t_redir_aim			*from;
+	t_redir_aim			*to;
+	char				*here_doc_del;
+}				t_list_redir;
+
 /*simple command struct: all commands that are without subshells and connections
 	flags:
 	words: words the command consists of.
@@ -40,18 +77,9 @@ typedef struct s_command {
 typedef struct s_simple_com {
 	int				flags;
 	t_list_words	*words;
-	t_redir			*redirects;
+	t_list_redir	*redirects;
 }				t_simple_com;
 
-typedef struct s_list_words {
-	struct s_list_words	*next;
-	t_word_desc			*word;
-}				t_list_words;
-
-typedef struct s_word_desc {
-	char	*word;
-	int		flags;
-}				t_word_desc;
 
 /* content of flags field in t_word_desc */
 # define WORD_DOLLAR			1		/* (1 << 0)		Dollar sign present. */
@@ -70,24 +98,41 @@ typedef struct s_word_desc {
 # define WORD_HASQUOTEDNULL		8192	/* (1 << 13)	word contains a quoted null character */
 # define WORD_SAWQUOTEDNULL		16384	/* (1 << 14)	word contained a quoted null that was removed */
 
-typedef struct s_redir {
-	struct s_redir		*next;
-	t_redir_aim			*from;
-	enum e_redir_type	instruction;
-	t_redir_aim			*to;
-	char				*here_doc_del;
-}				t_redir;
-
-enum	e_redir_type {
-	redir_output,
-	redir_input,
-	redir_append,
-	redir_here_doc
-};
-
-typedef union u_redir_aim {
-	int			fd;
-	t_word_desc	*filename;
-}				t_redir_aim;
-
 #endif
+
+
+/*example commands
+
+cat >infile.txt
+This is an infile.
+This line should be visible when using grep bla
+This line should be visible as well using grep bla
+This line will not show up.
+That is our infile.
+
+"<infile.txt cat | grep bla >outfile"
+
+representation in the AST:
+t_command		cmd;
+t_simple_com	simple;
+t_list_words	words;
+
+
+cmd.type = cmd_simple;
+cmd.simple = ;
+
+first.flags = ??
+first.words =
+
+typedef struct s_simple_com {
+	int				flags;
+	t_list_words	*words;
+	t_redir			*redirects;
+}				t_simple_com;
+
+typedef struct s_list_words {
+	struct s_list_words	*next;
+	t_word_desc			*word;
+}				t_list_words;
+
+*/
