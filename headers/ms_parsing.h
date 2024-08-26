@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:56:05 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/26 16:59:01 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/26 18:21:33 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,11 @@ typedef struct s_simple_com {
 	t_list_words	*words;
 	t_list_redir	*redirects;
 }				t_simple_com;
+
+typedef struct s_cmd_list {
+	t_simple_com	cmd;
+	t_cmd_list		next;
+}				t_cmd_list;
 
 
 /* content of flags field in t_word_desc */
