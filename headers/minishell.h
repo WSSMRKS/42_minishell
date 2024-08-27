@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/26 18:36:04 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/27 13:05:08 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,18 @@ in minishell.h */
 # include <readline/history.h>
 # include "ms_parsing.h"
 # include "ms_symtab.h"
+# include "ms_garbage.h"
+# include "../42_libft/libft.h"
 
 
-/* minishell struct. Main struct that is passed throughout the whole program. */
+/* minishell struct. Main struct that is passed throughout the whole program.
+	global flags: 1 = heredoc present	*/
 typedef struct s_ms {
 	char			*cmd;
 	t_symtab_stack	*global_symtab;
 	t_cmd_list		*cmds;
 	int				global_flags;
+	t_garbage		*garbage;
 }				t_ms;
 
 #endif
