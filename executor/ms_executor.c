@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/27 14:31:02 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/27 15:34:04 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,10 @@ void	ft_several_cmds(t_ms *ms)
 
 }
 
-ft_tmp_write
+void	ft_tmp_write(char *line, t_ms *ms, t_word_desc *filename)
+{
+
+}
 
 void	ft_hd_input(char *hd_del, t_word_desc *filename, t_ms *ms)
 {
@@ -54,10 +57,10 @@ void	ft_hd_input(char *hd_del, t_word_desc *filename, t_ms *ms)
 	{
 		line = readline("> ");
 		if (!line)
-			//readline error;
+			ft_cleanup_exit(ms, line);			//readline error;
 		if (ft_strncmp(*hd_del, line, ldel) && ft_strlen(line) == ldel)
 			reading = 0;
-		ft_tmp_write(line);
+		ft_tmp_write(line, ms, filename);
 		free(line);
 	}
 }
