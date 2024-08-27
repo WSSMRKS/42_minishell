@@ -6,94 +6,150 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 06:07:52 by dkoca             #+#    #+#             */
-/*   Updated: 2024/08/26 12:33:04 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/08/27 16:08:12 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int is_not_end(const char *itr)
+int lookahead(t_cmd *cmd, int pos)
 {
-	itr++;
-	if (*itr != '\0' && *itr != '\n')
+	if (cmd->chr_itr == NULL)
+		return (EOF);
+	printf("pos in peek = %i\n", pos);
+	if (pos == PEEK_START)
+		return (*cmd->chr_itr);
+	return (cmd->chr_itr[pos + 1]);
+}
+
+int is_not_end(t_cmd *cmd, int pos)
+{
+	char next;
+
+	if (cmd->chr_itr == NULL)
+		return (FALSE);
+	next = lookahead(cmd, pos);
+	if (next != '\0' && next != '\n')
 		return (TRUE);
 	return (FALSE);
 }
 
-int lookahead(const char *chr_itr, char *start)
-{
-	if (start - chr_itr == 0)
-		return (chr_itr);
-	chr_itr++;
-	return (*chr_itr);	
-}
 
 /* tokenizes operator and consumes used chars*/
-int tokenize_operator(char **chr_itr, t_token *prev_token)
+t_token *tokenize_operator(char **next_ptr, char next, t_token *prev_token)
 {
 	t_token *token;
 	
-	if (**chr_itr == '(')
-		token = add_token(*chr_itr, TOKEN_LPAREN, 1, &prev_token->next);
-	else if (**chr_itr == ')')
-		token = add_token(*chr_itr, TOKEN_RPAREN, 1, &prev_token->next);
-	else if (**chr_itr == '|')
-		token = add_token(*chr_itr, TOKEN_PIPE, 1, &prev_token->next);
-	else if (ft_strncmp(*chr_itr, ">>", 2) == 0)
-		token = add_token(*chr_itr, TOKEN_APPEND, 2, &prev_token->next);
-	else if (ft_strncmp(*chr_itr, "<<", 2) == 0)
-		token = add_token(*chr_itr, TOKEN_HEREDOC, 2, &prev_token->next);
-	else if (**chr_itr == '>')
-		token = add_token(*chr_itr, TOKEN_IO_OUT, 1, &prev_token->next);
-	else if (**chr_itr == '<')
-		token = add_token(*chr_itr, TOKEN_IO_IN, 1, &prev_token->next);
-	*chr_itr += token->cmd.len;
+	printf("next char = %c\n", **next_ptr);
+	if (next == '|')
+		token = add_token(*next_ptr, TOKEN_PIPE, 1, &prev_token);
+	else if (ft_strncmp(*next_ptr, ">>", 2) == 0)
+		token = add_token(*next_ptr, TOKEN_APPEND, 2, &prev_token);
+	else if (ft_strncmp(*next_ptr, "<<", 2) == 0)
+		token = add_token(*next_ptr, TOKEN_HEREDOC, 2, &prev_token);
+	else if (next == '>')
+		token = add_token(*next_ptr, TOKEN_IO_OUT, 1, &prev_token);
+	else if (next == '<')
+		token = add_token(*next_ptr, TOKEN_IO_IN, 1, &prev_token);
+	// *next_ptr += token->cmd.len - 1;
 	return (token);
 }
+
+// int has_single_quotes(char **chr_itr, t_token *prev_token)
+// {
+// 	char next;
+// 	int has;
+
+// 	has = FALSE;
+	
+// }
 
 // t_token *tokenize_word(char **chr_itr, t_token *prev_token)
 // {
 // 	t_token *token;
+// 	char next;
+
 	
+		
 // 	// check for double and single quotes
 // 	return (token);
 // }
 
-t_token *scan(int c, char *chr_itr, t_token *prev_token)
+t_token *scan(t_cmd *cmd, int pos, t_token *prev_token)
 {
 	t_token *token;
+	char next;
+	char *next_ptr;
 	
-	if (ft_strchr("|<>()", c))
-		token = tokenize_operator(&chr_itr, prev_token);
+	if (pos == PEEK_START)
+		next_ptr = cmd->chr_itr;
+	else 
+		next_ptr = cmd->chr_itr + 1;
+	// printf("chr itr = %c\n", *cmd->chr_itr);
+	next = lookahead(cmd, pos);
+	if (next && ft_strchr("|<>", next))
+		token = tokenize_operator(&next_ptr, next, prev_token);
 	// else
 		//tokenize_word
 	return (token);
 }
 
-void skip_whitespace_between_words(char **chr_itr)
+void skip_whitespace_between_words(t_cmd *cmd, int *pos)
 {
-	while (**chr_itr != '\0' && ft_isspace(**chr_itr) && **chr_itr != '\n')
-		*chr_itr++;
+	char next;
+	char **skip;
+
+	skip = &cmd->chr_itr;
+	
+	next = lookahead(cmd, *pos);
+	printf("before spaces %s\n", cmd->chr_itr);
+	printf("next in skip space=%c\n", cmd->chr_itr[*pos + 1]);
+	while (next != '\0' && next != '\n' && next == ' ')
+	{
+		printf("here\n");
+		(*pos)++;
+		++(*skip);
+		next = lookahead(cmd, *pos);
+	}
+	printf("moved here %p\n", cmd->chr_itr);
 }
 
 int tokenizer(char *line)
 {
 	t_token *new_tok;
 	t_token *prev_tok;
-	char *chr_itr;
-	int cur_char;
+	t_cmd	cmd;
+	// char *chr_itr;
+	int itr_pos;
+
+	int i = 0;
+	// int next_char;
 	
+	itr_pos = -2;
 	ft_strtrim(line, " \t");
-	chr_itr = ft_calloc(ft_strlen(line), sizeof(char));
-	chr_itr = line;
+	// chr_itr = ft_calloc(ft_strlen(line), sizeof(char));
+	cmd.chr_itr = line;
 	prev_tok = NULL;
-	while (is_not_end(chr_itr))
+	while (is_not_end(&cmd, itr_pos))
 	{
-		skip_whitespace_between_words(&chr_itr);
-		if (!is_not_end(chr_itr))
+		printf("left = %s\n", cmd.chr_itr);
+		printf("before skipping %p\n", cmd.chr_itr);
+		skip_whitespace_between_words(&cmd, &itr_pos);
+		printf("after skipping %p\n", cmd.chr_itr);
+		printf("left after spaces =%s\n", cmd.chr_itr);
+		printf("itr pos = %i\n", itr_pos);
+		if (!is_not_end(&cmd, itr_pos))
 			break;
-		cur_char = lookahead(chr_itr, line);
-		new_tok = scan(cur_char, chr_itr, prev_tok);
+		new_tok = scan(&cmd, itr_pos, prev_tok);
+		itr_pos = new_tok->cmd.start - line + new_tok->cmd.len - 1;
+		cmd.chr_itr += new_tok->cmd.len - 1;
+		printf("new token = ");
+		for (i = 0; i < new_tok->cmd.len; i++)
+		{
+			printf("%c", new_tok->cmd.start[i]);
+		}
+		printf("\n");
 		prev_tok = new_tok;
 	}
+	return (EXIT_SUCCESS);
 }

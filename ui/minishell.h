@@ -6,7 +6,7 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/26 07:05:26 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/08/27 11:17:17 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,20 @@ in minishell.h */
 # include <readline/history.h>
 # include "ms_parsing.h"
 # include "ms_symtab.h"
+#include "libft/libft.h"
 #include "tokenization.h"
-#include "libft.h"
 
 #define FALSE 0
 #define TRUE 1
+
+#define PEEK_START -2
+
+typedef struct s_cmd
+{
+	char *chr_itr;
+	size_t len;
+	// int pos;
+} t_cmd;
 
 /* minishell struct. Main struct that is passed throughout the whole program. */
 typedef struct s_minishell {

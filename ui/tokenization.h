@@ -6,7 +6,7 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 05:06:08 by dkoca             #+#    #+#             */
-/*   Updated: 2024/08/26 12:31:24 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/08/27 09:16:52 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,18 @@
 
 #include "minishell.h"
 
-int current_command_line_count;
+// int current_command_line_count;
 
-/* The number of lines in a command saved while we run parse_and_execute */
-int saved_command_line_count;
+// /* The number of lines in a command saved while we run parse_and_execute */
+// int saved_command_line_count;
 
-/* The token that currently denotes the end of parse. */
-int shell_eof_token;
+// /* The token that currently denotes the end of parse. */
+// int shell_eof_token;
 
-/* The token currently being read. */
-int current_token;
+// /* The token currently being read. */
+// int current_token;
 
-int last_was_backslash;
+// int last_was_backslash;
 
 typedef enum e_token_type
 {
@@ -37,8 +37,6 @@ typedef enum e_token_type
 	TOKEN_IO_OUT,
 	TOKEN_APPEND,
 	TOKEN_HEREDOC,
-	TOKEN_LPAREN,
-	TOKEN_RPAREN,
 	TOKEN_SUBSHELL
 }	t_token_type;
 
