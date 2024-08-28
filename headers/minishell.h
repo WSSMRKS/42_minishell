@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/28 13:31:57 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/28 16:38:40 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ in minishell.h */
 # include <readline/history.h>
 # include <fcntl.h>
 # include <limits.h>
-# include "ms_parsing.h"
-# include "ms_symtab.h"
-# include "ms_garbage.h"
 # include "../42_libft/libft.h"
-
+# include "ms_symtab.h"
+# include "ms_parsing.h"
+# include "ms_garbage.h"
+# include "ms_executor.h"
 
 /* minishell struct. Main struct that is passed throughout the whole program.
 	global flags: 1 = heredoc present	*/
@@ -40,5 +40,17 @@ typedef struct s_ms {
 	int				global_flags;
 	t_garbage		*garbage;
 }				t_ms;
+
+
+void	ft_cleanup_exit(t_ms *ms);
+void	ft_scan_cmds(t_ms *ms);
+void	ft_single_cmd(t_ms *ms);
+void	ft_two_cmds(t_ms *ms);
+void	ft_several_cmds(t_ms *ms);
+char	*ft_search_tmp(void);
+void	ft_garbage_add(char *filename, t_ms *ms);
+char	*ft_tmp_write(char *line, t_ms *ms, int *fd);
+void	ft_hd_input(char *hd_del, t_redir_aim *filename, t_ms *ms);
+void	ft_here_doc(t_ms *ms);
 
 #endif

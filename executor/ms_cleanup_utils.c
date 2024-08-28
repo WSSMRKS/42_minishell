@@ -6,14 +6,19 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:15 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/28 12:24:25 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/28 16:42:59 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-void	ft_cleanup_exit(t_ms ms, char *line)
+void	clean_garbage(void)
 {
-	free(line);
-	(void) ms;
+	(void) 1;
+}
+
+void	ft_cleanup_exit(t_ms *ms)
+{
+	if (ms->garbage)
+		clean_garbage();
 }

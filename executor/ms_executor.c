@@ -6,11 +6,11 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/28 14:25:25 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/28 16:46:21 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/minishell.h"
+#include "./../headers/minishell.h"
 
 void	ft_scan_cmds(t_ms *ms)
 {
@@ -29,7 +29,7 @@ void	ft_single_cmd(t_ms *ms)
 	(void) ms;
 }
 
-void	ft_two_cmds(t_ms *ms);
+void	ft_two_cmds(t_ms *ms)
 {
 	(void) ms;
 }
@@ -84,20 +84,20 @@ void	ft_garbage_add(char *filename, t_ms *ms)
 char	*ft_tmp_write(char *line, t_ms *ms, int *fd)
 {
 	char		*filename;
-	int			i;
 
 	filename = ft_search_tmp();
-	fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0600);
-	if (fd < 1)
+	*fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0600);
+	if (*fd < 1)
 		exit(EBADF);
 	else
 		ft_garbage_add(filename, ms);
-	if (ft_putstr_fd_ret(line, fd) < 1)
+	if (ft_putstr_fd_ret(line, *fd) < 1)
 		exit(errno);
+	close(*fd);
 	return (filename);
 }
 
-void	ft_hd_input(char *hd_del, t_word_desc *filename, t_ms *ms)
+void	ft_hd_input(char *hd_del, t_redir_aim *filename, t_ms *ms)
 {
 	int			reading;
 	char		*line;
@@ -111,11 +111,11 @@ void	ft_hd_input(char *hd_del, t_word_desc *filename, t_ms *ms)
 	{
 		line = readline("> ");
 		if (!line)
-			ft_cleanup_exit(ms, line);			//readline error;
-		if (ft_strncmp(*hd_del, line, ldel) && ft_strlen(line) == ldel)
+			ft_cleanup_exit(ms); //readline error;
+		if (ft_strncmp(hd_del, line, ldel) && (int) ft_strlen(line) == ldel)
 			reading = 0;
-		filename = malloc(sizeof(t_word_desc) * 1);
-		filename = ft_tmp_write(line, ms, &fd);
+		filename = malloc(sizeof(t_redir_aim) * 1);
+		filename->filename->word = ft_tmp_write(line, ms, &fd);
 		free(line);
 	}
 	return ;
@@ -131,11 +131,13 @@ void	ft_here_doc(t_ms *ms)
 	t_list_redir	*curr_redir;
 
 	cmd_list = ms->cmds;
-	while(ms->global_flags & 1 != 0 && cmd_list != NULL) // loop through commands
+	while((ms->global_flags & 1) != 0 && cmd_list != NULL) // loop through commands
 	{
+		printf("true\n");
 		curr_redir = cmd_list->cmd->redir;
-		while (cmd_list->cmd->flags & 1 != 0 &&	curr_redir != NULL)
+		while ((cmd_list->cmd->flags & 1) != 0 &&	curr_redir != NULL)
 		{
+			printf("true\n"); // [ ] this is not beeing written to the output... Start from here;
 			if (curr_redir->instruction == redir_here_doc)
 			{
 				ft_hd_input(curr_redir->hd_del, curr_redir->from, ms);
@@ -144,6 +146,4 @@ void	ft_here_doc(t_ms *ms)
 		}
 		cmd_list = cmd_list->next;
 	}
-
-	// handle all here_docs. here doc tempfiles need to be stored in a linked list?
 }

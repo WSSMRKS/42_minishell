@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:56:05 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/28 12:15:28 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/28 16:24:48 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #ifndef MS_PARSING_H
 # define MS_PARSING_H
+# include "minishell.h"
 
 typedef struct s_word_desc {
 	char	*word;
