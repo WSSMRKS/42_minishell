@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_garbage.h                                       :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/27 12:51:33 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/28 14:07:30 by maweiss          ###   ########.fr       */
+/*   Created: 2023/12/05 17:39:40 by maweiss           #+#    #+#             */
+/*   Updated: 2023/12/05 22:20:05 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MS_GARBAGE_H
-# define MS_GARBAGE_H
+#include "libft.h"
 
+int	ft_lstsize(t_list *lst)
+{
+	int	i;
 
-typedef struct s_list_hdfiles {
-	char					*filename;
-	struct s_list_hdfiles	*next;
-}				t_list_hdfiles;
-
-typedef struct s_garbage {
-	int				nb_heredocs;
-	t_list_hdfiles		*heredoc;
-}				t_garbage;
-
-
-#endif
+	if (!lst)
+		return (0);
+	i = 1;
+	while (lst->next != NULL)
+	{
+		i++;
+		lst = lst->next;
+	}
+	return (i);
+}

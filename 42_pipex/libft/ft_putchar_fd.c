@@ -1,28 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_garbage.h                                       :+:      :+:    :+:   */
+/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/27 12:51:33 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/28 14:07:30 by maweiss          ###   ########.fr       */
+/*   Created: 2023/09/27 15:57:19 by maweiss           #+#    #+#             */
+/*   Updated: 2023/12/05 14:42:07 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MS_GARBAGE_H
-# define MS_GARBAGE_H
+#include "libft.h"
 
-
-typedef struct s_list_hdfiles {
-	char					*filename;
-	struct s_list_hdfiles	*next;
-}				t_list_hdfiles;
-
-typedef struct s_garbage {
-	int				nb_heredocs;
-	t_list_hdfiles		*heredoc;
-}				t_garbage;
-
-
-#endif
+void	ft_putchar_fd(char c, int fd)
+{
+	write(fd, &c, 1);
+}

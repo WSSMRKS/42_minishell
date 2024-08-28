@@ -1,28 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_garbage.h                                       :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/27 12:51:33 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/28 14:07:30 by maweiss          ###   ########.fr       */
+/*   Created: 2023/11/06 17:52:32 by maweiss           #+#    #+#             */
+/*   Updated: 2023/12/05 14:43:03 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MS_GARBAGE_H
-# define MS_GARBAGE_H
+#include "libft.h"
 
+size_t	ft_strlen(const char *str)
+{
+	size_t	a;
 
-typedef struct s_list_hdfiles {
-	char					*filename;
-	struct s_list_hdfiles	*next;
-}				t_list_hdfiles;
+	a = 0;
+	while (*str)
+	{
+		a++;
+		str++;
+	}
+	return (a);
+}
 
-typedef struct s_garbage {
-	int				nb_heredocs;
-	t_list_hdfiles		*heredoc;
-}				t_garbage;
+/*
+#include <stdio.h>
+#include <string.h>
 
-
-#endif
+int	main(void)
+{
+	printf("%zu\n", ft_strlen("0123456789ssdad\n"));
+	printf("%zu\n", strlen("0123456789ssdad\n\0sdajh;fahf"));
+}
+*/

@@ -4,3 +4,6 @@
 [submodule "42_libft"]
 	path = 42_libft
 	url = git@github.com:WSSMRKS/42_libft.git
+[submodule "executor/42_pipex"]
+	path = executor/42_pipex
+	url = git@github.com:WSSMRKS/42_pipex.git

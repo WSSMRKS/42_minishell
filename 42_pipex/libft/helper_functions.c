@@ -1,28 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_garbage.h                                       :+:      :+:    :+:   */
+/*   helper_functions.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/27 12:51:33 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/28 14:07:30 by maweiss          ###   ########.fr       */
+/*   Created: 2024/01/06 19:43:43 by maweiss           #+#    #+#             */
+/*   Updated: 2024/03/06 11:51:15 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MS_GARBAGE_H
-# define MS_GARBAGE_H
+#include "libft.h"
 
+int	ft_putstr_fd_ret(char *s, int fd)
+{
+	int		len;
+	int		i;
 
-typedef struct s_list_hdfiles {
-	char					*filename;
-	struct s_list_hdfiles	*next;
-}				t_list_hdfiles;
+	if (s == NULL)
+	{
+		write(fd, "(null)", 6);
+		return (6);
+	}
+	i = 0;
+	len = 0;
+	while (s[i] != '\0')
+	{
+		len++;
+		i++;
+	}
+	write(fd, s, len);
+	return (len);
+}
 
-typedef struct s_garbage {
-	int				nb_heredocs;
-	t_list_hdfiles		*heredoc;
-}				t_garbage;
-
-
-#endif
+int	ft_putchar_fd_ret(char c, int fd)
+{
+	write(fd, &c, 1);
+	return (1);
+}

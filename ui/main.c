@@ -6,16 +6,19 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/26 19:21:03 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/28 12:20:48 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-void	ft_init_ms(t_ms *minishell, char **envp)
+void	ft_init_ms(t_ms *ms, char **envp)
 {
-	(void) minishell;
+	(void) ms;
 	(void) envp;
+
+	ms->garbage = malloc(sizeof(t_garbage) * 1);
+	ms->garbage->nb_heredocs = 0;
 }
 
 void	ft_front_end(char *cmd)
@@ -35,13 +38,13 @@ int	main(int argc, char **argv, char **envp)
 {
 	char			*cmd;
 	int				mode;
-	t_ms			*minishell;
+	t_ms			ms;
 
 	(void)argc;
 	(void)argv;
 	(void)envp;
 	mode = 0;
-	ft_init_ms(minishell, envp);
+	ft_init_ms(&ms, envp);
 	while (1) // read eval print loop REPL
 	{
 		cmd = choose_prompt(mode);

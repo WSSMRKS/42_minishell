@@ -1,28 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_garbage.h                                       :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/27 12:51:33 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/28 14:07:30 by maweiss          ###   ########.fr       */
+/*   Created: 2023/12/05 17:39:40 by maweiss           #+#    #+#             */
+/*   Updated: 2024/06/14 17:30:34 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MS_GARBAGE_H
-# define MS_GARBAGE_H
+#include "libft.h"
 
+t_list	*ft_lstnew(void *cont)
+{
+	t_list	*test;
 
-typedef struct s_list_hdfiles {
-	char					*filename;
-	struct s_list_hdfiles	*next;
-}				t_list_hdfiles;
-
-typedef struct s_garbage {
-	int				nb_heredocs;
-	t_list_hdfiles		*heredoc;
-}				t_garbage;
-
-
-#endif
+	test = malloc(sizeof(t_list));
+	if (!test)
+		return (NULL);
+	test->cont = cont;
+	test->next = NULL;
+	return (test);
+}

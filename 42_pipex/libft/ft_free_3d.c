@@ -1,28 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_garbage.h                                       :+:      :+:    :+:   */
+/*   ft_free_3d.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/27 12:51:33 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/28 14:07:30 by maweiss          ###   ########.fr       */
+/*   Created: 2024/05/29 10:37:19 by maweiss           #+#    #+#             */
+/*   Updated: 2024/06/03 11:54:45 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MS_GARBAGE_H
-# define MS_GARBAGE_H
+#include "libft.h"
 
+int	ft_free_3d(char ***tofree)
+{
+	int	i;
+	int	j;
 
-typedef struct s_list_hdfiles {
-	char					*filename;
-	struct s_list_hdfiles	*next;
-}				t_list_hdfiles;
-
-typedef struct s_garbage {
-	int				nb_heredocs;
-	t_list_hdfiles		*heredoc;
-}				t_garbage;
-
-
-#endif
+	i = 0;
+	if (tofree == NULL)
+		return (1);
+	while (tofree[i])
+	{
+		j = 0;
+		while (tofree[i] && tofree[i][j])
+		{
+			free(tofree[i][j]);
+			tofree[i][j] = NULL;
+			j++;
+		}
+		free(tofree[i]);
+		tofree[i] = NULL;
+		i++;
+	}
+	free(tofree);
+	return (0);
+}

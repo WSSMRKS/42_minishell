@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/27 13:05:08 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/28 13:31:57 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ in minishell.h */
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <fcntl.h>
+# include <limits.h>
 # include "ms_parsing.h"
 # include "ms_symtab.h"
 # include "ms_garbage.h"

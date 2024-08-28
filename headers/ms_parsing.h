@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:56:05 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/27 15:36:11 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/28 12:15:28 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ enum	e_redir_type {
 };
 
 typedef struct s_list_redir {
-	struct s_redir		*next;
+	struct s_list_redir	*next;
 	enum e_redir_type	instruction;
 	t_redir_aim			*from;
 	t_redir_aim			*to;
@@ -83,28 +83,28 @@ typedef struct s_simple_com {
 }				t_simple_com;
 
 typedef struct s_cmd_list {
-	t_simple_com	*cmd;
-	t_cmd_list		*next;
+	t_simple_com		*cmd;
+	struct s_cmd_list	*next;
 }				t_cmd_list;
 
 
 /* content of flags field in t_word_desc */
 # define WORD_DOLLAR			1		/* (1 << 0)		Dollar sign present. */
 # define WORD_QUOTES_SINGLE		2		/* (1 << 1)		Quoted parts */
-# define WORD_QUOTES_DOUBLE		4		/* (1 << 1)		Quoted parts */
-# define WORD_VAR_ASSIGNMENT	8		/* (1 << 2)		This word is a variable assignment. */
-# define WORD_SPLITSPACE		16		/* (1 << 3)		Split " " ignore IFS */
-# define WORD_NOSPLIT			32		/* (1 << 4)		Do not perform word splitting on this word because ifs is empty string. */
-# define WORD_NOGLOB			64		/* (1 << 5)		Do not perform globbing on this word. */
-# define WORD_NOSPLIT2			128		/* (1 << 6)		Don't split word except for $@ expansion (using spaces) because context does not allow it. */
-# define WORD_TILDEEXP			256		/* (1 << 7)		Tilde expand this assignment word */
-# define WORD_ASSIGNRHS			512		/* (1 << 8)		Word is rhs of an assignment statement */
-# define WORD_NOTILDE			1024	/* (1 << 9)		Don't perform tilde expansion on this word */
-# define WORD_NOASSNTILDE		2048	/* (1 << 10)	don't do tilde expansion like an assignment statement */
-# define WORD_ASSNBLTIN			4096	/* (1 << 11)	word is a builtin command that takes assignments */
-# define WORD_ASSIGNARG			8192	/* (1 << 12)	word is assignment argument to command */
-# define WORD_HASQUOTEDNULL		16384	/* (1 << 13)	word contains a quoted null character */
-# define WORD_SAWQUOTEDNULL		32468	/* (1 << 14)	word contained a quoted null that was removed */
+# define WORD_QUOTES_DOUBLE		4		/* (1 << 2)		Quoted parts */
+# define WORD_VAR_ASSIGNMENT	8		/* (1 << 3)		This word is a variable assignment. */
+# define WORD_SPLITSPACE		16		/* (1 << 4)		Split " " ignore IFS */
+# define WORD_NOSPLIT			32		/* (1 << 5)		Do not perform word splitting on this word because ifs is empty string. */
+# define WORD_NOGLOB			64		/* (1 << 6)		Do not perform globbing on this word. */
+# define WORD_NOSPLIT2			128		/* (1 << 7)		Don't split word except for $@ expansion (using spaces) because context does not allow it. */
+# define WORD_TILDEEXP			256		/* (1 << 8)		Tilde expand this assignment word */
+# define WORD_ASSIGNRHS			512		/* (1 << 9)		Word is rhs of an assignment statement */
+# define WORD_NOTILDE			1024	/* (1 << 10)		Don't perform tilde expansion on this word */
+# define WORD_NOASSNTILDE		2048	/* (1 << 11)	don't do tilde expansion like an assignment statement */
+# define WORD_ASSNBLTIN			4096	/* (1 << 12)	word is a builtin command that takes assignments */
+# define WORD_ASSIGNARG			8192	/* (1 << 13)	word is assignment argument to command */
+# define WORD_HASQUOTEDNULL		16384	/* (1 << 14)	word contains a quoted null character */
+# define WORD_SAWQUOTEDNULL		32468	/* (1 << 15)	word contained a quoted null that was removed */
 
 #endif
 
