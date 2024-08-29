@@ -1,23 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ui.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/28 12:20:48 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/29 11:39:26 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/minishell.h"
+#include "../../headers/minishell.h"
 
 void	ft_init_ms(t_ms *ms, char **envp)
 {
 	(void) ms;
 	(void) envp;
 
-	ms->garbage = malloc(sizeof(t_garbage) * 1);
+	ms->global_symtab = NULL;
+	ms->cmds = NULL;
+	ms->cmd = NULL;
+	ms->garbage = malloc(sizeof(t_garbage) * 1);  //[ ] free me
 	ms->garbage->nb_heredocs = 0;
 }
 
@@ -34,9 +37,8 @@ char	*choose_prompt(int mode)
 		return (readline("> "));
 }
 
-int	main(int argc, char **argv, char **envp)
+int	ft_repl(int argc, char **argv, char **envp)
 {
-	char			*cmd;
 	int				mode;
 	t_ms			ms;
 
@@ -47,20 +49,24 @@ int	main(int argc, char **argv, char **envp)
 	ft_init_ms(&ms, envp);
 	while (1) // read eval print loop REPL
 	{
-		cmd = choose_prompt(mode);
-		if (!cmd)
+		ms.cmd = choose_prompt(mode);
+		if (!ms.cmd)
 			break ;
-		add_history(cmd);
-		if (cmd[strlen(cmd) - 1] == '\\')
+		add_history(ms.cmd);
+		if (ms.cmd[strlen(ms.cmd) - 1] == '\\')
 			mode = 1;
-		if (strcmp(cmd, "exit") == 0)
+		if (strcmp(ms.cmd, "exit") == 0)
 		{
-			free(cmd);
+			free(ms.cmd);
 			break ;
 		}
-		ft_front_end(cmd);
-		printf("cmd: %s\n", cmd);
-		free(cmd);
+		if (strcmp(ms.cmd, "ms_debug") == 0)
+		{
+			ft_debug(&ms);
+		}
+		ft_front_end(ms.cmd);
+		printf("cmd: %s\n", ms.cmd);
+		free(ms.cmd);
 	}
 	rl_clear_history();
 	exit(EXIT_SUCCESS);

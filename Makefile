@@ -1,21 +1,21 @@
 # Directories #
 SRCDIR = src/
-HDRDIR = inc/
+HDRDIR = headers/
 LIBFTDIR = libft/
 # Names #
-NAME = pipex
-BONUS = pipex_bonus
+NAME = minishell
 # Compiler & Compilation Flags #
-COMPILE_OPTIONS =  -g -Werror -Wall -Wextra -L./libft -lft
+COMPILE_OPTIONS =  -g -Werror -Wall -Wextra -lreadline
 # Detail on lft means including if libft was called blalibft the command would be -lblalibft it is searching for '.a' and '.so' files
 TESTFLAGS = -g3
-COMPILE_FLAGS = -g3 -I./inc -I./libft -Werror -Wall -Wextra -O0 -c
+COMPILE_FLAGS = -g3 -Werror -Wall -Wextra -O0 -c
 # ADD SEARCHFLAGS FOR LIBFT ,...
 # Compiler #
 CC = cc
 # Source Files #
-SRC = $(SRCDIR)pipex.c $(SRCDIR)pipex_parsing.c $(SRCDIR)pipex_utils.c $(SRCDIR)pipex_children.c $(SRCDIR)pipex_error.c $(SRCDIR)pipex_here_doc.c
-HEADERS = $(HDRDIR)pipex.h
+SRC = $(SRCDIR)main/minishell.c $(SRCDIR)ui/ui.c $(SRCDIR)executor/ms_executor.c $(SRCDIR)executor/ms_cleanup_utils.c $(SRCDIR)debug/debug.c
+HEADERS = $(HDRDIR)minishell.h $(HDRDIR)ms_parsing.h $(HDRDIR)ms_executor.h $(HDRDIR)ms_garbage.h $(HDRDIR)ms_symtab.h
+
 LIBFT_SRC = $(LIBFTDIR)libft.a
 # Object Files
 SRC_OBJ = $(SRC:.c=.o)
@@ -23,16 +23,21 @@ BONUS_OBJ = $(BONUS_SRC:.c=.o)
 
 # Targets #
 all: $(NAME)	# Compile the entire project including bonus.
-bonus: $(BONUS)	# Compile the bonus part of the project.
 
 $(NAME): $(LIBFT_SRC) $(SRC_OBJ) # Compile mandatory part.
 	$(CC) $(COMPILE_OPTIONS) $(SRC_OBJ) $(LIBFT_SRC) -o $(NAME)
 
-$(BONUS): $(LIBFT_SRC) $(SRC_OBJ) # Compile mandatory part.
-	$(CC) $(COMPILE_OPTIONS) $(SRC_OBJ) $(LIBFT_SRC) -o $(BONUS)
-
-$(LIBFT_SRC): # Compile libft
+$(LIBFT_SRC): # Download and Compile libft
+  ifeq ("$(wildcard $(LIBFTDIR))", "")
+	echo "Directory does not exist."
+	git clone https://github.com/WSSMRKS/42_libft.git $(LIBFTDIR)
 	$(MAKE) all -C $(LIBFTDIR)
+  else
+	@echo "Skipping download because directory already exists."
+	$(MAKE) all -C $(LIBFTDIR)
+#	@cp -rf $(LIBFTDIR)libft.h ./
+#	@cp -rf $(LIBFTDIR)libft.a ./
+  endif
 
 exes: $(NAME) clean # Compile all project parts including bonus clean up after compilation.
 
@@ -51,12 +56,14 @@ clean:	# Clean project folders, leave executables.
   ifeq ("$(wildcard $(LIBFTDIR))", "")
 	@echo "libft: Directory does not exist."
   else
-	$(MAKE) fclean -C libft/
+	$(MAKE) fclean -C $(LIBFTDIR)
 	@echo "libft folder cleaned"
   endif
 
 fclean: clean	# Fully clean project folders.
 	rm -f $(NAME) $(BONUS)
+	rm -rf $(LIBFTDIR)
+	@echo "$(LIBFTDIR) deleted"
 	@echo "\"$(NAME)\" deleted"
 
 re: fclean	# Recompile whole project.

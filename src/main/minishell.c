@@ -1,24 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_cleanup_utils.c                                 :+:      :+:    :+:   */
+/*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/28 12:23:15 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/28 16:42:59 by maweiss          ###   ########.fr       */
+/*   Created: 2024/08/29 11:17:01 by maweiss           #+#    #+#             */
+/*   Updated: 2024/08/29 11:39:51 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/minishell.h"
+#include "../../headers/minishell.h"
 
-void	clean_garbage(void)
+int	main(int argc, char **argv, char **envp)
 {
-	(void) 1;
-}
-
-void	ft_cleanup_exit(t_ms *ms)
-{
-	if (ms->garbage)
-		clean_garbage();
+	(void)argc;
+	(void)argv;
+	(void)envp;
+	ft_repl(argc, argv, envp);
 }

@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/28 16:38:40 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/29 11:39:37 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ in minishell.h */
 # include <readline/history.h>
 # include <fcntl.h>
 # include <limits.h>
-# include "../42_libft/libft.h"
+# include "../libft/libft.h"
 # include "ms_symtab.h"
 # include "ms_parsing.h"
 # include "ms_garbage.h"
@@ -41,8 +41,11 @@ typedef struct s_ms {
 	t_garbage		*garbage;
 }				t_ms;
 
-
+/* ms_cleanup_utils */
 void	ft_cleanup_exit(t_ms *ms);
+void	clean_garbage(void);
+
+/* ms_executor */
 void	ft_scan_cmds(t_ms *ms);
 void	ft_single_cmd(t_ms *ms);
 void	ft_two_cmds(t_ms *ms);
@@ -52,5 +55,14 @@ void	ft_garbage_add(char *filename, t_ms *ms);
 char	*ft_tmp_write(char *line, t_ms *ms, int *fd);
 void	ft_hd_input(char *hd_del, t_redir_aim *filename, t_ms *ms);
 void	ft_here_doc(t_ms *ms);
+
+/* ms_ui */
+void	ft_init_ms(t_ms *ms, char **envp);
+void	ft_front_end(char *cmd);
+char	*choose_prompt(int mode);
+int	ft_repl(int argc, char **argv, char **envp);
+
+/* ms_debug */
+void	ft_debug(t_ms *ms);
 
 #endif

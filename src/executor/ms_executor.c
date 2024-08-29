@@ -6,11 +6,11 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/28 16:46:21 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/29 11:38:18 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./../headers/minishell.h"
+#include "../../headers/minishell.h"
 
 void	ft_scan_cmds(t_ms *ms)
 {
