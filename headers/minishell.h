@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/29 19:14:36 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/29 19:44:08 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,11 @@ char	*ft_tmp_name(t_ms *ms, int *fd);
 void	ft_hd_input(char *hd_del, t_redir_aim *filename, t_ms *ms);
 void	ft_here_doc(t_ms *ms);
 
-/* ms_ui */
+/* ms_init */
+char	**ft_grab_envp(char **envp);
 void	ft_init_ms(t_ms *ms, int argc, char **argv, char **envp);
+
+/* ms_ui */
 void	ft_front_end(char *cmd);
 char	*choose_prompt(int mode);
 void	ft_repl(int argc, char **argv, char **envp);
