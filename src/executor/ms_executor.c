@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/29 11:38:18 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/29 13:03:58 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,12 @@ void	ft_garbage_add(char *filename, t_ms *ms)
 
 	i = 1;
 
-	curr = ms->garbage->heredoc;
 	if (!ms->garbage->heredoc)
+	{
 		ms->garbage->heredoc = malloc(sizeof(t_list_hdfiles) * 1);
+		ms->garbage->heredoc->next = NULL;
+	}
+	curr = ms->garbage->heredoc;
 	while (i < ms->garbage->nb_heredocs)
 		curr = curr->next;
 	ms->garbage->nb_heredocs += 1;
@@ -81,7 +84,7 @@ void	ft_garbage_add(char *filename, t_ms *ms)
 
 /* [ ] Tempfile behaviour over several instances of minishell? One global tmpfile listing the current tempfile count?
 		do we need to handle the splitsecond between searching and writing?*/
-char	*ft_tmp_write(char *line, t_ms *ms, int *fd)
+char	*ft_tmp_name(t_ms *ms, int *fd)
 {
 	char		*filename;
 
@@ -91,33 +94,42 @@ char	*ft_tmp_write(char *line, t_ms *ms, int *fd)
 		exit(EBADF);
 	else
 		ft_garbage_add(filename, ms);
-	if (ft_putstr_fd_ret(line, *fd) < 1)
-		exit(errno);
-	close(*fd);
 	return (filename);
 }
 
 void	ft_hd_input(char *hd_del, t_redir_aim *filename, t_ms *ms)
 {
-	int			reading;
 	char		*line;
 	int			ldel;
 	int			fd;
+	int			aux1;
 
-	reading = 1;
+	aux1 = 0;
 	ldel = ft_strlen(hd_del);
 	ms->garbage->nb_heredocs += 1;
-	while (reading != 0)
+	while (1)
 	{
 		line = readline("> ");
 		if (!line)
 			ft_cleanup_exit(ms); //readline error;
-		if (ft_strncmp(hd_del, line, ldel) && (int) ft_strlen(line) == ldel)
-			reading = 0;
-		filename = malloc(sizeof(t_redir_aim) * 1);
-		filename->filename->word = ft_tmp_write(line, ms, &fd);
+		if (ft_strncmp(hd_del, line, ldel) == 0 && (int) ft_strlen(line) == ldel)
+			break ;
+		aux1++;
+		printf("aux1 is %d", aux1);
+		if (!filename)
+		{
+			filename = malloc(sizeof(t_redir_aim) * 1);
+			filename->filename = malloc(sizeof(t_word_desc) * 1);
+			filename->filename->word = ft_tmp_name(ms, &fd);
+			filename->filename->flags = 0;
+		}
+		if (ft_putstr_fd_ret(line, fd) < 1 || ft_putstr_fd_ret("\n", fd) < 1)
+			exit(errno);
+		printf("line = %s\n", line);
 		free(line);
 	}
+	close(fd);
+	printf("still running");
 	return ;
 }
 
@@ -133,11 +145,9 @@ void	ft_here_doc(t_ms *ms)
 	cmd_list = ms->cmds;
 	while((ms->global_flags & 1) != 0 && cmd_list != NULL) // loop through commands
 	{
-		printf("true\n");
 		curr_redir = cmd_list->cmd->redir;
 		while ((cmd_list->cmd->flags & 1) != 0 &&	curr_redir != NULL)
 		{
-			printf("true\n"); // [ ] this is not beeing written to the output... Start from here;
 			if (curr_redir->instruction == redir_here_doc)
 			{
 				ft_hd_input(curr_redir->hd_del, curr_redir->from, ms);

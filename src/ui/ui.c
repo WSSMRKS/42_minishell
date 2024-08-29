@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/29 11:39:26 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/29 13:03:01 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	ft_init_ms(t_ms *ms, char **envp)
 	ms->cmds = NULL;
 	ms->cmd = NULL;
 	ms->garbage = malloc(sizeof(t_garbage) * 1);  //[ ] free me
+	ms->garbage->heredoc = NULL;
 	ms->garbage->nb_heredocs = 0;
 }
 
