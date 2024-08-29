@@ -6,24 +6,11 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/29 17:51:44 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/29 19:33:02 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
-
-void	ft_init_ms(t_ms *ms, char **envp)
-{
-	(void) ms;
-	(void) envp;
-
-	ms->global_symtab = NULL;
-	ms->cmds = NULL;
-	ms->cmd = NULL;
-	ms->garbage = malloc(sizeof(t_garbage) * 1);  //[ ] free me
-	ms->garbage->heredoc = NULL;
-	ms->garbage->nb_heredocs = 0;
-}
 
 void	ft_front_end(char *cmd)
 {
@@ -32,15 +19,15 @@ void	ft_front_end(char *cmd)
 
 char	*choose_prompt(int mode)
 {
-	(void) mode;
-	// if (mode == 0)
-	// 	return (readline("minishell$ "));
-	// else
-	// 	return (readline("> "));
-	return (NULL);
+	// (void) mode;
+	if (mode == 0)
+		return (readline("minishell$ "));
+	else
+		return (readline("> "));
+	// return (NULL);
 }
 
-int	ft_repl(int argc, char **argv, char **envp)
+void	ft_repl(int argc, char **argv, char **envp)
 {
 	int				mode;
 	t_ms			ms;
@@ -49,14 +36,15 @@ int	ft_repl(int argc, char **argv, char **envp)
 	(void)argv;
 	(void)envp;
 	mode = 0;
-	ft_init_ms(&ms, envp);
+	ft_init_ms(&ms, argc, argv, envp);
 	while (1) // read eval print loop REPL
 	{
 		ms.cmd = choose_prompt(mode);
+		printf("{%s}\n", ms.cmd);
 		if (!ms.cmd)
 			break ;
 		add_history(ms.cmd);
-		if (ms.cmd[strlen(ms.cmd) - 1] == '\\')
+		if (ms.cmd && ms.cmd[ft_strlen(ms.cmd) - 1] == '\\')
 			mode = 1;
 		if (strcmp(ms.cmd, "exit") == 0)
 		{
@@ -71,5 +59,5 @@ int	ft_repl(int argc, char **argv, char **envp)
 		free(ms.cmd);
 	}
 	rl_clear_history();
-	ft_cleanup_exit(&ms);
+	ft_cleanup_exit(&ms, 0);
 }

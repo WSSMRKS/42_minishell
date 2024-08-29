@@ -6,11 +6,11 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 23:21:53 by maweiss           #+#    #+#             */
-/*   Updated: 2024/06/14 19:24:23 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/29 19:01:04 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pipex.h>
+#include "../inc/pipex.h"
 
 /* Function checks minimum number of arguments and if here_doc flag is set.*/
 void	ft_validate_args(t_pipex *pipex)
@@ -113,7 +113,7 @@ int	ft_parse_cmds(t_pipex *pipex)
 	return (0);
 }
 
-/* Function checks if the command built from the environmental variable 
+/* Function checks if the command built from the environmental variable
 and the pipex argument is valid by using the access function*/
 char	*ft_search_cmd(t_pipex *pipex, int nbcmd)
 {

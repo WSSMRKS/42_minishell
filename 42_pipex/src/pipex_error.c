@@ -6,11 +6,11 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 23:52:06 by maweiss           #+#    #+#             */
-/*   Updated: 2024/06/16 13:25:11 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/29 19:01:04 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pipex.h>
+#include "../inc/pipex.h"
 
 /* Function to handle the different exitstatus of pipex for err 127*/
 void	ft_errno_127(t_pipex *pipex, int i, int *err)

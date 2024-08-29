@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/29 15:31:01 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/29 19:31:07 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,18 +107,17 @@ void	ft_hd_input(char *hd_del, t_redir_aim *filename, t_ms *ms)
 	char		*line;
 	int			ldel;
 	int			fd;
-	int			aux1;
+	int			line_nb;
 
-	aux1 = 0;
+	line_nb = 0;
 	ldel = ft_strlen(hd_del);
 	while (1)
 	{
 		line = readline("> ");
-		// if (!line)
-		// 	ft_cleanup_exit(ms); //readline error;
-		if (ft_strncmp(hd_del, line, ldel) == 0 && (int) ft_strlen(line) == ldel)
+		if (!line)
+			ft_cleanup_exit(ms, EIO); //readline error;
+		if (ft_strncmp(hd_del, line, ldel) == 0 && (int) ft_strlen(line) == ldel && line_nb != 0)
 			break ;
-		aux1++;
 		if (!filename)
 		{
 			filename = malloc(sizeof(t_redir_aim) * 1);
@@ -128,6 +127,9 @@ void	ft_hd_input(char *hd_del, t_redir_aim *filename, t_ms *ms)
 		}
 		if (ft_putstr_fd_ret(line, fd) < 0 || ft_putstr_fd_ret("\n", fd) < 0)
 			exit(errno);
+		line_nb++;
+		if (ft_strncmp(hd_del, line, ldel) == 0 && (int) ft_strlen(line) == ldel)
+			break ;
 		free(line);
 	}
 	close(fd);

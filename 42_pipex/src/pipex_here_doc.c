@@ -6,11 +6,11 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 15:54:59 by maweiss           #+#    #+#             */
-/*   Updated: 2024/06/16 13:27:18 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/29 19:01:04 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pipex.h>
+#include "../inc/pipex.h"
 
 int	ft_here_doc_inp(t_pipex *pipex)
 {

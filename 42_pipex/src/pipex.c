@@ -6,11 +6,11 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 13:47:54 by maweiss           #+#    #+#             */
-/*   Updated: 2024/06/16 13:22:38 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/29 18:59:49 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pipex.h>
+#include "../inc/pipex.h"
 
 /* 	main function of project pipex.
 	Input syntax: ./pipex infile cmd1 ... cmdn outfile

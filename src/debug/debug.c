@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/29 15:28:07 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/29 18:53:51 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	ft_debug(t_ms *ms)
 	ms->cmds->cmd->redir = malloc(sizeof(t_list_redir) * 1); // [ ] free me
 	ms->cmds->cmd->redir->next = malloc(sizeof(t_list_redir) * 1); // [ ] free me
 	ms->cmds->cmd->redir->next->next = malloc(sizeof(t_list_redir) * 1); // [ ] free me
+	ms->cmds->cmd->redir->next->next->next = NULL;
 	ms->cmds->cmd->redir->from = NULL;
 	ms->cmds->cmd->redir->next->from = NULL;
 	ms->cmds->cmd->redir->next->next->from = NULL;

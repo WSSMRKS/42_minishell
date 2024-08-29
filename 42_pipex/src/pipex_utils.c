@@ -6,11 +6,11 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 23:19:29 by maweiss           #+#    #+#             */
-/*   Updated: 2024/06/14 19:44:44 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/29 19:01:04 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pipex.h>
+#include "../inc/pipex.h"
 
 void	ft_close_all_fds(t_pipex *pipex)
 {

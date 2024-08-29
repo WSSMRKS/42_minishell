@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/29 12:44:40 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/29 19:14:36 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,15 @@ typedef struct s_ms {
 	t_cmd_list		*cmds;
 	int				global_flags;
 	t_garbage		*garbage;
+	int				argc;
+	char			**argv;
+	char			**envp;
+	char			**path;
+	int				pipe[2][2];
 }				t_ms;
 
 /* ms_cleanup_utils */
-void	ft_cleanup_exit(t_ms *ms);
+void	ft_cleanup_exit(t_ms *ms, int ex);
 void	clean_garbage(void);
 
 /* ms_executor */
@@ -57,10 +62,10 @@ void	ft_hd_input(char *hd_del, t_redir_aim *filename, t_ms *ms);
 void	ft_here_doc(t_ms *ms);
 
 /* ms_ui */
-void	ft_init_ms(t_ms *ms, char **envp);
+void	ft_init_ms(t_ms *ms, int argc, char **argv, char **envp);
 void	ft_front_end(char *cmd);
 char	*choose_prompt(int mode);
-int	ft_repl(int argc, char **argv, char **envp);
+void	ft_repl(int argc, char **argv, char **envp);
 
 /* ms_debug */
 void	ft_debug(t_ms *ms);
