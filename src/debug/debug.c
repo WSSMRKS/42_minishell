@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/29 12:40:44 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/29 15:28:07 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	ft_debug(t_ms *ms)
 {
 	(void) ms;
 
-	setvbuf(stdout, NULL, _IONBF, 0);
+	// setvbuf(stdout, NULL, _IONBF, 0);
 	ms->global_flags = 1;
 	ms->cmds = malloc(sizeof(t_cmd_list) * 1); // [ ] free me
 	ms->cmds->next = NULL;

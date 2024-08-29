@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/29 13:03:01 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/29 15:27:20 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ int	ft_repl(int argc, char **argv, char **envp)
 			ft_debug(&ms);
 		}
 		ft_front_end(ms.cmd);
-		printf("cmd: %s\n", ms.cmd);
 		free(ms.cmd);
 	}
 	rl_clear_history();

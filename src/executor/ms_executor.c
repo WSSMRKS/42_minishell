@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/29 13:03:58 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/29 15:31:01 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,18 +68,23 @@ void	ft_garbage_add(char *filename, t_ms *ms)
 
 	i = 1;
 
-	if (!ms->garbage->heredoc)
-	{
-		ms->garbage->heredoc = malloc(sizeof(t_list_hdfiles) * 1);
-		ms->garbage->heredoc->next = NULL;
-	}
 	curr = ms->garbage->heredoc;
-	while (i < ms->garbage->nb_heredocs)
+	if (ms->garbage->nb_heredocs == 0)
+	{
+		curr = malloc(sizeof(t_list_hdfiles) * 1);
+		curr->next = NULL;
+		ms->garbage->heredoc = curr;
+	}
+	else
+	{
+		while (i++ < ms->garbage->nb_heredocs)
+			curr = curr->next;
+		curr->next = malloc(sizeof(t_list_hdfiles) * 1);
+		curr->next->next = NULL;
 		curr = curr->next;
+	}
+	curr->filename = filename;
 	ms->garbage->nb_heredocs += 1;
-	curr->next = malloc(sizeof(t_list_hdfiles) * 1);
-	curr->next->filename = filename;
-	curr->next->next = NULL;
 }
 
 /* [ ] Tempfile behaviour over several instances of minishell? One global tmpfile listing the current tempfile count?
@@ -106,16 +111,14 @@ void	ft_hd_input(char *hd_del, t_redir_aim *filename, t_ms *ms)
 
 	aux1 = 0;
 	ldel = ft_strlen(hd_del);
-	ms->garbage->nb_heredocs += 1;
 	while (1)
 	{
 		line = readline("> ");
-		if (!line)
-			ft_cleanup_exit(ms); //readline error;
+		// if (!line)
+		// 	ft_cleanup_exit(ms); //readline error;
 		if (ft_strncmp(hd_del, line, ldel) == 0 && (int) ft_strlen(line) == ldel)
 			break ;
 		aux1++;
-		printf("aux1 is %d", aux1);
 		if (!filename)
 		{
 			filename = malloc(sizeof(t_redir_aim) * 1);
@@ -123,13 +126,11 @@ void	ft_hd_input(char *hd_del, t_redir_aim *filename, t_ms *ms)
 			filename->filename->word = ft_tmp_name(ms, &fd);
 			filename->filename->flags = 0;
 		}
-		if (ft_putstr_fd_ret(line, fd) < 1 || ft_putstr_fd_ret("\n", fd) < 1)
+		if (ft_putstr_fd_ret(line, fd) < 0 || ft_putstr_fd_ret("\n", fd) < 0)
 			exit(errno);
-		printf("line = %s\n", line);
 		free(line);
 	}
 	close(fd);
-	printf("still running");
 	return ;
 }
 
@@ -146,7 +147,7 @@ void	ft_here_doc(t_ms *ms)
 	while((ms->global_flags & 1) != 0 && cmd_list != NULL) // loop through commands
 	{
 		curr_redir = cmd_list->cmd->redir;
-		while ((cmd_list->cmd->flags & 1) != 0 &&	curr_redir != NULL)
+		while ((cmd_list->cmd->flags & 1) != 0 && curr_redir != NULL)
 		{
 			if (curr_redir->instruction == redir_here_doc)
 			{
