@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/29 15:27:20 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/29 17:51:44 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,12 @@ void	ft_front_end(char *cmd)
 
 char	*choose_prompt(int mode)
 {
-	if (mode == 0)
-		return (readline("minishell$ "));
-	else
-		return (readline("> "));
+	(void) mode;
+	// if (mode == 0)
+	// 	return (readline("minishell$ "));
+	// else
+	// 	return (readline("> "));
+	return (NULL);
 }
 
 int	ft_repl(int argc, char **argv, char **envp)
@@ -69,5 +71,5 @@ int	ft_repl(int argc, char **argv, char **envp)
 		free(ms.cmd);
 	}
 	rl_clear_history();
-	exit(EXIT_SUCCESS);
+	ft_cleanup_exit(&ms);
 }
