@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/29 19:31:07 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/30 10:03:05 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void	ft_hd_input(char *hd_del, t_redir_aim *filename, t_ms *ms)
 			filename->filename->word = ft_tmp_name(ms, &fd);
 			filename->filename->flags = 0;
 		}
-		if (ft_putstr_fd_ret(line, fd) < 0 || ft_putstr_fd_ret("\n", fd) < 0)
+		if (line_nb != 0 && (ft_putstr_fd_ret(line, fd) < 0 || ft_putstr_fd_ret("\n", fd) < 0))
 			exit(errno);
 		line_nb++;
 		if (ft_strncmp(hd_del, line, ldel) == 0 && (int) ft_strlen(line) == ldel)
