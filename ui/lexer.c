@@ -6,7 +6,7 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 06:07:52 by dkoca             #+#    #+#             */
-/*   Updated: 2024/08/30 11:58:49 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/08/30 15:32:44 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,12 @@
 // 	return (cmd->chr_itr[pos]);
 // }
 
-int is_not_end(t_cmd *cmd)
+int is_not_end(char *chr_itr)
 {
-	if (!cmd)
+	// printf("cur str = %s, c = %i\n", chr_itr, *chr_itr);
+	if (chr_itr == NULL && *chr_itr == '\0')
 		return (FALSE);
-	if (cmd->chr_itr == NULL)
-		return (FALSE);
-	if (*cmd->chr_itr != '\0')
-		return (TRUE);
-	return (FALSE);
+	return (TRUE);
 }
 
 /* tokenizes operator and consumes used chars*/
@@ -55,21 +52,6 @@ t_token *tokenize_operator(char **cur_ptr, char cur_chr, t_token *prev_token)
 	return (token);
 }
 
-// int check_quote_amount(char *start, int len, int chr)
-// {
-// 	int has;
-
-// 	has = 0;
-// 	while (*start)
-// 	{
-// 		if (*start == chr)
-// 			return 
-// 	}
-	
-
-// 	return (FALSE);
-// }
-
 t_token *has_single_quotes(char **chr_itr, t_token *prev_token)
 {
 	t_token *new_token;
@@ -77,13 +59,15 @@ t_token *has_single_quotes(char **chr_itr, t_token *prev_token)
 	int len;
 
 	new_token = NULL;
+	start = NULL;
 	len = 0;
 	if (**chr_itr == '\'')
-	{
 		(*chr_itr)++;
-	}
-	start = *chr_itr;
-	while (**chr_itr != '\0' || **chr_itr != '\n')
+	else
+		return (NULL);
+	if (is_not_end(*chr_itr))
+		start = *chr_itr;
+	while (start != NULL && (**chr_itr != '\0' || **chr_itr != '\n'))
 	{
 		if (**chr_itr == '\'')
 		{
@@ -96,38 +80,84 @@ t_token *has_single_quotes(char **chr_itr, t_token *prev_token)
 	if (len > 0)
 	{
 		if (ft_strchr(start, '\''))
-		{
 			new_token = add_token(start, TOKEN_WORD, len, &prev_token);
-			*chr_itr += len + 1;
-		}
-		else
-		{
+		else if (start == NULL && !ft_strchr(start, '\''))
 			new_token = add_token(start, TOKEN_ERR, len, &prev_token);
-			*chr_itr += len;
-		}
-			
 	}
 	return (new_token);
 }
 
-// t_token scan_word(t_cmd *cmd, char **chr_itr, t_token *prev_token)
-// {
-// 	t_token *new_token;
-// 	char cur_chr;
+t_token *has_double_quotes(char **chr_itr, t_token *prev_token)
+{
+	t_token *new_token;
+	char *start;
+	int len;
+
+	new_token = NULL;
+	start = NULL;
+	len = 0;
+	if (**chr_itr == '\"')
+		(*chr_itr)++;
+	else
+		return (NULL);
+	if (is_not_end(*chr_itr))
+		start = *chr_itr;
+	while (start != NULL && (**chr_itr != '\0' || **chr_itr != '\n'))
+	{
+		if (**chr_itr == '\"')
+		{
+			(*chr_itr)++;
+			break;
+		}
+		(*chr_itr)++;
+		len++;
+	}
+	if (len > 0)
+	{
+		if (ft_strchr(start, '\"'))
+			new_token = add_token(start, TOKEN_WORD, len, &prev_token);
+		else if (start == NULL && !ft_strchr(start, '\"'))
+			new_token = add_token(start, TOKEN_ERR, len, &prev_token);
+	}
+	return (new_token);
+}
+
+t_token *scan_word(char **chr_itr, t_token *prev_token)
+{
+	t_token *new_token;
+	char *start;
+	int len;
 	
-// 	while ((is_not_end(cmd) || cmd->chr_itr != '\n') && !ft_isdigit(cur_chr))
-// 	{
-		
-// 	}
-	
-// }
+	if (chr_itr == NULL || *chr_itr == NULL)
+		return (NULL);
+	new_token = NULL;
+	start = *chr_itr;
+	len = 0;
+	while ((**chr_itr != '\n') && !ft_isspace(**chr_itr))
+	{
+		// printf("cur str = %s\n", *chr_itr);
+		++(*chr_itr);
+		len++;
+	}
+	if (len > 0)
+		new_token = add_token(start, TOKEN_WORD, len, &prev_token);	
+	return (new_token);
+}
 
 t_token *tokenize_word(char **chr_itr, t_token *prev_token)
 {
 	t_token *token;
 
-		
+	token = NULL;
+	printf("chr itr 0 = %s\n", *chr_itr);
 	token = has_single_quotes(chr_itr, prev_token);
+	printf("chr itr 1 = %s\n", *chr_itr);
+	if (!token && chr_itr && is_not_end(*chr_itr))
+		token = has_double_quotes(chr_itr, prev_token);
+	printf("chr itr 2 = %s\n", *chr_itr);
+	if (!token && chr_itr && is_not_end(*chr_itr))
+		token = scan_word(chr_itr, prev_token);
+	
 	// check for double and single quotes
 	return (token);
 }
@@ -137,6 +167,8 @@ t_token *scan(t_cmd *cmd, t_token *prev_token)
 	t_token *token;
 	char cur;
 	
+	if (cmd->chr_itr == NULL)
+		return (NULL);
 	cur = *cmd->chr_itr;
 	token = NULL;
 	printf("chr itr = %c\n", *cmd->chr_itr);
@@ -157,7 +189,7 @@ void skip_whitespace_between_words(t_cmd *cmd)
 	cur = *cmd->chr_itr;
 	printf("before moving %p\n", cmd->chr_itr);
 	printf("before spaces %s\n", cmd->chr_itr);
-	while (is_not_end(cmd) && cur != '\n' && cur == ' ')
+	while (is_not_end(cmd->chr_itr) && cur != '\n' && cur == ' ')
 	{
 		printf("cur in skip space=%c\n", cur);
 		++(*skip);
@@ -176,13 +208,12 @@ int tokenizer(char *line)
 	ft_strtrim(line, " \t");
 	cmd.chr_itr = line;
 	prev_tok = NULL;
-	while (is_not_end(&cmd) || *cmd.chr_itr != '\n')
+	while (is_not_end(cmd.chr_itr) || *cmd.chr_itr != '\n')
 	{
 		new_tok = NULL;
 		skip_whitespace_between_words(&cmd);
 		printf("moved here2 %p\n", cmd.chr_itr);
-
-		if (!is_not_end(&cmd) || *cmd.chr_itr == '\n')
+		if (!is_not_end(cmd.chr_itr) || *cmd.chr_itr == '\n')
 			break;
 		new_tok = scan(&cmd, prev_tok);
 		printf("new token = ");
