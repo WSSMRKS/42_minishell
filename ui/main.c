@@ -6,7 +6,7 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/27 09:23:56 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/08/28 15:52:41 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	ft_front_end(char *cmd)
 char	*choose_prompt(int mode)
 {
 	if (mode == 0)
-		return (readline("minishell$ "));
+		return (readline("minishell$"));
 	else
 		return (readline("> "));
 }
@@ -46,8 +46,9 @@ int	main(int argc, char **argv, char **envp)
 	}
 	(void)argv;
 	(void)envp;
+	(void)minishell;
 	mode = 0;
-	ft_init_ms(minishell, envp);
+	// ft_init_ms(minishell, envp);
 	while (1) // read eval print loop REPL
 	{
 		cmd = choose_prompt(mode);

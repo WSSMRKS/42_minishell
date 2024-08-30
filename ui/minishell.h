@@ -6,7 +6,7 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/27 11:17:17 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/08/28 12:26:19 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ in minishell.h */
 #define FALSE 0
 #define TRUE 1
 
-#define PEEK_START -2
+#define PEEK_START -1
 
 typedef struct s_cmd
 {
