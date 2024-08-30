@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/30 10:06:07 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/08/30 10:28:20 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,10 @@ void	ft_several_cmds(t_ms *ms)
 char	*ft_search_tmp(void)
 {
 	int		nb;
-	int		found;
 	char	*filename;
 	char	*number;
 
 	nb = 1;
-	found = 0;
 	while (nb < INT_MAX)
 	{
 		number = ft_itoa(nb);
@@ -116,8 +114,6 @@ void	ft_hd_input(char *hd_del, t_redir_aim *filename, t_ms *ms)
 		line = readline("> ");
 		if (!line)
 			ft_cleanup_exit(ms, EIO); //readline error;
-		if (ft_strncmp(hd_del, line, ldel) == 0 && (int) ft_strlen(line) == ldel && line_nb != 0)
-			break ;
 		if (!filename)
 		{
 			filename = malloc(sizeof(t_redir_aim) * 1);
@@ -125,11 +121,11 @@ void	ft_hd_input(char *hd_del, t_redir_aim *filename, t_ms *ms)
 			filename->filename->word = ft_tmp_name(ms, &fd);
 			filename->filename->flags = 0;
 		}
-		if (ft_putstr_fd_ret(line, fd) < 0 || ft_putstr_fd_ret("\n", fd) < 0)
+		if (ft_strncmp(hd_del, line, ldel) == 0 && (int) ft_strlen(line) == ldel)
+			break ;
+		if ((ft_putstr_fd_ret(line, fd) < 0 || ft_putstr_fd_ret("\n", fd) < 0))
 			exit(errno);
 		line_nb++;
-		if (line_nb != 0 && (ft_putstr_fd_ret(line, fd) < 0 || ft_putstr_fd_ret("\n", fd) < 0))
-			exit(errno);
 		free(line);
 	}
 	close(fd);
