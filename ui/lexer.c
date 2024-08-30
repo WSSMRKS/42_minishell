@@ -6,7 +6,7 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 06:07:52 by dkoca             #+#    #+#             */
-/*   Updated: 2024/08/30 15:32:44 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/08/30 15:50:21 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,11 +133,16 @@ t_token *scan_word(char **chr_itr, t_token *prev_token)
 	new_token = NULL;
 	start = *chr_itr;
 	len = 0;
-	while ((**chr_itr != '\n') && !ft_isspace(**chr_itr))
+	printf("cur str = %s\n", *chr_itr);
+	printf("Initial pointer address: %p\n", (void *)*chr_itr);
+	// printf("one more pointer address: %p\n", (void *)*chr_itr);
+	int i = 0;
+	while ( i < 1 && (**chr_itr != '\0' || **chr_itr != '\n') && !ft_isspace(**chr_itr))
 	{
-		// printf("cur str = %s\n", *chr_itr);
+		printf("one more pointer address: %p\n", (void *)*chr_itr);
 		++(*chr_itr);
 		len++;
+		i++;
 	}
 	if (len > 0)
 		new_token = add_token(start, TOKEN_WORD, len, &prev_token);	
