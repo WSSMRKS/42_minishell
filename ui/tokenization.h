@@ -6,7 +6,7 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 05:06:08 by dkoca             #+#    #+#             */
-/*   Updated: 2024/08/27 09:16:52 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/08/31 13:41:18 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ typedef enum e_token_type
 {
 	TOKEN_ERR,
 	TOKEN_WORD,
+	TOKEN_WORD_SQUOTE,
+	TOKEN_WORD_DQUOTE,
 	TOKEN_PIPE,
 	TOKEN_IO_IN,
 	TOKEN_IO_OUT,
@@ -56,6 +58,6 @@ typedef struct s_token
 }	t_token;
 
 /******** FUNCTIONS *********/
-t_token *add_token(char *content, int type, int len, t_token **prev_next_ptr);
+t_token *get_token(char *content, int type, int len, t_token **prev_next_ptr);
 int tokenizer(char *line);
 #endif

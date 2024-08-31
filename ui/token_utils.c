@@ -6,13 +6,13 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 05:48:37 by dkoca             #+#    #+#             */
-/*   Updated: 2024/08/27 10:42:26 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/08/31 12:59:00 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token *add_token(char *content, int type, int len, t_token **prev)
+t_token *get_token(char *content, int type, int len, t_token **prev)
 {
 	t_token *new_tok;
 
