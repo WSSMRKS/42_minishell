@@ -6,7 +6,7 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 06:07:52 by dkoca             #+#    #+#             */
-/*   Updated: 2024/08/31 15:03:54 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/09/01 20:07:52 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,6 @@ t_token *has_single_quotes(char **chr_itr, t_token *prev_token)
 	start = NULL;
 	len = 0;
 	printf("s quote str = %s\n", *chr_itr);
-		// has_backslash = FALSE;
-	if (!is_quoted(**chr_itr, '\"') || ft_strncmp(*chr_itr, "\\\'", 2))
-		return (NULL);
-	// if (ft_strncmp(*chr_itr, "\\\'", 2) == 0)
-		// ++(*chr_itr);
 	if (!is_quoted(**chr_itr, '\''))
 		return (NULL);
 	start = ++(*chr_itr);
@@ -85,38 +80,38 @@ t_token *has_single_quotes(char **chr_itr, t_token *prev_token)
 	return (new_token);
 }
 
-
 t_token *has_double_quotes(char **chr_itr, t_token *prev_token)
 {
 	t_token *new_token;
 	char *start;
 	int len;
-	// int has_backslash;
 
 	new_token = NULL;
 	start = NULL;
 	len = 0;
-	// has_backslash = FALSE;
-	if (!is_quoted(**chr_itr, '\"') || ft_strncmp(*chr_itr, "\\\"", 2))
+	if (!is_quoted(**chr_itr, '\"') && ft_strncmp(*chr_itr, "\\\"", 2) != 0)
 		return (NULL);
-	if (ft_strncmp(*chr_itr, "\\\"", 2) == 0)
-		++(*chr_itr);
 	start = ++(*chr_itr);
-	while (!is_end(*chr_itr))
+	printf("start = %s\n", start);
+	while (!is_end(*chr_itr) && **chr_itr != '\"')
 	{
-		if (**chr_itr == '\"')
-		{
-			(*chr_itr)++;
-			break;
-		}
+		// if (ft_strncmp(*chr_itr, "\\\"", 2) == 0)
+			// break;
 		(*chr_itr)++;
 		len++;
 	}
 	if (len > 0 && !is_end(start))
 	{
+		/* if quotes are an empty string*/
+		// if (len == 1)
+			// len--;
 		if (ft_strchr(start, '\"'))
+		{
+			(*chr_itr)++;
+			len--;
 			new_token = get_token(start, TOKEN_WORD_DQUOTE, len, &prev_token);
-		else if (start == NULL && !ft_strchr(start, '\"'))
+		}
+		else if (!ft_strchr(start, '\"'))
 			new_token = get_token(start, TOKEN_ERR, len, &prev_token);
 	}
 	return (new_token);
@@ -142,7 +137,9 @@ t_token *scan_word(char **chr_itr, t_token *prev_token)
 	len = 0;
 	while ((!is_end(*chr_itr)) && is_word(**chr_itr))
 	{
-		++(*chr_itr);
+		if (**chr_itr == '\\' && *(*chr_itr + 1) == '\\')
+			(*chr_itr)++;
+		(*chr_itr)++;
 		len++;
 	}
 	if (len > 0)
@@ -181,7 +178,6 @@ t_token *scan(char **cmd, t_token *prev_token)
 	}
 	return (token);
 }
-
 
 void skip_whitespace_between_words(char **cmd)
 {
@@ -229,6 +225,8 @@ void print_token(t_token *token)
 		{
 			printf("%c", token->cmd.start[i]);
 		}
-	}
 	printf("\n");
+	printf("token len = %zu\n", token->cmd.len);
+	printf("token type = %i\n", token->type);
+	}
 }

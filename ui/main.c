@@ -6,7 +6,7 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/30 15:00:47 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/09/01 19:24:51 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,22 @@ char	*choose_prompt(int mode)
 		return (readline("> "));
 }
 
+int last_is_escaped(char *cmd)
+{
+	int len;
+	len = ft_strlen(cmd);
+	if (cmd[len - 1] == '\\')
+	{
+		if (len >= 2 && cmd[len - 2] == '\\')
+		{
+			printf("last 2 chrs = %c and %c\n", cmd[len -1], cmd[len -2]);
+			return (FALSE);
+		}
+		return (TRUE);
+	}
+	return (FALSE);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char			*cmd;
@@ -47,15 +63,15 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	(void)envp;
 	(void)minishell;
-	mode = 0;
 	// ft_init_ms(minishell, envp);
+	mode = 0;
 	while (1) // read eval print loop REPL
 	{
 		cmd = choose_prompt(mode);
 		if (!cmd)
 			break ;
 		add_history(cmd);
-		if (cmd[strlen(cmd) - 1] == '\\')
+		if (last_is_escaped(cmd) == TRUE)
 			mode = 1;
 		if (strcmp(cmd, "exit") == 0)
 		{
