@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/02 12:13:45 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/02 12:29:44 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	ft_deb_commands(t_ms *ms)
 
 	printf("test for right priority if several redirects are present\n");
 	printf("test if heredocs and input redirects are prioritized right\n");
-	printf("test if redirects to pipes are still there?")
+	printf("test if redirects to pipes are still there?");
 }
 
 void	ft_debug(t_ms *ms)
