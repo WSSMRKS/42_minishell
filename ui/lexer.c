@@ -6,7 +6,7 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 06:07:52 by dkoca             #+#    #+#             */
-/*   Updated: 2024/09/01 20:07:52 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/09/02 11:54:23 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,22 +95,18 @@ t_token *has_double_quotes(char **chr_itr, t_token *prev_token)
 	printf("start = %s\n", start);
 	while (!is_end(*chr_itr) && **chr_itr != '\"')
 	{
-		// if (ft_strncmp(*chr_itr, "\\\"", 2) == 0)
-			// break;
+		if (ft_strncmp(*chr_itr, "\\\"", 2) == 0)
+		{
+			(*chr_itr)++;
+			len++;
+		}
 		(*chr_itr)++;
 		len++;
 	}
 	if (len > 0 && !is_end(start))
 	{
-		/* if quotes are an empty string*/
-		// if (len == 1)
-			// len--;
 		if (ft_strchr(start, '\"'))
-		{
-			(*chr_itr)++;
-			len--;
 			new_token = get_token(start, TOKEN_WORD_DQUOTE, len, &prev_token);
-		}
 		else if (!ft_strchr(start, '\"'))
 			new_token = get_token(start, TOKEN_ERR, len, &prev_token);
 	}
@@ -142,7 +138,7 @@ t_token *scan_word(char **chr_itr, t_token *prev_token)
 		(*chr_itr)++;
 		len++;
 	}
-	if (len > 0)
+	if (len > 0 && !is_end(start))
 		new_token = get_token(start, TOKEN_WORD, len, &prev_token);	
 	return (new_token);
 }
