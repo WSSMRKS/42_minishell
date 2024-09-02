@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:56:05 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/28 16:24:48 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/02 12:16:19 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ typedef struct s_list_redir {
 	t_redir_aim			*to;
 	char				*hd_del;
 	t_redir_aim			*hd_file;
+	int					rightmost;
 }				t_list_redir;
 
 /*simple command struct: all commands that are without subshells and connections
