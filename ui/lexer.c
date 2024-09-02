@@ -6,7 +6,7 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 06:07:52 by dkoca             #+#    #+#             */
-/*   Updated: 2024/09/02 11:54:23 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/09/02 12:05:27 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,11 @@ t_token *has_single_quotes(char **chr_itr, t_token *prev_token)
 	new_token = NULL;
 	start = NULL;
 	len = 0;
-	printf("s quote str = %s\n", *chr_itr);
 	if (!is_quoted(**chr_itr, '\''))
 		return (NULL);
 	start = ++(*chr_itr);
-	while (!is_end(*chr_itr))
+	while (!is_end(*chr_itr) && **chr_itr != '\'')
 	{
-		if (**chr_itr == '\'')
-		{
-			(*chr_itr)++;
-			break;
-		}
 		(*chr_itr)++;
 		len++;
 	}
