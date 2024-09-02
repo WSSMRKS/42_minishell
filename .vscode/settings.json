@@ -1,0 +1,10 @@
+{
+	"files.associations": {
+		"minishell.h": "c",
+		"ms_parsing.h": "c",
+		"ms_garbage.h": "c",
+		"ms_symtab.h": "c",
+		"ms_executor.h": "c",
+		"tokenization.h": "c"
+	}
+}
