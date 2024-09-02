@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:15 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/29 18:16:29 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/02 11:38:40 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	ft_delfree_hdgb(t_list_hdfiles **lst, void (*del)(void *))
 			nlst = tlst->next;
 			unlink(tlst->filename);
 			if (!access(tlst->filename, F_OK))
-				ft_printf_err("minishell: could not deletetempfile\"%s\"\n",
+				ft_printf_err("minishell: could not delete tempfile\"%s\"\n",
 					tlst->filename);
 			ft_lsthdgbdelone(tlst, (del));
 			tlst = nlst;
