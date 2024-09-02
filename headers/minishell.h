@@ -6,7 +6,7 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/02 12:43:47 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/09/02 13:06:08 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,13 @@ in minishell.h */
 # include <readline/history.h>
 # include <fcntl.h>
 # include <limits.h>
-# include "../libft/libft.h"
 # include "ms_symtab.h"
 # include "ms_parsing.h"
 # include "ms_garbage.h"
 # include "ms_executor.h"
-# include "tokenization.h" 
+# include "tokenization.h"
+# include "../libft/libft.h"
+
 
 #define FALSE 0
 #define TRUE 1

@@ -6,7 +6,7 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/02 13:01:43 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/09/02 13:13:17 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@ void	ft_repl(int argc, char **argv, char **envp)
 	t_ms			ms;
 
 	(void)argc;
-	if (argc >= 2)
-	{
-		return (127);
+	// if (argc >= 2)
+	// {
+		// return (127);
 		// save exit code? 127?
-	}
+	// }
 	(void)argv;
 	(void)envp;
 	// ft_init_ms(minishell, envp);
