@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/02 12:29:12 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/03 16:36:20 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,23 +39,23 @@ void	ft_garbage_add(char *filename, t_ms *ms)
 
 	i = 1;
 
-	curr = ms->garbage->heredoc;
-	if (ms->garbage->nb_heredocs == 0)
+	curr = ms->be->garbage->heredoc;
+	if (ms->be->garbage->nb_heredocs == 0)
 	{
 		curr = malloc(sizeof(t_list_hdfiles) * 1);
 		curr->next = NULL;
-		ms->garbage->heredoc = curr;
+		ms->be->garbage->heredoc = curr;
 	}
 	else
 	{
-		while (i++ < ms->garbage->nb_heredocs)
+		while (i++ < ms->be->garbage->nb_heredocs)
 			curr = curr->next;
 		curr->next = malloc(sizeof(t_list_hdfiles) * 1);
 		curr->next->next = NULL;
 		curr = curr->next;
 	}
 	curr->filename = filename;
-	ms->garbage->nb_heredocs += 1;
+	ms->be->garbage->nb_heredocs += 1;
 }
 
 /* [ ] Tempfile behaviour over several instances of minishell? One global tmpfile listing the current tempfile count?
@@ -115,7 +115,7 @@ void	ft_here_doc(t_ms *ms)
 	t_list_redir	*curr_redir;
 
 	cmd_list = ms->cmds;
-	while((ms->global_flags & 1) != 0 && cmd_list != NULL) // loop through commands
+	while ((ms->global_flags & 1) != 0 && cmd_list != NULL)
 	{
 		curr_redir = cmd_list->cmd->redir;
 		while ((cmd_list->cmd->flags & 1) != 0 && curr_redir != NULL)

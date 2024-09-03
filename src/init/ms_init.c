@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 19:05:44 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/29 19:15:44 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/03 16:36:20 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,13 @@ void	ft_init_ms(t_ms *ms, int argc, char **argv, char **envp)
 	ms->global_symtab = NULL;
 	ms->cmds = NULL;
 	ms->cmd = NULL;
-	ms->garbage = malloc(sizeof(t_garbage) * 1);  //[ ] free me
-	ms->garbage->heredoc = NULL;
-	ms->garbage->nb_heredocs = 0;
-	if (pipe(ms->pipe[0]) == -1 || pipe(ms->pipe[1]) == -1)
+	ms->be->garbage = malloc(sizeof(t_garbage) * 1);  //[ ] free me
+	ms->be->garbage->heredoc = NULL;
+	ms->be->garbage->nb_heredocs = 0;
+	if (pipe(ms->be->pipes[0]) == -1 || pipe(ms->be->pipes[1]) == -1)
 	{
 		strerror(32);
 		exit (32);
 	}
-	ms->path = ft_grab_envp(ms->envp);
+	ms->be->path = ft_grab_envp(ms->envp);
 }

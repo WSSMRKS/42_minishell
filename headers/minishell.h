@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/03 11:56:49 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/03 16:41:18 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,7 @@ typedef struct s_ms {
 	t_symtab_stack	*global_symtab;
 	t_cmd_list		*cmds;
 	int				global_flags;
-	t_garbage		*garbage;
-	int				argc;
-	char			**argv;
-	char			**envp;
-	char			**path;
-	int				pipe[2][2];
+	t_be			*be;
 }				t_ms;
 
 /* ms_cleanup_utils */

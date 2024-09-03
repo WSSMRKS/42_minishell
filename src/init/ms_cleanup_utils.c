@@ -6,11 +6,17 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:15 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/03 11:06:54 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/03 16:36:20 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
+
+void	ft_clean_be(t_ms ms)
+{
+	(void) ms;
+}
+
 
 void	clean_garbage(void)
 {
@@ -52,11 +58,11 @@ void	ft_delfree_hdgb(t_list_hdfiles **lst, void (*del)(void *))
 
 void	ft_cleanup_exit(t_ms *ms, int ex)
 {
-	if (ms->garbage)
+	if (ms->be->garbage)
 	{
-		if (ms->garbage->heredoc)
-			ft_delfree_hdgb(&ms->garbage->heredoc, &free);
-		free(ms->garbage);
+		if (ms->be->garbage->heredoc)
+			ft_delfree_hdgb(&ms->be->garbage->heredoc, &free);
+		free(ms->be->garbage);
 	}
 	exit(ex);
 }
