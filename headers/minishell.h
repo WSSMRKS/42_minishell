@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/29 19:44:08 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/03 11:56:49 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ in minishell.h */
 # include <readline/history.h>
 # include <fcntl.h>
 # include <limits.h>
+# include <stdbool.h>
 # include "../libft/libft.h"
 # include "ms_symtab.h"
 # include "ms_parsing.h"
