@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 15:50:51 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/03 16:36:20 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/04 16:39:04 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct s_be {
 	int				**pipes;
 	int				**child_pids;
 	char			**builtins;
+	int				nb_cmds;
 }				t_be;
 
 

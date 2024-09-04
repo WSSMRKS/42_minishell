@@ -6,73 +6,17 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/03 16:46:55 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/04 17:01:39 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
 
-void	ft_redir_handler(t_ms *ms, t_cmd_list *curr)
-{
-	t_list_redir	*rd;
 
-	rd = curr->cmd->redir;
-	while (rd)
-	{
-		if (curr->cmd->prio_in == 3 && rd->instruction == redir_here_doc
-			&& rd->rightmost == true)
-			ft_infile();
-		else if (curr->cmd->prio_in == 2
-			&& rd->instruction == redir_infile && rd->rightmost == true)
-			ft_infile();
-		else if (curr->cmd->prio_in == 1
-			&& rd->instruction == redir_inpipe)
-			ft_inpipe();
-		if (curr->cmd->prio_out == 3 && rd->instruction == redir_append
-			&& rd->rightmost == true)
-			ft_outfile();
-		else if (curr->cmd->prio_out == 2
-			&& rd->instruction == redir_outfile && rd->rightmost == true)
-			ft_outfile();
-		else if (curr->cmd->prio_out == 1
-			&& rd->instruction == redir_outpipe)
-			ft_outpipe();
-		rd = rd->next;
-	}
-}
-
-void	ft_ex_prio(t_ms *ms, t_cmd_list *curr)
-{
-	t_list_redir	*rd;
-
-	rd = curr->cmd->redir;
-	while (rd)
-	{
-		if (rd->instruction == redir_infile
-			&& rd->rightmost == true)
-			curr->cmd->prio_in = 2;
-		else if (rd->instruction == redir_here_doc
-			&& rd->rightmost == true)
-			curr->cmd->prio_in = 3;
-		else if (rd->instruction == redir_inpipe
-			&& (curr->cmd->prio_in != 3 || curr->cmd->prio_in != 2))
-			curr->cmd->prio_in = 1;
-		if (rd->instruction == redir_outfile
-			&& rd->rightmost == true)
-			curr->cmd->prio_out = 2;
-		else if (rd->instruction == redir_append
-			&& rd->rightmost == true)
-			curr->cmd->prio_out = 3;
-		else if (rd->instruction == redir_outpipe
-			&& (curr->cmd->prio_out != 3 || curr->cmd->prio_out != 2))
-			curr->cmd->prio_out = 1;
-		rd = rd->next;
-	}
-}
 
 void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i)
 {
-	if ((curr->cmd->flags & IS_BUILTIN) != 1)
+	if ((curr->cmd->flags & IS_BUILTIN) != 1 || ms->be->nb_cmds > 1)
 		ms->be->child_pids[*i] = fork();
 	else
 		ms->be->child_pids[*i] = INT_MAX;
@@ -83,7 +27,7 @@ void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i)
 	}
 	if (ms->be->child_pids[*i] == 0 || ms->be->child_pids[*i] == INT_MAX)
 	{
-		ft_redir_handler(ms, curr);
+		ft_redir_handler(ms, curr, i);
 		if (ms->be->child_pids[*i] == INT_MAX)
 			ft_builtin(curr);
 		else if (ms->be->child_pids[*i] == 0)
@@ -126,22 +70,30 @@ void	ft_executor(t_ms *ms)
 			ft_fork_execute(ms, curr, &i);
 		}
 		curr = curr->next;
+		i++;
 	}
 }
 
 void	ft_init_be(t_ms *ms)
 {
 	t_cmd_list	*curr;
-	int			nb_cmds;
+	int			i;
 
-	nb_cmds = 0;
+	i = 0;
 	curr = ms->cmds;
 	while (curr)
 	{
-		nb_cmds++;
+		i++;
 		curr = curr->next;
 	}
-	ms->be->child_pids = ft_calloc(sizeof(int), (size_t) nb_cmds + 1);
+	ms->be = ft_calloc(sizeof(t_be), 1);
+	ms->be->nb_cmds = i;
+	if (pipe(ms->be->pipes[0]) == -1 || pipe(ms->be->pipes[1]) == -1)
+	{
+		strerror(32);
+		exit (32);
+	}
+	ms->be->child_pids = ft_calloc(sizeof(int), (size_t) ms->be->nb_cmds + 1);
 	ms->be->builtins = ft_calloc(sizeof(char *), 8);
 	ms->be->builtins[0] = ft_strdup("echo");
 	ms->be->builtins[1] = ft_strdup("cd");

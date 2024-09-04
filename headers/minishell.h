@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/03 16:41:18 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/04 13:53:06 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,17 @@ void	ft_cleanup_exit(t_ms *ms, int ex);
 void	clean_garbage(void);
 
 /* ms_executor */
-void	ft_scan_cmds(t_ms *ms);
-void	ft_single_cmd(t_ms *ms);
-void	ft_two_cmds(t_ms *ms);
-void	ft_several_cmds(t_ms *ms);
+void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i);
+void	ft_is_builtin(t_cmd_list *curr, t_ms *ms);
+void	ft_executor(t_ms *ms);
+void	ft_init_be(t_ms *ms);
+void	ft_back_end(t_ms *ms);
+
+/* ms_ex_redir */
+void	ft_redir_handler(t_ms *ms, t_cmd_list *curr);
+void	ft_ex_prio(t_ms *ms, t_cmd_list *curr);
+
+/* ms_heredoc */
 char	*ft_search_tmp(void);
 void	ft_garbage_add(char *filename, t_ms *ms);
 char	*ft_tmp_name(t_ms *ms, int *fd);

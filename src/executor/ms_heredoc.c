@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/03 16:36:20 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/04 15:35:34 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,11 @@ void	ft_hd_input(char *hd_del, t_redir_aim *filename, t_ms *ms)
 		free(line);
 	}
 	close(fd);
-	return ;
 }
 
 /*heredoc insights:
-	- several heredocs in one command are handled left to right. only the most left here doc is handled.
+	- several heredocs in one command are handled left to right.
+	  only the most left here doc is handled.
 	- even over several pipes heredoc is handled left to right.
 */
 void	ft_here_doc(t_ms *ms)
