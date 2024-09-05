@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/04 13:53:06 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/05 13:55:54 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	ft_init_be(t_ms *ms);
 void	ft_back_end(t_ms *ms);
 
 /* ms_ex_redir */
-void	ft_redir_handler(t_ms *ms, t_cmd_list *curr);
+void	ft_redir_handler(t_ms *ms, t_cmd_list *curr, int i);
 void	ft_ex_prio(t_ms *ms, t_cmd_list *curr);
 
 /* ms_heredoc */
