@@ -6,7 +6,7 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/02 13:06:08 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/09/08 19:24:44 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,8 @@ void	ft_repl(int argc, char **argv, char **envp);
 
 /* ms_debug */
 void	ft_debug(t_ms *ms);
+
+/* parse */
+int parse(t_token *tokens);
 
 #endif

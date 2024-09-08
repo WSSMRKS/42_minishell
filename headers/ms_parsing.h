@@ -6,12 +6,12 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:56:05 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/02 12:45:33 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/09/08 17:20:07 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /* ms_parsing.h: Header file responsible for all the structures necessary to
- create the abstract symbol table (ast). */
+ create the abstract syntax tree (ast). */
 
 #ifndef MS_PARSING_H
 # define MS_PARSING_H
@@ -66,12 +66,12 @@ enum	e_redir_type {
 
 typedef struct s_list_redir {
 	struct s_list_redir	*next;
-	enum e_redir_type	instruction;
-	t_redir_aim			*from;
+	enum e_redir_type	instruction;	/* what is to be done*/
+	t_redir_aim			*from;	/* fd or variable to be redirected */
 	t_redir_aim			*to;
-	char				*hd_del;
-	t_redir_aim			*hd_file;
-	int					rightmost;
+	char				*hd_del; /* EOF token string, after << */
+	t_redir_aim			*hd_file;	/* hd tmp file fd and name*/
+	int					rightmost;	/* valid redirection indicator*/
 }				t_list_redir;
 
 /*simple command struct: all commands that are without subshells and connections
