@@ -13,15 +13,19 @@ COMPILE_FLAGS = -g3 -Werror -Wall -Wextra -O0 -c
 # Compiler #
 CC = cc
 # Source Files #
-SRC = $(SRCDIR)main/minishell.c $(SRCDIR)ui/ui.c $(SRCDIR)executor/ms_executor.c $(SRCDIR)debug/debug.c $(SRCDIR)init/ms_cleanup_utils.c $(SRCDIR)init/ms_init.c $(SRCDIR)/ui/lexer.c $(SRCDIR)/ui/token_utils.c
-HEADERS = $(HDRDIR)minishell.h $(HDRDIR)ms_parsing.h $(HDRDIR)ms_executor.h $(HDRDIR)ms_garbage.h $(HDRDIR)ms_symtab.h $(HDRDIR)tokenization.h
+SRC = $(SRCDIR)main/minishell.c $(SRCDIR)ui/ui.c $(SRCDIR)executor/ms_executor.c $(SRCDIR)debug/debug.c $(SRCDIR)init/ms_cleanup_utils.c $(SRCDIR)init/ms_init.c $(SRCDIR)ui/tokenizer/lexer.c $(SRCDIR)ui/tokenizer/token_utils.c
+HEADERS = $(HDRDIR)minishell.h $(HDRDIR)ms_parsing.h $(HDRDIR)ms_executor.h $(HDRDIR)ms_garbage.h $(HDRDIR)ms_symtab.h $(HDRDIR)tokenizer.h 
 
-# Object Files
 LIBFT_SRC = $(LIBFTDIR)libft.a
+# Object Files
 SRC_OBJ = $(SRC:.c=.o)
 BONUS_OBJ = $(BONUS_SRC:.c=.o)
 
 # Targets #
+all: $(NAME)	# Compile the entire project including bonus.
+
+$(NAME): $(LIBFT_SRC) $(SRC_OBJ) # Compile mandatory part.
+	$(CC) $(COMPILE_OPTIONS) $(SRC_OBJ) $(LIBFT_SRC) -o $(NAME)
 
 $(LIBFT_SRC): # Download and Compile libft
   ifeq ("$(wildcard $(LIBFTDIR))", "")
@@ -34,12 +38,6 @@ $(LIBFT_SRC): # Download and Compile libft
 #	@cp -rf $(LIBFTDIR)libft.h ./
 #	@cp -rf $(LIBFTDIR)libft.a ./
   endif
-
-all: $(NAME)	# Compile the entire project including bonus.
-
-$(NAME): $(LIBFT_SRC) $(SRC_OBJ) # Compile mandatory part.
-	$(CC) $(COMPILE_OPTIONS) $(SRC_OBJ) $(LIBFT_SRC) -o $(NAME)
-
 
 exes: $(NAME) clean # Compile all project parts including bonus clean up after compilation.
 

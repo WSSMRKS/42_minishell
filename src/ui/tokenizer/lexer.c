@@ -6,11 +6,11 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 06:07:52 by dkoca             #+#    #+#             */
-/*   Updated: 2024/09/02 12:49:57 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/09/07 17:47:48 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/minishell.h"
+#include "../../../headers/minishell.h"
 
 int is_end(char *chr_itr)
 {
@@ -109,7 +109,7 @@ t_token *has_double_quotes(char **chr_itr, t_token *prev_token)
 
 int is_word(int cur_char)
 {
-	if (!ft_isspace(cur_char) && !ft_strchr("|<>;", cur_char))
+	if (!ft_strchr("|<> \t", cur_char))
 		return (TRUE);
 	return (FALSE);	
 }
@@ -183,7 +183,7 @@ void skip_whitespace_between_words(char **cmd)
 
 void print_token(t_token *token);
 
-int tokenizer(char *line)
+int tokenizer(char *line, t_token **tokens)
 {
 	t_token *new_tok;
 	t_token *prev_tok;
@@ -192,6 +192,7 @@ int tokenizer(char *line)
 	ft_strtrim(line, " \t");
 	cmd = line;
 	prev_tok = NULL;
+	*tokens = prev_tok;
 	while (!is_end(cmd))
 	{
 		new_tok = NULL;
@@ -200,11 +201,12 @@ int tokenizer(char *line)
 			break;
 		new_tok = scan(&cmd, prev_tok);
 		print_token(new_tok);
+		if (prev_tok == NULL && new_tok)
+			*tokens = new_tok;
 		prev_tok = new_tok;
 	}
 	return (EXIT_SUCCESS);
 }
-
 
 void print_token(t_token *token)
 {

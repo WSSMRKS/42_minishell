@@ -6,11 +6,11 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 05:48:37 by dkoca             #+#    #+#             */
-/*   Updated: 2024/09/02 12:49:45 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/09/07 16:48:09 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/minishell.h"
+#include "../../../headers/minishell.h"
 
 t_token *get_token(char *content, int type, int len, t_token **prev)
 {
