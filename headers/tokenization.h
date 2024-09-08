@@ -6,7 +6,7 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 05:06:08 by dkoca             #+#    #+#             */
-/*   Updated: 2024/09/07 16:53:15 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/09/08 20:24:11 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 
 // int last_was_backslash;
 
+#define REDIRECTION 6
+
 typedef enum e_token_type
 {
 	TOKEN_ERR,
@@ -35,11 +37,11 @@ typedef enum e_token_type
 	TOKEN_WORD_SQUOTE,
 	TOKEN_WORD_DQUOTE,
 	TOKEN_PIPE,
+	TOKEN_SUBSHELL,
 	TOKEN_IO_IN,
 	TOKEN_IO_OUT,
 	TOKEN_APPEND,
-	TOKEN_HEREDOC,
-	TOKEN_SUBSHELL
+	TOKEN_HEREDOC
 }	t_token_type;
 
 typedef struct  s_tok_span

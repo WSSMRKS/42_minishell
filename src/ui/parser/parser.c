@@ -6,7 +6,7 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:46:27 by dkoca             #+#    #+#             */
-/*   Updated: 2024/09/08 20:18:00 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/09/08 20:26:16 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,12 @@ t_simple_com *make_simple_cmd(t_token *token, t_simple_com *cmd)
 	{
 		cmd->words = make_word_list(&token->cmd, cmd->words);
 	}
-	else
-		return (NULL);
+	// else if (token->type >= REDIRECTION)
+	// {
+		
+	// }
+	// else
+		// return (NULL);
 	return (cmd);
 }
 
