@@ -6,40 +6,11 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/09 12:34:12 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/09 13:32:53 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
-
-char	**ft_grab_envp(char **envp) // [ ] function needs to be rewritten to be faster.
-{
-	int		i;
-	char	**paths;
-	char	*tmp;
-
-	i = 0;
-	while (envp && envp[i])
-	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-			break ;
-		i++;
-	}
-	paths = ft_split(&envp[i][5], ':');
-	if (paths == NULL)
-		return (NULL);
-	i = -1;
-	while (paths[++i])
-	{
-		if (paths[i][ft_strlen(paths[i]) - 1] != '/')
-		{
-			tmp = paths[i];
-			paths[i] = ft_strjoin(paths[i], "/\0");
-			free(tmp);
-		}
-	}
-	return (paths);
-}
 
 void	ft_close_all_fds(t_ms *ms)
 {
@@ -56,7 +27,7 @@ char	*ft_search_cmd(t_ms *ms, t_cmd_list *curr)
 	i = 0;
 	while (ms->be->path[i])
 	{
-		path = ft_strjoin(ms->be->path, curr->cmd->words->word->word);
+		path = ft_strjoin(ms->be->path[i], curr->cmd->words->word->word);
 		if (path == NULL)
 		{
 			perror("malloc fail!\n");
@@ -79,9 +50,16 @@ void	ft_execute(t_ms *ms, t_cmd_list *curr)
 	if (cmdpath == NULL)
 		err = 127;
 	else
-		err = execve(cmdpath, ms->cmds->cmd->words->word->word, NULL);
+		err = execve(cmdpath, &ms->cmds->cmd->words->word->word, NULL);
 	ft_cleanup_exit(ms, err);
 }
+
+void	ft_builtin(t_ms *ms, t_cmd_list *curr)
+{
+	(void) ms;
+	(void) curr;
+}
+
 
 void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i)
 {
@@ -99,7 +77,7 @@ void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i)
 		ft_redir_handler(ms, curr, *i);
 		ft_close_all_fds(ms);  // [ ] not yet accurate
 		if (ms->be->child_pids[*i] == INT_MAX)
-			ft_builtin(curr);
+			ft_builtin(ms, curr);
 		else if (ms->be->child_pids[*i] == 0)
 			ft_execute(ms, curr);
 	}
@@ -115,9 +93,9 @@ void	ft_is_builtin(t_cmd_list *curr, t_ms *ms)
 	{
 		len = ft_strlen(ms->be->builtins[i]);
 		if (strncmp(curr->cmd->words->word->word, ms->be->builtins[i], len) == 0
-			&& ft_strlen(curr->cmd->words->word->word) == len)
+			&& (int) ft_strlen(curr->cmd->words->word->word) == len)
 		{
-			curr->cmd->flags & IS_BUILTIN;
+			curr->cmd->flags &= IS_BUILTIN;
 			curr->cmd->builtin_nr = i;
 		}
 	}
@@ -136,7 +114,7 @@ void	ft_executor(t_ms *ms)
 		ft_is_builtin(curr, ms);
 		if (curr->cmd->redir)
 		{
-			ft_ex_prio(ms, curr);
+			ft_ex_prio(curr);
 			ft_fork_execute(ms, curr, &i);
 		}
 		curr = curr->next;
@@ -156,7 +134,6 @@ void	ft_init_be(t_ms *ms, int argc, char **argv, char **envp)
 		i++;
 		curr = curr->next;
 	}
-	ms->be = ft_calloc(sizeof(t_be), 1);
 	ms->be->nb_cmds = i;
 	ms->be->envp = envp;
 	ms->be->argc = argc;
