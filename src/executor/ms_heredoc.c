@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/04 15:35:34 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/09 12:36:24 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	ft_garbage_add(char *filename, t_ms *ms)
 	curr = ms->be->garbage->heredoc;
 	if (ms->be->garbage->nb_heredocs == 0)
 	{
-		curr = malloc(sizeof(t_list_hdfiles) * 1);
+		curr = ft_calloc(sizeof(t_list_hdfiles), 1);
 		curr->next = NULL;
 		ms->be->garbage->heredoc = curr;
 	}
@@ -50,7 +50,7 @@ void	ft_garbage_add(char *filename, t_ms *ms)
 	{
 		while (i++ < ms->be->garbage->nb_heredocs)
 			curr = curr->next;
-		curr->next = malloc(sizeof(t_list_hdfiles) * 1);
+		curr->next = ft_calloc(sizeof(t_list_hdfiles), 1);
 		curr->next->next = NULL;
 		curr = curr->next;
 	}
@@ -89,8 +89,8 @@ void	ft_hd_input(char *hd_del, t_redir_aim *filename, t_ms *ms)
 			ft_cleanup_exit(ms, EIO); //readline error;
 		if (!filename)
 		{
-			filename = malloc(sizeof(t_redir_aim) * 1);
-			filename->filename = malloc(sizeof(t_word_desc) * 1);
+			filename = ft_calloc(sizeof(t_redir_aim), 1);
+			filename->filename = ft_calloc(sizeof(t_word_desc), 1);
 			filename->filename->word = ft_tmp_name(ms, &fd);
 			filename->filename->flags = 0;
 		}

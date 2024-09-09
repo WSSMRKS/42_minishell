@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/05 14:28:02 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/09 12:34:12 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,13 @@ char	**ft_grab_envp(char **envp) // [ ] function needs to be rewritten to be fas
 	return (paths);
 }
 
+void	ft_close_all_fds(t_ms *ms)
+{
+	if (close(ms->be->pipes[0][0]) || close(ms->be->pipes[0][1])
+		|| close(ms->be->pipes[1][0]) || close(ms->be->pipes[1][1]))
+		perror("minishell");
+}
+
 char	*ft_search_cmd(t_ms *ms, t_cmd_list *curr)
 {
 	int		i;
@@ -72,7 +79,7 @@ void	ft_execute(t_ms *ms, t_cmd_list *curr)
 	if (cmdpath == NULL)
 		err = 127;
 	else
-		err = execve(cmdpath, pipex->cmd_args[0], pipex->envp);
+		err = execve(cmdpath, ms->cmds->cmd->words->word->word, NULL);
 	ft_cleanup_exit(ms, err);
 }
 
@@ -90,7 +97,7 @@ void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i)
 	if (ms->be->child_pids[*i] == 0 || ms->be->child_pids[*i] == INT_MAX)
 	{
 		ft_redir_handler(ms, curr, *i);
-		ft_close_all_fds(ms->be);  // [ ] not yet accurate
+		ft_close_all_fds(ms);  // [ ] not yet accurate
 		if (ms->be->child_pids[*i] == INT_MAX)
 			ft_builtin(curr);
 		else if (ms->be->child_pids[*i] == 0)
@@ -168,7 +175,7 @@ void	ft_init_be(t_ms *ms, int argc, char **argv, char **envp)
 	ms->be->builtins[4] = ft_strdup("unset");
 	ms->be->builtins[5] = ft_strdup("env");
 	ms->be->builtins[6] = ft_strdup("exit");
-	ms->be->path = ft_grab_envp(ms->be->envp)
+	ms->be->path = ft_grab_envp(ms->be->envp);
 }
 
 void	ft_back_end(t_ms *ms, int argc, char **argv, char **envp)

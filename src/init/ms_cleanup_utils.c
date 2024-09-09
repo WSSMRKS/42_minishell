@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:15 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/03 16:36:20 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/09 12:34:47 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	ft_cleanup_exit(t_ms *ms, int ex)
 		if (ms->be->garbage->heredoc)
 			ft_delfree_hdgb(&ms->be->garbage->heredoc, &free);
 		free(ms->be->garbage);
+		free(ms->be->)
 	}
 	exit(ex);
 }
