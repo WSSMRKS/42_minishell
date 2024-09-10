@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_executor.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/08/30 10:04:20 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/10 14:21:02 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,9 +121,9 @@ void	ft_hd_input(char *hd_del, t_redir_aim *filename, t_ms *ms)
 		if (!filename)
 		{
 			filename = malloc(sizeof(t_redir_aim) * 1);
-			filename->filename = malloc(sizeof(t_word_desc) * 1);
-			filename->filename->word = ft_tmp_name(ms, &fd);
-			filename->filename->flags = 0;
+			// filename->filename = malloc(sizeof(t_word_desc) * 1);
+			filename->filename = ft_tmp_name(ms, &fd);
+			filename->flags = 0;
 		}
 		if (line_nb != 0 && (ft_putstr_fd_ret(line, fd) < 0 || ft_putstr_fd_ret("\n", fd) < 0))
 			exit(errno);
