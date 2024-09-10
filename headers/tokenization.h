@@ -6,7 +6,7 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 05:06:08 by dkoca             #+#    #+#             */
-/*   Updated: 2024/09/08 20:24:11 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/09/10 20:52:38 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,12 @@ typedef struct s_token
 /******** FUNCTIONS *********/
 t_token *get_token(char *content, int type, int len, t_token **prev_next_ptr);
 int tokenizer(char *line, t_token **tokens);
+void skip_whitespace_between_words(char **cmd);
+int is_word(int cur_char);
+int is_quoted(int first_char, int quote);
+int is_end(char *chr_itr);
+t_token *has_single_quotes(char **chr_itr, t_token *prev_token);
+t_token *has_double_quotes(char **chr_itr, t_token *prev_token);
 
 /* DEBUG*/
 void print_token(t_token *token);

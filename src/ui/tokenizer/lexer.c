@@ -6,18 +6,11 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 06:07:52 by dkoca             #+#    #+#             */
-/*   Updated: 2024/09/07 17:47:48 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/09/10 20:28:36 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../headers/minishell.h"
-
-int is_end(char *chr_itr)
-{
-	if (chr_itr != NULL && *chr_itr != '\0')
-		return (FALSE);
-	return (TRUE);
-}
 
 /* tokenizes operator and consumes used chars*/
 t_token *tokenize_operator(char **cur_ptr, char cur_chr, t_token *prev_token)
@@ -37,81 +30,6 @@ t_token *tokenize_operator(char **cur_ptr, char cur_chr, t_token *prev_token)
 		token = get_token(*cur_ptr, TOKEN_IO_IN, 1, &prev_token);
 	*cur_ptr += token->cmd.len;
 	return (token);
-}
-
-int is_quoted(int first_char, int quote)
-{
-	if (first_char == quote)
-		return (TRUE);
-	else
-		return (FALSE);
-}
-
-t_token *has_single_quotes(char **chr_itr, t_token *prev_token)
-{
-	t_token *new_token;
-	char *start;
-	int len;
-
-	new_token = NULL;
-	start = NULL;
-	len = 0;
-	if (!is_quoted(**chr_itr, '\''))
-		return (NULL);
-	start = ++(*chr_itr);
-	while (!is_end(*chr_itr) && **chr_itr != '\'')
-	{
-		(*chr_itr)++;
-		len++;
-	}
-	if (len > 0 && !is_end(start))
-	{
-		if (ft_strchr(start, '\''))
-			new_token = get_token(start, TOKEN_WORD_SQUOTE, len, &prev_token);
-		else if (start == NULL && !ft_strchr(start, '\''))
-			new_token = get_token(start, TOKEN_ERR, len, &prev_token);
-	}
-	return (new_token);
-}
-
-t_token *has_double_quotes(char **chr_itr, t_token *prev_token)
-{
-	t_token *new_token;
-	char *start;
-	int len;
-
-	new_token = NULL;
-	start = NULL;
-	len = 0;
-	if (!is_quoted(**chr_itr, '\"') && ft_strncmp(*chr_itr, "\\\"", 2) != 0)
-		return (NULL);
-	start = ++(*chr_itr);
-	printf("start = %s\n", start);
-	while (!is_end(*chr_itr) && **chr_itr != '\"')
-	{
-		if (ft_strncmp(*chr_itr, "\\\"", 2) == 0)
-		{
-			(*chr_itr)++;
-			len++;
-		}
-		(*chr_itr)++;
-		len++;
-	}
-	if (len > 0 && !is_end(start))
-	{
-		if (ft_strchr(start, '\"'))
-			new_token = get_token(start, TOKEN_WORD_DQUOTE, len, &prev_token);
-		else if (!ft_strchr(start, '\"'))
-			new_token = get_token(start, TOKEN_ERR, len, &prev_token);
-	}
-	return (new_token);
-}
-
-int is_word(int cur_char)
-{
-	if (!ft_strchr("|<> \t", cur_char))
-		return (TRUE);
-	return (FALSE);	
 }
 
 t_token *scan_word(char **chr_itr, t_token *prev_token)
@@ -142,7 +60,6 @@ t_token *tokenize_word(char **chr_itr, t_token *prev_token)
 	t_token *token;
 
 	token = NULL;
-	printf("str = %s\n", *chr_itr);
 	token = has_single_quotes(chr_itr, prev_token);
 	if (!token && chr_itr && !is_end(*chr_itr))
 		token = has_double_quotes(chr_itr, prev_token);
@@ -169,20 +86,6 @@ t_token *scan(char **cmd, t_token *prev_token)
 	return (token);
 }
 
-void skip_whitespace_between_words(char **cmd)
-{
-	char cur;
-
-	cur = **cmd;
-	while (!is_end(*cmd)&& cur == ' ')
-	{
-		(*cmd)++;
-		cur = **cmd;
-	}
-}
-
-void print_token(t_token *token);
-
 int tokenizer(char *line, t_token **tokens)
 {
 	t_token *new_tok;
@@ -206,19 +109,4 @@ int tokenizer(char *line, t_token **tokens)
 		prev_tok = new_tok;
 	}
 	return (EXIT_SUCCESS);
-}
-
-void print_token(t_token *token)
-{
-	size_t i;
-	if (token)
-	{
-		for (i = 0; i < token->cmd.len; i++)
-		{
-			printf("%c", token->cmd.start[i]);
-		}
-	printf("\n");
-	printf("token len = %zu\n", token->cmd.len);
-	printf("token type = %i\n", token->type);
-	}
 }

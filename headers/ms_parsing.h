@@ -6,7 +6,7 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:56:05 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/10 14:09:46 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/09/10 17:44:31 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,20 +55,19 @@ typedef union u_redir_aim {
 }				t_redir_aim;
 
 /* Instead of input use infile/inpipe to distinguish.*/
-enum	e_redir_type {
-	// redir_output,
-	// redir_input,
+typedef enum	e_redir_type {
+	redir_err,
 	redir_append,
 	redir_here_doc,
 	redir_infile,
 	redir_outfile,
 	redir_inpipe,
 	redir_outpipe
-};
+} e_redir_type;
 
 typedef struct s_list_redir {
 	struct s_list_redir	*next;
-	enum e_redir_type	instruction;	/* what is to be done*/
+	e_redir_type	instruction;	/* what is to be done*/
 	t_redir_aim			*from;	/* fd or variable to be redirected */
 	t_redir_aim			*to;
 	char				*hd_del; /* EOF token string, after << */

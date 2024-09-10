@@ -6,7 +6,7 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 05:48:37 by dkoca             #+#    #+#             */
-/*   Updated: 2024/09/07 16:48:09 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/09/10 20:28:43 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,3 +31,52 @@ t_token *get_token(char *content, int type, int len, t_token **prev)
 	return (new_tok);
 }
 
+int is_quoted(int first_char, int quote)
+{
+	if (first_char == quote)
+		return (TRUE);
+	else
+		return (FALSE);
+}
+
+int is_word(int cur_char)
+{
+	if (!ft_strchr("|<> \t", cur_char))
+		return (TRUE);
+	return (FALSE);	
+}
+
+void skip_whitespace_between_words(char **cmd)
+{
+	char cur;
+
+	cur = **cmd;
+	while (!is_end(*cmd)&& cur == ' ')
+	{
+		(*cmd)++;
+		cur = **cmd;
+	}
+}
+
+int is_end(char *chr_itr)
+{
+	if (chr_itr != NULL && *chr_itr != '\0')
+		return (FALSE);
+	return (TRUE);
+}
+
+/* debugging function*/
+void print_token(t_token *token)
+{
+	size_t i;
+	if (token)
+	{
+		for (i = 0; i < token->cmd.len; i++)
+		{
+			printf("%c", token->cmd.start[i]);
+		}
+	printf("\n");
+	printf("token len = %zu\n", token->cmd.len);
+	printf("token type = %i\n", token->type);
+	}
+}
