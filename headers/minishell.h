@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/10 07:37:26 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/10 08:11:27 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void	ft_here_doc(t_ms *ms);
 /* ms_init */
 char	**ft_grab_envp(char **envp);
 void	ft_init_ms(t_ms *ms);
+void	ft_reinit_be(t_ms *ms);
 
 /* ms_ui */
 void	ft_front_end(char *cmd);

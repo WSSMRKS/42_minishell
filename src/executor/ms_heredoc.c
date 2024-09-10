@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/09 12:36:24 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/10 10:44:23 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	*ft_tmp_name(t_ms *ms, int *fd)
 	return (filename);
 }
 
-void	ft_hd_input(char *hd_del, t_redir_aim *filename, t_ms *ms)
+void	ft_hd_input(char *hd_del, t_redir_aim *from, t_ms *ms)
 {
 	char		*line;
 	int			ldel;
@@ -87,12 +87,11 @@ void	ft_hd_input(char *hd_del, t_redir_aim *filename, t_ms *ms)
 		line = readline("> ");
 		if (!line)
 			ft_cleanup_exit(ms, EIO); //readline error;
-		if (!filename)
+		if (!from)
 		{
-			filename = ft_calloc(sizeof(t_redir_aim), 1);
-			filename->filename = ft_calloc(sizeof(t_word_desc), 1);
-			filename->filename->word = ft_tmp_name(ms, &fd);
-			filename->filename->flags = 0;
+			from = ft_calloc(sizeof(t_redir_aim), 1);
+			from->filename = ft_tmp_name(ms, &fd);
+			from->flags = 0;
 		}
 		if (ft_strncmp(hd_del, line, ldel) == 0 && (int) ft_strlen(line) == ldel)
 			break ;

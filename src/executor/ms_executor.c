@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/10 07:37:13 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/10 09:34:43 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*ft_search_cmd(t_ms *ms, t_cmd_list *curr)
 	i = 0;
 	while (ms->be->path[i])
 	{
-		path = ft_strjoin(ms->be->path[i], curr->cmd->words->word->word);
+		path = ft_strjoin(ms->be->path[i], curr->cmd->words->word);
 		if (path == NULL)
 		{
 			perror("malloc fail!\n");
@@ -50,7 +50,7 @@ void	ft_execute(t_ms *ms, t_cmd_list *curr)
 	if (cmdpath == NULL)
 		err = 127;
 	else
-		err = execve(cmdpath, &ms->cmds->cmd->words->word->word, NULL);
+		err = execve(cmdpath, &ms->cmds->cmd->words->word, NULL);
 	ft_cleanup_exit(ms, err);
 }
 
@@ -92,8 +92,8 @@ void	ft_is_builtin(t_cmd_list *curr, t_ms *ms)
 	while (ms->be->builtins[++i])
 	{
 		len = ft_strlen(ms->be->builtins[i]);
-		if (strncmp(curr->cmd->words->word->word, ms->be->builtins[i], len) == 0
-			&& (int) ft_strlen(curr->cmd->words->word->word) == len)
+		if (strncmp(curr->cmd->words->word, ms->be->builtins[i], len) == 0
+			&& (int) ft_strlen(curr->cmd->words->word) == len)
 		{
 			curr->cmd->flags &= IS_BUILTIN;
 			curr->cmd->builtin_nr = i;
@@ -124,8 +124,14 @@ void	ft_executor(t_ms *ms)
 
 void	ft_back_end(t_ms *ms)
 {
+	ft_reinit_be(ms);
 	if (ms->global_flags == 1)
 		ft_here_doc(ms);
-	ft_executor(ms);
+	if (strcmp(ms->cmd, "ms_debug") == 0)
+		{
+			ft_debug(ms);
+		}
+	else
+		ft_executor(ms);
 	ft_clear_be(ms);
 }

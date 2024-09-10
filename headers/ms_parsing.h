@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:56:05 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/03 16:44:16 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/10 09:33:51 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 # define MS_PARSING_H
 # include "minishell.h"
 
-typedef struct s_word_desc {
-	char	*word;
-	int		flags;
-}				t_word_desc;
+// typedef struct s_word_desc {
+// 	char	*word;
+// 	int		flags;
+// }				t_word_desc;
 
 /*NOT USED ANYMORE:
 enum	e_command_type {
@@ -31,7 +31,8 @@ enum	e_command_type {
 
 typedef struct s_list_words {
 	struct s_list_words	*next;
-	t_word_desc			*word;
+	char				*word;
+	int					flags;
 }				t_list_words;
 
 
@@ -49,7 +50,8 @@ typedef struct s_command {
 /* file redirects always get priority??? */
 typedef union u_redir_aim {
 	int			fd;
-	t_word_desc	*filename;
+	char		*filename;
+	int			flags;
 }				t_redir_aim;
 
 /* Instead of input use infile/inpipe to distinguish.*/

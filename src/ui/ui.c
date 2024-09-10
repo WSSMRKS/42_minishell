@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/10 07:53:07 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/10 08:26:43 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	ft_repl(int argc, char **argv, char **envp)
 	(void)envp;
 	mode = 0;
 	ft_init_ms(&ms);
+	ft_init_be(&ms, argc, argv, envp);
 	while (1) // read eval print loop REPL
 	{
 		ms.cmd = choose_prompt(mode);
@@ -51,12 +52,7 @@ void	ft_repl(int argc, char **argv, char **envp)
 			free(ms.cmd);
 			break ;
 		}
-		if (strcmp(ms.cmd, "ms_debug") == 0)
-		{
-			ft_debug(&ms);
-		}
 		ft_front_end(ms.cmd);
-		ft_init_be(&ms, argc, argv, envp);
 		ft_back_end(&ms);
 		free(ms.cmd);
 	}

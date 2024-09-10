@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/09 12:53:56 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/10 09:35:09 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,19 +56,19 @@ void	ft_redir_handler(t_ms *ms, t_cmd_list *curr, int i)
 	{
 		if (curr->cmd->prio_in == 3 && rd->instruction == redir_here_doc
 			&& rd->rightmost == true)
-			ft_infile(ms, rd->hd_file->filename->word);
+			ft_infile(ms, rd->hd_file->filename);
 		else if (curr->cmd->prio_in == 2
 			&& rd->instruction == redir_infile && rd->rightmost == true)
-			ft_infile(ms, rd->from->filename->word);
+			ft_infile(ms, rd->from->filename);
 		else if (curr->cmd->prio_in == 1
 			&& rd->instruction == redir_inpipe)
 			ft_inpipe(ms, i);
 		if (curr->cmd->prio_out == 3 && rd->instruction == redir_append
 			&& rd->rightmost == true)
-			ft_outfile(ms, rd->to->filename->word, O_APPEND);
+			ft_outfile(ms, rd->to->filename, O_APPEND);
 		else if (curr->cmd->prio_out == 2
 			&& rd->instruction == redir_outfile && rd->rightmost == true)
-			ft_outfile(ms, rd->to->filename->word, O_WRONLY);
+			ft_outfile(ms, rd->to->filename, O_WRONLY);
 		else if (curr->cmd->prio_out == 1
 			&& rd->instruction == redir_outpipe)
 			ft_outpipe(ms, i);
