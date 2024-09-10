@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/09 13:11:40 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/10 07:37:26 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_ms {
 }				t_ms;
 
 /* ms_cleanup_utils */
+void	ft_clear_be(t_ms *ms);
 void	ft_clean_be(t_ms *ms);
 void	clean_garbage(void);
 void	ft_lsthdgbdelone(t_list_hdfiles *lst, void (*del)(void *));
@@ -58,7 +59,7 @@ void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i);
 void	ft_is_builtin(t_cmd_list *curr, t_ms *ms);
 void	ft_executor(t_ms *ms);
 void	ft_init_be(t_ms *ms, int argc, char **argv, char **envp);
-void	ft_back_end(t_ms *ms, int argc, char **argv, char **envp);
+void	ft_back_end(t_ms *ms);
 
 /* ms_ex_redir */
 void	ft_redir_handler(t_ms *ms, t_cmd_list *curr, int i);
@@ -73,7 +74,7 @@ void	ft_here_doc(t_ms *ms);
 
 /* ms_init */
 char	**ft_grab_envp(char **envp);
-void	ft_init_ms(t_ms *ms, char **envp);
+void	ft_init_ms(t_ms *ms);
 
 /* ms_ui */
 void	ft_front_end(char *cmd);

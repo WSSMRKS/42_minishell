@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 19:05:44 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/09 13:20:19 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/10 07:54:51 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,52 @@ char	**ft_grab_envp(char **envp)
 	return (paths);
 }
 
-void	ft_init_ms(t_ms *ms, char **envp)
+void	ft_init_ms(t_ms *ms)
 {
-	ms->be = ft_calloc(sizeof(t_be), 1);
 	ms->global_symtab = NULL;
 	ms->global_flags = 0;
 	ms->cmds = NULL;
 	ms->cmd = NULL;
+}
+
+void	ft_init_be(t_ms *ms, int argc, char **argv, char **envp)
+{
+	t_cmd_list	*curr;
+	int			i;
+
+	ms->be = ft_calloc(sizeof(t_be), 1);
 	ms->be->garbage = ft_calloc(sizeof(t_garbage), 1);  //[ ] free me
 	ms->be->garbage->heredoc = NULL;
 	ms->be->garbage->nb_heredocs = 0;
+	ms->be->argc = argc;
+	ms->be->argv = argv;
+	ms->be->envp = envp;
 	ms->be->path = ft_grab_envp(envp);
+	i = 0;
+	curr = ms->cmds;
+	while (curr)
+	{
+		i++;
+		curr = curr->next;
+	}
+	ms->be->nb_cmds = i;
+	if (pipe(ms->be->pipes[0]) == -1 || pipe(ms->be->pipes[1]) == -1)
+	{
+		strerror(32);
+		exit (32);
+	}
+	ms->be->child_pids = ft_calloc(sizeof(int), (size_t) ms->be->nb_cmds + 1);
+	if (!ms->be->builtins)
+	{
+		ms->be->builtins = ft_calloc(sizeof(char *), 8);
+		ms->be->builtins[0] = ft_strdup("echo");
+		ms->be->builtins[1] = ft_strdup("cd");
+		ms->be->builtins[2] = ft_strdup("pwd");
+		ms->be->builtins[3] = ft_strdup("export");
+		ms->be->builtins[4] = ft_strdup("unset");
+		ms->be->builtins[5] = ft_strdup("env");
+		ms->be->builtins[6] = ft_strdup("exit");
+	}
+	if (ms->be->path == NULL)
+		ms->be->path = ft_grab_envp(ms->be->envp);
 }

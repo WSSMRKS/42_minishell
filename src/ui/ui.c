@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/09 13:21:24 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/10 07:53:07 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	ft_repl(int argc, char **argv, char **envp)
 	(void)argv;
 	(void)envp;
 	mode = 0;
-	ft_init_ms(&ms, envp);
+	ft_init_ms(&ms);
 	while (1) // read eval print loop REPL
 	{
 		ms.cmd = choose_prompt(mode);
@@ -46,7 +46,7 @@ void	ft_repl(int argc, char **argv, char **envp)
 		add_history(ms.cmd);
 		if (ms.cmd && ms.cmd[0] != '\0' && ms.cmd[ft_strlen(ms.cmd) - 1] == '\\')
 			mode = 1;
-		if (strcmp(ms.cmd, "exit") == 0)
+		if (strcmp(ms.cmd, "exit") == 0) /* needs to be rewritten */
 		{
 			free(ms.cmd);
 			break ;
@@ -56,7 +56,8 @@ void	ft_repl(int argc, char **argv, char **envp)
 			ft_debug(&ms);
 		}
 		ft_front_end(ms.cmd);
-		ft_back_end(&ms, argc, argv, envp);
+		ft_init_be(&ms, argc, argv, envp);
+		ft_back_end(&ms);
 		free(ms.cmd);
 	}
 	rl_clear_history();

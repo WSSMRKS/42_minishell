@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 15:50:51 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/09 13:09:23 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/10 07:41:39 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,15 @@
 
 
 typedef struct s_be {
-	t_garbage		*garbage;
+	t_garbage		*garbage;		/*clear after every execution, realloc after every execution*/
 	int				argc;
-	char			**argv;
-	char			**envp;
-	char			**path;
-	int				pipes[2][2];
-	int				*child_pids;
-	char			**builtins;
-	int				nb_cmds;
+	char			**argv;			/*no need to free*/
+	char			**envp;			/*no need to free*/
+	char			**path;			/*no need to free*/
+	int				nb_cmds;		/*clear after every execution*/
+	int				pipes[2][2];	/*reinit after every execution*/
+	int				*child_pids;	/*clear after every execution, realloc after every execution*/
+	char			**builtins;		/*clear at exit*/
 }				t_be;
 
 

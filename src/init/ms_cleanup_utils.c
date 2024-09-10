@@ -6,23 +6,30 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:15 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/09 13:34:48 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/10 07:57:41 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
 
-void	ft_clean_be(t_ms *ms)
+void	ft_clear_be(t_ms *ms)
 {
 	if (ms->be->garbage)
 	{
 		if (ms->be->garbage->heredoc)
 			ft_delfree_hdgb(&ms->be->garbage->heredoc, &free);
 		free(ms->be->garbage);
+		ms->be->garbage = NULL;
 	}
 	free(ms->be->child_pids);
+	ms->be->nb_cmds = 0;
+}
+
+
+void	ft_clean_be(t_ms *ms)
+{
 	ft_free_2d(ms->be->builtins);
-	ft_free_2d(ms->be->path);
+	ft_free_2d(ms->be->path); /* [ ] maybe rewrite due to changeable variables*/
 }
 
 
@@ -66,6 +73,7 @@ void	ft_delfree_hdgb(t_list_hdfiles **lst, void (*del)(void *))
 
 void	ft_cleanup_exit(t_ms *ms, int ex)
 {
+	ft_clean_be(ms);
 	free(ms->be);
 	exit(ex);
 }
