@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/10 09:34:43 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/10 13:18:05 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,8 @@ void	ft_executor(t_ms *ms)
 		if (curr->cmd->redir)
 		{
 			ft_ex_prio(curr);
-			ft_fork_execute(ms, curr, &i);
 		}
+		ft_fork_execute(ms, curr, &i);
 		curr = curr->next;
 		i++;
 	}
