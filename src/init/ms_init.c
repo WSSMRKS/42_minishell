@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 19:05:44 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/10 08:19:30 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/11 11:01:30 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	ft_reinit_be(t_ms *ms)
 	}
 	ms->be->nb_cmds = i;
 	ms->be->child_pids = ft_calloc(sizeof(int), (size_t) ms->be->nb_cmds + 1);
+	ms->be->child_ret = ft_calloc(sizeof(int), (size_t) ms->be->nb_cmds + 1);
 }
 
 void	ft_init_be(t_ms *ms, int argc, char **argv, char **envp)

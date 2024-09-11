@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/10 13:18:05 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/11 11:21:02 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ void	ft_executor(t_ms *ms)
 		curr = curr->next;
 		i++;
 	}
+	ft_wait_error(ms);
 }
 
 void	ft_back_end(t_ms *ms)

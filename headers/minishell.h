@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/10 08:11:27 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/11 10:55:08 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	ft_is_builtin(t_cmd_list *curr, t_ms *ms);
 void	ft_executor(t_ms *ms);
 void	ft_init_be(t_ms *ms, int argc, char **argv, char **envp);
 void	ft_back_end(t_ms *ms);
+void	ft_wait_error(t_ms *ms);
 
 /* ms_ex_redir */
 void	ft_redir_handler(t_ms *ms, t_cmd_list *curr, int i);

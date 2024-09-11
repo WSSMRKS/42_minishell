@@ -13,8 +13,12 @@ COMPILE_FLAGS = -g3 -Werror -Wall -Wextra -O0 -c
 # Compiler #
 CC = cc
 # Source Files #
-SRC = $(SRCDIR)main/minishell.c $(SRCDIR)ui/ui.c $(SRCDIR)executor/ms_executor.c $(SRCDIR)executor/ms_ex_redir.c $(SRCDIR)executor/ms_heredoc.c $(SRCDIR)executor/ms_parenting.c $(SRCDIR)debug/debug.c $(SRCDIR)init/ms_cleanup_utils.c $(SRCDIR)init/ms_init.c
-HEADERS = $(HDRDIR)minishell.h $(HDRDIR)ms_parsing.h $(HDRDIR)ms_executor.h $(HDRDIR)ms_garbage.h $(HDRDIR)ms_symtab.h
+SRC = $(SRCDIR)main/minishell.c $(SRCDIR)ui/ui.c $(SRCDIR)executor/ms_executor.c							\
+		$(SRCDIR)executor/ms_ex_redir.c $(SRCDIR)executor/ms_heredoc.c $(SRCDIR)executor/ms_parenting.c		\
+		$(SRCDIR)executor/ms_error.c $(SRCDIR)debug/debug.c $(SRCDIR)init/ms_cleanup_utils.c				\
+		$(SRCDIR)init/ms_init.c
+HEADERS = $(HDRDIR)minishell.h $(HDRDIR)ms_parsing.h $(HDRDIR)ms_executor.h $(HDRDIR)ms_garbage.h			\
+		$(HDRDIR)ms_symtab.h
 
 LIBFT_SRC = $(LIBFTDIR)libft.a
 # Object Files
