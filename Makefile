@@ -24,7 +24,7 @@ BONUS_OBJ = $(BONUS_SRC:.c=.o)
 # Targets #
 all: $(NAME)	# Compile the entire project including bonus.
 
-$(NAME): $(LIBFT_SRC) $(SRC_OBJ) # Compile mandatory part.
+$(NAME): $(LIBFT_SRC) $(SRC_OBJ)# Compile mandatory part.
 	$(CC) $(COMPILE_OPTIONS) $(SRC_OBJ) $(LIBFT_SRC) -o $(NAME)
 
 $(LIBFT_SRC): # Download and Compile libft
@@ -80,3 +80,4 @@ help:	# Print this helpful message
 # Syntax for this to work: target:	# Description
 
 .PHONY: all fclean clean re name help exes
+.NOTPARALLEL: $(LIBFT_SRC)
