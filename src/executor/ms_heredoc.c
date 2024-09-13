@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/10 10:44:23 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/13 17:10:43 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,11 @@ char	*ft_search_tmp(void)
 		number = ft_itoa(nb);
 		filename = ft_strjoin("/tmp/ms_tmp_", number);
 		free(number);
+		number = NULL;
 		if (access(filename, F_OK) != 0)
 			break ;
 		free(filename);
+		filename = NULL;
 		nb++;
 	}
 	return (filename);
@@ -99,6 +101,7 @@ void	ft_hd_input(char *hd_del, t_redir_aim *from, t_ms *ms)
 			exit(errno);
 		line_nb++;
 		free(line);
+		line = NULL;
 	}
 	close(fd);
 }

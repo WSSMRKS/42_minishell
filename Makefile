@@ -79,6 +79,10 @@ name: # print project name #
 exv: all
 	valgrind --suppressions=suppressions2.supp --leak-check=full --show-leak-kinds=all ./minishell
 
+exvs: all
+	valgrind --suppressions=suppressions2.supp --gen-suppressions=all --leak-check=full --show-leak-kinds=all ./minishell
+
+
 ex: all
 	./minishell
 

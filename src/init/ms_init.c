@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 19:05:44 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/13 14:31:17 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/13 17:23:10 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ char	**ft_grab_envp(char **envp)
 			tmp = paths[i];
 			paths[i] = ft_strjoin(paths[i], "/\0");
 			free(tmp);
+			tmp = NULL;
 		}
 	}
 	return (paths);
@@ -76,11 +77,11 @@ void	ft_init_be(t_ms *ms, int argc, char **argv, char **envp)
 	ms->be->argv = argv;
 	ms->be->envp = envp;
 	ms->be->path = ft_grab_envp(envp);
-	// if (pipe(ms->be->pipes[0]) == -1 || pipe(ms->be->pipes[1]) == -1)
-	// {
-	// 	strerror(32);
-	// 	exit (32);
-	// }
+	if (pipe(ms->be->pipes[0]) == -1 || pipe(ms->be->pipes[1]) == -1)
+	{
+		strerror(32);
+		exit (32);
+	}
 	ms->be->builtins = ft_calloc(sizeof(char *), 8);
 	ms->be->builtins[0] = ft_strdup("echo");
 	ms->be->builtins[1] = ft_strdup("cd");

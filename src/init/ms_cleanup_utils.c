@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:15 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/13 16:43:17 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/13 17:13:35 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,35 @@ void	ft_clear_redir(t_list_redir	*redir)
 		if(to_free->from)
 		{
 			if (to_free->from->filename)
+			{
 				free(to_free->from->filename);
+				to_free->from->filename = NULL;
+			}
 			free(to_free->from);
+			to_free->from = NULL;
 		}
 		if(to_free->hd_del)
+		{
 			free(to_free->hd_del);
+			to_free->hd_del = NULL;
+		}
 		if(to_free->hd_file)
+		{
 			free(to_free->hd_file);
+			to_free->hd_file = NULL;
+		}
 		if(to_free->to)
 		{
 			if (to_free->to->filename)
+			{
 				free(to_free->to->filename);
+				to_free->to->filename = NULL;
+			}
 			free(to_free->to);
+			to_free->to = NULL;
 		}
 		free(to_free);
+		to_free = NULL;
 	}
 }
 
@@ -49,6 +64,7 @@ void	ft_clear_words(t_list_words	*words)
 		to_free = words;
 		words = words->next;
 		free(to_free);
+		to_free = NULL;
 	}
 }
 
@@ -69,10 +85,11 @@ void	ft_clear_ast(t_ms *ms)
 			ft_clear_redir(to_free->cmd->redir);
 			ft_clear_words(to_free->cmd->words);
 			free(to_free->cmd);
+			to_free->cmd = NULL;
 		}
 	}
-	free(ms->cmds);
 	free(ms->cmd);
+	ms->cmd = NULL;
 }
 
 void	ft_clear_be(t_ms *ms)
@@ -85,8 +102,10 @@ void	ft_clear_be(t_ms *ms)
 		ms->be->garbage = NULL;
 	}
 	free(ms->be->child_pids);
+	ms->be->child_pids = NULL;
 	free(ms->be->child_ret);
 	ms->be->nb_cmds = 0;
+	ms->be->child_ret = NULL;
 }
 
 
@@ -139,5 +158,6 @@ void	ft_cleanup_exit(t_ms *ms, int ex)
 {
 	ft_clean_be(ms);
 	free(ms->be);
+	ms->be = NULL;
 	exit(ex);
 }

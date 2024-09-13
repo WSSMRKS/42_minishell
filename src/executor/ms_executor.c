@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/13 16:30:07 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/13 17:10:10 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ char	*ft_search_cmd(t_ms *ms, t_cmd_list *curr)
 		if (access(path, X_OK) == 0)
 			return (path);
 		free(path);
+		path = NULL;
 		i++;
 	}
 	return (NULL);
@@ -153,9 +154,11 @@ void	ft_back_end(t_ms *ms)
 	ft_reinit_be(ms);
 	if (ms->global_flags == 1)
 		ft_here_doc(ms);
-	if (strcmp(ms->cmd, "ms_debug") == 0)
-			ft_debug(ms);
-	ft_executor(ms);
-	ft_wait_error(ms);
+	if(ms->cmds->cmd)
+	{
+		ft_executor(ms);
+		ft_wait_error(ms);
+		ft_clear_ast(ms);
+	}
 	ft_clear_be(ms);
 }
