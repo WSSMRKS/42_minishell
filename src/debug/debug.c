@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/11 11:03:31 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/13 10:38:51 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ void	ft_deb_commands(t_ms *ms)
 	free(ms->cmds->cmd->words);
 	free(ms->cmds->cmd);
 	free(ms->cmds);
-	free(ms->cmd);
-	ft_clear_be(ms);
 	// ms->cmd = ft_strdup("ls");
 	// ms->cmds = ft_calloc(sizeof(t_cmd_list), 1); // [ ] free me
 	// ft_reinit_be(ms);

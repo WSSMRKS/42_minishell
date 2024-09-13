@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/11 11:21:02 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/13 10:37:44 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,18 @@ void	ft_execute(t_ms *ms, t_cmd_list *curr)
 	int		err;
 	char	*cmdpath;
 
+	char	**argv;
+
+	argv = ft_calloc(sizeof(char *), 2);
+	argv[0] = ft_strdup("cat");
+	argv[1] = NULL;
+
 	cmdpath = ft_search_cmd(ms, curr);
 	if (cmdpath == NULL)
 		err = 127;
 	else
-		err = execve(cmdpath, &ms->cmds->cmd->words->word, NULL);
+		err = execve(cmdpath, argv, NULL);
+		// err = execve(cmdpath, &ms->cmds->cmd->words->word, NULL);
 	ft_cleanup_exit(ms, err);
 }
 
@@ -75,7 +82,7 @@ void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i)
 	if (ms->be->child_pids[*i] == 0 || ms->be->child_pids[*i] == INT_MAX)
 	{
 		ft_redir_handler(ms, curr, *i);
-		ft_close_all_fds(ms);  // [ ] not yet accurate
+		// ft_close_all_fds(ms);  // [ ] not yet accurate
 		if (ms->be->child_pids[*i] == INT_MAX)
 			ft_builtin(ms, curr);
 		else if (ms->be->child_pids[*i] == 0)

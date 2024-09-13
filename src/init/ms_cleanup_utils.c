@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:15 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/10 08:16:12 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/13 10:30:01 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	ft_clear_be(t_ms *ms)
 		ms->be->garbage = NULL;
 	}
 	free(ms->be->child_pids);
+	free(ms->be->child_ret);
 	ms->be->nb_cmds = 0;
 }
 

@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 23:52:06 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/11 10:51:58 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/13 10:34:21 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,5 @@ void	ft_wait_error(t_ms *ms)
 		}
 		i++;
 	}
-	ft_cleanup_exit(ms, err);
+	// ft_cleanup_exit(ms, err);
 }
