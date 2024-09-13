@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:56:05 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/10 09:33:51 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/13 15:55:46 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ typedef struct s_simple_com {
 	int				flags;
 	t_list_words	*words;
 	t_list_redir	*redir;
+	char			**argv;
 	int				builtin_nr;
 	int				prio_in;		// 0 = stdin, 1 = pipe, 2 = infile, 3 = here_doc; (init to 0)
 	int				prio_out;		// // 0 = stdout, 1 = pipe, 2 = outfile, 3 = append; (init to 0)

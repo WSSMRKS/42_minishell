@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:15 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/13 14:27:20 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/13 16:43:17 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,15 @@ void	ft_clear_words(t_list_words	*words)
 /* There are no cases where ms->cmd && ms->cmds are empty. Therefore this function is always freeing everything*/
 void	ft_clear_ast(t_ms *ms)
 {
-	t_cmd_list *cmds;
+	t_cmd_list *subject;
 	t_cmd_list *to_free;
 
-	cmds = ms->cmds;
+	subject = ms->cmds;
 
-	while (cmds)
+	while (subject)
 	{
-		to_free = cmds;
-		cmds = cmds->next;
+		to_free = subject;
+		subject = subject->next;
 		if(to_free->cmd)
 		{
 			ft_clear_redir(to_free->cmd->redir);

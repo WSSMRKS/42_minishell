@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/13 13:25:02 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/13 15:58:36 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_ms {
 /* ms_cleanup_utils */
 void	ft_clear_be(t_ms *ms);
 void	ft_clean_be(t_ms *ms);
+void	ft_clear_ast(t_ms *ms);
 void	clean_garbage(void);
 void	ft_lsthdgbdelone(t_list_hdfiles *lst, void (*del)(void *));
 void	ft_delfree_hdgb(t_list_hdfiles **lst, void (*del)(void *));
@@ -53,16 +54,22 @@ void	ft_cleanup_exit(t_ms *ms, int ex);
 /* ms_executor */
 void	ft_close_all_fds(t_ms *ms);
 char	*ft_search_cmd(t_ms *ms, t_cmd_list *curr);
-void	ft_execute(t_ms *ms, t_cmd_list *curr, char **argv);
-void	ft_builtin(t_ms *ms, t_cmd_list *curr, char **argv);
+void	ft_execute(t_ms *ms, t_cmd_list *curr);
+void	ft_builtin(t_ms *ms, t_cmd_list *curr);
+void	ft_create_argv(t_cmd_list *curr);
 void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i);
 void	ft_is_builtin(t_cmd_list *curr, t_ms *ms);
 void	ft_executor(t_ms *ms);
-void	ft_init_be(t_ms *ms, int argc, char **argv, char **envp);
 void	ft_back_end(t_ms *ms);
+
+/* ms_error */
 void	ft_wait_error(t_ms *ms);
 
 /* ms_ex_redir */
+void	ft_outpipe(t_ms *ms, int i);
+void	ft_outfile(t_ms *ms, char *filename, int mode);
+void	ft_infile(t_ms *ms, char *filename);
+void	ft_inpipe(t_ms *ms, int i);
 void	ft_redir_handler(t_ms *ms, t_cmd_list *curr, int i);
 void	ft_ex_prio(t_cmd_list *curr);
 
@@ -77,6 +84,7 @@ void	ft_here_doc(t_ms *ms);
 char	**ft_grab_envp(char **envp);
 void	ft_init_ms(t_ms *ms);
 void	ft_reinit_be(t_ms *ms);
+void	ft_init_be(t_ms *ms, int argc, char **argv, char **envp);
 
 /* ms_ui */
 void	ft_front_end(char *cmd);
@@ -87,5 +95,7 @@ void	ft_repl(int argc, char **argv, char **envp);
 void	ft_deb_here_doc(t_ms *ms);
 void	ft_deb_commands(t_ms *ms);
 void	ft_debug(t_ms *ms);
+
+
 
 #endif

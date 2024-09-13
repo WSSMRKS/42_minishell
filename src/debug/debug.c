@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/13 13:53:22 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/13 16:28:10 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,8 @@ void	ft_deb_commands(t_ms *ms)
 	ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1); // [ ] free me
 	ms->cmds->cmd->words->next->word = ft_strdup("./valgrind_line.txt");
 	ms->cmds->cmd->words->next->next = NULL;
-
+	ms->be->nb_cmds = 1;
 	ms->cmds->cmd->flags = 0;
-	ft_executor(ms);
 
 	// printf("test for right priority if several redirects are present\n");
 	// printf("test if heredocs and input redirects are prioritized right\n");
@@ -60,9 +59,6 @@ void	ft_deb_commands(t_ms *ms)
 	// printf("test if several commands are executed correctly?\n");
 	// printf("test if single command with several redirects is executed correctly?\n");
 	// printf("test if several commands with several redirects are executed correctly?\n");
-	free(ms->cmds->cmd->words->word);
-	free(ms->cmds->cmd->words);
-	free(ms->cmds->cmd);
 	// ms->cmd = ft_strdup("ls");
 	// ms->cmds = ft_calloc(sizeof(t_cmd_list), 1); // [ ] free me
 	// ft_reinit_be(ms);
