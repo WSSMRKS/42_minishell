@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/11 10:55:08 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/13 13:25:02 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ void	ft_cleanup_exit(t_ms *ms, int ex);
 /* ms_executor */
 void	ft_close_all_fds(t_ms *ms);
 char	*ft_search_cmd(t_ms *ms, t_cmd_list *curr);
-void	ft_execute(t_ms *ms, t_cmd_list *curr);
-void	ft_builtin(t_ms *ms, t_cmd_list *curr);
+void	ft_execute(t_ms *ms, t_cmd_list *curr, char **argv);
+void	ft_builtin(t_ms *ms, t_cmd_list *curr, char **argv);
 void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i);
 void	ft_is_builtin(t_cmd_list *curr, t_ms *ms);
 void	ft_executor(t_ms *ms);

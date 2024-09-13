@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/13 10:37:44 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/13 14:31:39 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,35 +41,55 @@ char	*ft_search_cmd(t_ms *ms, t_cmd_list *curr)
 	return (NULL);
 }
 
-void	ft_execute(t_ms *ms, t_cmd_list *curr)
+void	ft_execute(t_ms *ms, t_cmd_list *curr, char **argv)
 {
 	int		err;
 	char	*cmdpath;
-
-	char	**argv;
-
-	argv = ft_calloc(sizeof(char *), 2);
-	argv[0] = ft_strdup("cat");
-	argv[1] = NULL;
 
 	cmdpath = ft_search_cmd(ms, curr);
 	if (cmdpath == NULL)
 		err = 127;
 	else
 		err = execve(cmdpath, argv, NULL);
-		// err = execve(cmdpath, &ms->cmds->cmd->words->word, NULL);
 	ft_cleanup_exit(ms, err);
 }
 
-void	ft_builtin(t_ms *ms, t_cmd_list *curr)
+void	ft_builtin(t_ms *ms, t_cmd_list *curr, char **argv)
 {
+	(void) argv;
 	(void) ms;
 	(void) curr;
+}
+
+char	**ft_create_argv(t_ms *ms, t_cmd_list *curr)
+{
+	t_list_words	*words;
+	char			**argv;
+	int				i;
+
+	words = curr->cmd->words;
+	i = 0;
+	while (words)
+	{
+		i++;
+		words = words->next;
+	}
+	argv = ft_calloc(sizeof(char *), i + 1);
+	words = curr->cmd->words;
+	i = 0;
+	while (words)
+	{
+		argv[i++] = ft_strdup(words->word);
+		words = words->next;
+	}
+	return (argv);
 }
 
 
 void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i)
 {
+	char	**argv;
+
 	if ((curr->cmd->flags & IS_BUILTIN) != 1 || ms->be->nb_cmds > 1)
 		ms->be->child_pids[*i] = fork();
 	else
@@ -82,11 +102,12 @@ void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i)
 	if (ms->be->child_pids[*i] == 0 || ms->be->child_pids[*i] == INT_MAX)
 	{
 		ft_redir_handler(ms, curr, *i);
-		// ft_close_all_fds(ms);  // [ ] not yet accurate
+		argv = ft_create_argv(ms, curr);
+		ft_close_all_fds(ms);  // [ ] not yet accurate
 		if (ms->be->child_pids[*i] == INT_MAX)
-			ft_builtin(ms, curr);
+			ft_builtin(ms, curr, argv);
 		else if (ms->be->child_pids[*i] == 0)
-			ft_execute(ms, curr);
+			ft_execute(ms, curr, argv);
 	}
 }
 
@@ -136,9 +157,7 @@ void	ft_back_end(t_ms *ms)
 	if (ms->global_flags == 1)
 		ft_here_doc(ms);
 	if (strcmp(ms->cmd, "ms_debug") == 0)
-		{
 			ft_debug(ms);
-		}
 	else
 		ft_executor(ms);
 	ft_clear_be(ms);

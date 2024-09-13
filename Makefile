@@ -76,12 +76,19 @@ re: fclean	# Recompile whole project.
 name: # print project name #
 	@echo "$(NAME)"
 
+exv: all
+	valgrind --suppressions=suppressions2.supp --leak-check=full --show-leak-kinds=all ./minishell
+
+ex: all
+	./minishell
+
 help:	# Print this helpful message
 	@awk 'BEGIN { \
 	FS = ":.*#"; printf "Usage:\n\tmake <target>\n\nTargets:\n"; } \
 	/^[a-zA-Z_0-9-]+:.*?#/ { \
 	printf "%-16s%s\n", $$1, $$2 } ' Makefile
 # Syntax for this to work: target:	# Description
+
 
 .PHONY: all fclean clean re name help exes
 .NOTPARALLEL: $(LIBFT_SRC)

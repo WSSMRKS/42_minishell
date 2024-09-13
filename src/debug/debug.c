@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/13 10:38:51 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/13 13:53:22 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,14 @@ void	ft_deb_commands(t_ms *ms)
 
 	ms->cmd = ft_strdup("cat");
 	ms->cmds = ft_calloc(sizeof(t_cmd_list), 1); // [ ] free me
+	ms->cmds->next = NULL;
 	ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1); // [ ] free me
 	ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1); // [ ] free me
 	ms->cmds->cmd->words->word = ft_strdup("cat");
+	ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1); // [ ] free me
+	ms->cmds->cmd->words->next->word = ft_strdup("./valgrind_line.txt");
+	ms->cmds->cmd->words->next->next = NULL;
+
 	ms->cmds->cmd->flags = 0;
 	ft_executor(ms);
 
@@ -58,7 +63,6 @@ void	ft_deb_commands(t_ms *ms)
 	free(ms->cmds->cmd->words->word);
 	free(ms->cmds->cmd->words);
 	free(ms->cmds->cmd);
-	free(ms->cmds);
 	// ms->cmd = ft_strdup("ls");
 	// ms->cmds = ft_calloc(sizeof(t_cmd_list), 1); // [ ] free me
 	// ft_reinit_be(ms);
@@ -79,12 +83,14 @@ void	ft_debug(t_ms *ms)
 	char	*mode;
 
 	printf("Debug cases:\n");
-	printf("- here_doc\n");
-	printf("- command_execution\n");
+	printf("0 - here_doc\n");
+	printf("1 - command_execution\n");
 	mode = readline("Choose debug case: ");
-	if (strncmp(mode, "here_doc", 8) == 0 && ft_strlen(mode) == 8)
+	if (strncmp(mode, "0", 8) == 0 && ft_strlen(mode) == 1)
 		ft_deb_here_doc(ms);
-	else if (strncmp(mode, "command_execution", 17) == 0
-		&& ft_strlen(mode) == 17)
+	else if (strncmp(mode, "1", 1) == 0
+		&& ft_strlen(mode) == 1)
 		ft_deb_commands(ms);
+	else
+		printf("Error: wrong selection\n");
 }

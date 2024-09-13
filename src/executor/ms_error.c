@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 23:52:06 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/13 10:34:21 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/13 13:44:43 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	ft_wait_error(t_ms *ms)
 		waitpid(ms->be->child_pids[i], &(ms->be->child_ret[i]), 0);
 		if (WIFEXITED(ms->be->child_ret[i]))
 		{
-			printf("Exit code of the childs: child nr. %d exitcode %d",i , ms->be->child_ret[i]);
+			printf("Exit code of the childs: child nr. %d exitcode %d\n",i , ms->be->child_ret[i]);
 			// ft_errno_127(ms, i, &err);
 			// ft_errno_1_2_13(ms, i, &err);
 		}
