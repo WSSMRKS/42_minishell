@@ -6,7 +6,7 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 06:07:52 by dkoca             #+#    #+#             */
-/*   Updated: 2024/09/10 20:28:36 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/09/14 18:09:36 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ t_token *scan_word(char **chr_itr, t_token *prev_token)
 	len = 0;
 	while ((!is_end(*chr_itr)) && is_word(**chr_itr))
 	{
-		if (**chr_itr == '\\' && *(*chr_itr + 1) == '\\')
-			(*chr_itr)++;
 		(*chr_itr)++;
 		len++;
 	}
