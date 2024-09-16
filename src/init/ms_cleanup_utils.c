@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:15 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/13 17:13:35 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/16 12:37:31 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,11 @@ void	ft_clear_words(t_list_words	*words)
 	{
 		to_free = words;
 		words = words->next;
+		if(to_free->word)
+		{
+			free(to_free->word);
+			to_free->word = NULL;
+		}
 		free(to_free);
 		to_free = NULL;
 	}
@@ -87,6 +92,7 @@ void	ft_clear_ast(t_ms *ms)
 			free(to_free->cmd);
 			to_free->cmd = NULL;
 		}
+		free(to_free);
 	}
 	free(ms->cmd);
 	ms->cmd = NULL;

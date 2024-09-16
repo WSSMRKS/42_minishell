@@ -1248,3 +1248,17 @@
    fun:ft_repl
    fun:main
 }
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:xmalloc
+   fun:readline_internal_teardown
+   fun:readline
+   fun:ft_deb_commands
+   fun:ft_debug
+   fun:ft_repl
+   fun:main
+}
