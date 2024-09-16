@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/16 13:28:14 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/16 13:48:37 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,19 +43,20 @@ void	ft_deb_commands(t_ms *ms)
 	setbuf(stdout, 0);
 
 	ft_printf("Debugging command execution\n");
-	ft_printf("0 - cat ./valgrind_line.txt\n");
-	ft_printf("1 - ls -l | cat -e\n");
-	ft_printf("2 - ls -l > file1 | cat -e > file2\n");
-	ft_printf("3 - ls -l > file1 | cat -e > file2 | wc -l > file3\n");
-	ft_printf("4 - cat | cat | ls\n");
-	ft_printf("5 - echo hello world | grep hello > output.txt\n");
-	ft_printf("6 - cat < input.txt | sort | uniq\n");
-	ft_printf("7 - find . -type f | xargs grep TODO > todo_list.txt\n");
-	ft_printf("8 - mkdir new_folder | ls -l\n");
-	ft_printf("9 - cat < input.txt | sort | uniq\n");
-	ft_printf("10 - find . -type f | xargs grep \"[ ]\" > todo_list.txt\n");
-	ft_printf("11 - mkdir new_folder | ls -l\n");
-	ft_printf("12 - cat < input.txt | sort | uniq\n");
+	ft_printf("Debug cases need to be finalized and doublechecked\n");
+	ft_printf("0 - cat ./valgrind_line.txt // Working properly\n");
+	ft_printf("1 - ls -l | cat -e // Working properly\n");
+	ft_printf("2 - ls -l > file1 | cat -e > file2 // Working properly\n");
+	ft_printf("3 - ls -l > file1 | cat -e > file2 | wc -l > file3 // Working properly\n");
+	ft_printf("4 - cat | cat | ls\n // Working properly i think\n");
+	ft_printf("5 - echo hello world | grep hello > output.txt // echo not yet implemented\n");
+	ft_printf("6 - cat < input.txt | sort | uniq // not yet working properly\n");
+	ft_printf("7 - find . -type f | xargs grep TODO > todo_list.txt // Not yet working properly (i think)\n");
+	ft_printf("8 - mkdir new_folder | ls -l // Working properly\n");
+	ft_printf("9 - tar -czf archive.tar.gz /folder | ls -l archive.tar.gz // Not yet working properly\n");
+	ft_printf("10 - echo $HOME > home_directory.txt // echo not yet implemented\n");
+	ft_printf("11 - ps aux | grep bash | wc -l\n");
+	ft_printf("12 - cd /tmp | touch temp_file | ls -l temp_file // cd not yet implemented\n");
 	case_nb = ft_atoi(readline("Choose debug case: "));
 	while (case_nb < 0 || case_nb > 12)
 	{
