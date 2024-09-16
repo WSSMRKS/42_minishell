@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 19:05:44 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/13 17:23:10 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/16 12:15:04 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,11 @@ void	ft_reinit_be(t_ms *ms)
 	ms->be->nb_cmds = i;
 	ms->be->child_pids = ft_calloc(sizeof(int), (size_t) ms->be->nb_cmds + 1);
 	ms->be->child_ret = ft_calloc(sizeof(int), (size_t) ms->be->nb_cmds + 1);
+	if (pipe(ms->be->pipes[0]) == -1 || pipe(ms->be->pipes[1]) == -1)
+	{
+		strerror(32);
+		exit (32);
+	}
 }
 
 void	ft_init_be(t_ms *ms, int argc, char **argv, char **envp)
@@ -77,11 +82,6 @@ void	ft_init_be(t_ms *ms, int argc, char **argv, char **envp)
 	ms->be->argv = argv;
 	ms->be->envp = envp;
 	ms->be->path = ft_grab_envp(envp);
-	if (pipe(ms->be->pipes[0]) == -1 || pipe(ms->be->pipes[1]) == -1)
-	{
-		strerror(32);
-		exit (32);
-	}
 	ms->be->builtins = ft_calloc(sizeof(char *), 8);
 	ms->be->builtins[0] = ft_strdup("echo");
 	ms->be->builtins[1] = ft_strdup("cd");

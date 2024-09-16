@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/13 17:10:10 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/16 12:12:42 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@ void	ft_close_all_fds(t_ms *ms)
 {
 	if (close(ms->be->pipes[0][0]) || close(ms->be->pipes[0][1])
 		|| close(ms->be->pipes[1][0]) || close(ms->be->pipes[1][1]))
+	{
+		ft_printf_err("I am error\n");
 		perror("minishell");
+	}
 }
 
 char	*ft_search_cmd(t_ms *ms, t_cmd_list *curr)
@@ -116,7 +119,7 @@ void	ft_is_builtin(t_cmd_list *curr, t_ms *ms)
 	int		len;
 
 	i = -1;
-	while (ms->be->builtins[++i])
+	while (ms->cmds->cmd->words && ms->be->builtins[++i])
 	{
 		len = ft_strlen(ms->be->builtins[i]);
 		if (strncmp(curr->cmd->words->word, ms->be->builtins[i], len) == 0
@@ -157,6 +160,7 @@ void	ft_back_end(t_ms *ms)
 	if(ms->cmds->cmd)
 	{
 		ft_executor(ms);
+		ft_close_all_fds(ms);  // [ ] not yet accurate
 		ft_wait_error(ms);
 		ft_clear_ast(ms);
 	}

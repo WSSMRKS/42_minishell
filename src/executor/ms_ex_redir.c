@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/10 09:35:09 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/16 10:26:21 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	ft_infile(t_ms *ms, char *filename)
 
 void	ft_inpipe(t_ms *ms, int i)
 {
-	dup2(ms->be->pipes[i & 1][0], STDOUT_FILENO);
+	dup2(ms->be->pipes[(i-1) & 1][0], STDIN_FILENO);
 }
 
 void	ft_outfile(t_ms *ms, char *filename, int mode)
