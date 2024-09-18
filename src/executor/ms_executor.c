@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/17 16:37:39 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/18 10:38:21 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,13 +99,13 @@ void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i)
 	if (ms->be->child_pids[*i] < 0)
 	{
 		strerror(EPIPE);
-		ft_cleanup_exit(ms, EPIPE); // [ ] not yet accurate
+		ft_cleanup_exit(ms, EPIPE);
 	}
 	if (ms->be->child_pids[*i] == 0 || ms->be->child_pids[*i] == INT_MAX)
 	{
 		ft_redir_handler(ms, curr, *i);
 		ft_create_argv(curr);
-		ft_close_all_fds(ms);  // [ ] not yet accurate
+		ft_close_all_fds(ms);
 		if (ms->be->child_pids[*i] == INT_MAX)
 			ft_builtin(ms, curr);
 		else if (ms->be->child_pids[*i] == 0)
@@ -160,7 +160,7 @@ void	ft_back_end(t_ms *ms)
 	if(ms->cmds->cmd)
 	{
 		ft_executor(ms);
-		ft_close_all_fds(ms);  // [ ] not yet accurate
+		ft_close_all_fds(ms);
 		ft_wait_error(ms);
 		ft_clear_ast(ms);
 	}

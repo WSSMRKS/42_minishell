@@ -1,1 +1,6 @@
-
+[ ] Implement proper error messages
+[ ] build testcases for heredoc
+[ ] Implement env symtab
+[ ] Implement ./executable
+[ ] simplify debugger
+[ ] implement builtins

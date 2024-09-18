@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/13 17:10:43 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/18 11:23:17 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,6 @@ void	ft_garbage_add(char *filename, t_ms *ms)
 	ms->be->garbage->nb_heredocs += 1;
 }
 
-/* [ ] Tempfile behaviour over several instances of minishell? One global tmpfile listing the current tempfile count?
-		do we need to handle the splitsecond between searching and writing?*/
 char	*ft_tmp_name(t_ms *ms, int *fd)
 {
 	char		*filename;
@@ -75,7 +73,7 @@ char	*ft_tmp_name(t_ms *ms, int *fd)
 	return (filename);
 }
 
-void	ft_hd_input(char *hd_del, t_redir_aim *from, t_ms *ms)
+void	ft_hd_input(t_list_redir *curr, t_ms *ms)
 {
 	char		*line;
 	int			ldel;
@@ -83,19 +81,19 @@ void	ft_hd_input(char *hd_del, t_redir_aim *from, t_ms *ms)
 	int			line_nb;
 
 	line_nb = 0;
-	ldel = ft_strlen(hd_del);
+	ldel = ft_strlen(curr->hd_del);
 	while (1)
 	{
 		line = readline("> ");
 		if (!line)
 			ft_cleanup_exit(ms, EIO); //readline error;
-		if (!from)
+		if (!curr->from)
 		{
-			from = ft_calloc(sizeof(t_redir_aim), 1);
-			from->filename = ft_tmp_name(ms, &fd);
-			from->flags = 0;
+			curr->from = ft_calloc(sizeof(t_redir_aim), 1);
+			curr->from->filename = ft_tmp_name(ms, &fd);
+			curr->from->flags = 0;
 		}
-		if (ft_strncmp(hd_del, line, ldel) == 0 && (int) ft_strlen(line) == ldel)
+		if (ft_strncmp(curr->hd_del, line, ldel) == 0 && (int) ft_strlen(line) == ldel)
 			break ;
 		if ((ft_putstr_fd_ret(line, fd) < 0 || ft_putstr_fd_ret("\n", fd) < 0))
 			exit(errno);
@@ -124,7 +122,7 @@ void	ft_here_doc(t_ms *ms)
 		{
 			if (curr_redir->instruction == redir_here_doc)
 			{
-				ft_hd_input(curr_redir->hd_del, curr_redir->from, ms);
+				ft_hd_input(curr_redir, ms);
 			}
 			curr_redir = curr_redir->next;
 		}

@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/17 16:37:30 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/18 11:23:41 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	ft_ex_prio(t_cmd_list *curr);
 char	*ft_search_tmp(void);
 void	ft_garbage_add(char *filename, t_ms *ms);
 char	*ft_tmp_name(t_ms *ms, int *fd);
-void	ft_hd_input(char *hd_del, t_redir_aim *filename, t_ms *ms);
+void	ft_hd_input(t_list_redir *curr, t_ms *ms);
 void	ft_here_doc(t_ms *ms);
 
 /* ms_init */

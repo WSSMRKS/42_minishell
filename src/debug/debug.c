@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/17 17:10:25 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/18 11:26:06 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,21 @@ void	ft_deb_here_doc(t_ms *ms)
 	ms->global_flags = 1;
 	ms->cmds = ft_calloc(sizeof(t_cmd_list), 1); // [ ] free me
 	ms->cmds->next = NULL;
+	ms->cmds->cmd->redir->next->next->next = NULL;
+	ms->cmds->cmd->redir->from = NULL;
 	ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1); // [ ] free me
 	ms->cmds->cmd->flags = 1;
 	ms->cmds->cmd->redir = ft_calloc(sizeof(t_list_redir), 1); // [ ] free me
-	ms->cmds->cmd->redir->next = ft_calloc(sizeof(t_list_redir), 1); // [ ] free me
-	ms->cmds->cmd->redir->next->next = ft_calloc(sizeof(t_list_redir), 1); // [ ] free me
-	ms->cmds->cmd->redir->next->next->next = NULL;
-	ms->cmds->cmd->redir->from = NULL;
+	ms->cmds->cmd->redir->instruction = redir_here_doc;
+	ms->cmds->cmd->redir->hd_del = ft_strdup("eof");
 	ms->cmds->cmd->redir->next->from = NULL;
 	ms->cmds->cmd->redir->next->next->from = NULL;
-	ms->cmds->cmd->redir->instruction = redir_here_doc;
 	ms->cmds->cmd->redir->next->instruction = redir_here_doc;
 	ms->cmds->cmd->redir->next->next->instruction = redir_here_doc;
-	ms->cmds->cmd->redir->hd_del = ft_strdup("eof");
 	ms->cmds->cmd->redir->next->hd_del = ft_strdup("eof");
 	ms->cmds->cmd->redir->next->next->hd_del = ft_strdup("eof");
+	ms->cmds->cmd->redir->next = ft_calloc(sizeof(t_list_redir), 1); // [ ] free me
+	ms->cmds->cmd->redir->next->next = ft_calloc(sizeof(t_list_redir), 1); // [ ] free me
 }
 
 void	ft_deb_commands(t_ms *ms)
@@ -59,13 +59,15 @@ void	ft_deb_commands(t_ms *ms)
 	ft_printf("12 - cd /tmp | touch temp_file | ls -l temp_file // cd not yet implemented\n"); // [ ] cd not yet implemented
 	ft_printf("13 - Test with cat command without further input // working properly\n");
 	ft_printf("14 - three fantasy commands to see behavior and error messages. It is a pipeline with 3 commands. // Error Messages printed properly, leaking like crazy!!\n"); // [ ] Error Messages printed properly, leaking like crazy!!
-	ft_printf("15 - \"make -j re\"\n");	// [ ] not yet specified in the debug cases
-	ft_printf("16 - \"make -j exv\"\n"); 	// [ ] not yet specified in the debug cases
-	ft_printf("17 - \"make -j fclean\"\n"); 	// [ ] not yet specified in the debug cases
-	ft_printf("18 - starting minishell in minishell\n"); // [ ] not yet specified in the debug cases
+	ft_printf("15 - \"make -j re\"\n");	// [ ]
+	ft_printf("16 - \"make -j exv\"\n"); 	// [ ]
+	ft_printf("17 - \"make -j fclean\"\n"); 	// [ ]
+	ft_printf("18 - starting minishell in minishell\n"); // [ ]
+	ft_printf("19 - clear\n");
+	ft_printf("20 - case number 20 for \"<<eof cat | cat >hd_output1\"\n");
 
 	case_nb = ft_atoi(readline("Choose debug case: "));
-	while (case_nb < 0 || case_nb > 14)
+	while (case_nb < 0 || case_nb > 20)
 	{
 		ft_printf("Error: wrong selection\n");
 		case_nb = ft_atoi(readline("Choose debug case: "));
@@ -558,7 +560,117 @@ void	ft_deb_commands(t_ms *ms)
 		// Set the number of commands
 		ms->be->nb_cmds = 3;  // 3 commands in the pipeline
 	}
+	else if (case_nb == 15)  // case number 15 for "make -j re"
+	{
+		ft_printf_err("case number 15 for \"make -j re\"");
+		ms->cmd = ft_strdup("make -j re");
 
+		// Allocate first command (make -j)
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("make");  // first command: make
+		ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->word = ft_strdup("-j");  // additional argument: -j
+		ms->cmds->cmd->words->next->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->next->word = ft_strdup("re");  // additional argument: re
+		ms->cmds->cmd->words->next->next->next = NULL;  // no further arguments
+		ms->cmds->cmd->flags = 0;
+	}
+	else if (case_nb == 16) // case number 16 "make -j exv"
+	{
+		ft_printf_err("case number 16 for \"make -j exv\"");
+		ms->cmd = ft_strdup("make -j exv");
+
+		// Allocate first command (make -j)
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("make");  // first command: make
+		ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->word = ft_strdup("-j");  // additional argument: -j
+		ms->cmds->cmd->words->next->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->next->word = ft_strdup("exv");  // additional argument: exv
+		ms->cmds->cmd->words->next->next->next = NULL;  // no further arguments
+		ms->cmds->cmd->flags = 0;
+	}
+	else if (case_nb == 17) // case number 17 "make -j fclean"
+	{
+		ft_printf_err("case number 17 for \"make -j fclean\"");
+		ms->cmd = ft_strdup("make -j fclean");
+
+		// Allocate first command (make -j)
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("make");  // first command: make
+		ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->word = ft_strdup("-j");  // additional argument: -j
+		ms->cmds->cmd->words->next->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->next->word = ft_strdup("fclean");  // additional argument: fclean
+		ms->cmds->cmd->words->next->next->next = NULL;  // no further arguments
+		ms->cmds->cmd->flags = 0;
+	}
+	else if (case_nb == 18) // case number 18 "./minishell"
+	{
+		ft_printf_err("case number 18 for \"./minishell\"");
+		ms->cmd = ft_strdup("./minishell");
+
+		// Allocate first command (./minishell)
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("./minishell");  // first command: ./minishell
+		ms->cmds->cmd->words->next = NULL;  // no further arguments
+		ms->cmds->cmd->flags = 0;
+	}
+	else if (case_nb == 19) // case number 19 "clear"
+	{
+		ft_printf_err("case number 19 for \"clear\"");
+		ms->cmd = ft_strdup("clear");
+
+		// Allocate first command (clear)
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("clear");  // first command: clear
+		ms->cmds->cmd->words->next = NULL;  // no further arguments
+		ms->cmds->cmd->flags = 0;
+	}
+	else if (case_nb == 20) // case number 20 "<<eof cat | cat >hd_output1"
+	{
+		ft_printf_err("case number 20 for \"<<eof cat | cat >hd_output1\"\n");
+		ms->cmd = ft_strdup("<<eof cat | cat >hd_output1");
+
+		// Allocate first command (<<eof cat)
+		ms->global_flags = 1;
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("<<eof");  // first command: <<eof
+		ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->word = ft_strdup("cat");  // additional argument: cat
+		ms->cmds->cmd->words->next->next = NULL;  // no further arguments
+		ms->cmds->cmd->flags = 1;
+		ms->cmds->cmd->redir = ft_calloc(sizeof(t_list_redir), 1); // [ ] free me
+		ms->cmds->cmd->redir->instruction = redir_here_doc;
+		ms->cmds->cmd->redir->hd_del = ft_strdup("eof");
+		ms->cmds->cmd->redir->rightmost = true;
+		ms->cmds->cmd->redir->from = NULL;
+		ms->cmds->next = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->next->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->next->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->next->cmd->words->word = ft_strdup("cat");  // second command: cat
+		ms->cmds->next->cmd->words->next = NULL;  // no further arguments
+		ms->cmds->next->cmd->flags = 0;
+		ms->cmds->next->cmd->redir = ft_calloc(sizeof(t_list_redir), 1); // [ ] free me
+		ms->cmds->next->cmd->redir->instruction = redir_outfile;
+		ms->cmds->next->cmd->redir->to = ft_calloc(sizeof(t_redir_aim), 1); // [ ] free me
+		ms->cmds->next->cmd->redir->to->filename = ft_strdup("hd_output1");
+		ms->cmds->next->cmd->redir->rightmost = true;
+		ms->cmds->next->cmd->redir->from = NULL;
+		ms->cmds->next->next = NULL;
+	}
 }
 
 void	ft_debug(t_ms *ms)

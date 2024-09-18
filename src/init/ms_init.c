@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 19:05:44 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/16 12:15:04 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/18 10:39:08 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	ft_reinit_be(t_ms *ms)
 	t_cmd_list	*curr;
 	int			i;
 
-	ms->be->garbage = ft_calloc(sizeof(t_garbage), 1);  //[ ] free me
+	ms->be->garbage = ft_calloc(sizeof(t_garbage), 1);
 	ms->be->garbage->heredoc = NULL;
 	ms->be->garbage->nb_heredocs = 0;
 	i = 0;

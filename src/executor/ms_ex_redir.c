@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/17 16:37:14 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/18 11:12:44 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	ft_redir_handler(t_ms *ms, t_cmd_list *curr, int i)
 	{
 		if (curr->cmd->prio_in == 3 && rd->instruction == redir_here_doc
 			&& rd->rightmost == true)
-			ft_infile(ms, rd->hd_file->filename);
+			ft_infile(ms, rd->from->filename);
 		else if (curr->cmd->prio_in == 2
 			&& rd->instruction == redir_infile && rd->rightmost == true)
 			ft_infile(ms, rd->from->filename);
