@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/18 12:57:51 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/18 15:49:51 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,11 @@ void	ft_deb_commands(t_ms *ms)
 	ft_printf("18 - starting minishell in minishell\n"); // [ ]
 	ft_printf("19 - clear\n");
 	ft_printf("20 - case number 20 for \"<<eof cat | cat >hd_output1\" // working properly\n");
+	ft_printf("21 - sjlfkdsjfs | cat | ls\n"); // [ ]
+	ft_printf("22 - cat | sjlfkdsjfs | ls\n"); // [ ]
 
 	case_nb = ft_atoi(readline("Choose debug case: "));
-	while (case_nb < 0 || case_nb > 20)
+	while (case_nb < 0 || case_nb > 22)
 	{
 		ft_printf("Error: wrong selection\n");
 		case_nb = ft_atoi(readline("Choose debug case: "));
@@ -153,6 +155,7 @@ void	ft_deb_commands(t_ms *ms)
 	}
 	else if (case_nb == 3)
 	{
+		ft_printf("Test with ls -l > file1 | cat -e > file2 | wc -l > file3\n");
 		ms->cmd = ft_strdup("ls -l > file1 | cat -e > file2 | wc -l > file3");
 		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1); // [ ] free me
 		ms->cmds->next = ft_calloc(sizeof(t_cmd_list), 1); // [ ] free me
@@ -201,7 +204,7 @@ void	ft_deb_commands(t_ms *ms)
 	}
 	else if (case_nb == 4)  // case number 4 for "cat | cat | ls"
 	{
-		ft_printf_err("This command is not yet executed properly. It is a pipeline with 3 commands.");
+		ft_printf_err("This command is not yet executed properly. It is a pipeline with 3 commands.\n");
 		ms->cmd = ft_strdup("cat | cat | ls");
 
 		// Allocate first command (cat)
@@ -247,6 +250,7 @@ void	ft_deb_commands(t_ms *ms)
 	}
 	else if (case_nb == 5)
 	{
+		ft_printf("Test with echo hello world | grep hello > output.txt\n");
 		ms->cmd = ft_strdup("echo hello world | grep hello > output.txt");
 
 		// First command: echo hello world
@@ -282,6 +286,7 @@ void	ft_deb_commands(t_ms *ms)
 	}
 	else if (case_nb == 6)
 	{
+		ft_printf("Test with cat < input.txt | sort | uniq\n");
 		ms->cmd = ft_strdup("cat < input.txt | sort | uniq");
 
 		// First command: cat < input.txt
@@ -315,6 +320,7 @@ void	ft_deb_commands(t_ms *ms)
 	}
 	else if (case_nb == 7)
 	{
+		ft_printf("Test with find . -type f | xargs grep TODO > todo_list.txt\n");
 		ms->cmd = ft_strdup("find . -type f | xargs grep \"[ ]\" > todo_list.txt");
 
 		// First command: find . -type f
@@ -353,6 +359,7 @@ void	ft_deb_commands(t_ms *ms)
 	}
 	else if (case_nb == 8)
 	{
+		ft_printf("Test with mkdir new_folder | ls -l\n");
 		ms->cmd = ft_strdup("mkdir new_folder | ls -l");
 
 		// First command: mkdir new_folder
@@ -378,6 +385,7 @@ void	ft_deb_commands(t_ms *ms)
 	}
 	else if (case_nb == 9)
 	{
+		ft_printf("Test with tar -czf archive.tar.gz /new_folder | ls -l archive.tar.gz\n");
 		ms->cmd = ft_strdup("tar -czf archive.tar.gz /new_folder | ls -l archive.tar.gz");
 
 		// First command: tar -czf archive.tar.gz /new_folder
@@ -409,6 +417,7 @@ void	ft_deb_commands(t_ms *ms)
 	}
 	else if (case_nb == 10)
 	{
+		ft_printf("Test with echo $HOME > home_directory.txt\n");
 		ms->cmd = ft_strdup("echo $HOME > home_directory.txt");
 
 		// First command: echo $HOME
@@ -433,6 +442,7 @@ void	ft_deb_commands(t_ms *ms)
 	}
 	else if (case_nb == 11)
 	{
+		ft_printf("Test with ps aux | grep bash | wc -l\n");
 		ms->cmd = ft_strdup("ps aux | grep bash | wc -l");
 
 		// First command: ps aux
@@ -467,6 +477,7 @@ void	ft_deb_commands(t_ms *ms)
 	}
 	else if (case_nb == 12)
 	{
+		ft_printf("Test with cd /tmp | touch temp_file | ls -l temp_file\n");
 		ms->cmd = ft_strdup("cd /tmp | touch temp_file | ls -l temp_file");
 
 		// First command: cd /tmp
@@ -516,7 +527,7 @@ void	ft_deb_commands(t_ms *ms)
 	}
 		else if (case_nb == 14)  // case number 4 for "sjlfkdsjfs | dslkjsdlf | sljkdsdljf"
 	{
-		ft_printf_err("three fantasy commands to see behavior and error messages. It is a pipeline with 3 commands.");
+		ft_printf_err("three fantasy commands to see behavior and error messages. It is a pipeline with 3 commands.\n");
 		ms->cmd = ft_strdup("sjlfkdsjfs | dslkjsdlf | sljkdsdljf");
 
 		// Allocate first command (sjlfkdsjfs)
@@ -562,7 +573,7 @@ void	ft_deb_commands(t_ms *ms)
 	}
 	else if (case_nb == 15)  // case number 15 for "make -j re"
 	{
-		ft_printf_err("case number 15 for \"make -j re\"");
+		ft_printf_err("case number 15 for \"make -j re\"\n");
 		ms->cmd = ft_strdup("make -j re");
 
 		// Allocate first command (make -j)
@@ -579,7 +590,7 @@ void	ft_deb_commands(t_ms *ms)
 	}
 	else if (case_nb == 16) // case number 16 "make -j exv"
 	{
-		ft_printf_err("case number 16 for \"make -j exv\"");
+		ft_printf_err("case number 16 for \"make -j exv\"\n");
 		ms->cmd = ft_strdup("make -j exv");
 
 		// Allocate first command (make -j)
@@ -596,7 +607,7 @@ void	ft_deb_commands(t_ms *ms)
 	}
 	else if (case_nb == 17) // case number 17 "make -j fclean"
 	{
-		ft_printf_err("case number 17 for \"make -j fclean\"");
+		ft_printf_err("case number 17 for \"make -j fclean\"\n");
 		ms->cmd = ft_strdup("make -j fclean");
 
 		// Allocate first command (make -j)
@@ -613,7 +624,7 @@ void	ft_deb_commands(t_ms *ms)
 	}
 	else if (case_nb == 18) // case number 18 "./minishell"
 	{
-		ft_printf_err("case number 18 for \"./minishell\"");
+		ft_printf_err("case number 18 for \"./minishell\"\n");
 		ms->cmd = ft_strdup("./minishell");
 
 		// Allocate first command (./minishell)
@@ -626,7 +637,7 @@ void	ft_deb_commands(t_ms *ms)
 	}
 	else if (case_nb == 19) // case number 19 "clear"
 	{
-		ft_printf_err("case number 19 for \"clear\"");
+		ft_printf_err("case number 19 for \"clear\"\n");
 		ms->cmd = ft_strdup("clear");
 
 		// Allocate first command (clear)
@@ -668,6 +679,98 @@ void	ft_deb_commands(t_ms *ms)
 		ms->cmds->next->cmd->redir->rightmost = true;
 		ms->cmds->next->cmd->redir->from = NULL;
 		ms->cmds->next->next = NULL;
+	}
+		else if (case_nb == 21)  // case number 21 for "sjlfkdsjfs | cat | ls"
+	{
+		ft_printf_err("sjlfkdsjfs | cat | ls\n");
+		ms->cmd = ft_strdup("sjlfkdsjfs | cat | ls");
+
+		// Allocate first command (sjlfkdsjfs)
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("sjlfkdsjfs");  // first command: cat
+		ms->cmds->cmd->words->next = NULL;  // no additional arguments
+		ms->cmds->cmd->flags = 0;
+		ms->cmds->cmd->redir = ft_calloc(sizeof(t_list_redir), 1); // [ ] free me
+		ms->cmds->cmd->redir->instruction = redir_outpipe;
+		ms->cmds->cmd->redir->next = NULL;
+
+		// Allocate second command (dslkjsdlf)
+		ms->cmds->next = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->next->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->next->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->next->cmd->words->word = ft_strdup("cat");  // second command: cat
+		ms->cmds->next->cmd->words->next = NULL;  // no additional arguments
+		ms->cmds->next->cmd->flags = 0;
+		ms->cmds->next->cmd->redir = ft_calloc(sizeof(t_list_redir), 1); // [ ] free me
+		ms->cmds->next->cmd->redir->instruction = redir_inpipe;
+		ms->cmds->next->cmd->redir->next = ft_calloc(sizeof(t_list_redir), 1); // [ ] free me
+		ms->cmds->next->cmd->redir->next->instruction = redir_outpipe;
+		ms->cmds->next->cmd->redir->next->next = NULL;
+
+		// Allocate third command (sljkdsdljf)
+		ms->cmds->next->next = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->next->next->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->next->next->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->next->next->cmd->words->word = ft_strdup("ls");  // third command: ls
+		ms->cmds->next->next->cmd->words->next = NULL;  // no additional arguments
+		ms->cmds->next->next->cmd->flags = 0;
+		ms->cmds->next->next->cmd->redir = ft_calloc(sizeof(t_list_redir), 1); // [ ] free me
+		ms->cmds->next->next->cmd->redir->instruction = redir_inpipe;
+		ms->cmds->next->next->cmd->redir->next = NULL;
+
+		// End of command chain
+		ms->cmds->next->next->next = NULL;
+
+		// Set the number of commands
+		ms->be->nb_cmds = 3;  // 3 commands in the pipeline
+	}
+			else if (case_nb == 22) // case number 22 for "cat | sjlfkdsjfs | ls"
+	{
+		ft_printf_err("cat | sjlfkdsjfs | ls\n");
+		ms->cmd = ft_strdup("cat | sjlfkdsjfs | ls");
+
+		// Allocate first command (sjlfkdsjfs)
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("cat");  // first command: cat
+		ms->cmds->cmd->words->next = NULL;  // no additional arguments
+		ms->cmds->cmd->flags = 0;
+		ms->cmds->cmd->redir = ft_calloc(sizeof(t_list_redir), 1); // [ ] free me
+		ms->cmds->cmd->redir->instruction = redir_outpipe;
+		ms->cmds->cmd->redir->next = NULL;
+
+		// Allocate second command (dslkjsdlf)
+		ms->cmds->next = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->next->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->next->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->next->cmd->words->word = ft_strdup("sjlfkdsjfs");  // second command: cat
+		ms->cmds->next->cmd->words->next = NULL;  // no additional arguments
+		ms->cmds->next->cmd->flags = 0;
+		ms->cmds->next->cmd->redir = ft_calloc(sizeof(t_list_redir), 1); // [ ] free me
+		ms->cmds->next->cmd->redir->instruction = redir_inpipe;
+		ms->cmds->next->cmd->redir->next = ft_calloc(sizeof(t_list_redir), 1); // [ ] free me
+		ms->cmds->next->cmd->redir->next->instruction = redir_outpipe;
+		ms->cmds->next->cmd->redir->next->next = NULL;
+
+		// Allocate third command (sljkdsdljf)
+		ms->cmds->next->next = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->next->next->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->next->next->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->next->next->cmd->words->word = ft_strdup("ls");  // third command: ls
+		ms->cmds->next->next->cmd->words->next = NULL;  // no additional arguments
+		ms->cmds->next->next->cmd->flags = 0;
+		ms->cmds->next->next->cmd->redir = ft_calloc(sizeof(t_list_redir), 1); // [ ] free me
+		ms->cmds->next->next->cmd->redir->instruction = redir_inpipe;
+		ms->cmds->next->next->cmd->redir->next = NULL;
+
+		// End of command chain
+		ms->cmds->next->next->next = NULL;
+
+		// Set the number of commands
+		ms->be->nb_cmds = 3;  // 3 commands in the pipeline
 	}
 }
 

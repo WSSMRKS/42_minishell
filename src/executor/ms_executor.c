@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/18 10:38:21 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/18 15:26:26 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ void	ft_execute(t_ms *ms, t_cmd_list *curr)
 		err = 127;
 	else
 		err = execve(cmdpath, curr->cmd->argv, NULL);
+	ft_clear_ast(ms); // [ ] take care of this in case of not a child!!
+	ft_clear_be(ms); // [ ] take care of this in case of not a child!!
 	ft_cleanup_exit(ms, err);
 }
 

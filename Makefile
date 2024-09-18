@@ -82,6 +82,8 @@ exv: all
 exvs: all
 	valgrind --suppressions=suppressions2.supp --gen-suppressions=all --leak-check=full --show-leak-kinds=all ./minishell
 
+exval: all
+	valgrind --leak-check=full --show-leak-kinds=all ./minishell
 
 ex: all
 	./minishell

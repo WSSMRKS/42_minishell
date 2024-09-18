@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:15 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/16 12:37:31 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/18 15:36:01 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void	ft_clear_ast(t_ms *ms)
 		{
 			ft_clear_redir(to_free->cmd->redir);
 			ft_clear_words(to_free->cmd->words);
+			ft_free_2d(to_free->cmd->argv);
 			free(to_free->cmd);
 			to_free->cmd = NULL;
 		}
@@ -162,6 +163,7 @@ void	ft_delfree_hdgb(t_list_hdfiles **lst, void (*del)(void *))
 
 void	ft_cleanup_exit(t_ms *ms, int ex)
 {
+	rl_clear_history();
 	ft_clean_be(ms);
 	free(ms->be);
 	ms->be = NULL;
