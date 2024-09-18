@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/18 11:23:17 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/18 12:51:31 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	ft_garbage_add(char *filename, t_ms *ms)
 		curr->next->next = NULL;
 		curr = curr->next;
 	}
-	curr->filename = filename;
+	curr->filename = ft_strdup(filename);
 	ms->be->garbage->nb_heredocs += 1;
 }
 
@@ -70,6 +70,7 @@ char	*ft_tmp_name(t_ms *ms, int *fd)
 		exit(EBADF);
 	else
 		ft_garbage_add(filename, ms);
+	printf("filename: %s\n", filename);  // After ft_tmp_name() call
 	return (filename);
 }
 
@@ -90,6 +91,7 @@ void	ft_hd_input(t_list_redir *curr, t_ms *ms)
 		if (!curr->from)
 		{
 			curr->from = ft_calloc(sizeof(t_redir_aim), 1);
+			curr->from->filename = NULL;
 			curr->from->filename = ft_tmp_name(ms, &fd);
 			curr->from->flags = 0;
 		}
@@ -101,6 +103,7 @@ void	ft_hd_input(t_list_redir *curr, t_ms *ms)
 		free(line);
 		line = NULL;
 	}
+	free(line);
 	close(fd);
 }
 

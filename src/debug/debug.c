@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/18 11:26:06 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/18 12:57:51 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	ft_deb_commands(t_ms *ms)
 	ft_printf("17 - \"make -j fclean\"\n"); 	// [ ]
 	ft_printf("18 - starting minishell in minishell\n"); // [ ]
 	ft_printf("19 - clear\n");
-	ft_printf("20 - case number 20 for \"<<eof cat | cat >hd_output1\"\n");
+	ft_printf("20 - case number 20 for \"<<eof cat | cat >hd_output1\" // working properly\n");
 
 	case_nb = ft_atoi(readline("Choose debug case: "));
 	while (case_nb < 0 || case_nb > 20)
@@ -647,10 +647,8 @@ void	ft_deb_commands(t_ms *ms)
 		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
 		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
 		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
-		ms->cmds->cmd->words->word = ft_strdup("<<eof");  // first command: <<eof
-		ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
-		ms->cmds->cmd->words->next->word = ft_strdup("cat");  // additional argument: cat
-		ms->cmds->cmd->words->next->next = NULL;  // no further arguments
+		ms->cmds->cmd->words->word = ft_strdup("cat");  // first command: <<eof
+		ms->cmds->cmd->words->next = NULL;  // no further arguments
 		ms->cmds->cmd->flags = 1;
 		ms->cmds->cmd->redir = ft_calloc(sizeof(t_list_redir), 1); // [ ] free me
 		ms->cmds->cmd->redir->instruction = redir_here_doc;

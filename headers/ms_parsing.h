@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:56:05 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/13 15:55:46 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/18 12:55:23 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,9 @@ typedef struct s_command {
 	} u_value;
 }				t_command; */
 
-/* file redirects always get priority??? */
-typedef union u_redir_aim {
+/* file redirects always get priority???*/
+// [ ]	used to be a union doesn't work with the flag
+typedef struct s_redir_aim {
 	int			fd;
 	char		*filename;
 	int			flags;
