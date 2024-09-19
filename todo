@@ -1,4 +1,4 @@
-[ ] Implement proper error messages
+[ ] Implement proper error messages (not sure yet if from parent or child)
 [x] build testcases for heredoc // working
 [ ] Implement env symtab
 [ ] Implement ./executable

@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/18 15:45:51 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/19 12:22:03 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	ft_infile(t_ms *ms, char *filename)
 	fdin = open(filename, O_RDONLY);
 	if (fdin < 0)
 	{
+		ft_printf_err("%s: %s\n", filename, strerror(errno));
 		ft_clear_ast(ms); // [ ] take care of this in case of not a child!!
 		ft_clear_be(ms); // [ ] take care of this in case of not a child!!
 		ft_cleanup_exit(ms, errno);
@@ -42,6 +43,7 @@ void	ft_outfile(t_ms *ms, char *filename, int mode)
 		fdout = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fdout < 0)
 	{
+		ft_printf_err("%s: %s\n", filename, strerror(errno));
 		ft_clear_ast(ms); // [ ] take care of this in case of not a child!!
 		ft_clear_be(ms); // [ ] take care of this in case of not a child!!
 		ft_cleanup_exit(ms, errno);

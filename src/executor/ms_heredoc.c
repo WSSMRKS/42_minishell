@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/18 12:51:31 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/19 11:38:10 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ char	*ft_tmp_name(t_ms *ms, int *fd)
 		exit(EBADF);
 	else
 		ft_garbage_add(filename, ms);
-	printf("filename: %s\n", filename);  // After ft_tmp_name() call
 	return (filename);
 }
 

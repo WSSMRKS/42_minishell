@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/18 15:49:51 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/19 12:06:02 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,10 @@ void	ft_deb_commands(t_ms *ms)
 	ft_printf("20 - case number 20 for \"<<eof cat | cat >hd_output1\" // working properly\n");
 	ft_printf("21 - sjlfkdsjfs | cat | ls\n"); // [ ]
 	ft_printf("22 - cat | sjlfkdsjfs | ls\n"); // [ ]
+	ft_printf("23 - sudo ls\n"); // [ ]
 
 	case_nb = ft_atoi(readline("Choose debug case: "));
-	while (case_nb < 0 || case_nb > 22)
+	while (case_nb < 0 || case_nb > 23)
 	{
 		ft_printf("Error: wrong selection\n");
 		case_nb = ft_atoi(readline("Choose debug case: "));
@@ -680,7 +681,7 @@ void	ft_deb_commands(t_ms *ms)
 		ms->cmds->next->cmd->redir->from = NULL;
 		ms->cmds->next->next = NULL;
 	}
-		else if (case_nb == 21)  // case number 21 for "sjlfkdsjfs | cat | ls"
+	else if (case_nb == 21)  // case number 21 for "sjlfkdsjfs | cat | ls"
 	{
 		ft_printf_err("sjlfkdsjfs | cat | ls\n");
 		ms->cmd = ft_strdup("sjlfkdsjfs | cat | ls");
@@ -726,7 +727,7 @@ void	ft_deb_commands(t_ms *ms)
 		// Set the number of commands
 		ms->be->nb_cmds = 3;  // 3 commands in the pipeline
 	}
-			else if (case_nb == 22) // case number 22 for "cat | sjlfkdsjfs | ls"
+	else if (case_nb == 22) // case number 22 for "cat | sjlfkdsjfs | ls"
 	{
 		ft_printf_err("cat | sjlfkdsjfs | ls\n");
 		ms->cmd = ft_strdup("cat | sjlfkdsjfs | ls");
@@ -771,6 +772,21 @@ void	ft_deb_commands(t_ms *ms)
 
 		// Set the number of commands
 		ms->be->nb_cmds = 3;  // 3 commands in the pipeline
+	}
+	else if (case_nb == 23)
+	{
+		ft_printf("23 - sudo ls\n");
+		ms->cmd = ft_strdup("sudo ls");
+
+		// Allocate first command (make -j)
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("chown");  // first command: make
+		ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->word = ft_strdup("user:group somefile");  // additional argument: -j
+		ms->cmds->cmd->words->next->next = NULL;  // no further arguments
+		ms->cmds->cmd->flags = 0;
 	}
 }
 
