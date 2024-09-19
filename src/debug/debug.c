@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/19 12:31:22 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/19 14:25:33 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	ft_deb_commands(t_ms *ms)
 	ft_printf("20 - case number 20 for \"<<eof cat | cat >hd_output1\" // working properly\n");
 	ft_printf("21 - sjlfkdsjfs | cat | ls\n"); // [ ]
 	ft_printf("22 - cat | sjlfkdsjfs | ls\n"); // [ ]
-	ft_printf("23 - sudo ls\n"); // [ ]
+	ft_printf("23 - nc -l 80\n"); // [ ]
 
 	case_nb = ft_atoi(readline("Choose debug case: "));
 	while (case_nb < 0 || case_nb > 23)
@@ -775,8 +775,8 @@ void	ft_deb_commands(t_ms *ms)
 	}
 	else if (case_nb == 23)
 	{
-		ft_printf("23 - sudo ls\n");
-		ms->cmd = ft_strdup("sudo ls");
+		ft_printf("23 - nc - l 80\n");
+		ms->cmd = ft_strdup("nc - l 80");
 
 		// Allocate first command (make -j)
 		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
