@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/18 15:26:26 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/19 12:26:29 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	ft_close_all_fds(t_ms *ms)
 	if (close(ms->be->pipes[0][0]) || close(ms->be->pipes[0][1])
 		|| close(ms->be->pipes[1][0]) || close(ms->be->pipes[1][1]))
 	{
-		ft_printf_err("I am error\n");
 		perror("minishell");
 	}
 }

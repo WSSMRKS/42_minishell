@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/19 12:06:02 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/19 12:31:22 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -782,10 +782,12 @@ void	ft_deb_commands(t_ms *ms)
 		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
 		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
 		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
-		ms->cmds->cmd->words->word = ft_strdup("chown");  // first command: make
+		ms->cmds->cmd->words->word = ft_strdup("nc");  // first command: make
 		ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
-		ms->cmds->cmd->words->next->word = ft_strdup("user:group somefile");  // additional argument: -j
-		ms->cmds->cmd->words->next->next = NULL;  // no further arguments
+		ms->cmds->cmd->words->next->word = ft_strdup("-l");  // additional argument: -j
+		ms->cmds->cmd->words->next->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->next->word = ft_strdup("80");  // additional argument: re
+		ms->cmds->cmd->words->next->next->next = NULL;  // no further arguments
 		ms->cmds->cmd->flags = 0;
 	}
 }
