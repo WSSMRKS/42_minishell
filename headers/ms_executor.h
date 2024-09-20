@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 15:50:51 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/11 10:42:16 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/20 11:40:02 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_be {
 	int				*child_pids;	/*clear after every execution, realloc after every execution*/
 	int				*child_ret;		/*return values of the childs*/
 	char			**builtins;		/*clear at exit*/
+	t_symtab_stack	*global_symtabs;
 }				t_be;
 
 

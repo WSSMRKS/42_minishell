@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/18 11:23:41 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/20 11:39:31 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ in minishell.h */
 	global flags: 1 = heredoc present	*/
 typedef struct s_ms {
 	char			*cmd;
-	t_symtab_stack	*global_symtab;
 	t_cmd_list		*cmds;
 	int				global_flags;
 	t_be			*be;
