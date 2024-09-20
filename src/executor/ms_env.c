@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/20 14:29:59 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/20 15:05:37 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 [x] - Create a new function that deletes/unsets an environmental variable
 [x] - Create a new function that searches for an environmental variable
 [x] - Create a new function that updates an environmental variable
-[ ] - Create a new function that creates **envp out of the current state of the environmental variables
+[ ] - Create a new function that creates **envp out of the current state of the environmental variables // [ ] not yet including the equal sign!!
 [ ] - Create a new function that takes a local variable and makes it global
 [ ] - Create a new function that takes a global variable and makes it local
 
@@ -261,6 +261,38 @@ functionality:
 3. Traverse the global symbol table and add the variables to the **envp
 4. Return the **envp
 */
+char	**ft_create_envp(t_ms *ms)
+{
+	int				i;
+	int				j;
+	char			**envp;
+	t_symtab_stack	*global;
+	t_symtab		*tmp;
+
+	i = 0;
+	j = 0;
+	global = ms->be->global_symtabs;
+	envp = ft_calloc(sizeof(char *), global->used + 1);
+	global = ms->be->global_symtabs;
+	while (global)
+	{
+		i = 0;
+		while (i < global->size)
+		{
+			tmp = global->symtab[i];
+			while (tmp)
+			{
+				envp[j++] = ft_strjoin(tmp->key, tmp->value);
+				tmp = tmp->next;
+			}
+			i++;
+		}
+		global = global->next;
+	}
+	return (envp);
+}
+
+
 
 
 /* function that removes a variable from the symtab
@@ -295,6 +327,7 @@ int	ft_remove_from_symtab(t_symtab_stack *symtab_lvl, char *key)
 			tmp->value = NULL;
 			free(tmp);
 			tmp = NULL;
+			symtab_lvl->used--;
 			return (0);
 		}
 		prev = tmp;
