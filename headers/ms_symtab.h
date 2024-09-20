@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:56:05 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/20 12:04:21 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/20 13:19:25 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ typedef struct s_symtab_stack {
 	int						level;
 	char					**symtab;
 	int						size;
-	int						load_factor;
+	int						used;
+	float					load_factor;
 	struct s_symtab_stack	*next;
 }				t_symtab_stack;
 
