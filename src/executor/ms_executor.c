@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/19 12:26:29 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/25 09:31:49 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	ft_create_argv(t_cmd_list *curr)
 void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i)
 {
 
-	if ((curr->cmd->flags & IS_BUILTIN) != 1 || ms->be->nb_cmds > 1)
+	if ((curr->cmd->flags & IS_BUILTIN) != IS_BUILTIN || ms->be->nb_cmds > 1)
 		ms->be->child_pids[*i] = fork();
 	else
 		ms->be->child_pids[*i] = INT_MAX;
