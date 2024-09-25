@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/20 15:05:37 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/25 12:34:35 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,10 @@
 [x] - Create a new function that deletes/unsets an environmental variable
 [x] - Create a new function that searches for an environmental variable
 [x] - Create a new function that updates an environmental variable
-[ ] - Create a new function that creates **envp out of the current state of the environmental variables // [ ] not yet including the equal sign!!
-[ ] - Create a new function that takes a local variable and makes it global
-[ ] - Create a new function that takes a global variable and makes it local
+[x] - Create a new function that creates **envp out of the current state of the environmental variables // [x] not yet including the equal sign!!
+[x] - Create a new function that takes a local variable and makes it global
+[x] - Create a new function that takes **envp and updates one particular variable
+
 
 
 Advantage of a hash table over a regular array or linkedlist.
@@ -71,7 +72,7 @@ void	ft_resize_symtab(t_symtab_stack **symtab_lvl)
 {
 	int				i;
 	t_symtab_stack	*new;
-	t_symtab			*tmp;
+	t_symtab		*tmp;
 
 	i = 0;
 	new = ft_calloc(sizeof(t_symtab_stack), 1);
@@ -119,7 +120,7 @@ void	ft_add_global_value(t_ms *ms, char *env)
 	value = ft_strdup(&env[i + 1]);
 	global = ms->be->global_symtabs;
 	if (global->load_factor > 0.7)
-		ft_resize_symtab(ms);
+		ft_resize_symtab(&global);
 	global->used++;
 	global->load_factor = (float)global->used / (float)global->size;
 	ft_add_to_symtab(global, key, value);
@@ -149,10 +150,10 @@ void	ft_add_local_value(t_ms *ms, char *env)
 	key = ft_substr(env, 0, i);
 	value = ft_strdup(&env[i + 1]);
 	if (ms->be->global_symtabs->next == NULL)
-		ft_add_local_symtab(ms, env);
+		ft_add_local_symtab(ms);
 	local = ms->be->global_symtabs->next;
 	if (local->load_factor > 0.7)
-		ft_resize_symtab(local);
+		ft_resize_symtab(&local);
 	local->used++;
 	local->load_factor = (float)local->used / (float)local->size;
 	ft_add_to_symtab(local, key, value);
@@ -165,7 +166,7 @@ functionality:
 3. If the position in the symbol table is empty, add the value
 4. If the position in the symbol table is not empty, traverse the linked list and add the value
 */
-void ft_add_to_symtab(t_symtab_stack *symtab_lvl, char *key, char *value)
+void	ft_add_to_symtab(t_symtab_stack *symtab_lvl, char *key, char *value)
 {
 	unsigned long	hash;
 	t_symtab		*new;
@@ -176,17 +177,19 @@ void ft_add_to_symtab(t_symtab_stack *symtab_lvl, char *key, char *value)
 	new = ft_calloc(sizeof(t_symtab), 1);
 	new->key = key;
 	new->value = value;
+	new->next = NULL;
 	if (symtab_lvl->symtab[hash] == NULL)
 	{
 		symtab_lvl->symtab[hash] = new;
 	}
 	else
 	{
-		symtab_lvl->symtab[hash];
+		tmp = symtab_lvl->symtab[hash];
 		while (tmp->next)
 			tmp = tmp->next;
 		tmp->next = new;
 	}
+	symtab_lvl->used++;
 }
 
 /* function to initialize the environmental variables
@@ -216,16 +219,40 @@ void	ft_init_symtab(t_ms *ms)
 		ft_add_value(ms, env[i++]);
 }
 
+/* function to add a value to the symbol table
+functionality:
+1. Find the position of the equal sign in the string
+2. Create a new string with the key
+3. Create a new string with the value
+4. Add the value to the symbol table
+*/
+void	ft_add_value(t_ms *ms, char *env)
+{
+	char	*key;
+	char	*value;
+	int		i;
+
+	i = 0;
+	while (env[i] && env[i] != '=')
+		i++;
+	key = ft_substr(env, 0, i);
+	value = ft_strdup(&env[i + 1]);
+	ft_add_to_symtab(ms->be->global_symtabs, key, value);
+}
+
 /* function to add the local symtab
 functionality:
 1. Add the local symbol table to the global symbol table
 */
-void	ft_add_local_symtab(t_ms *ms, t_symtab_stack *local)
+void	ft_add_local_symtab(t_ms *ms)
 {
+	t_symtab_stack	*local;
+
 	local = ft_calloc(sizeof(t_symtab_stack), 1);
 	ms->be->global_symtabs->next = local;
 	local->symtab = ft_calloc(sizeof(char *), ms->be->global_symtabs->size);
 	local->size = ms->be->global_symtabs->size;
+	local->used = 0;
 	local->load_factor = 0;
 	local->level = ms->be->global_symtabs->level + 1;
 }
@@ -282,7 +309,7 @@ char	**ft_create_envp(t_ms *ms)
 			tmp = global->symtab[i];
 			while (tmp)
 			{
-				envp[j++] = ft_strjoin(tmp->key, tmp->value);
+				envp[j++] = ft_multistrjoin(3, tmp->key, "=", tmp->value);
 				tmp = tmp->next;
 			}
 			i++;
@@ -292,8 +319,64 @@ char	**ft_create_envp(t_ms *ms)
 	return (envp);
 }
 
+/* function that makes a local variable global
+functionality:
+1. search the variable in the local symtab
+2. if variable is found remove the value and add it to the global symtab.
+3. if the variable is not found return -1
+*/
+int	ft_make_global(t_ms *ms, char *key)
+{
+	char			*value;
+	t_symtab_stack	*local;
+	t_symtab_stack	*global;
 
+	local = ms->be->global_symtabs->next;
+	global = ms->be->global_symtabs;
+	value = ft_lookup_symtab(local, key);
+	if (value == NULL)
+		return (-1);
+	ft_add_to_symtab(global, key, value);
+	ft_remove_from_symtab(local, key);
+	return (0);
+}
 
+/* function to alter one particular value when executing a command
+functionality:
+1. take actual **envp
+2. find the stated value
+3. If value is there update
+4. If value is not there add
+*/
+char	**ft_update_envp_runtime(char **envp, char *key, char *value)
+{
+	int		i;
+	char	*tmp;
+	char	**tmp2;
+
+	i = -1;
+	if (!envp)
+		return (NULL);
+	tmp = ft_multistrjoin(3, key, "=", value);
+	if (!tmp)
+		return (NULL);
+	while (envp[++i])
+	{
+		if (!ft_strncmp(envp[i], tmp, ft_strlen(key) + 1))
+		{
+			free(envp[i]);
+			envp[i] = tmp;
+			return (envp);
+		}
+	}
+	tmp2 = ft_calloc(sizeof(char *), i + 2);
+	i = -1;
+	while (envp[++i])
+		tmp2[i] = envp[i];
+	tmp2[i] = tmp;
+	free(envp);
+	return (tmp2);
+}
 
 /* function that removes a variable from the symtab
 functionality:

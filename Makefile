@@ -16,7 +16,7 @@ CC = cc
 SRC = $(SRCDIR)main/minishell.c $(SRCDIR)ui/ui.c $(SRCDIR)executor/ms_executor.c							\
 		$(SRCDIR)executor/ms_ex_redir.c $(SRCDIR)executor/ms_heredoc.c $(SRCDIR)executor/ms_parenting.c		\
 		$(SRCDIR)executor/ms_error.c $(SRCDIR)debug/debug.c $(SRCDIR)init/ms_cleanup_utils.c				\
-		$(SRCDIR)init/ms_init.c
+		$(SRCDIR)init/ms_init.c $(SRCDIR)executor/ms_env.c
 HEADERS = $(HDRDIR)minishell.h $(HDRDIR)ms_parsing.h $(HDRDIR)ms_executor.h $(HDRDIR)ms_garbage.h			\
 		$(HDRDIR)ms_symtab.h
 
