@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/25 12:34:35 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/25 14:44:00 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,8 +211,9 @@ void	ft_init_symtab(t_ms *ms)
 	while (env[i])
 		i++;
 	ms->be->global_symtabs = ft_calloc(sizeof(t_symtab_stack), 1);
-	ft_find_next_prime(ms->be->global_symtabs->size);
+	ms->be->global_symtabs->size = ft_find_next_prime(i);
 	ms->be->global_symtabs->load_factor = 0;
+	ms->be->global_symtabs->level = 1;
 	ms->be->global_symtabs->symtab = ft_calloc(sizeof(char *), ms->be->global_symtabs->size);
 	i = 0;
 	while (env[i])
@@ -467,7 +468,7 @@ void	ft_print_symtab(t_ms *ms, int lvl)
 			while (i < tmp->size)
 			{
 				tmp2 = tmp->symtab[i];
-				while (tmp2)
+				while (tmp2 != NULL)
 				{
 					printf("key: %s, value: %s\n", tmp2->key, tmp2->value);
 					tmp2 = tmp2->next;

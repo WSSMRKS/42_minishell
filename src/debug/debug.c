@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/19 14:25:33 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/25 14:48:58 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,13 @@ void	ft_deb_commands(t_ms *ms)
 	ft_printf("21 - sjlfkdsjfs | cat | ls\n"); // [ ]
 	ft_printf("22 - cat | sjlfkdsjfs | ls\n"); // [ ]
 	ft_printf("23 - nc -l 80\n"); // [ ]
+	ft_printf("24 - print current symtabs\n"); // [ ]
+	ft_printf("25 - case to add a new variable to the local symtab\n"); // [ ]
+	ft_printf("26 - case to make local variable global\n"); // [ ]
+
 
 	case_nb = ft_atoi(readline("Choose debug case: "));
-	while (case_nb < 0 || case_nb > 23)
+	while (case_nb < 0 || case_nb > 26)
 	{
 		ft_printf("Error: wrong selection\n");
 		case_nb = ft_atoi(readline("Choose debug case: "));
@@ -640,7 +644,6 @@ void	ft_deb_commands(t_ms *ms)
 	{
 		ft_printf_err("case number 19 for \"clear\"\n");
 		ms->cmd = ft_strdup("clear");
-
 		// Allocate first command (clear)
 		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
 		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
@@ -789,6 +792,37 @@ void	ft_deb_commands(t_ms *ms)
 		ms->cmds->cmd->words->next->next->word = ft_strdup("80");  // additional argument: re
 		ms->cmds->cmd->words->next->next->next = NULL;  // no further arguments
 		ms->cmds->cmd->flags = 0;
+	}
+	else if(case_nb == 24)
+	{
+		ft_printf("24 - print current symtabs\n"); // [ ]
+		ft_print_symtab(ms, 1);
+		if (ms->be->global_symtabs->next)
+			ft_print_symtab(ms, 1);
+	}
+	else if(case_nb == 25)
+	{
+		// case to add a new variable to the local symtab
+		ft_printf("25 - add new variable to local symtab\n");
+		ft_add_local_value(ms, "NEW_VAR=23061989");
+		ft_printf("added variable NEW_VAR to local symtab\n");
+		ft_printf("the newly added Variable is: %s\n", ft_lookup_symtab(ms->be->global_symtabs->next, "NEW_VAR"));
+		ft_printf("printing the global symtab:\n");
+		ft_print_symtab(ms, 1);
+		ft_printf("printing the local symtab:\n");
+		ft_print_symtab(ms, 2);
+	}
+	else if(case_nb == 26)
+	{
+		// case to make the variable NEW_VAR global
+		ft_printf("26 - make variable NEW_VAR global\n");
+		ft_printf("return value of ft_make_global = %d\n", ft_make_global(ms, "NEW_VAR"));
+		ft_printf("the newly added Variable is: %s\n", ft_lookup_symtab(ms->be->global_symtabs->next, "NEW_VAR"));
+		ft_printf("printing the symtabs\n");
+		ft_printf("printing the global symtab:\n");
+		ft_print_symtab(ms, 1);
+		ft_printf("printing the local symtab:\n");
+		ft_print_symtab(ms, 2);
 	}
 }
 

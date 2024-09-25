@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:15 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/18 15:36:01 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/25 14:00:30 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,7 @@ void	ft_cleanup_exit(t_ms *ms, int ex)
 {
 	rl_clear_history();
 	ft_clean_be(ms);
+	ft_free_symtab_stack(ms->be->global_symtabs);
 	free(ms->be);
 	ms->be = NULL;
 	exit(ex);

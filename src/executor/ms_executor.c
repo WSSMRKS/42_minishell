@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/25 09:31:49 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/25 14:11:46 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,17 @@ void	ft_execute(t_ms *ms, t_cmd_list *curr)
 {
 	int		err;
 	char	*cmdpath;
+	char	**envp;
 
 	cmdpath = ft_search_cmd(ms, curr);
 	if (cmdpath == NULL)
 		err = 127;
 	else
-		err = execve(cmdpath, curr->cmd->argv, NULL);
+	{
+		envp = ft_create_envp(ms);
+		err = execve(cmdpath, curr->cmd->argv, envp);
+		ft_free_2d(envp);
+	}
 	ft_clear_ast(ms); // [ ] take care of this in case of not a child!!
 	ft_clear_be(ms); // [ ] take care of this in case of not a child!!
 	ft_cleanup_exit(ms, err);
