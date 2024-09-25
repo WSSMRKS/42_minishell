@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 15:50:51 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/20 11:40:02 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/25 15:16:44 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define MS_EXECUTOR_H
 # include "minishell.h"
 # define IS_BUILTIN 2
-
 
 typedef struct s_be {
 	t_garbage		*garbage;		/*clear after every execution, realloc after every execution*/
@@ -29,7 +28,5 @@ typedef struct s_be {
 	char			**builtins;		/*clear at exit*/
 	t_symtab_stack	*global_symtabs;
 }				t_be;
-
-
 
 #endif

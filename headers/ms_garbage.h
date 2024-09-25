@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 12:51:33 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/13 14:30:12 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/25 15:16:47 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,5 @@ typedef struct s_garbage {
 	int					nb_heredocs;
 	t_list_hdfiles		*heredoc;
 }				t_garbage;
-
-
-
 
 #endif
