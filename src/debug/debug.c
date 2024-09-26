@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/25 14:48:58 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/09/26 11:24:23 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -804,7 +804,19 @@ void	ft_deb_commands(t_ms *ms)
 	{
 		// case to add a new variable to the local symtab
 		ft_printf("25 - add new variable to local symtab\n");
-		ft_add_local_value(ms, "NEW_VAR=23061989");
+		if (ft_lookup_symtab(ms->be->global_symtabs->next, "NEW_VAR"))
+		{
+			ft_printf("variable NEW_VAR already exists in local symtab\n");
+			if (ft_update_symtab(ms->be->global_symtabs->next, "NEW_VAR", "23061989"))
+				ft_printf("variable NEW_VAR added to local symtab\n");
+			else
+				ft_printf("variable NEW_VAR not added to local symtab\n");
+		}
+		else
+		{
+			ft_printf("variable NEW_VAR does not exist in local symtab\n");
+			ft_add_local_value(ms, "NEW_VAR=23061989");
+		}
 		ft_printf("added variable NEW_VAR to local symtab\n");
 		ft_printf("the newly added Variable is: %s\n", ft_lookup_symtab(ms->be->global_symtabs->next, "NEW_VAR"));
 		ft_printf("printing the global symtab:\n");
@@ -816,8 +828,16 @@ void	ft_deb_commands(t_ms *ms)
 	{
 		// case to make the variable NEW_VAR global
 		ft_printf("26 - make variable NEW_VAR global\n");
-		ft_printf("return value of ft_make_global = %d\n", ft_make_global(ms, "NEW_VAR"));
-		ft_printf("the newly added Variable is: %s\n", ft_lookup_symtab(ms->be->global_symtabs->next, "NEW_VAR"));
+		if (ft_lookup_symtab(ms->be->global_symtabs, "NEW_VAR"))
+		{
+			ft_printf("variable NEW_VAR already exists in global symtab\n");
+		}
+		else
+		{
+			ft_printf("variable NEW_VAR does not exist in global symtab\n");
+			ft_printf("return value of ft_make_global = %d\n", ft_make_global(ms, "NEW_VAR"));
+			ft_printf("the newly added Variable is: %s\n", ft_lookup_symtab(ms->be->global_symtabs, "NEW_VAR"));
+		}
 		ft_printf("printing the symtabs\n");
 		ft_printf("printing the global symtab:\n");
 		ft_print_symtab(ms, 1);
