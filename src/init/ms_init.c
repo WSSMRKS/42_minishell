@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_init.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 19:05:44 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/25 11:15:23 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/10/07 17:11:01 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	ft_reinit_be(t_ms *ms)
 	ms->be->garbage->nb_heredocs = 0;
 	i = 0;
 	curr = ms->cmds;
+	// curr = NULL;
 	while (curr)
 	{
 		i++;

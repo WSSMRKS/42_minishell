@@ -6,7 +6,7 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/07 16:38:55 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/10/07 17:15:16 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_front_end(char *cmd)
 	// t_cmd_list *cmd_list;
 	// (void) cmd;
 	tokenizer(cmd, &tokens);
-	printf("first token = ");
+	// printf("first token = ");
 	print_token(tokens);
 	// parse(tokens);
 }
@@ -90,8 +90,8 @@ void	ft_repl(int argc, char **argv, char **envp)
 			break ;
 		}
 		ft_front_end(ms.cmd);
-		if(ms.cmds)
-			ft_back_end(&ms);
+		// if(ms.cmds)
+		// 	ft_back_end(&ms);
 		i++;
 	}
 	ft_cleanup_exit(&ms, 0);
