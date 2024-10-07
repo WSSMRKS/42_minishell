@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:15 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/25 14:00:30 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/10/07 16:36:53 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,15 @@ void	ft_clear_redir(t_list_redir	*redir)
 	{
 		to_free = redir;
 		redir = redir->next;
-		if(to_free->from)
+		if(to_free->target)
 		{
-			if (to_free->from->filename)
+			if (to_free->target->filename)
 			{
-				free(to_free->from->filename);
-				to_free->from->filename = NULL;
+				free(to_free->target->filename);
+				to_free->target->filename = NULL;
 			}
-			free(to_free->from);
-			to_free->from = NULL;
+			free(to_free->target);
+			to_free->target = NULL;
 		}
 		if(to_free->hd_del)
 		{
@@ -40,15 +40,15 @@ void	ft_clear_redir(t_list_redir	*redir)
 			free(to_free->hd_file);
 			to_free->hd_file = NULL;
 		}
-		if(to_free->to)
+		if(to_free->target)
 		{
-			if (to_free->to->filename)
+			if (to_free->target->filename)
 			{
-				free(to_free->to->filename);
-				to_free->to->filename = NULL;
+				free(to_free->target->filename);
+				to_free->target->filename = NULL;
 			}
-			free(to_free->to);
-			to_free->to = NULL;
+			free(to_free->target);
+			to_free->target = NULL;
 		}
 		free(to_free);
 		to_free = NULL;

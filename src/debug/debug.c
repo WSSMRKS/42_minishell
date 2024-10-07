@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/07 14:18:32 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/10/07 16:36:53 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@
 // 	ms->cmds = ft_calloc(sizeof(t_cmd_list), 1); // [ ] free me
 // 	ms->cmds->next = NULL;
 // 	ms->cmds->cmd->redir->next->next->next = NULL;
-// 	ms->cmds->cmd->redir->from = NULL;
+// 	ms->cmds->cmd->redir->target = NULL;
 // 	ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1); // [ ] free me
 // 	ms->cmds->cmd->flags = 1;
 // 	ms->cmds->cmd->redir = ft_calloc(sizeof(t_list_redir), 1); // [ ] free me
 // 	ms->cmds->cmd->redir->instruction = redir_here_doc;
 // 	ms->cmds->cmd->redir->hd_del = ft_strdup("eof");
-// 	ms->cmds->cmd->redir->next->from = NULL;
-// 	ms->cmds->cmd->redir->next->next->from = NULL;
+// 	ms->cmds->cmd->redir->next->target = NULL;
+// 	ms->cmds->cmd->redir->next->next->target = NULL;
 // 	ms->cmds->cmd->redir->next->instruction = redir_here_doc;
 // 	ms->cmds->cmd->redir->next->next->instruction = redir_here_doc;
 // 	ms->cmds->cmd->redir->next->hd_del = ft_strdup("eof");
@@ -136,9 +136,9 @@ void	ft_deb_commands(t_ms *ms)
 		ms->cmds->cmd->redir->next = ft_calloc(sizeof(t_list_redir), 1); // [ ] free me
 		ms->cmds->cmd->redir->next->instruction = redir_outfile;
 		ms->cmds->cmd->redir->next->rightmost = true;
-		ms->cmds->cmd->redir->next->from = NULL;
-		ms->cmds->cmd->redir->next->to = ft_calloc(sizeof(t_redir_aim), 1); // [ ] free me
-		ms->cmds->cmd->redir->next->to->filename = ft_strdup("file1");
+		ms->cmds->cmd->redir->next->target = NULL;
+		ms->cmds->cmd->redir->next->target = ft_calloc(sizeof(t_redir_aim), 1); // [ ] free me
+		ms->cmds->cmd->redir->next->target->filename = ft_strdup("file1");
 		ms->cmds->cmd->redir->next->next = NULL;
 		ms->cmds->next->cmd = ft_calloc(sizeof(t_simple_com), 1); // [ ] free me
 		ms->cmds->next->cmd->words = ft_calloc(sizeof(t_list_words), 1); // [ ] free me
@@ -152,9 +152,9 @@ void	ft_deb_commands(t_ms *ms)
 		ms->cmds->next->cmd->redir->next = ft_calloc(sizeof(t_list_redir), 1); // [ ] free me
 		ms->cmds->next->cmd->redir->next->instruction = redir_outfile;
 		ms->cmds->next->cmd->redir->next->rightmost = true;
-		ms->cmds->next->cmd->redir->next->from = NULL;
-		ms->cmds->next->cmd->redir->next->to = ft_calloc(sizeof(t_redir_aim), 1); // [ ] free me
-		ms->cmds->next->cmd->redir->next->to->filename = ft_strdup("file2");
+		ms->cmds->next->cmd->redir->next->target = NULL;
+		ms->cmds->next->cmd->redir->next->target = ft_calloc(sizeof(t_redir_aim), 1); // [ ] free me
+		ms->cmds->next->cmd->redir->next->target->filename = ft_strdup("file2");
 		ms->cmds->next->cmd->redir->next->next = NULL;
 		ms->be->nb_cmds = 2;
 	}
@@ -175,9 +175,9 @@ void	ft_deb_commands(t_ms *ms)
 		ms->cmds->cmd->flags = 0;
 		ms->cmds->cmd->redir = ft_calloc(sizeof(t_list_redir), 1); // [ ] free me
 		ms->cmds->cmd->redir->instruction = redir_outfile;
-		ms->cmds->cmd->redir->from = NULL;
-		ms->cmds->cmd->redir->to = ft_calloc(sizeof(t_redir_aim), 1); // [ ] free me
-		ms->cmds->cmd->redir->to->filename = ft_strdup("file1");
+		ms->cmds->cmd->redir->target = NULL;
+		ms->cmds->cmd->redir->target = ft_calloc(sizeof(t_redir_aim), 1); // [ ] free me
+		ms->cmds->cmd->redir->target->filename = ft_strdup("file1");
 		ms->cmds->cmd->redir->rightmost = true;
 		ms->cmds->next->cmd = ft_calloc(sizeof(t_simple_com), 1); // [ ] free me
 		ms->cmds->next->cmd->words = ft_calloc(sizeof(t_list_words), 1); // [ ] free me
@@ -188,9 +188,9 @@ void	ft_deb_commands(t_ms *ms)
 		ms->cmds->next->cmd->flags = 0;
 		ms->cmds->next->cmd->redir = ft_calloc(sizeof(t_list_redir), 1); // [ ] free me
 		ms->cmds->next->cmd->redir->instruction = redir_outfile;
-		ms->cmds->next->cmd->redir->from = NULL;
-		ms->cmds->next->cmd->redir->to = ft_calloc(sizeof(t_redir_aim), 1); // [ ] free me
-		ms->cmds->next->cmd->redir->to->filename = ft_strdup("file2");
+		ms->cmds->next->cmd->redir->target = NULL;
+		ms->cmds->next->cmd->redir->target = ft_calloc(sizeof(t_redir_aim), 1); // [ ] free me
+		ms->cmds->next->cmd->redir->target->filename = ft_strdup("file2");
 		ms->cmds->next->cmd->redir->rightmost = true;
 		ms->cmds->next->next->cmd = ft_calloc(sizeof(t_simple_com), 1); // [ ] free me
 		ms->cmds->next->next->cmd->words = ft_calloc(sizeof(t_list_words), 1); // [ ] free me
@@ -201,9 +201,9 @@ void	ft_deb_commands(t_ms *ms)
 		ms->cmds->next->next->cmd->flags = 0;
 		ms->cmds->next->next->cmd->redir = ft_calloc(sizeof(t_list_redir), 1); // [ ] free me
 		ms->cmds->next->next->cmd->redir->instruction = redir_outfile;
-		ms->cmds->next->next->cmd->redir->from = NULL;
-		ms->cmds->next->next->cmd->redir->to = ft_calloc(sizeof(t_redir_aim), 1); // [ ] free me
-		ms->cmds->next->next->cmd->redir->to->filename = ft_strdup("file3");
+		ms->cmds->next->next->cmd->redir->target = NULL;
+		ms->cmds->next->next->cmd->redir->target = ft_calloc(sizeof(t_redir_aim), 1); // [ ] free me
+		ms->cmds->next->next->cmd->redir->target->filename = ft_strdup("file3");
 		ms->cmds->next->next->cmd->redir->rightmost = true;
 		ms->be->nb_cmds = 3;
 	}
@@ -282,9 +282,9 @@ void	ft_deb_commands(t_ms *ms)
 		ms->cmds->next->cmd->redir = ft_calloc(sizeof(t_list_redir), 1);  // [ ] free me
 		ms->cmds->next->cmd->redir->instruction = redir_outfile;
 		ms->cmds->next->cmd->redir->rightmost = true;
-		ms->cmds->next->cmd->redir->from = NULL;
-		ms->cmds->next->cmd->redir->to = ft_calloc(sizeof(t_redir_aim), 1);  // [ ] free me
-		ms->cmds->next->cmd->redir->to->filename = ft_strdup("output.txt");
+		ms->cmds->next->cmd->redir->target = NULL;
+		ms->cmds->next->cmd->redir->target = ft_calloc(sizeof(t_redir_aim), 1);  // [ ] free me
+		ms->cmds->next->cmd->redir->target->filename = ft_strdup("output.txt");
 
 		ms->cmds->next->next = NULL;
 		ms->be->nb_cmds = 2;
@@ -302,8 +302,8 @@ void	ft_deb_commands(t_ms *ms)
 		ms->cmds->cmd->words->next = NULL;
 		ms->cmds->cmd->redir = ft_calloc(sizeof(t_list_redir), 1);  // [ ] free me
 		ms->cmds->cmd->redir->instruction = redir_infile;
-		ms->cmds->cmd->redir->from = ft_calloc(sizeof(t_redir_aim), 1);  // [ ] free me
-		ms->cmds->cmd->redir->from->filename = ft_strdup("input.txt");
+		ms->cmds->cmd->redir->target = ft_calloc(sizeof(t_redir_aim), 1);  // [ ] free me
+		ms->cmds->cmd->redir->target->filename = ft_strdup("input.txt");
 		ms->cmds->cmd->redir->rightmost = true;
 
 		// Pipe to second command: sort
@@ -354,9 +354,9 @@ void	ft_deb_commands(t_ms *ms)
 
 		ms->cmds->next->cmd->redir = ft_calloc(sizeof(t_list_redir), 1);  // [ ] free me
 		ms->cmds->next->cmd->redir->instruction = redir_outfile;
-		ms->cmds->next->cmd->redir->from = NULL;
-		ms->cmds->next->cmd->redir->to = ft_calloc(sizeof(t_redir_aim), 1);  // [ ] free me
-		ms->cmds->next->cmd->redir->to->filename = ft_strdup("todo_list.txt");
+		ms->cmds->next->cmd->redir->target = NULL;
+		ms->cmds->next->cmd->redir->target = ft_calloc(sizeof(t_redir_aim), 1);  // [ ] free me
+		ms->cmds->next->cmd->redir->target->filename = ft_strdup("todo_list.txt");
 		ms->cmds->next->cmd->redir->rightmost = true;
 
 		ms->cmds->next->next = NULL;
@@ -438,9 +438,9 @@ void	ft_deb_commands(t_ms *ms)
 		ms->cmds->cmd->redir = ft_calloc(sizeof(t_list_redir), 1);  // [ ] free me
 		ms->cmds->cmd->redir->instruction = redir_outfile;
 		ms->cmds->cmd->redir->rightmost = true;
-		ms->cmds->cmd->redir->from = NULL;
-		ms->cmds->cmd->redir->to = ft_calloc(sizeof(t_redir_aim), 1);  // [ ] free me
-		ms->cmds->cmd->redir->to->filename = ft_strdup("home_directory.txt");
+		ms->cmds->cmd->redir->target = NULL;
+		ms->cmds->cmd->redir->target = ft_calloc(sizeof(t_redir_aim), 1);  // [ ] free me
+		ms->cmds->cmd->redir->target->filename = ft_strdup("home_directory.txt");
 
 		ms->cmds->next = NULL;
 		ms->be->nb_cmds = 1;
@@ -669,7 +669,7 @@ void	ft_deb_commands(t_ms *ms)
 		ms->cmds->cmd->redir->instruction = redir_here_doc;
 		ms->cmds->cmd->redir->hd_del = ft_strdup("eof");
 		ms->cmds->cmd->redir->rightmost = true;
-		ms->cmds->cmd->redir->from = NULL;
+		ms->cmds->cmd->redir->target = NULL;
 		ms->cmds->next = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
 		ms->cmds->next->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
 		ms->cmds->next->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
@@ -678,10 +678,10 @@ void	ft_deb_commands(t_ms *ms)
 		ms->cmds->next->cmd->flags = 0;
 		ms->cmds->next->cmd->redir = ft_calloc(sizeof(t_list_redir), 1); // [ ] free me
 		ms->cmds->next->cmd->redir->instruction = redir_outfile;
-		ms->cmds->next->cmd->redir->to = ft_calloc(sizeof(t_redir_aim), 1); // [ ] free me
-		ms->cmds->next->cmd->redir->to->filename = ft_strdup("hd_output1");
+		ms->cmds->next->cmd->redir->target = ft_calloc(sizeof(t_redir_aim), 1); // [ ] free me
+		ms->cmds->next->cmd->redir->target->filename = ft_strdup("hd_output1");
 		ms->cmds->next->cmd->redir->rightmost = true;
-		ms->cmds->next->cmd->redir->from = NULL;
+		ms->cmds->next->cmd->redir->target = NULL;
 		ms->cmds->next->next = NULL;
 	}
 	else if (case_nb == 21)  // case number 21 for "sjlfkdsjfs | cat | ls"

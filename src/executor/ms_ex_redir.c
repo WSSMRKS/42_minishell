@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/19 12:22:03 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/10/07 16:35:44 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,16 +70,16 @@ void	ft_redir_handler(t_ms *ms, t_cmd_list *curr, int i)
 	{
 		if (curr->cmd->prio_in == 3 && rd->instruction == redir_here_doc
 			&& rd->rightmost == true)
-			ft_infile(ms, rd->from->filename);
+			ft_infile(ms, rd->target->filename);
 		else if (curr->cmd->prio_in == 2
 			&& rd->instruction == redir_infile && rd->rightmost == true)
-			ft_infile(ms, rd->from->filename);
+			ft_infile(ms, rd->target->filename);
 		if (curr->cmd->prio_out == 3 && rd->instruction == redir_append
 			&& rd->rightmost == true)
-			ft_outfile(ms, rd->to->filename, O_APPEND);
+			ft_outfile(ms, rd->target->filename, O_APPEND);
 		else if (curr->cmd->prio_out == 2
 			&& rd->instruction == redir_outfile && rd->rightmost == true)
-			ft_outfile(ms, rd->to->filename, O_WRONLY);
+			ft_outfile(ms, rd->target->filename, O_WRONLY);
 		rd = rd->next;
 	}
 }

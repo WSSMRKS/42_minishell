@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:56:05 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/18 12:55:23 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/10/07 16:34:42 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct s_redir_aim {
 }				t_redir_aim;
 
 /* Instead of input use infile/inpipe to distinguish.*/
-enum	e_redir_type {
+typedef enum	e_redir_type {
 	// redir_output,
 	// redir_input,
 	redir_append,
@@ -65,17 +65,26 @@ enum	e_redir_type {
 	redir_outfile,
 	redir_inpipe,
 	redir_outpipe
-};
+}	e_redir_type;
 
 typedef struct s_list_redir {
 	struct s_list_redir	*next;
-	enum e_redir_type	instruction;
-	t_redir_aim			*from;
-	t_redir_aim			*to;
-	char				*hd_del;
-	t_redir_aim			*hd_file;
-	int					rightmost;
+	e_redir_type	instruction;	/* what is to be done*/
+	t_redir_aim			*target;	/* fd or variable to be redirected */
+	char				*hd_del; /* EOF token string, after << */
+	t_redir_aim			*hd_file;	/* hd tmp file fd and name*/
+	int					rightmost;	/* valid redirection indicator*/
 }				t_list_redir;
+
+// typedef struct s_list_redir {
+// 	struct s_list_redir	*next;
+// 	enum e_redir_type	instruction;
+// 	t_redir_aim			*from;
+// 	t_redir_aim			*to;
+// 	char				*hd_del;
+// 	t_redir_aim			*hd_file;
+// 	int					rightmost;
+// }				t_list_redir;
 
 /*simple command struct: all commands that are without subshells and connections
 	flags:
