@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/19 11:38:10 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/10/07 14:52:16 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,14 +85,17 @@ void	ft_hd_input(t_list_redir *curr, t_ms *ms)
 	while (1)
 	{
 		line = readline("> ");
-		if (!line)
-			ft_cleanup_exit(ms, EIO); //readline error;
 		if (!curr->from)
 		{
 			curr->from = ft_calloc(sizeof(t_redir_aim), 1);
 			curr->from->filename = NULL;
 			curr->from->filename = ft_tmp_name(ms, &fd);
 			curr->from->flags = 0;
+		}
+		if (!line)
+		{
+			printf("minishell: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", line_nb, curr->hd_del);
+			break;
 		}
 		if (ft_strncmp(curr->hd_del, line, ldel) == 0 && (int) ft_strlen(line) == ldel)
 			break ;

@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/18 15:35:54 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/10/07 14:40:19 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,13 @@ void	ft_repl(int argc, char **argv, char **envp)
 	while (1) // read eval print loop REPL
 	{
 		ms.cmd = choose_prompt(mode);
-		printf("{%s}\n", ms.cmd);
 		if (!ms.cmd)
+		{
+			printf("exit\n");
 			break ;
+		}
+		else
+			printf("{%s}\n", ms.cmd);
 		add_history(ms.cmd);
 		if (ms.cmd && ms.cmd[0] != '\0' && ms.cmd[ft_strlen(ms.cmd) - 1] == '\\')
 			mode = 1;

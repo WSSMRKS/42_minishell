@@ -5,3 +5,5 @@
 [ ] simplify debugger
 [ ] implement builtins
 [ ] implement execution of builtins
+[ ] implement signals
+
