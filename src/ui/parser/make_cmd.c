@@ -1,28 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
+/*   make_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/06 11:49:37 by maweiss           #+#    #+#             */
-/*   Updated: 2023/12/06 20:05:34 by maweiss          ###   ########.fr       */
+/*   Created: 2024/09/08 14:17:31 by dkoca             #+#    #+#             */
+/*   Updated: 2024/09/08 14:19:29 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+/* make bare command (init to 0)*/
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
-{
-	t_list	*tmp;
-
-	if (*lst == NULL)
-		*lst = new;
-	else
-	{
-		tmp = *lst;
-		while (tmp->next != NULL)
-			tmp = tmp->next;
-		tmp->next = new;
-	}
-}
+/*make_simple_command: alloc and init 0. 
+	make word list, init flags
+	set redirections*/

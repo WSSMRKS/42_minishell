@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/07 15:02:51 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/10/07 16:27:53 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,12 @@ in minishell.h */
 # include "ms_parsing.h"
 # include "ms_garbage.h"
 # include "ms_executor.h"
+# include "tokenization.h"
+# include "../libft/libft.h"
+
+
+#define FALSE 0
+#define TRUE 1
 
 /* minishell struct. Main struct that is passed throughout the whole program.
 	global flags: 1 = heredoc present	*/
@@ -133,5 +139,10 @@ void			ft_unset(t_ms *ms, t_cmd_list *curr);
 void			ft_cd(t_ms *ms, t_cmd_list *curr);
 void			ft_pwd(t_ms *ms, t_cmd_list *curr);
 void			ft_echo(t_ms *ms, t_cmd_list *curr);
+
+/* ms_parse */
+int parse(t_token *tokens);
+t_list_words *make_word(t_tok_span *word_info);
+t_list_words **make_word_list(t_tok_span *word_info, t_list_words ***tail);
 
 #endif
