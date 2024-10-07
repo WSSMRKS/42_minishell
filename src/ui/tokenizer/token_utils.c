@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
+/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 05:48:37 by dkoca             #+#    #+#             */
-/*   Updated: 2024/09/10 20:28:43 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/10/07 16:50:53 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int is_word(int cur_char)
 {
 	if (!ft_strchr("|<> \t", cur_char))
 		return (TRUE);
-	return (FALSE);	
+	return (FALSE);
 }
 
 void skip_whitespace_between_words(char **cmd)
@@ -68,15 +68,16 @@ int is_end(char *chr_itr)
 /* debugging function*/
 void print_token(t_token *token)
 {
-	size_t i;
-	if (token)
-	{
-		for (i = 0; i < token->cmd.len; i++)
-		{
-			printf("%c", token->cmd.start[i]);
-		}
-	printf("\n");
-	printf("token len = %zu\n", token->cmd.len);
-	printf("token type = %i\n", token->type);
-	}
+	(void) token;
+	// size_t i;
+	// if (token)
+	// {
+	// 	for (i = 0; i < token->cmd.len; i++)
+	// 	{
+	// 		printf("%c", token->cmd.start[i]);
+	// 	}
+	// printf("\n");
+	// printf("token len = %zu\n", token->cmd.len);
+	// printf("token type = %i\n", token->type);
+	// }
 }

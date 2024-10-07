@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
+/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:46:27 by dkoca             #+#    #+#             */
-/*   Updated: 2024/10/07 16:39:09 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/10/07 16:47:01 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@
 // 	{
 // 		*redir->target->filename = ft_calloc(tokens->cmd.len + 1, sizeof(char));
 // 		ft_strlcpy(tokens->cmd.start, *redir->target->filename, tokens->cmd.len + 1);
-// 		// redir->target->fd = -1; 	
+// 		// redir->target->fd = -1;
 // 	}
 // 	else if (*redir->instruction == redir_here_doc)
 // 	{
 // 		/* code */
 // 	}
-	
-	
+
+
 // }
 
 
@@ -53,23 +53,23 @@
 // // 	if (redir->instruction == redir_infile)
 // // 	{
 // // 		if (tokens->next ==)
-// // 		redir->from->fd = ;
+// // 		redir->target->fd = ;
 // // 	}
-	
+
 // // }
 
 // t_list_redir *make_redirection(t_token *token)
 // {
 // 	t_list_redir *redirection;
-	
+
 // 	redirection = ft_calloc(1, sizeof(t_list_redir));
 // 	redir_type_match(token->type, &redirection->instruction);
 // 	if (token->next)
 // 		set_filename(token->next, &redirection);
 // 	else
 // 		return (NULL);
-	
-// 	// set infile	
+
+// 	// set infile
 // 	return (redirection);
 // }
 
@@ -90,7 +90,7 @@
 // 	}
 // 	// else if (token->type >= REDIRECTION)
 // 	// {
-		
+
 // 	// }
 // 	// else
 // 		// return (NULL);
@@ -103,15 +103,15 @@
 // 	t_cmd_list *cmd_list;
 // 	t_list_words **wl_tail;
 // 	t_list_redir **rl_tail;
-	
+
 // 	cmd_list = ft_calloc(1, sizeof(t_cmd_list));
 // 	wl_tail = NULL;
 // 	while (tokens) //parse simple command
 // 	{
 // 		if (tokens->type == TOKEN_PIPE)
-// 			continue;	
+// 			continue;
 // 		cmd_list->cmd = make_simple_cmd(tokens, cmd_list->cmd, &wl_tail, &rl_tail);
-// 		tokens = tokens->next;				
+// 		tokens = tokens->next;
 // 	}
 // 	return (EXIT_SUCCESS);
 // }
@@ -128,9 +128,9 @@
 // // 		{
 // // 			/* c
 // // 		}
-		
+
 // // 		temp = temp->next;
 // // 		/* code */
 // // 	}
-	
+
 // // }
