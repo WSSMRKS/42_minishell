@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dkoca <dkoca@student.42berlin.de>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 13:46:27 by dkoca             #+#    #+#             */
-/*   Updated: 2024/09/15 22:51:58 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/09/24 17:22:32 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,22 +27,24 @@ void redir_type_match(int type, e_redir_type *instruction)
 		*instruction = redir_err;
 }
 
-char *set_filename(t_token *tokens, t_list_redir *redir)
+void set_filename(t_token *tokens, t_list_redir **redir)
 {
 	char *filename;
 
-	if (redir->instruction == redir_infile)
+	if (*redir->instruction == redir_infile
+		|| *redir->instruction == redir_outfile
+		|| *redir->instruction == redir_append)
 	{
-		redir->from->filename = ft_calloc(tokens->cmd.len + 1, sizeof(char));
-		ft_strlcpy(tokens->cmd.start, redir->from->filename, tokens->cmd.len + 1);
-		redir->from->fd = -1; 	
+		*redir->target->filename = ft_calloc(tokens->cmd.len + 1, sizeof(char));
+		ft_strlcpy(tokens->cmd.start, *redir->target->filename, tokens->cmd.len + 1);
+		// redir->target->fd = -1; 	
 	}
-	else if (redir->instruction == redir_outfile)
+	else if (*redir->instruction == redir_here_doc)
 	{
-		redir->to->filename = ft_calloc(tokens->cmd.len + 1, sizeof(char));
-		ft_strlcpy(tokens->cmd.start, redir->to->filename, tokens->cmd.len + 1);
-		redir->to->fd = -1;
+		/* code */
 	}
+	
+	
 }
 
 
@@ -63,12 +65,12 @@ t_list_redir *make_redirection(t_token *token)
 	redirection = ft_calloc(1, sizeof(t_list_redir));
 	redir_type_match(token->type, &redirection->instruction);
 	if (token->next)
-		set_filename(token->next, redirection);
+		set_filename(token->next, &redirection);
 	else
 		return (NULL);
 	
 	// set infile	
-	
+	return (redirection);
 }
 
 /* TODO: Add error checking allocation functions*/
@@ -106,10 +108,8 @@ int parse_simple_cmd(t_token *tokens)
 	wl_tail = NULL;
 	while (tokens) //parse simple command
 	{
-		// if (tokens->type == TOKEN_PIPE)
-		// {
-			
-		// }
+		if (tokens->type == TOKEN_PIPE)
+			continue;	
 		cmd_list->cmd = make_simple_cmd(tokens, cmd_list->cmd, &wl_tail, &rl_tail);
 		tokens = tokens->next;				
 	}
@@ -118,10 +118,18 @@ int parse_simple_cmd(t_token *tokens)
 
 // int parse(t_token *tokens)
 // {
+// 	t_token *temp;
 // 	if (!tokens)
 // 		return (EXIT_FAILURE);
-// 	while (tokens->cmd.start != )
+// 	temp = tokens;
+// 	while (temp)
 // 	{
+// 		if (temp->type == TOKEN_PIPE)
+// 		{
+// 			/* c
+// 		}
+		
+// 		temp = temp->next;
 // 		/* code */
 // 	}
 	

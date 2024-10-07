@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   ms_parsing.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dkoca <dkoca@student.42berlin.de>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:56:05 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/10 17:44:31 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/09/24 17:21:26 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-/* ms_parsing.h: Header file responsible for all the structures necessary to
- create the abstract syntax tree (ast). */
 
 #ifndef MS_PARSING_H
 # define MS_PARSING_H
 # include "minishell.h"
 
+/* ms_parsing.h: Header file responsible for all the structures necessary to
+create the abstract syntax tree (ast).
+*/
 // typedef struct s_word_desc {
 // 	char	*word;
 // 	int		flags;
@@ -68,8 +68,7 @@ typedef enum	e_redir_type {
 typedef struct s_list_redir {
 	struct s_list_redir	*next;
 	e_redir_type	instruction;	/* what is to be done*/
-	t_redir_aim			*from;	/* fd or variable to be redirected */
-	t_redir_aim			*to;
+	t_redir_aim			*target;	/* fd or variable to be redirected */
 	char				*hd_del; /* EOF token string, after << */
 	t_redir_aim			*hd_file;	/* hd tmp file fd and name*/
 	int					rightmost;	/* valid redirection indicator*/
