@@ -6,7 +6,7 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/07 17:15:16 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/10/13 22:56:50 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ft_front_end(char *cmd)
 	tokenizer(cmd, &tokens);
 	// printf("first token = ");
 	print_token(tokens);
-	// parse(tokens);
+	parse_simple_cmd(tokens);
 }
 
 char	*choose_prompt(int mode)

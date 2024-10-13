@@ -6,7 +6,7 @@
 /*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/07 16:27:53 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/10/13 22:55:57 by dkoca            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ void			ft_pwd(t_ms *ms, t_cmd_list *curr);
 void			ft_echo(t_ms *ms, t_cmd_list *curr);
 
 /* ms_parse */
-int parse(t_token *tokens);
+int parse_simple_cmd(t_token *tokens);
 t_list_words *make_word(t_tok_span *word_info);
 t_list_words **make_word_list(t_tok_span *word_info, t_list_words ***tail);
 
