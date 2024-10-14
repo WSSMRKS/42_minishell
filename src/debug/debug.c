@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/07 16:47:15 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/10/14 19:44:32 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,12 @@ void	ft_deb_commands(t_ms *ms)
 	ft_printf("24 - print current symtabs\n"); // [ ]
 	ft_printf("25 - case to add a new variable to the local symtab\n"); // [ ]
 	ft_printf("26 - case to make local variable global\n"); // [ ]
+	ft_printf("27 - cat | cat | cat\n"); // [ ]
+
 
 
 	case_nb = ft_atoi(readline("Choose debug case: "));
-	while (case_nb < 0 || case_nb > 26)
+	while (case_nb < 0 || case_nb > 27)
 	{
 		ft_printf("Error: wrong selection\n");
 		case_nb = ft_atoi(readline("Choose debug case: "));
@@ -843,6 +845,48 @@ void	ft_deb_commands(t_ms *ms)
 		ft_print_symtab(ms, 1);
 		ft_printf("printing the local symtab:\n");
 		ft_print_symtab(ms, 2);
+	}
+		else if (case_nb == 27)  // case number 4 for "cat | cat | cat"
+	{
+		ft_printf_err("This command is not yet executed properly. It is a pipeline with 3 commands.\n");
+		ms->cmd = ft_strdup("cat | cat | cat >test0815.txt");
+
+		// Allocate first command (cat)
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("cat");  // first command: cat
+		ms->cmds->cmd->words->next = NULL;  // no additional arguments
+		ms->cmds->cmd->flags = 0;
+
+		// Allocate second command (cat)
+		ms->cmds->next = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->next->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->next->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->next->cmd->words->word = ft_strdup("cat");  // second command: cat
+		ms->cmds->next->cmd->words->next = NULL;  // no additional arguments
+		ms->cmds->next->cmd->flags = 0;
+
+		// Allocate third command (ls)
+		ms->cmds->next->next = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->next->next->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->next->next->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->next->next->cmd->words->word = ft_strdup("cat");  // third command: ls
+		ms->cmds->next->next->cmd->words->next = NULL;  // no additional arguments
+		ms->cmds->next->next->cmd->flags = 0;
+
+		ms->cmds->next->next->cmd->redir = ft_calloc(sizeof(t_list_redir), 1);  // [ ] free me
+		ms->cmds->next->next->cmd->redir->instruction = redir_outfile;
+		ms->cmds->next->next->cmd->redir->target = NULL;
+		ms->cmds->next->next->cmd->redir->target = ft_calloc(sizeof(t_redir_aim), 1);  // [ ] free me
+		ms->cmds->next->next->cmd->redir->target->filename = ft_strdup("test0815.txt");
+		ms->cmds->next->next->cmd->redir->rightmost = true;
+
+		// End of command chain
+		ms->cmds->next->next->next = NULL;
+
+		// Set the number of commands
+		ms->be->nb_cmds = 3;  // 3 commands in the pipeline
 	}
 }
 

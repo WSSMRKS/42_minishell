@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 23:52:06 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/19 12:33:19 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/10/14 19:14:58 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 void	ft_wait_error(t_ms *ms)
 {
 	int	i;
-	int	err;
+	// int	err;
 	t_cmd_list *curr;
 
 	curr = ms->cmds;
 	i = 0;
-	err = 0;
+	// err = 0;
 	while (i < ms->be->nb_cmds)
 	{
 		ms->be->child_ret[i] = 0;
@@ -31,8 +31,8 @@ void	ft_wait_error(t_ms *ms)
 			ms->be->child_ret[i] = WEXITSTATUS(ms->be->child_ret[i]);
 			if (ms->be->child_ret[i] == 127)
 				ft_printf_err("%s: command not found\n", curr->cmd->words->word); // other errors are handled in child.
-			if (i == ms->be->nb_cmds - 1)
-				err = ms->be->child_ret[i];
+			// if (i == ms->be->nb_cmds - 1)
+				// err = ms->be->child_ret[i];
 		}
 		curr = curr->next;
 		i++;
