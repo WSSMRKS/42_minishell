@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/29 14:27:00 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/10/29 15:29:39 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,10 +116,17 @@ void	ft_add_global_value(t_ms *ms, char *env)
 	i = 0;
 	while (env[i] && env[i] != '=')
 		i++;
+	global = ms->be->global_symtabs;
 	key = ft_substr(env, 0, i);
 	value = ft_strdup(&env[i + 1]);
-	global = ms->be->global_symtabs;
-	ft_add_to_symtab(global, key, value);
+	if (ft_lookup_symtab(global, key) != NULL)
+	{
+		ft_update_symtab_value(global, key, value);
+		free(value);
+		free(key);
+	}
+	else
+		ft_add_to_symtab(global, key, value);
 }
 
 /* function to add a new value to the local variables
@@ -148,7 +155,14 @@ void	ft_add_local_value(t_ms *ms, char *env)
 	if (ms->be->global_symtabs->next == NULL)
 		ft_add_local_symtab(ms);
 	local = ms->be->global_symtabs->next;
-	ft_add_to_symtab(local, key, value);
+	if (ft_lookup_symtab(local, key) != NULL)
+	{
+		ft_update_symtab_value(local, key, value);
+		free(value);
+		free(key);
+	}
+	else
+		ft_add_to_symtab(local, key, value);
 }
 
 /* function to add a new value to the symbol table
