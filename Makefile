@@ -31,7 +31,7 @@ BONUS_OBJ = $(BONUS_SRC:.c=.o)
 all: $(NAME)	# Compile the entire project including bonus.
 
 $(NAME): $(LIBFT_SRC) $(SRC_OBJ)# Compile mandatory part.
-	$(CC) $(COMPILE_OPTIONS) $(SRC_OBJ) $(LIBFT_SRC) -o $(NAME)
+	$(CC) $(SRC_OBJ) $(LIBFT_SRC) -o $(NAME) $(COMPILE_OPTIONS)
 
 $(LIBFT_SRC): # Download and Compile libft
   ifeq ("$(wildcard $(LIBFTDIR))", "")
