@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/07 16:47:15 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/10/29 14:31:03 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -796,9 +796,13 @@ void	ft_deb_commands(t_ms *ms)
 	else if(case_nb == 24)
 	{
 		ft_printf("24 - print current symtabs\n"); // [ ]
+		ft_printf("Global_symtab\n"); // [ ]
 		ft_print_symtab(ms, 1);
 		if (ms->be->global_symtabs->next)
-			ft_print_symtab(ms, 1);
+		{
+			ft_printf("local_symtab\n"); // [ ]
+			ft_print_symtab(ms, 2);
+		}
 	}
 	else if(case_nb == 25)
 	{
@@ -807,7 +811,7 @@ void	ft_deb_commands(t_ms *ms)
 		if (ft_lookup_symtab(ms->be->global_symtabs->next, "NEW_VAR"))
 		{
 			ft_printf("variable NEW_VAR already exists in local symtab\n");
-			if (ft_update_symtab(ms->be->global_symtabs->next, "NEW_VAR", "23061989"))
+			if (ft_update_symtab_value(ms->be->global_symtabs->next, "NEW_VAR", "23061989"))
 				ft_printf("variable NEW_VAR added to local symtab\n");
 			else
 				ft_printf("variable NEW_VAR not added to local symtab\n");
@@ -844,6 +848,17 @@ void	ft_deb_commands(t_ms *ms)
 		ft_printf("printing the local symtab:\n");
 		ft_print_symtab(ms, 2);
 	}
+	/*tests for symtabs:
+	add a value to global
+	add 20 values to global
+	remove a value from global
+	change a global value
+	change a local value
+	update a value at runtime
+	recall a number of values from symtab
+	recall nonexistent value from symtab
+	*/
+
 }
 
 void	ft_debug(t_ms *ms)

@@ -2,7 +2,7 @@
 [x] build testcases for heredoc // working
 [x] Implement env symtab
 [ ] Implement ./executable
-[ ] simplify debugger
+[x] simplify debugger
 [ ] implement builtins
 [ ] implement execution of builtins
 [ ] implement signals

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
+/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/07 16:27:53 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/10/29 12:19:08 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void			ft_add_global_value(t_ms *ms, char *env);
 void			ft_add_local_value(t_ms *ms, char *env);
 int				ft_remove_from_symtab(t_symtab_stack *symtab_lvl, char *key);
 char			*ft_lookup_symtab(t_symtab_stack *symtab_lvl, char *key);
-int				ft_update_symtab(t_symtab_stack *symtab_lvl, char *key, char *value);
+int				ft_update_symtab_value(t_symtab_stack *symtab_lvl, char *key, char *value);
 int				ft_make_global(t_ms *ms, char *key);
 char			**ft_update_envp_runtime(char **envp, char *key, char *value);
 char			**ft_create_envp(t_ms *ms);
@@ -127,7 +127,7 @@ unsigned long	ft_hash_function(t_symtab_stack *current_symtab, char *key);
 void			ft_resize_symtab(t_symtab_stack **symtab_lvl);
 void			ft_add_to_symtab(t_symtab_stack *symtab_lvl, char *key, char *value);
 void			ft_add_local_symtab(t_ms *ms);
-int				ft_find_next_prime(int size);
+int				ft_calc_symtab_size(int size);
 int				ft_is_prime(int n);
 void			ft_add_value(t_ms *ms, char *env);
 
