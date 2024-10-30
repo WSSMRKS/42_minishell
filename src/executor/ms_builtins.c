@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 11:16:12 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/30 12:16:31 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/10/30 14:16:17 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,10 @@ int			ft_echo(t_ms *ms, t_cmd_list *curr)
 	int				i;
 
 	i = 0;
+	newline = true;
 	if (ft_strncmp(curr->cmd->words->next->word, "-n\0", 3) == 0)
 	{
-		newline = true;
+		newline = false;
 		words = curr->cmd->words->next->next;
 	}
 	else
@@ -37,5 +38,7 @@ int			ft_echo(t_ms *ms, t_cmd_list *curr)
 		words = words->next;
 		i++;
 	}
+	if (newline == true)
+		printf("\n");
 	return (0);
 }

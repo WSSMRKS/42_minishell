@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/29 16:15:56 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/10/30 14:09:25 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,17 @@ void	ft_deb_commands(t_ms *ms)
 	ft_printf("32 - case to update a value at runtime\n");
 	ft_printf("33 - case to recall a value from symtab\n");
 	ft_printf("34 - case to recall a nonexistent value from symtab\n");
+	ft_printf("35 - Test with echo klsjhdsdf klsjhdsdf klsjhdsdf > home_directory.txt\n");
+	ft_printf("36 - Test with echo klsjhdsdf klsjhdsdf klsjhdsdf\n");
+
+
 
 	// ft_printf("55 - cat | cat | cat\n"); // [ ]
 
 
 
 	case_nb = ft_atoi(readline("Choose debug case: "));
-	while (case_nb < 0 || case_nb > 34)
+	while (case_nb < 0 || case_nb > 36)
 	{
 		ft_printf("Error: wrong selection\n");
 		case_nb = ft_atoi(readline("Choose debug case: "));
@@ -963,6 +967,57 @@ void	ft_deb_commands(t_ms *ms)
 		ft_print_symtab(ms, 1);
 		ft_printf("printing the local symtab:\n");
 		ft_print_symtab(ms, 2);
+	}
+		else if (case_nb == 35)
+	{
+		ft_printf("Test with echo klsjhdsdf klsjhdsdf klsjhdsdf > home_directory.txt\n");
+		ms->cmd = ft_strdup("echo klsjhdsdf klsjhdsdf klsjhdsdf > home_directory.txt");
+
+		// First command: echo $HOME
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("echo");
+		ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->word = ft_strdup("klsjhdsdf");
+		ms->cmds->cmd->words->next->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->next->word = ft_strdup("klsjhdsdf");
+		ms->cmds->cmd->words->next->next->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->next->next->word = ft_strdup("klsjhdsdf");
+		ms->cmds->cmd->words->next->next->next->next = NULL;
+
+
+		// Output redirection to home_directory.txt
+		ms->cmds->cmd->redir = ft_calloc(sizeof(t_list_redir), 1);  // [ ] free me
+		ms->cmds->cmd->redir->instruction = redir_outfile;
+		ms->cmds->cmd->redir->rightmost = true;
+		ms->cmds->cmd->redir->target = NULL;
+		ms->cmds->cmd->redir->target = ft_calloc(sizeof(t_redir_aim), 1);  // [ ] free me
+		ms->cmds->cmd->redir->target->filename = ft_strdup("home_directory.txt");
+
+		ms->cmds->next = NULL;
+		ms->be->nb_cmds = 1;
+	}
+			else if (case_nb == 36)
+	{
+		ft_printf("Test with echo klsjhdsdf klsjhdsdf klsjhdsdf\n");
+		ms->cmd = ft_strdup("echo klsjhdsdf klsjhdsdf klsjhdsdf");
+
+		// First command: echo $HOME
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("echo");
+		ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->word = ft_strdup("klsjhdsdf");
+		ms->cmds->cmd->words->next->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->next->word = ft_strdup("klsjhdsdf");
+		ms->cmds->cmd->words->next->next->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->next->next->word = ft_strdup("klsjhdsdf");
+		ms->cmds->cmd->words->next->next->next->next = NULL;
+
+		ms->cmds->next = NULL;
+		ms->be->nb_cmds = 1;
 	}
 
 

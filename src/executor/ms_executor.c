@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/30 12:11:16 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/10/30 14:19:41 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,8 @@ void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i)
 	{
 		ft_redir_handler(ms, curr, *i);
 		ft_create_argv(curr);
-		ft_close_all_fds(ms);
+		if(ms->be->child_pids[*i] != INT_MAX)
+			ft_close_all_fds(ms);
 		if (ms->be->child_pids[*i] == INT_MAX)
 			ft_builtin(ms, curr);
 		else if (ms->be->child_pids[*i] == 0)
@@ -147,8 +148,8 @@ void	ft_is_builtin(t_cmd_list *curr, t_ms *ms)
 		if (strncmp(curr->cmd->words->word, ms->be->builtins[i], len) == 0
 			&& (int) ft_strlen(curr->cmd->words->word) == len)
 		{
-			curr->cmd->flags &= IS_BUILTIN;
-			curr->cmd->builtin_nr = i;
+			curr->cmd->flags |= IS_BUILTIN;
+			curr->cmd->builtin_nr = i + 1;
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 15:50:51 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/25 15:16:44 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/10/30 14:23:55 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct s_be {
 	char			**path;			/*clear at exit*/
 	int				nb_cmds;		/*clear after every execution*/
 	int				pipes[2][2];	/*reinit after every execution*/
+	int				saved_std[2];	/*close after every execution*/
 	int				*child_pids;	/*clear after every execution, realloc after every execution*/
 	int				*child_ret;		/*return values of the childs*/
 	char			**builtins;		/*clear at exit*/
