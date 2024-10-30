@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/29 12:19:08 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/10/30 12:12:48 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void			ft_cleanup_exit(t_ms *ms, int ex);
 void			ft_close_all_fds(t_ms *ms);
 char			*ft_search_cmd(t_ms *ms, t_cmd_list *curr);
 void			ft_execute(t_ms *ms, t_cmd_list *curr);
-void			ft_builtin(t_ms *ms, t_cmd_list *curr);
+int				ft_builtin(t_ms *ms, t_cmd_list *curr);
 void			ft_create_argv(t_cmd_list *curr);
 void			ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i);
 void			ft_is_builtin(t_cmd_list *curr, t_ms *ms);
@@ -138,7 +138,7 @@ void			ft_export(t_ms *ms, t_cmd_list *curr);
 void			ft_unset(t_ms *ms, t_cmd_list *curr);
 void			ft_cd(t_ms *ms, t_cmd_list *curr);
 void			ft_pwd(t_ms *ms, t_cmd_list *curr);
-void			ft_echo(t_ms *ms, t_cmd_list *curr);
+int				ft_echo(t_ms *ms, t_cmd_list *curr);
 
 /* ms_parse */
 int parse(t_token *tokens);

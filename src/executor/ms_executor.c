@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_executor.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
+/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/07 16:42:24 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/10/30 12:11:16 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,26 @@ void	ft_execute(t_ms *ms, t_cmd_list *curr)
 	ft_cleanup_exit(ms, err);
 }
 
-void	ft_builtin(t_ms *ms, t_cmd_list *curr)
+int	ft_builtin(t_ms *ms, t_cmd_list *curr)
 {
-	(void) ms;
-	(void) curr;
+	int		ret;
+
+	ret = 0;
+	if (curr->cmd->builtin_nr == 1)
+		ret = ft_echo(ms, curr);
+	// else if (curr->cmd->builtin_nr == 2)
+	// 	ret = ft_cd(ms, curr);
+	// else if (curr->cmd->builtin_nr == 3)
+	// 	ret = ft_pwd(ms, curr);
+	// else if (curr->cmd->builtin_nr == 4)
+	// 	ret = ft_pwd(ms, curr);
+	// else if (curr->cmd->builtin_nr == 5)
+	// 	ret = ft_export(ms, curr);
+	// else if (curr->cmd->builtin_nr == 6)
+	// 	ret = ft_env(ms, curr);
+	// else if (curr->cmd->builtin_nr == 7)
+	// 	ret = ft_exit(ms, curr);
+	return (ret);
 }
 
 void	ft_create_argv(t_cmd_list *curr)

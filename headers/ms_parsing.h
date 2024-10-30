@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_parsing.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
+/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:56:05 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/07 16:29:06 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/10/30 11:35:36 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,16 @@ typedef struct s_list_redir {
 /*simple command struct: all commands that are without subshells and connections
 	flags:
 	1 = heredoc;
+	2 = is builtin;
+
+	builtin_nr:
+	1 = echo
+	2 = cd
+	3 = pwd
+	4 = export
+	5 = unset
+	6 = env
+	7 = exit
 
 	words: words the command consists of.
 	redirects: redirects of the command.*/
