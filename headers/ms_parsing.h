@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:56:05 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/30 11:35:36 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/10/31 12:14:31 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ typedef struct s_list_redir {
 	flags:
 	1 = heredoc;
 	2 = is builtin;
+	4 = is executable
+	8 = is path (contains /)
 
 	builtin_nr:
 	1 = echo
@@ -89,7 +91,7 @@ typedef struct s_list_redir {
 	words: words the command consists of.
 	redirects: redirects of the command.*/
 typedef struct s_simple_com {
-	int				flags;
+	int				flags;			// Space for the general flags referring to the command (builtin path, ...)
 	t_list_words	*words;
 	t_list_redir	*redir;
 	char			**argv;
@@ -105,22 +107,13 @@ typedef struct s_cmd_list {
 
 
 /* content of flags field in t_word_desc */
-# define WORD_DOLLAR			1		/* (1 << 0)		Dollar sign present. */
-# define WORD_QUOTES_SINGLE		2		/* (1 << 1)		Quoted parts */
-# define WORD_QUOTES_DOUBLE		4		/* (1 << 2)		Quoted parts */
-# define WORD_VAR_ASSIGNMENT	8		/* (1 << 3)		This word is a variable assignment. */
-# define WORD_SPLITSPACE		16		/* (1 << 4)		Split " " ignore IFS */
-# define WORD_NOSPLIT			32		/* (1 << 5)		Do not perform word splitting on this word because ifs is empty string. */
-# define WORD_NOGLOB			64		/* (1 << 6)		Do not perform globbing on this word. */
-# define WORD_NOSPLIT2			128		/* (1 << 7)		Don't split word except for $@ expansion (using spaces) because context does not allow it. */
-# define WORD_TILDEEXP			256		/* (1 << 8)		Tilde expand this assignment word */
-# define WORD_ASSIGNRHS			512		/* (1 << 9)		Word is rhs of an assignment statement */
-# define WORD_NOTILDE			1024	/* (1 << 10)		Don't perform tilde expansion on this word */
-# define WORD_NOASSNTILDE		2048	/* (1 << 11)	don't do tilde expansion like an assignment statement */
-# define WORD_ASSNBLTIN			4096	/* (1 << 12)	word is a builtin command that takes assignments */
-# define WORD_ASSIGNARG			8192	/* (1 << 13)	word is assignment argument to command */
-# define WORD_HASQUOTEDNULL		16384	/* (1 << 14)	word contains a quoted null character */
-# define WORD_SAWQUOTEDNULL		32468	/* (1 << 15)	word contained a quoted null that was removed */
+# define WORD_DOLLAR				1				/* (1 << 0) Dollar sign present. */
+# define WORD_QUOTES_SINGLE			2				/* (1 << 1) Quoted parts */
+# define WORD_QUOTES_DOUBLE			4				/* (1 << 2) Quoted parts */
+# define WORD_VAR_ASSIGNMENT		8				/* (1 << 3) This word is a variable assignment. */
+# define WORD_IS_BUILTIN			16				/* (1 << 4) word is a builtin command */
+# define WORD_IS_EXEC				32				/* (1 << 5) word is an executable (lookup $PATH) */
+# define WORD_IS_PATH				64				/* (1 << 6) word is an absolute or relative path */
 
 #endif
 

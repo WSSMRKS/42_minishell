@@ -6,14 +6,13 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 15:50:51 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/30 14:23:55 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/10/31 11:57:46 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MS_EXECUTOR_H
 # define MS_EXECUTOR_H
 # include "minishell.h"
-# define IS_BUILTIN 2
 
 typedef struct s_be {
 	t_garbage		*garbage;		/*clear after every execution, realloc after every execution*/

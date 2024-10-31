@@ -6,11 +6,17 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/30 14:19:41 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/10/31 12:51:14 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
+
+// char *ft_complete_path(t_ms *ms, t_cmd_list *curr, char *input)
+// {
+// 	// if(input[0] == '.' && input[1] == '/')
+// 	// 	return ()
+// }
 
 void	ft_close_all_fds(t_ms *ms)
 {
@@ -27,6 +33,12 @@ char	*ft_search_cmd(t_ms *ms, t_cmd_list *curr)
 	char	*path;
 
 	i = 0;
+
+	// if ((curr->cmd->flags & WORD_IS_PATH) == WORD_IS_PATH)
+	// {
+	// 	path = ft_complete_path(ms, curr, curr->cmd->words->word);
+	// 	return (path);
+	// }
 	while (ms->be->path[i])
 	{
 		path = ft_strjoin(ms->be->path[i], curr->cmd->words->word);
@@ -114,7 +126,7 @@ void	ft_create_argv(t_cmd_list *curr)
 void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i)
 {
 
-	if ((curr->cmd->flags & IS_BUILTIN) != IS_BUILTIN || ms->be->nb_cmds > 1)
+	if ((curr->cmd->flags & WORD_IS_BUILTIN) != WORD_IS_BUILTIN || ms->be->nb_cmds > 1)
 		ms->be->child_pids[*i] = fork();
 	else
 		ms->be->child_pids[*i] = INT_MAX;
@@ -148,12 +160,11 @@ void	ft_is_builtin(t_cmd_list *curr, t_ms *ms)
 		if (strncmp(curr->cmd->words->word, ms->be->builtins[i], len) == 0
 			&& (int) ft_strlen(curr->cmd->words->word) == len)
 		{
-			curr->cmd->flags |= IS_BUILTIN;
+			curr->cmd->flags |= WORD_IS_BUILTIN;
 			curr->cmd->builtin_nr = i + 1;
 		}
 	}
 }
-
 
 void	ft_executor(t_ms *ms)
 {
