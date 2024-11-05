@@ -42,7 +42,7 @@ New:
 	--> readdir
 	--> closedir
 	--> chdir
-	
+
 	kill - send signals to processes
 getcwd
 stat
