@@ -1,0 +1,17 @@
+{
+	"files.associations": {
+		"string.h": "c",
+		"ms_symtab.h": "c",
+<<<<<<< HEAD
+		"ms_parsing.h": "c",
+		"history.h": "c",
+		"ms_executor.h": "c",
+		"ms_garbage.h": "c",
+		"minishell.h": "c",
+		"pipex.h": "c"
+=======
+		"ms_executor.h": "c",
+		"tokenization.h": "c"
+>>>>>>> db66a4417cdcfec4b9e438a32a58187ab76e1998
+	}
+}
