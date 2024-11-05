@@ -1,9 +1,0 @@
-[x] Implement proper error messages (not sure yet if from parent or child) // working
-[x] build testcases for heredoc // working
-[x] Implement env symtab
-[ ] Implement ./executable
-[ ] simplify debugger
-[ ] implement builtins
-[ ] implement execution of builtins
-[ ] implement signals
-
