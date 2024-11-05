@@ -1,9 +1,14 @@
 [x] Implement proper error messages (not sure yet if from parent or child) // working
 [x] build testcases for heredoc // working
 [x] Implement env symtab
-[ ] Implement ./executable
-[ ] simplify debugger
 [ ] implement builtins
+[ ] find way to save stdin_fileno when dup2-ing for redirects.
+[x] solution to builtins in pipeline: run minishell with the builtin in a Child
+[ ] able to run minishell as child with args
+[ ] Implement ./executable
+[x] simplify debugger
 [ ] implement execution of builtins
 [ ] implement signals
+
+
 

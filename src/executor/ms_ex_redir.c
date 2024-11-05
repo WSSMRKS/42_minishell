@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/07 16:35:44 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/05 17:03:20 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ void	ft_infile(t_ms *ms, char *filename)
 		ft_clear_be(ms); // [ ] take care of this in case of not a child!!
 		ft_cleanup_exit(ms, errno);
 	}
+	// if (ms->cmds->cmd->flags & IS_BUILTIN == IS_BUILTIN)
+	// 		ms->be->saved_std[0] = dup(STDIN_FILENO);
+	// 	ms->be->saved_std[1] = dup(STDOUT_FILENO);
 	dup2(fdin, STDIN_FILENO);
 	close(fdin);
 }

@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/07 16:36:53 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/05 17:05:24 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,25 @@ void	ft_deb_commands(t_ms *ms)
 	ft_printf("24 - print current symtabs\n"); // [ ]
 	ft_printf("25 - case to add a new variable to the local symtab\n"); // [ ]
 	ft_printf("26 - case to make local variable global\n"); // [ ]
+	ft_printf("27 - add a new global variable\n");
+	ft_printf("28 - add 20 new global variables\n");
+	ft_printf("29 - remove a global variable\n");
+	ft_printf("30 - change a global variable\n");
+	ft_printf("31 - change a local variable\n");
+	ft_printf("32 - case to update a value at runtime\n");
+	ft_printf("33 - case to recall a value from symtab\n");
+	ft_printf("34 - case to recall a nonexistent value from symtab\n");
+	ft_printf("35 - Test with echo klsjhdsdf klsjhdsdf klsjhdsdf > home_directory.txt\n");
+	ft_printf("36 - Test with echo klsjhdsdf klsjhdsdf klsjhdsdf\n");
+
+
+
+	// ft_printf("55 - cat | cat | cat\n"); // [ ]
+
 
 
 	case_nb = ft_atoi(readline("Choose debug case: "));
-	while (case_nb < 0 || case_nb > 26)
+	while (case_nb < 0 || case_nb > 36)
 	{
 		ft_printf("Error: wrong selection\n");
 		case_nb = ft_atoi(readline("Choose debug case: "));
@@ -796,9 +811,13 @@ void	ft_deb_commands(t_ms *ms)
 	else if(case_nb == 24)
 	{
 		ft_printf("24 - print current symtabs\n"); // [ ]
+		ft_printf("Global_symtab\n"); // [ ]
 		ft_print_symtab(ms, 1);
 		if (ms->be->global_symtabs->next)
-			ft_print_symtab(ms, 1);
+		{
+			ft_printf("local_symtab\n"); // [ ]
+			ft_print_symtab(ms, 2);
+		}
 	}
 	else if(case_nb == 25)
 	{
@@ -807,7 +826,7 @@ void	ft_deb_commands(t_ms *ms)
 		if (ft_lookup_symtab(ms->be->global_symtabs->next, "NEW_VAR"))
 		{
 			ft_printf("variable NEW_VAR already exists in local symtab\n");
-			if (ft_update_symtab(ms->be->global_symtabs->next, "NEW_VAR", "23061989"))
+			if (ft_update_symtab_value(ms->be->global_symtabs->next, "NEW_VAR", "23061989"))
 				ft_printf("variable NEW_VAR added to local symtab\n");
 			else
 				ft_printf("variable NEW_VAR not added to local symtab\n");
@@ -844,6 +863,219 @@ void	ft_deb_commands(t_ms *ms)
 		ft_printf("printing the local symtab:\n");
 		ft_print_symtab(ms, 2);
 	}
+	else if(case_nb == 27)
+	{
+		// case to make the variable NEW_VAR global
+		ft_printf("27 - add a new global variable\n");
+		if (ft_lookup_symtab(ms->be->global_symtabs, "NEW_IN_GLOBAL"))
+		{
+			ft_printf("variable NEW_IN_GLOBAL already exists in global symtab\n");
+		}
+		else
+		{
+			ft_add_global_value(ms, "NEW_IN_GLOBAL=thisisanewvar");
+		}
+		ft_printf("printing the symtabs\n");
+		ft_printf("printing the global symtab:\n");
+		ft_print_symtab(ms, 1);
+		ft_printf("printing the local symtab:\n");
+		ft_print_symtab(ms, 2);
+	}
+	else if(case_nb == 28)
+	{
+		// case to add 20 new variables;
+		int i = 0;
+		char *tmp;
+
+		ft_printf("28 - add 20 new global variables\n");
+
+		while (i < 20)
+		{
+			tmp = ft_multistrjoin(4, "NEW", ft_itoa(i), "=contentofNEW", ft_itoa(i));
+			ft_add_global_value(ms, tmp);
+			free(tmp);
+			i++;
+		}
+		ft_printf("printing the symtabs\n");
+		ft_printf("printing the global symtab:\n");
+		ft_print_symtab(ms, 1);
+		ft_printf("printing the local symtab:\n");
+		ft_print_symtab(ms, 2);
+	}
+	else if(case_nb == 29)
+	{
+		// case to remove a variable from global
+		ft_printf("29 - remove a global variable\n");
+		ft_remove_from_symtab(ms->be->global_symtabs, "NEW_VAR");
+		ft_printf("printing the symtabs\n");
+		ft_printf("printing the global symtab:\n");
+		ft_print_symtab(ms, 1);
+		ft_printf("printing the local symtab:\n");
+		ft_print_symtab(ms, 2);
+	}
+	else if(case_nb == 30)
+	{
+		// case to change a global value
+		ft_printf("30 - change a global variable\n");
+		ft_update_symtab_value(ms->be->global_symtabs, "NEW_VAR", "new_value");
+		ft_printf("printing the symtabs\n");
+		ft_printf("printing the global symtab:\n");
+		ft_print_symtab(ms, 1);
+		ft_printf("printing the local symtab:\n");
+		ft_print_symtab(ms, 2);
+	}
+	else if(case_nb == 31)
+	{
+		// case to change a local value
+		ft_printf("31 - change a local variable\n");
+		ft_update_symtab_value(ms->be->global_symtabs->next, "NEW_VAR", "new_value");
+		ft_printf("printing the symtabs\n");
+		ft_printf("printing the global symtab:\n");
+		ft_print_symtab(ms, 1);
+		ft_printf("printing the local symtab:\n");
+		ft_print_symtab(ms, 2);
+	}
+	else if(case_nb == 32)
+	{
+		// case to update a value at runtime
+		ft_printf("32 - case to update a value at runtime\n");
+		ft_update_envp_runtime(ft_create_envp(ms), "PATH", "./");
+		ft_printf("printing the symtabs\n");
+		ft_printf("printing the global symtab:\n");
+		ft_print_symtab(ms, 1);
+		ft_printf("printing the local symtab:\n");
+		ft_print_symtab(ms, 2);
+	}
+	else if(case_nb == 33)
+	{
+		// case to recall a value from symtab
+		ft_printf("33 - case to recall a value from symtab\n");
+		ft_printf("GFM_LANG is: %s\n",ft_lookup_symtab(ms->be->global_symtabs, "GDM_LANG"));
+		ft_printf("printing the symtabs\n");
+		ft_printf("printing the global symtab:\n");
+		ft_print_symtab(ms, 1);
+		ft_printf("printing the local symtab:\n");
+		ft_print_symtab(ms, 2);
+	}
+	else if(case_nb == 34)
+	{
+		// case to recall a nonexistent value from symtab
+		ft_printf("34 - case to recall a nonexistent value from symtab\n");
+		ft_printf("DOESNTEXIST is: %s\n",ft_lookup_symtab(ms->be->global_symtabs, "DOESNTEXIST"));
+		ft_printf("printing the symtabs\n");
+		ft_printf("printing the global symtab:\n");
+		ft_print_symtab(ms, 1);
+		ft_printf("printing the local symtab:\n");
+		ft_print_symtab(ms, 2);
+	}
+		else if (case_nb == 35)
+	{
+		ft_printf("Test with echo klsjhdsdf klsjhdsdf klsjhdsdf > home_directory.txt\n");
+		ms->cmd = ft_strdup("echo klsjhdsdf klsjhdsdf klsjhdsdf > home_directory.txt");
+
+		// First command: echo $HOME
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("echo");
+		ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->word = ft_strdup("klsjhdsdf");
+		ms->cmds->cmd->words->next->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->next->word = ft_strdup("klsjhdsdf");
+		ms->cmds->cmd->words->next->next->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->next->next->word = ft_strdup("klsjhdsdf");
+		ms->cmds->cmd->words->next->next->next->next = NULL;
+
+
+		// Output redirection to home_directory.txt
+		ms->cmds->cmd->redir = ft_calloc(sizeof(t_list_redir), 1);  // [ ] free me
+		ms->cmds->cmd->redir->instruction = redir_outfile;
+		ms->cmds->cmd->redir->rightmost = true;
+		ms->cmds->cmd->redir->target = NULL;
+		ms->cmds->cmd->redir->target = ft_calloc(sizeof(t_redir_aim), 1);  // [ ] free me
+		ms->cmds->cmd->redir->target->filename = ft_strdup("home_directory.txt");
+
+		ms->cmds->next = NULL;
+		ms->be->nb_cmds = 1;
+	}
+			else if (case_nb == 36)
+	{
+		ft_printf("Test with echo klsjhdsdf klsjhdsdf klsjhdsdf\n");
+		ms->cmd = ft_strdup("echo klsjhdsdf klsjhdsdf klsjhdsdf");
+
+		// First command: echo $HOME
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("echo");
+		ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->word = ft_strdup("klsjhdsdf");
+		ms->cmds->cmd->words->next->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->next->word = ft_strdup("klsjhdsdf");
+		ms->cmds->cmd->words->next->next->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->next->next->word = ft_strdup("klsjhdsdf");
+		ms->cmds->cmd->words->next->next->next->next = NULL;
+
+		ms->cmds->next = NULL;
+		ms->be->nb_cmds = 1;
+	}
+
+
+
+
+	/*tests for symtabs:
+	[x] add a value to global
+	[x] add 20 values to global
+	[x]remove a value from global
+	[x]change a global value
+	[x] change a local value
+	[x]update a value at runtime
+	[x]recall a number of values from symtab
+	[x]recall nonexistent value from symtab
+	*/
+
+	// 	else if (case_nb == 55)  // case number 4 for "cat | cat | cat"
+	// {
+	// 	ft_printf_err("This command is not yet executed properly. It is a pipeline with 3 commands.\n");
+	// 	ms->cmd = ft_strdup("cat | cat | cat >test0815.txt");
+
+	// 	// Allocate first command (cat)
+	// 	ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+	// 	ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+	// 	ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+	// 	ms->cmds->cmd->words->word = ft_strdup("cat");  // first command: cat
+	// 	ms->cmds->cmd->words->next = NULL;  // no additional arguments
+	// 	ms->cmds->cmd->flags = 0;
+
+	// 	// Allocate second command (cat)
+	// 	ms->cmds->next = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+	// 	ms->cmds->next->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+	// 	ms->cmds->next->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+	// 	ms->cmds->next->cmd->words->word = ft_strdup("cat");  // second command: cat
+	// 	ms->cmds->next->cmd->words->next = NULL;  // no additional arguments
+	// 	ms->cmds->next->cmd->flags = 0;
+
+	// 	// Allocate third command (ls)
+	// 	ms->cmds->next->next = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+	// 	ms->cmds->next->next->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+	// 	ms->cmds->next->next->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+	// 	ms->cmds->next->next->cmd->words->word = ft_strdup("cat");  // third command: ls
+	// 	ms->cmds->next->next->cmd->words->next = NULL;  // no additional arguments
+	// 	ms->cmds->next->next->cmd->flags = 0;
+
+	// 	ms->cmds->next->next->cmd->redir = ft_calloc(sizeof(t_list_redir), 1);  // [ ] free me
+	// 	ms->cmds->next->next->cmd->redir->instruction = redir_outfile;
+	// 	ms->cmds->next->next->cmd->redir->target = NULL;
+	// 	ms->cmds->next->next->cmd->redir->target = ft_calloc(sizeof(t_redir_aim), 1);  // [ ] free me
+	// 	ms->cmds->next->next->cmd->redir->target->filename = ft_strdup("test0815.txt");
+	// 	ms->cmds->next->next->cmd->redir->rightmost = true;
+
+	// 	// End of command chain
+	// 	ms->cmds->next->next->next = NULL;
+
+	// 	// Set the number of commands
+	// 	ms->be->nb_cmds = 3;  // 3 commands in the pipeline
+	// }
 }
 
 void	ft_debug(t_ms *ms)

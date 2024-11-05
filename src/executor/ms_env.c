@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/09/26 11:18:04 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/10/30 12:06:45 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	ft_resize_symtab(t_symtab_stack **symtab_lvl)
 
 	i = 0;
 	new = ft_calloc(sizeof(t_symtab_stack), 1);
-	ft_find_next_prime((*symtab_lvl)->size);
+	ft_calc_symtab_size((*symtab_lvl)->size);
 	new->size = (*symtab_lvl)->size;
 	new->load_factor = 0;
 	new->symtab = ft_calloc(sizeof(char *), new->size);
@@ -116,14 +116,17 @@ void	ft_add_global_value(t_ms *ms, char *env)
 	i = 0;
 	while (env[i] && env[i] != '=')
 		i++;
+	global = ms->be->global_symtabs;
 	key = ft_substr(env, 0, i);
 	value = ft_strdup(&env[i + 1]);
-	global = ms->be->global_symtabs;
-	if (global->load_factor > 0.7)
-		ft_resize_symtab(&global);
-	global->used++;
-	global->load_factor = (float)global->used / (float)global->size;
-	ft_add_to_symtab(global, key, value);
+	if (ft_lookup_symtab(global, key) != NULL)
+	{
+		ft_update_symtab_value(global, key, value);
+		free(value);
+		free(key);
+	}
+	else
+		ft_add_to_symtab(global, key, value);
 }
 
 /* function to add a new value to the local variables
@@ -152,11 +155,14 @@ void	ft_add_local_value(t_ms *ms, char *env)
 	if (ms->be->global_symtabs->next == NULL)
 		ft_add_local_symtab(ms);
 	local = ms->be->global_symtabs->next;
-	if (local->load_factor > 0.7)
-		ft_resize_symtab(&local);
-	local->used++;
-	local->load_factor = (float)local->used / (float)local->size;
-	ft_add_to_symtab(local, key, value);
+	if (ft_lookup_symtab(local, key) != NULL)
+	{
+		ft_update_symtab_value(local, key, value);
+		free(value);
+		free(key);
+	}
+	else
+		ft_add_to_symtab(local, key, value);
 }
 
 /* function to add a new value to the symbol table
@@ -190,6 +196,9 @@ void	ft_add_to_symtab(t_symtab_stack *symtab_lvl, char *key, char *value)
 		tmp->next = new;
 	}
 	symtab_lvl->used++;
+	symtab_lvl->load_factor = (float)symtab_lvl->used / (float)symtab_lvl->size;
+	if (symtab_lvl->load_factor > 0.7)
+		ft_resize_symtab(&symtab_lvl);
 }
 
 /* function to initialize the environmental variables
@@ -211,35 +220,35 @@ void	ft_init_symtab(t_ms *ms)
 	while (env[i])
 		i++;
 	ms->be->global_symtabs = ft_calloc(sizeof(t_symtab_stack), 1);
-	ms->be->global_symtabs->size = ft_find_next_prime(i);
+	ms->be->global_symtabs->size = ft_calc_symtab_size(i);
 	ms->be->global_symtabs->load_factor = 0;
 	ms->be->global_symtabs->level = 1;
 	ms->be->global_symtabs->symtab = ft_calloc(sizeof(char *), ms->be->global_symtabs->size);
 	i = 0;
 	while (env[i])
-		ft_add_value(ms, env[i++]);
+		ft_add_global_value(ms, env[i++]);
 }
 
-/* function to add a value to the symbol table
-functionality:
-1. Find the position of the equal sign in the string
-2. Create a new string with the key
-3. Create a new string with the value
-4. Add the value to the symbol table
-*/
-void	ft_add_value(t_ms *ms, char *env)
-{
-	char	*key;
-	char	*value;
-	int		i;
+// /* function to add a value to the symbol table
+// functionality:
+// 1. Find the position of the equal sign in the string
+// 2. Create a new string with the key
+// 3. Create a new string with the value
+// 4. Add the value to the symbol table
+// */
+// void	ft_add_value(t_ms *ms, char *env)
+// {
+// 	char	*key;
+// 	char	*value;
+// 	int		i;
 
-	i = 0;
-	while (env[i] && env[i] != '=')
-		i++;
-	key = ft_substr(env, 0, i);
-	value = ft_strdup(&env[i + 1]);
-	ft_add_to_symtab(ms->be->global_symtabs, key, value);
-}
+// 	i = 0;
+// 	while (env[i] && env[i] != '=')
+// 		i++;
+// 	key = ft_substr(env, 0, i);
+// 	value = ft_strdup(&env[i + 1]);
+// 	ft_add_to_symtab(ms->be->global_symtabs, key, value);
+// }
 
 /* function to add the local symtab
 functionality:
@@ -252,7 +261,7 @@ void	ft_add_local_symtab(t_ms *ms)
 	local = ft_calloc(sizeof(t_symtab_stack), 1);
 	ms->be->global_symtabs->next = local;
 	local->symtab = ft_calloc(sizeof(char *), ms->be->global_symtabs->size);
-	local->size = ms->be->global_symtabs->size;
+	local->size = ft_calc_symtab_size(5);
 	local->used = 0;
 	local->load_factor = 0;
 	local->level = ms->be->global_symtabs->level + 1;
@@ -268,9 +277,13 @@ char	*ft_lookup_symtab(t_symtab_stack *symtab_lvl, char *key)
 {
 	unsigned long	hash;
 	t_symtab		*tmp;
+	bool			dollar;
 
-	if(!symtab_lvl)
+	dollar = false;
+	if (!symtab_lvl)
 		return (NULL);
+	if (key[0] == '$')
+		key = &key[1];
 	hash = ft_hash_function(symtab_lvl, key);
 	if (symtab_lvl->symtab[hash] == NULL)
 		return (NULL);
@@ -339,6 +352,8 @@ int	ft_make_global(t_ms *ms, char *key)
 	value = ft_lookup_symtab(local, key);
 	if (value == NULL)
 		return (-1);
+	value = ft_strdup(value);
+	key = ft_strdup(key);
 	ft_add_to_symtab(global, key, value);
 	ft_remove_from_symtab(local, key);
 	return (0);
@@ -393,7 +408,9 @@ int	ft_remove_from_symtab(t_symtab_stack *symtab_lvl, char *key)
 	unsigned long	hash;
 	t_symtab		*tmp;
 	t_symtab		*prev;
+	int				i;
 
+	i = 0;
 	hash = ft_hash_function(symtab_lvl, key);
 	if (symtab_lvl->symtab[hash] == NULL)
 		return (1);
@@ -417,6 +434,7 @@ int	ft_remove_from_symtab(t_symtab_stack *symtab_lvl, char *key)
 			return (0);
 		}
 		prev = tmp;
+		i++;
 		tmp = tmp->next;
 	}
 	return (1);
@@ -429,7 +447,7 @@ functionality:
 3. If the position in the symbol table is not empty, traverse the linked list and update the value
 4. Return 0
 */
-int	ft_update_symtab(t_symtab_stack *symtab_lvl, char *key, char *value)
+int	ft_update_symtab_value(t_symtab_stack *symtab_lvl, char *key, char *value)
 {
 	unsigned long	hash;
 	t_symtab		*tmp;
@@ -503,10 +521,16 @@ void	ft_free_symtab_stack(t_symtab_stack *symtab_stack)
 			while (tmp2)
 			{
 				tmp3 = tmp2;
-				free(tmp2->key);
-				tmp2->key = NULL;
-				free(tmp2->value);
-				tmp2->value = NULL;
+				if(tmp2 && tmp2->key != NULL)
+				{
+					free(tmp2->key);
+					tmp2->key = NULL;
+				}
+				if(tmp2 && tmp2->value != NULL)
+				{
+					free(tmp2->value);
+					tmp2->value = NULL;
+				}
 				tmp2 = tmp2->next;
 				free(tmp3);
 				tmp3 = NULL;
@@ -528,7 +552,7 @@ functionality:
 3. Traverse the numbers and check if the number is prime
 4. Return the prime number
 */
-int	ft_find_next_prime(int size)
+int	ft_calc_symtab_size(int size)
 {
 	int	i;
 

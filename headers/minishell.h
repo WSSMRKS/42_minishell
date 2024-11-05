@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/07 15:02:51 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/10/30 12:12:48 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,12 @@ in minishell.h */
 # include "ms_parsing.h"
 # include "ms_garbage.h"
 # include "ms_executor.h"
+# include "tokenization.h"
+# include "../libft/libft.h"
+
+
+#define FALSE 0
+#define TRUE 1
 
 /* minishell struct. Main struct that is passed throughout the whole program.
 	global flags: 1 = heredoc present	*/
@@ -57,7 +63,7 @@ void			ft_cleanup_exit(t_ms *ms, int ex);
 void			ft_close_all_fds(t_ms *ms);
 char			*ft_search_cmd(t_ms *ms, t_cmd_list *curr);
 void			ft_execute(t_ms *ms, t_cmd_list *curr);
-void			ft_builtin(t_ms *ms, t_cmd_list *curr);
+int				ft_builtin(t_ms *ms, t_cmd_list *curr);
 void			ft_create_argv(t_cmd_list *curr);
 void			ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i);
 void			ft_is_builtin(t_cmd_list *curr, t_ms *ms);
@@ -112,7 +118,7 @@ void			ft_add_global_value(t_ms *ms, char *env);
 void			ft_add_local_value(t_ms *ms, char *env);
 int				ft_remove_from_symtab(t_symtab_stack *symtab_lvl, char *key);
 char			*ft_lookup_symtab(t_symtab_stack *symtab_lvl, char *key);
-int				ft_update_symtab(t_symtab_stack *symtab_lvl, char *key, char *value);
+int				ft_update_symtab_value(t_symtab_stack *symtab_lvl, char *key, char *value);
 int				ft_make_global(t_ms *ms, char *key);
 char			**ft_update_envp_runtime(char **envp, char *key, char *value);
 char			**ft_create_envp(t_ms *ms);
@@ -121,7 +127,7 @@ unsigned long	ft_hash_function(t_symtab_stack *current_symtab, char *key);
 void			ft_resize_symtab(t_symtab_stack **symtab_lvl);
 void			ft_add_to_symtab(t_symtab_stack *symtab_lvl, char *key, char *value);
 void			ft_add_local_symtab(t_ms *ms);
-int				ft_find_next_prime(int size);
+int				ft_calc_symtab_size(int size);
 int				ft_is_prime(int n);
 void			ft_add_value(t_ms *ms, char *env);
 
@@ -132,6 +138,11 @@ void			ft_export(t_ms *ms, t_cmd_list *curr);
 void			ft_unset(t_ms *ms, t_cmd_list *curr);
 void			ft_cd(t_ms *ms, t_cmd_list *curr);
 void			ft_pwd(t_ms *ms, t_cmd_list *curr);
-void			ft_echo(t_ms *ms, t_cmd_list *curr);
+int				ft_echo(t_ms *ms, t_cmd_list *curr);
+
+/* ms_parse */
+int parse(t_token *tokens);
+t_list_words *make_word(t_tok_span *word_info);
+t_list_words **make_word_list(t_tok_span *word_info, t_list_words ***tail);
 
 #endif

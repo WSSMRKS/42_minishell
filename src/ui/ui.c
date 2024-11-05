@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/07 15:02:24 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/10/07 17:12:48 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,13 @@
 
 void	ft_front_end(char *cmd)
 {
-	(void) cmd;
+	t_token *tokens;
+	// t_cmd_list *cmd_list;
+	// (void) cmd;
+	tokenizer(cmd, &tokens);
+	printf("first token = ");
+	print_token(tokens);
+	// parse(tokens);
 }
 
 char	*choose_prompt(int mode)
@@ -27,6 +33,22 @@ char	*choose_prompt(int mode)
 	// return (NULL);
 }
 
+int last_is_escaped(char *cmd)
+{
+	int len;
+	len = ft_strlen(cmd);
+	if (cmd[len - 1] == '\\')
+	{
+		if (len >= 2 && cmd[len - 2] == '\\')
+		{
+			printf("last 2 chrs = %c and %c\n", cmd[len -1], cmd[len -2]);
+			return (FALSE);
+		}
+		return (TRUE);
+	}
+	return (FALSE);
+}
+
 void	ft_repl(int argc, char **argv, char **envp)
 {
 	int				mode;
@@ -34,8 +56,14 @@ void	ft_repl(int argc, char **argv, char **envp)
 	int				i;
 
 	(void)argc;
+	// if (argc >= 2)
+	// {
+		// return (127);
+		// save exit code? 127?
+	// }
 	(void)argv;
 	(void)envp;
+	// ft_init_ms(minishell, envp);
 	mode = 0;
 	i = 0;
 	ft_init_ms(&ms);
@@ -51,7 +79,7 @@ void	ft_repl(int argc, char **argv, char **envp)
 		else
 			printf("{%s}\n", ms.cmd);
 		add_history(ms.cmd);
-		if (ms.cmd && ms.cmd[0] != '\0' && ms.cmd[ft_strlen(ms.cmd) - 1] == '\\')
+		if (last_is_escaped(ms.cmd) == TRUE)
 			mode = 1;
 		if (strcmp(ms.cmd, "ms_debug") == 0)
 			ft_debug(&ms);
