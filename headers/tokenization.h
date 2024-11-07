@@ -28,36 +28,50 @@
 
 // int last_was_backslash;
 
-#define REDIRECTION 6
 
-typedef enum e_token_type
+// {"&", 1},
+// {";", 1},
+// {"&&", 2},
+// {"||", 2},
+
+typedef enum e_operator_ty
 {
-	TOKEN_ERR,
+	OP_PIPE,
+	OP_REDIRECT,
+	OP_INP_REDIRECT,
+	OP_APPEND,
+	OP_HEREDOC
+}	t_operator_ty;
+
+typedef enum e_token_ty
+{
+	TOKEN_SEPERATOR,
 	TOKEN_WORD,
-	TOKEN_WORD_SQUOTE,
-	TOKEN_WORD_DQUOTE,
-	TOKEN_PIPE,
-	TOKEN_SUBSHELL,
-	TOKEN_IO_IN,
-	TOKEN_IO_OUT,
-	TOKEN_APPEND,
-	TOKEN_HEREDOC
-}	t_token_type;
-
-typedef struct  s_tok_span
-{
-	char *start;
-	size_t len;
-} t_tok_span;
-
+	TOKEN_LITERAL,
+	TOKEN_DQUOTE,
+	TOKEN_OPERATOR,
+}	t_token_ty;
 
 typedef struct s_token
 {
-	t_token_type type;
-	t_tok_span cmd;
-	// int quoted;
-	struct s_token *next;
+	union {
+		t_str			str;
+		t_operator_ty	op;
+	};
+	t_token_ty type;
 }	t_token;
+
+t_token	tk_sep();
+t_token	tk_word(t_str_slice word);
+t_token	tk_op(t_operator_ty op);
+t_token	tk_lit(t_str_slice quoted);
+t_token	tk_dquote(t_str_slice quoted);
+void	vec_push_tk(t_vec *vec, t_token tk);
+
+size_t	bounded_token_len(const char *str, char open, char close, size_t *out);
+size_t	word_len(const char *str, size_t *out);
+t_bool	str_is_operator(t_str_slice str, t_operator_ty *out);
+
 
 /******** FUNCTIONS *********/
 t_token *get_token(char *content, int type, int len, t_token **prev_next_ptr);
