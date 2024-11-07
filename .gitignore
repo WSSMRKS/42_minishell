@@ -1,0 +1,17 @@
+# Ignore all .o files
+*.o
+
+# Ignore the .cache directory created by zed/clangd
+.cache/
+
+# Ignore compile_commands.json created by bear for clangd
+compile_commands.json
+
+# Ignore .clangd file
+.clangd
+
+# Ignore the minishell binary
+minishell
+
+# Ignore the pargs binary
+pargs

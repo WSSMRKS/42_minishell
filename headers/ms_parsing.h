@@ -107,13 +107,13 @@ typedef struct s_cmd_list {
 
 
 /* content of flags field in t_word_desc */
-# define WORD_DOLLAR				1				/* (1 << 0) Dollar sign present. */
-# define WORD_QUOTES_SINGLE			2				/* (1 << 1) Quoted parts */
-# define WORD_QUOTES_DOUBLE			4				/* (1 << 2) Quoted parts */
-# define WORD_VAR_ASSIGNMENT		8				/* (1 << 3) This word is a variable assignment. */
-# define WORD_IS_BUILTIN			16				/* (1 << 4) word is a builtin command */
-# define WORD_IS_EXEC				32				/* (1 << 5) word is an executable (lookup $PATH) */
-# define WORD_IS_PATH				64				/* (1 << 6) word is an absolute or relative path */
+# define WORD_DOLLAR				(1 << 0) /* Dollar sign present. */
+# define WORD_QUOTES_SINGLE			(1 << 1) /* Quoted parts */
+# define WORD_QUOTES_DOUBLE			(1 << 2) /* Quoted parts */
+# define WORD_VAR_ASSIGNMENT		(1 << 3) /* This word is a variable assignment. */
+# define WORD_IS_BUILTIN			(1 << 4) /* word is a builtin command */
+# define WORD_IS_EXEC				(1 << 5) /* word is an executable (lookup $PATH) */
+# define WORD_IS_PATH				(1 << 6) /* word is an absolute or relative path */
 
 #endif
 
