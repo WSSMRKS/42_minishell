@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/30 12:06:45 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/08 12:02:20 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,9 +277,7 @@ char	*ft_lookup_symtab(t_symtab_stack *symtab_lvl, char *key)
 {
 	unsigned long	hash;
 	t_symtab		*tmp;
-	bool			dollar;
 
-	dollar = false;
 	if (!symtab_lvl)
 		return (NULL);
 	if (key[0] == '$')
