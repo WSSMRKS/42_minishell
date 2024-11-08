@@ -62,25 +62,38 @@ t_bool	handle_word_or_op(t_str_slice *inp, t_vec *tokens)
 		word.len = ft_strlen(op_str(op));
 	}
 	else if (word.len)
+	{
+
 		vec_push_tk(tokens, tk_word(word));
+	}
 	else
 		return (FALSE);
 	strsl_move_inplace(inp, word.len);
 	return (TRUE);
 }
 
-// Tokenize input
-// Expand Env vars
-// Detokenize into commands/arguments and operators
-
 /// @brief Tokenizes the input string.
 /// @param inp The input string.
 /// @return A vector of tokenized strings (t_token).
 /// Example input and output:
-/// mycmd "hello"world"" wooord "'mystring'" $HOME 'bla'>myfile
-/// -> [word(mycmd), sep(), dquote(hello), word(world), dquote(),
-///		sep(), word(wooord), sep(), dquote('mystring'),
-///		sep(), word($HOME), sep(), literal(bla), operator(redir), word(myfile)]
+///
+/// You entered: (mycmd "hello"world"" wooord "'mystring' with space" $HOME 'bla'>myfile)
+/// tokens: 15
+/// WORD: (mycmd)
+/// SEP : ()
+/// DQUO: (hello)
+/// WORD: (world)
+/// DQUO: ()
+/// SEP : ()
+/// WORD: (wooord)
+/// SEP : ()
+/// DQUO: ('mystring' with space)
+/// SEP : ()
+/// WORD: ($HOME)
+/// SEP : ()
+/// LIT : (bla)
+/// OP  : (>)
+/// WORD: (myfile)
 t_vec	tokenize(t_str_slice inp)
 {
 	t_vec	out;

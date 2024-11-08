@@ -43,6 +43,20 @@ size_t	word_len(const char *str, size_t *out)
 	return (len);
 }
 
+size_t	var_len(const char *str, size_t *out)
+{
+	size_t	len;
+
+	if (*str != '$')
+		return (0);
+	len = 1;
+	while (str[len] && !is_word_delimiter(str[len]) && str[len] != '$')
+		len++;
+	if (out)
+		*out = len;
+	return (len);
+}
+
 /// @brief Checks if the string is an operator.
 /// @param str The string to check.
 /// @param out (Null)Pointer for output.

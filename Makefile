@@ -11,15 +11,16 @@ COMPILE_FLAGS = -g3 -Werror -Wall -Wextra -Og
 CC = cc
 # Source Files #
 SRC_FILES = main.c \
+	ui/token/expand.c \
 	ui/token/token.c \
 	ui/token/tokenize.c \
-	ui/token/util.c
+	ui/token/util.c \
+	executor/ms_env.c
 	# main/minishell.c \
 	# ui/ui.c \
 	# debug/debug.c \
 	# init/ms_cleanup_utils.c \
 	# init/ms_init.c \
-	# executor/ms_env.c \
 	# ui/tokenizer/lexer.c \
 	# ui/tokenizer/token_utils.c \
 	# ui/tokenizer/lexer_quotes.c \
