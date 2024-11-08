@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 05:06:08 by dkoca             #+#    #+#             */
-/*   Updated: 2024/09/10 20:52:38 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/11/08 13:04:27 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ typedef struct s_token
 	t_token_ty type;
 }	t_token;
 
+t_vec	tokenize(t_str_slice inp);
+
 t_token	tk_sep();
 t_token	tk_word(t_str_slice word);
 t_token	tk_op(t_operator_ty op);
@@ -71,20 +73,8 @@ void	vec_push_tk(t_vec *vec, t_token tk);
 size_t	bounded_token_len(const char *str, char open, char close, size_t *out);
 size_t	word_len(const char *str, size_t *out);
 t_bool	str_is_operator(t_str_slice str, t_operator_ty *out);
-
-
-/******** FUNCTIONS *********/
-t_token *get_token(char *content, int type, int len, t_token **prev_next_ptr);
-int tokenizer(char *line, t_token **tokens);
-void skip_whitespace_between_words(char **cmd);
-int is_word(int cur_char);
-int is_quoted(int first_char, int quote);
-int is_end(char *chr_itr);
-t_token *has_single_quotes(char **chr_itr, t_token *prev_token);
-t_token *has_double_quotes(char **chr_itr, t_token *prev_token);
-
-/* DEBUG*/
-void print_token(t_token *token);
-
+t_bool	str_starts_with_op(t_str_slice str, t_operator_ty *out);
+void	token_print(const t_token *token, int fd);
+char	*op_str(t_operator_ty op);
 
 #endif

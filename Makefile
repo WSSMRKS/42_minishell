@@ -10,7 +10,10 @@ COMPILE_FLAGS = -g3 -Werror -Wall -Wextra -Og
 # Compiler #
 CC = cc
 # Source Files #
-SRC_FILES = main.c
+SRC_FILES = main.c \
+	ui/token/token.c \
+	ui/token/tokenize.c \
+	ui/token/util.c
 	# main/minishell.c \
 	# ui/ui.c \
 	# debug/debug.c \

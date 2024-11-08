@@ -56,8 +56,11 @@ t_bool	handle_word_or_op(t_str_slice *inp, t_vec *tokens)
 	t_operator_ty	op;
 
 	word = cstr_slice(inp->str, word_len(inp->str, 0));
-	if (str_is_operator(word, &op))
+	if (str_starts_with_op(word, &op))
+	{
 		vec_push_tk(tokens, tk_op(op));
+		word.len = ft_strlen(op_str(op));
+	}
 	else if (word.len)
 		vec_push_tk(tokens, tk_word(word));
 	else

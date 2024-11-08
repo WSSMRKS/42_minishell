@@ -73,7 +73,73 @@ t_bool	str_is_operator(t_str_slice str, t_operator_ty *out)
 	return (FALSE);
 }
 
+t_bool	str_starts_with_op(t_str_slice str, t_operator_ty *out)
+{
+	size_t						i;
+	static const t_str_slice	OPERATORS[] = {
+	[OP_APPEND]={">>", 2},
+	[OP_HEREDOC]={"<<", 2},
+	[OP_PIPE]={"|", 1},
+	[OP_REDIRECT]={">", 1},
+	[OP_INP_REDIRECT]={"<", 1},
+	[5]={NULL, 0}
+	};
+
+	i = 0;
+	while (OPERATORS[i].str)
+	{
+		if (strsl_starts_with(str, OPERATORS[i]))
+		{
+			if (out)
+				*out = (t_operator_ty)i;
+			return (TRUE);
+		}
+		i++;
+	}
+	return (FALSE);
+}
+
 void	vec_push_tk(t_vec *vec, t_token tk)
 {
 	vec_push(vec, &tk);
+}
+
+char	*op_str(t_operator_ty op)
+{
+	if (op == OP_PIPE)
+		return ("|");
+	else if (op == OP_REDIRECT)
+		return (">");
+	else if (op == OP_INP_REDIRECT)
+		return ("<");
+	else if (op == OP_APPEND)
+		return (">>");
+	else if (op == OP_HEREDOC)
+		return ("<<");
+	return (NULL);
+}
+
+void	token_print(const t_token *token, int fd)
+{
+	const char	*ty;
+	const char	*tk_str;
+
+	// depending on token type put their respective type as str
+	if (token->type == TOKEN_WORD)
+		ty = "WORD";
+	else if (token->type == TOKEN_LITERAL)
+		ty = "LIT";
+	else if (token->type == TOKEN_DQUOTE)
+		ty = "DQUO";
+	else if (token->type == TOKEN_OPERATOR)
+		ty = "OP";
+	else
+		ty = "SEP";
+	tk_str = "";
+	if (token->type == TOKEN_WORD || token->type == TOKEN_LITERAL
+		|| token->type == TOKEN_DQUOTE)
+		tk_str = cstr_ref(&token->str);
+	else if (token->type == TOKEN_OPERATOR)
+		tk_str = op_str(token->op);
+	ft_printf_fd(fd, "%-4s: (%s)", ty, tk_str);
 }

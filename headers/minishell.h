@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/30 12:12:48 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/08 13:01:11 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,8 +141,8 @@ void			ft_pwd(t_ms *ms, t_cmd_list *curr);
 int				ft_echo(t_ms *ms, t_cmd_list *curr);
 
 /* ms_parse */
-int parse(t_token *tokens);
-t_list_words *make_word(t_tok_span *word_info);
-t_list_words **make_word_list(t_tok_span *word_info, t_list_words ***tail);
+// int parse(t_token *tokens);
+// t_list_words *make_word(t_tok_span *word_info);
+// t_list_words **make_word_list(t_tok_span *word_info, t_list_words ***tail);
 
 #endif
