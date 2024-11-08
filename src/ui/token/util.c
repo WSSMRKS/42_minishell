@@ -18,13 +18,14 @@ size_t	bounded_token_len(const char *str, char open, char close, size_t *out)
 	if (*str != open)
 		return (0);
 	*out = 1;
-	while (TRUE)
+	while (str[*out])
 	{
-		if (str[*out] == 0)
-			return (0);
-		if (str[(*out)++] == close)
+		if (str[*out] == '\\' && str[*out + 1] != 0)
+			(*out) += 2;
+		else if (str[(*out)++] == close)
 			return (*out);
 	}
+	return (0);
 }
 
 /// @brief Gets the length of a word delimited by is_word_delimiter.
@@ -35,9 +36,19 @@ size_t	word_len(const char *str, size_t *out)
 {
 	size_t	len;
 
+
 	len = 0;
-	while (str[len] && !is_word_delimiter(str[len]))
-		len++;
+	if (is_word_delimiter(str[len]))
+		len = 1;
+	while (str[len])
+	{
+		if (str[len] == '\\' && str[len + 1] != 0)
+			len += 2;
+		else if (!is_word_delimiter(str[len]))
+			len++;
+		else
+			break ;
+	}
 	if (out)
 		*out = len;
 	return (len);
@@ -50,7 +61,7 @@ size_t	var_len(const char *str, size_t *out)
 	if (*str != '$')
 		return (0);
 	len = 1;
-	while (str[len] && !is_word_delimiter(str[len]) && str[len] != '$')
+	while (str[len] && (ft_isalnum(str[len]) || str[len] == '_'))
 		len++;
 	if (out)
 		*out = len;
@@ -147,6 +158,8 @@ void	token_print(const t_token *token, int fd)
 		ty = "DQUO";
 	else if (token->type == TOKEN_OPERATOR)
 		ty = "OP";
+	else if (token->type == TOKEN_NEWLINE)
+		ty = "NEWLINE";
 	else
 		ty = "SEP";
 	tk_str = "";
@@ -157,3 +170,5 @@ void	token_print(const t_token *token, int fd)
 		tk_str = op_str(token->op);
 	ft_printf_fd(fd, "%-4s: (%s)", ty, tk_str);
 }
+
+

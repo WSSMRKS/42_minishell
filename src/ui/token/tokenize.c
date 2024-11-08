@@ -1,5 +1,4 @@
 #include "../../../headers/minishell.h"
-#include <stdio.h>
 
 /* ??????????????????????
 ```bash
@@ -36,7 +35,7 @@ argv[9]: no no "nooo"
 ```
 */
 
-t_bool	handle_quoted(t_str_slice *inp, t_vec *tokens)
+static t_bool	handle_quoted(t_str_slice *inp, t_vec *tokens)
 {
 	size_t	len;
 
@@ -50,7 +49,7 @@ t_bool	handle_quoted(t_str_slice *inp, t_vec *tokens)
 	return (TRUE);
 }
 
-t_bool	handle_word_or_op(t_str_slice *inp, t_vec *tokens)
+static t_bool	handle_word_or_op(t_str_slice *inp, t_vec *tokens)
 {
 	t_str_slice		word;
 	t_operator_ty	op;
@@ -62,15 +61,18 @@ t_bool	handle_word_or_op(t_str_slice *inp, t_vec *tokens)
 		word.len = ft_strlen(op_str(op));
 	}
 	else if (word.len)
-	{
-
 		vec_push_tk(tokens, tk_word(word));
-	}
 	else
 		return (FALSE);
 	strsl_move_inplace(inp, word.len);
 	return (TRUE);
 }
+
+// IMPORTANT FOR REPL AND NEWLINE TOKEN
+// In repl have parser_state, if last token is newline,
+// get another line of input and then continue parsing
+// with a special merge of the tokens but without
+// the newline token which was there before
 
 /// @brief Tokenizes the input string.
 /// @param inp The input string.

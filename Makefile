@@ -15,6 +15,7 @@ SRC_FILES = main.c \
 	ui/token/token.c \
 	ui/token/tokenize.c \
 	ui/token/util.c \
+	ui/token/unescape.c \
 	executor/ms_env.c
 	# main/minishell.c \
 	# ui/ui.c \

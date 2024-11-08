@@ -12,7 +12,7 @@ static void	str_expand_vars(t_str *str, t_symtab_stack *st)
 	while (i < str->len)
 	{
 		buf = cstr_mut(str);
-		if (buf[i] == '$')
+		if (buf[i] == '$' && (i == 0 || buf[i - 1] != '\\'))
 		{
 			var_str = str_clone_from(cstr_slice(&buf[i+1], var_len(&buf[i], &var_size) - 1));
 			var = cstr_view(ft_lookup_symtab(st, (char *)cstr_ref(&var_str)));

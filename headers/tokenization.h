@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 05:06:08 by dkoca             #+#    #+#             */
-/*   Updated: 2024/11/08 15:35:35 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/11/08 18:22:41 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef enum e_token_ty
 	TOKEN_LITERAL,
 	TOKEN_DQUOTE,
 	TOKEN_OPERATOR,
+	TOKEN_NEWLINE,
 }	t_token_ty;
 
 typedef struct s_token
@@ -87,6 +88,7 @@ typedef struct s_ast_node {
 
 t_vec	tokenize(t_str_slice inp);
 void	expand_vars(t_vec *tokens, t_symtab_stack *st);
+void	unescape_chars(t_vec *tokens);
 
 t_token	tk_sep();
 t_token	tk_word(t_str_slice word);

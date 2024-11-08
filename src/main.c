@@ -86,6 +86,9 @@ int	main(int argc, char **argv, char **envp)
 		expand_vars(&tokens, &st);
 		ft_printf("--------------------------------\nEXPANDED\n");
 		print_all_tokens(&tokens);
+		unescape_chars(&tokens);
+		ft_printf("--------------------------------\nUNESCAPED\n");
+		print_all_tokens(&tokens);
         free(input);
     }
 
