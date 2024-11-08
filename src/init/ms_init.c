@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 19:05:44 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/30 14:27:23 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/08 16:53:18 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void	ft_init_be(t_ms *ms, int argc, char **argv, char **envp)
 	ms->be->builtins[4] = ft_strdup("unset");
 	ms->be->builtins[5] = ft_strdup("env");
 	ms->be->builtins[6] = ft_strdup("exit");
+	ms->be->cwd = ft_calloc(sizeof(char), PATH_MAX);
 	ms->be->global_symtabs = NULL;
 	ft_init_symtab(ms);
 }

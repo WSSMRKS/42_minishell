@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/07 17:12:48 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/08 16:15:19 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 
 void	ft_front_end(char *cmd)
 {
-	t_token *tokens;
-	// t_cmd_list *cmd_list;
-	// (void) cmd;
-	tokenizer(cmd, &tokens);
-	printf("first token = ");
-	print_token(tokens);
-	// parse(tokens);
+	(void) cmd;
+	// t_token *tokens;
+	// // t_cmd_list *cmd_list;
+	// // (void) cmd;
+	// tokenizer(cmd, &tokens);
+	// printf("first token = ");
+	// print_token(tokens);
+	// // parse(tokens);
 }
 
 char	*choose_prompt(int mode)

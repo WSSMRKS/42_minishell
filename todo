@@ -9,6 +9,7 @@
 [x] simplify debugger
 [ ] implement execution of builtins
 [ ] implement signals
+[ ] symtabs account for empty variables
 
 
 

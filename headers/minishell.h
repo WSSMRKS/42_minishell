@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/30 12:12:48 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/08 18:02:06 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,6 @@ in minishell.h */
 # include "ms_executor.h"
 # include "tokenization.h"
 # include "../libft/libft.h"
-
-
-#define FALSE 0
-#define TRUE 1
 
 /* minishell struct. Main struct that is passed throughout the whole program.
 	global flags: 1 = heredoc present	*/
@@ -133,11 +129,11 @@ void			ft_add_value(t_ms *ms, char *env);
 
 /* ms_builtins*/
 
-void			ft_env(t_ms *ms, t_cmd_list *curr);
-void			ft_export(t_ms *ms, t_cmd_list *curr);
-void			ft_unset(t_ms *ms, t_cmd_list *curr);
-void			ft_cd(t_ms *ms, t_cmd_list *curr);
-void			ft_pwd(t_ms *ms, t_cmd_list *curr);
+int				ft_env(t_ms *ms, t_cmd_list *curr);
+int				ft_export(t_ms *ms, t_cmd_list *curr);
+int				ft_unset(t_ms *ms, t_cmd_list *curr);
+int				ft_cd(t_ms *ms, t_cmd_list *curr);
+int				ft_pwd(t_ms *ms, t_cmd_list *curr);
 int				ft_echo(t_ms *ms, t_cmd_list *curr);
 
 /* ms_parse */

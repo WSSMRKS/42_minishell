@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:56:05 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/05 17:01:28 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/08 17:04:42 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ typedef struct s_list_redir {
 	e_redir_type	instruction;	/* what is to be done*/
 	t_redir_aim			*target;	/* fd or variable to be redirected */
 	char				*hd_del; /* EOF token string, after << */
-	t_redir_aim			*hd_file;	/* hd tmp file fd and name*/
 	int					rightmost;	/* valid redirection indicator*/
 }				t_list_redir;
 

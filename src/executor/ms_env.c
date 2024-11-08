@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/08 12:02:20 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/08 18:35:10 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ void	ft_add_global_value(t_ms *ms, char *env)
 	i = 0;
 	while (env[i] && env[i] != '=')
 		i++;
+	if (env[i] != '=')
 	global = ms->be->global_symtabs;
 	key = ft_substr(env, 0, i);
 	value = ft_strdup(&env[i + 1]);
