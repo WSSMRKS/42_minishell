@@ -35,7 +35,7 @@ argv[9]: no no "nooo"
 ```
 */
 
-static t_bool	handle_quoted(t_str_slice *inp, t_vec *tokens)
+static bool	handle_quoted(t_str_slice *inp, t_vec *tokens)
 {
 	size_t	len;
 
@@ -44,12 +44,12 @@ static t_bool	handle_quoted(t_str_slice *inp, t_vec *tokens)
 	else if (bounded_token_len(inp->str, '\'', '\'', &len))
 		vec_push_tk(tokens, tk_lit(cstr_slice(inp->str, len)));
 	else
-		return (FALSE);
+		return (false);
 	strsl_move_inplace(inp, len);
-	return (TRUE);
+	return (true);
 }
 
-static t_bool	handle_word_or_op(t_str_slice *inp, t_vec *tokens)
+static bool	handle_word_or_op(t_str_slice *inp, t_vec *tokens)
 {
 	t_str_slice		word;
 	t_operator_ty	op;
@@ -63,9 +63,22 @@ static t_bool	handle_word_or_op(t_str_slice *inp, t_vec *tokens)
 	else if (word.len)
 		vec_push_tk(tokens, tk_word(word));
 	else
-		return (FALSE);
+		return (false);
 	strsl_move_inplace(inp, word.len);
-	return (TRUE);
+	return (true);
+}
+
+static void	handle_whitespace(t_str_slice *inp, t_vec *tokens)
+{
+	while (*inp->str == ' ' || *inp->str == '\t' || *inp->str == '\n')
+	{
+		if (*inp->str == '\n')
+			vec_push_tk(tokens, (t_token){.type = TOKEN_NL});
+		else
+			vec_push_tk(tokens, (t_token){.type = TOKEN_SEPERATOR});
+		inp->str++;
+		inp->len--;
+	}
 }
 
 // IMPORTANT FOR REPL AND NEWLINE TOKEN
@@ -101,13 +114,9 @@ t_vec	tokenize(t_str_slice inp)
 	t_vec	out;
 
 	out = vec_empty(sizeof(t_token));
-	while (TRUE)
+	while (true)
 	{
-		if (ft_isspace(*inp.str))
-		{
-			vec_push_tk(&out, tk_sep());
-			strsl_trim_start_inplace(&inp);
-		}
+		handle_whitespace(&inp, &out);
 		if (!inp.len)
 			break ;
 		if (handle_quoted(&inp, &out) || handle_word_or_op(&inp, &out))

@@ -1,8 +1,19 @@
 #include "../../../headers/minishell.h"
 
-static t_bool	is_word_delimiter(char c)
+static bool	is_word_delimiter(char c)
 {
-	return (ft_isspace(c) || c == '"' || c == '\'');
+	return (c == ' ' || c == '\t' || c == '\n' || c == '"' || c == '\'');
+}
+
+/// @brief Removes leading whitespace from a stringview.
+/// @param s The stringview to trim.
+void	strsl_trim_start_delim(t_str_slice *s)
+{
+	while (s->len && is_word_delimiter(*s->str))
+	{
+		s->str++;
+		s->len--;
+	}
 }
 
 /// @brief Checks if the string starts with a specific opening character
@@ -71,8 +82,8 @@ size_t	var_len(const char *str, size_t *out)
 /// @brief Checks if the string is an operator.
 /// @param str The string to check.
 /// @param out (Null)Pointer for output.
-/// @return TRUE if the string is an operator, FALSE otherwise.
-t_bool	str_is_operator(t_str_slice str, t_operator_ty *out)
+/// @return true if the string is an operator, false otherwise.
+bool	str_is_operator(t_str_slice str, t_operator_ty *out)
 {
 	size_t						i;
 	static const t_str_slice	OPERATORS[] = {
@@ -91,14 +102,14 @@ t_bool	str_is_operator(t_str_slice str, t_operator_ty *out)
 		{
 			if (out)
 				*out = (t_operator_ty)i;
-			return (TRUE);
+			return (true);
 		}
 		i++;
 	}
-	return (FALSE);
+	return (false);
 }
 
-t_bool	str_starts_with_op(t_str_slice str, t_operator_ty *out)
+bool	str_starts_with_op(t_str_slice str, t_operator_ty *out)
 {
 	size_t						i;
 	static const t_str_slice	OPERATORS[] = {
@@ -117,11 +128,11 @@ t_bool	str_starts_with_op(t_str_slice str, t_operator_ty *out)
 		{
 			if (out)
 				*out = (t_operator_ty)i;
-			return (TRUE);
+			return (true);
 		}
 		i++;
 	}
-	return (FALSE);
+	return (false);
 }
 
 void	vec_push_tk(t_vec *vec, t_token tk)
@@ -158,8 +169,10 @@ void	token_print(const t_token *token, int fd)
 		ty = "DQUO";
 	else if (token->type == TOKEN_OPERATOR)
 		ty = "OP";
-	else if (token->type == TOKEN_NEWLINE)
-		ty = "NEWLINE";
+	else if (token->type == TOKEN_CONTINUE_NL)
+		ty = "CONT_NL";
+	else if (token->type == TOKEN_NL)
+		ty = "NL";
 	else
 		ty = "SEP";
 	tk_str = "";
@@ -170,5 +183,3 @@ void	token_print(const t_token *token, int fd)
 		tk_str = op_str(token->op);
 	ft_printf_fd(fd, "%-4s: (%s)", ty, tk_str);
 }
-
-

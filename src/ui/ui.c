@@ -42,11 +42,11 @@
 // 		if (len >= 2 && cmd[len - 2] == '\\')
 // 		{
 // 			printf("last 2 chrs = %c and %c\n", cmd[len -1], cmd[len -2]);
-// 			return (FALSE);
+// 			return (false);
 // 		}
-// 		return (TRUE);
+// 		return (true);
 // 	}
-// 	return (FALSE);
+// 	return (false);
 // }
 
 // void	ft_repl(int argc, char **argv, char **envp)
@@ -79,7 +79,7 @@
 // 		else
 // 			printf("{%s}\n", ms.cmd);
 // 		add_history(ms.cmd);
-// 		if (last_is_escaped(ms.cmd) == TRUE)
+// 		if (last_is_escaped(ms.cmd) == true)
 // 			mode = 1;
 // 		if (strcmp(ms.cmd, "ms_debug") == 0)
 // 			ft_debug(&ms);

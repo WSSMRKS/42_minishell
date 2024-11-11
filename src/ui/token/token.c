@@ -1,10 +1,5 @@
 #include "../../../headers/minishell.h"
 
-t_token	tk_sep()
-{
-	return ((t_token){.type = TOKEN_SEPERATOR});
-}
-
 t_token	tk_word(t_str_slice word)
 {
 	return ((t_token){.type = TOKEN_WORD, .str = str_clone_from(word)});

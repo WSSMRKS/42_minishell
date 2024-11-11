@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/08 13:01:11 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/11/11 15:20:48 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,6 @@ in minishell.h */
 # include "ms_executor.h"
 # include "tokenization.h"
 # include "../libft/libft.h"
-
-
-#define FALSE 0
-#define TRUE 1
 
 /* minishell struct. Main struct that is passed throughout the whole program.
 	global flags: 1 = heredoc present	*/

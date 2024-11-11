@@ -1,5 +1,21 @@
 #include "../../../headers/minishell.h"
 
+static void	strip_empty_word_tokens(t_vec *tokens)
+{
+	t_token	*token;
+	size_t	i;
+
+	i = 0;
+	while (i < tokens->len)
+	{
+		token = vec_get_at(tokens, i);
+		if (token->type == TOKEN_WORD && token->str.len == 0)
+			vec_remove_at(tokens, i);
+		else
+			i++;
+	}
+}
+
 static void	str_expand_vars(t_str *str, t_symtab_stack *st)
 {
 	t_str	var_str;
@@ -41,4 +57,5 @@ void	expand_vars(t_vec *tokens, t_symtab_stack *st)
 			str_expand_vars(&token->str, st);
 		i++;
 	}
+	strip_empty_word_tokens(tokens);
 }

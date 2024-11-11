@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 05:06:08 by dkoca             #+#    #+#             */
-/*   Updated: 2024/11/08 18:22:41 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/11/11 15:31:41 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,18 @@
 // {"&&", 2},
 // {"||", 2},
 
+/*
+Explicit null arguments ("" or '') are retained and passed to commands as empty strings.
+
+Unquoted implicit null arguments, resulting from the expansion of parameters that have no values, are removed.
+
+If a parameter with no value is expanded within double quotes, a null argument results and is retained and passed to a command as an empty string.
+When a quoted null argument appears as part of a word whose expansion is non-null, the null argument is removed.
+That is, the word -d'' becomes -d after word splitting and null argument removal.
+
+Note that if no expansion occurs, no splitting is performed.
+*/
+
 typedef enum e_operator_ty
 {
 	OP_PIPE,
@@ -50,7 +62,8 @@ typedef enum e_token_ty
 	TOKEN_LITERAL,
 	TOKEN_DQUOTE,
 	TOKEN_OPERATOR,
-	TOKEN_NEWLINE,
+	TOKEN_CONTINUE_NL,
+	TOKEN_NL,
 }	t_token_ty;
 
 typedef struct s_token
@@ -90,18 +103,18 @@ t_vec	tokenize(t_str_slice inp);
 void	expand_vars(t_vec *tokens, t_symtab_stack *st);
 void	unescape_chars(t_vec *tokens);
 
-t_token	tk_sep();
 t_token	tk_word(t_str_slice word);
 t_token	tk_op(t_operator_ty op);
 t_token	tk_lit(t_str_slice quoted);
 t_token	tk_dquote(t_str_slice quoted);
 void	vec_push_tk(t_vec *vec, t_token tk);
 
+void	strsl_trim_start_delim(t_str_slice *s);
 size_t	bounded_token_len(const char *str, char open, char close, size_t *out);
 size_t	word_len(const char *str, size_t *out);
 size_t	var_len(const char *str, size_t *out);
-t_bool	str_is_operator(t_str_slice str, t_operator_ty *out);
-t_bool	str_starts_with_op(t_str_slice str, t_operator_ty *out);
+bool	str_is_operator(t_str_slice str, t_operator_ty *out);
+bool	str_starts_with_op(t_str_slice str, t_operator_ty *out);
 void	token_print(const t_token *token, int fd);
 char	*op_str(t_operator_ty op);
 

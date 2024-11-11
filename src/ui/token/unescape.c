@@ -2,9 +2,9 @@
 
 /// @brief If the last token is word(\), replace the token with newline().
 /// @param tokens The token vector.
-static void	handle_newline_token(t_vec *tokens)
+static void	handle_continue_nl_token(t_vec *tokens)
 {
-	static t_token	newline = {.type = TOKEN_NEWLINE};
+	static t_token	newline = {.type = TOKEN_CONTINUE_NL};
 	t_token	*token;
 
 	token = vec_get_last(tokens);
@@ -38,7 +38,7 @@ void	unescape_chars(t_vec *tokens)
 	t_token	*token;
 	size_t	i;
 
-	handle_newline_token(tokens);
+	handle_continue_nl_token(tokens);
 	i = 0;
 	while (i < tokens->len)
 	{
