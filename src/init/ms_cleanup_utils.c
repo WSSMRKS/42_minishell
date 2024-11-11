@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:15 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/05 17:03:30 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/11 10:45:51 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ void	ft_clear_redir(t_list_redir	*redir)
 			free(to_free->hd_del);
 			to_free->hd_del = NULL;
 		}
-		if(to_free->hd_file)
+		if(to_free->target)
 		{
-			free(to_free->hd_file);
-			to_free->hd_file = NULL;
+			free(to_free->target);
+			to_free->target = NULL;
 		}
 		if(to_free->target)
 		{

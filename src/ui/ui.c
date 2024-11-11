@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/08 16:15:19 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/11 10:45:18 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,11 @@ int last_is_escaped(char *cmd)
 		if (len >= 2 && cmd[len - 2] == '\\')
 		{
 			printf("last 2 chrs = %c and %c\n", cmd[len -1], cmd[len -2]);
-			return (FALSE);
+			return (false);
 		}
-		return (TRUE);
+		return (true);
 	}
-	return (FALSE);
+	return (false);
 }
 
 void	ft_repl(int argc, char **argv, char **envp)
@@ -80,7 +80,7 @@ void	ft_repl(int argc, char **argv, char **envp)
 		else
 			printf("{%s}\n", ms.cmd);
 		add_history(ms.cmd);
-		if (last_is_escaped(ms.cmd) == TRUE)
+		if (last_is_escaped(ms.cmd) == false)
 			mode = 1;
 		if (strcmp(ms.cmd, "ms_debug") == 0)
 			ft_debug(&ms);

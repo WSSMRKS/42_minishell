@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 05:48:37 by dkoca             #+#    #+#             */
-/*   Updated: 2024/10/07 16:50:53 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/11 10:47:58 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,16 @@ t_token *get_token(char *content, int type, int len, t_token **prev)
 int is_quoted(int first_char, int quote)
 {
 	if (first_char == quote)
-		return (TRUE);
+		return (true);
 	else
-		return (FALSE);
+		return (false);
 }
 
 int is_word(int cur_char)
 {
 	if (!ft_strchr("|<> \t", cur_char))
-		return (TRUE);
-	return (FALSE);
+		return (true);
+	return (false);
 }
 
 void skip_whitespace_between_words(char **cmd)
@@ -61,8 +61,8 @@ void skip_whitespace_between_words(char **cmd)
 int is_end(char *chr_itr)
 {
 	if (chr_itr != NULL && *chr_itr != '\0')
-		return (FALSE);
-	return (TRUE);
+		return (false);
+	return (true);
 }
 
 /* debugging function*/

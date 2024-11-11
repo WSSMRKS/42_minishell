@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/08 17:53:52 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/11 11:09:44 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,12 @@ void	ft_deb_commands(t_ms *ms)
 	ft_printf("37 - Test with pwd klsjhdsdf klsjhdsdf klsjhdsdf\n");
 	ft_printf("38 - Test with pwd without any further arguments\n");
 	ft_printf("39 - Test with cd ..\n");
+	ft_printf("40 - export\n");
+	ft_printf("41 - export new=bla\n");
+	ft_printf("42 - export new2\n");
+	ft_printf("43 - export new=bla\n");
+	ft_printf("44 - export TEST1=20000 TEST2=30000 TEST3\n");
+
 
 
 
@@ -92,7 +98,7 @@ void	ft_deb_commands(t_ms *ms)
 
 
 	case_nb = ft_atoi(readline("Choose debug case: "));
-	while (case_nb < 0 || case_nb > 39)
+	while (case_nb < 0 || case_nb > 44)
 	{
 		ft_printf("Error: wrong selection\n");
 		case_nb = ft_atoi(readline("Choose debug case: "));
@@ -1067,9 +1073,91 @@ void	ft_deb_commands(t_ms *ms)
 		ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
 		ms->cmds->cmd->words->next->word = ft_strdup("..");
 		ms->cmds->cmd->words->next->next = NULL;
+		ms->cmds->next = NULL;
+		ms->be->nb_cmds = 1;
 	}
+	else if (case_nb == 40)
+	{
+		ft_printf("40 - export\n");
+
+		ms->cmd = ft_strdup("export");
+
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("export");
+		ms->cmds->cmd->words->next = NULL;
+		ms->cmds->next = NULL;
+		ms->be->nb_cmds = 1;
+	}
+	else if (case_nb == 41)
+	{
+		ft_printf("41 - export new=bla\n");
+
+		ms->cmd = ft_strdup("export");
+
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("export");
+		ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->word = ft_strdup("new=bla");
+		ms->cmds->cmd->words->next->next = NULL;
+		ms->cmds->next = NULL;
+		ms->be->nb_cmds = 1;
+	}
+	else if (case_nb == 42)
+	{
+		ft_printf("42 - export new2\n");
 
 
+		ms->cmd = ft_strdup("export");
+
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("export");
+		ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->word = ft_strdup("new2");
+		ms->cmds->cmd->words->next->next = NULL;
+		ms->cmds->next = NULL;
+		ms->be->nb_cmds = 1;
+	}
+		else if (case_nb == 43)
+	{
+		ft_printf("43 - export new=bla\n");
+		ms->cmd = ft_strdup("export");
+
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("export");
+		ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->word = ft_strdup("new=bla");
+		ms->cmds->cmd->words->next->next = NULL;
+		ms->cmds->next = NULL;
+		ms->be->nb_cmds = 1;
+	}
+		else if (case_nb == 44)
+	{
+		ft_printf("44 - export TEST1=20000 TEST2=30000 TEST3\n");
+		ms->cmd = ft_strdup("export TEST1=20000 TEST2=30000 TEST3");
+
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("export");
+		ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->word = ft_strdup("TEST1=20000");
+		ms->cmds->cmd->words->next->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->next->word = ft_strdup("TEST2=30000");
+		ms->cmds->cmd->words->next->next->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->next->next->word = ft_strdup("TEST3");
+		ms->cmds->cmd->words->next->next->next->next = NULL;
+
+		ms->cmds->next = NULL;
+		ms->be->nb_cmds = 1;
+	}
 
 	/*tests for symtabs:
 	[x] add a value to global

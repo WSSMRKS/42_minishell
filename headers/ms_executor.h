@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 15:50:51 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/08 14:37:44 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/11 12:59:32 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_be {
 	char			**builtins;		/*clear at exit*/
 	char			*cwd;			/*clear at exit*/
 	t_symtab_stack	*global_symtabs;
+	t_symtab		*alphabetic_vars;
 }				t_be;
 
 #endif
