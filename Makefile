@@ -6,7 +6,7 @@ LIBFTDIR = libft/
 NAME = minishell
 # Compiler & Compilation Flags #
 COMPILE_OPTIONS = $(COMPILE_FLAGS) -lreadline
-COMPILE_FLAGS = -g3 -Werror -Wall -Wextra -Og
+COMPILE_FLAGS = -Werror -Wall -Wextra -g3
 # Compiler #
 CC = cc
 # Source Files #
@@ -16,6 +16,7 @@ SRC_FILES = main.c \
 	ui/token/tokenize.c \
 	ui/token/util.c \
 	ui/token/unescape.c \
+	ui/token/normalize.c \
 	executor/ms_env.c
 	# main/minishell.c \
 	# ui/ui.c \

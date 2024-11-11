@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 05:06:08 by dkoca             #+#    #+#             */
-/*   Updated: 2024/11/11 15:31:41 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/11/11 16:27:40 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,11 @@ Note that if no expansion occurs, no splitting is performed.
 
 typedef enum e_operator_ty
 {
-	OP_PIPE,
-	OP_REDIRECT,
-	OP_INP_REDIRECT,
-	OP_APPEND,
-	OP_HEREDOC
+	OP_PIPE,			// CMD1 | CMD2 (PIPE)
+	OP_REDIRECT,		// > ARG (OUTFILE)
+	OP_INP_REDIRECT,	// < ARG (INFILE)
+	OP_APPEND,			// >> ARG (APPEND)
+	OP_HEREDOC			// << ARG (HEREDOC)
 }	t_operator_ty;
 
 typedef enum e_token_ty
@@ -87,7 +87,7 @@ typedef struct	s_cmd_node {
 
 typedef struct	s_op_node {
 	t_operator_ty	operator;
-	char			**args;
+	char			*arg;
 }	t_op_node;
 
 /// @brief generic AST node holding either a command or an operator.
@@ -102,6 +102,7 @@ typedef struct s_ast_node {
 t_vec	tokenize(t_str_slice inp);
 void	expand_vars(t_vec *tokens, t_symtab_stack *st);
 void	unescape_chars(t_vec *tokens);
+void	tokens_normalize(t_vec *tokens);
 
 t_token	tk_word(t_str_slice word);
 t_token	tk_op(t_operator_ty op);

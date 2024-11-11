@@ -16,69 +16,6 @@ void	strsl_trim_start_delim(t_str_slice *s)
 	}
 }
 
-/// @brief Checks if the string starts with a specific opening character
-/// and contains its closing character.
-/// @param str The string to check.
-/// @param open The opening character (e.g., '"', '\'', '(')
-/// @param close The closing character (e.g., '"', '\'', ')')
-/// @param out The length of the bounded substring including delimiters.
-/// @return The length of the bounded substring.
-/// Returns 0 if not found or unterminated.
-size_t	bounded_token_len(const char *str, char open, char close, size_t *out)
-{
-	if (*str != open)
-		return (0);
-	*out = 1;
-	while (str[*out])
-	{
-		if (str[*out] == '\\' && str[*out + 1] != 0)
-			(*out) += 2;
-		else if (str[(*out)++] == close)
-			return (*out);
-	}
-	return (0);
-}
-
-/// @brief Gets the length of a word delimited by is_word_delimiter.
-/// @param str The string to check.
-/// @param out The length of the word. (nullpointer allowed)
-/// @return The length of the word.
-size_t	word_len(const char *str, size_t *out)
-{
-	size_t	len;
-
-
-	len = 0;
-	if (is_word_delimiter(str[len]))
-		len = 1;
-	while (str[len])
-	{
-		if (str[len] == '\\' && str[len + 1] != 0)
-			len += 2;
-		else if (!is_word_delimiter(str[len]))
-			len++;
-		else
-			break ;
-	}
-	if (out)
-		*out = len;
-	return (len);
-}
-
-size_t	var_len(const char *str, size_t *out)
-{
-	size_t	len;
-
-	if (*str != '$')
-		return (0);
-	len = 1;
-	while (str[len] && (ft_isalnum(str[len]) || str[len] == '_'))
-		len++;
-	if (out)
-		*out = len;
-	return (len);
-}
-
 /// @brief Checks if the string is an operator.
 /// @param str The string to check.
 /// @param out (Null)Pointer for output.
@@ -133,6 +70,71 @@ bool	str_starts_with_op(t_str_slice str, t_operator_ty *out)
 		i++;
 	}
 	return (false);
+}
+
+/// @brief Checks if the string starts with a specific opening character
+/// and contains its closing character.
+/// @param str The string to check.
+/// @param open The opening character (e.g., '"', '\'', '(')
+/// @param close The closing character (e.g., '"', '\'', ')')
+/// @param out The length of the bounded substring including delimiters.
+/// @return The length of the bounded substring.
+/// Returns 0 if not found or unterminated.
+size_t	bounded_token_len(const char *str, char open, char close, size_t *out)
+{
+	if (*str != open)
+		return (0);
+	*out = 1;
+	while (str[*out])
+	{
+		if (str[*out] == '\\' && str[*out + 1] != 0)
+			(*out) += 2;
+		else if (str[(*out)++] == close)
+			return (*out);
+	}
+	return (0);
+}
+
+/// @brief Gets the length of a word delimited by is_word_delimiter.
+/// @param str The string to check.
+/// @param out The length of the word. (nullpointer allowed)
+/// @return The length of the word.
+size_t	word_len(const char *str, size_t *out)
+{
+	size_t	len;
+	size_t	total_len;
+
+	total_len = ft_strlen(str);
+	len = 0;
+	if (is_word_delimiter(str[len]))
+		len = 1;
+	while (str[len])
+	{
+		if (str[len] == '\\' && str[len + 1] != 0)
+			len += 2;
+		else if (!is_word_delimiter(str[len])
+			&& !str_starts_with_op(cstr_slice(&str[len], usizemin(total_len - len, 2)), 0))
+			len++;
+		else
+			break ;
+	}
+	if (out)
+		*out = len;
+	return (len);
+}
+
+size_t	var_len(const char *str, size_t *out)
+{
+	size_t	len;
+
+	if (*str != '$')
+		return (0);
+	len = 1;
+	while (str[len] && (ft_isalnum(str[len]) || str[len] == '_'))
+		len++;
+	if (out)
+		*out = len;
+	return (len);
 }
 
 void	vec_push_tk(t_vec *vec, t_token tk)
