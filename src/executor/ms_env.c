@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/11 13:05:54 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/11 16:32:25 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,10 +116,14 @@ void	ft_add_global_value(t_ms *ms, char *env)
 	i = 0;
 	while (env[i] && env[i] != '=')
 		i++;
-	// if (env[i] != '=') // [ ] account for cases with key not having value
-	global = ms->be->global_symtabs;
+	if (env[i] != '=') // [ ] account for cases with key not having value
+		value = NULL;
+	else if (env[i] == '=' && env[i + 1] == '\0')
+		value = ft_calloc(sizeof(char), 1);
+	else
+		value = ft_strdup(&env[i + 1]);
 	key = ft_substr(env, 0, i);
-	value = ft_strdup(&env[i + 1]);
+	global = ms->be->global_symtabs;
 	if (ft_lookup_symtab(global, key) != NULL)
 	{
 		ft_update_symtab_value(global, key, value);

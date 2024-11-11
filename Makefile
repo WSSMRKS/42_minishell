@@ -36,7 +36,7 @@ $(NAME): $(LIBFT_SRC) $(SRC_OBJ)# Compile mandatory part.
 $(LIBFT_SRC): # Download and Compile libft
   ifeq ("$(wildcard $(LIBFTDIR))", "")
 	echo "Directory does not exist."
-	git clone https://github.com/WSSMRKS/42_libft.git $(LIBFTDIR)
+	git clone https://github.com/WSSMRKS/ms_libft.git $(LIBFTDIR)
 	$(MAKE) all -C $(LIBFTDIR)
   else
 	@echo "Skipping download because directory already exists."
