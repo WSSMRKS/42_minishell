@@ -142,19 +142,17 @@ void	vec_push_tk(t_vec *vec, t_token tk)
 	vec_push(vec, &tk);
 }
 
-char	*op_str(t_operator_ty op)
+const char	*op_str(t_operator_ty op)
 {
-	if (op == OP_PIPE)
-		return ("|");
-	else if (op == OP_REDIRECT)
-		return (">");
-	else if (op == OP_INP_REDIRECT)
-		return ("<");
-	else if (op == OP_APPEND)
-		return (">>");
-	else if (op == OP_HEREDOC)
-		return ("<<");
-	return (NULL);
+	static const char	*OP_STR[] = {
+		[OP_PIPE]="|",
+		[OP_REDIRECT]=">",
+		[OP_INP_REDIRECT]="<",
+		[OP_APPEND]=">>",
+		[OP_HEREDOC]="<<",
+	};
+
+	return (OP_STR[op]);
 }
 
 void	token_print(const t_token *token, int fd)

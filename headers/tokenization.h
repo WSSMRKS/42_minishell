@@ -110,13 +110,13 @@ t_token	tk_lit(t_str_slice quoted);
 t_token	tk_dquote(t_str_slice quoted);
 void	vec_push_tk(t_vec *vec, t_token tk);
 
-void	strsl_trim_start_delim(t_str_slice *s);
-size_t	bounded_token_len(const char *str, char open, char close, size_t *out);
-size_t	word_len(const char *str, size_t *out);
-size_t	var_len(const char *str, size_t *out);
-bool	str_is_operator(t_str_slice str, t_operator_ty *out);
-bool	str_starts_with_op(t_str_slice str, t_operator_ty *out);
-void	token_print(const t_token *token, int fd);
-char	*op_str(t_operator_ty op);
+void		strsl_trim_start_delim(t_str_slice *s);
+size_t		bounded_token_len(const char *str, char open, char close, size_t *out);
+size_t		word_len(const char *str, size_t *out);
+size_t		var_len(const char *str, size_t *out);
+bool		str_is_operator(t_str_slice str, t_operator_ty *out);
+bool		str_starts_with_op(t_str_slice str, t_operator_ty *out);
+void		token_print(const t_token *token, int fd);
+const char	*op_str(t_operator_ty op);
 
 #endif
