@@ -2,13 +2,14 @@
 [x] build testcases for heredoc // working
 [x] Implement env symtab
 [ ] implement builtins
-	[ ] int ft_echo(t_ms *ms, t_cmd_list *curr);
+	[x] int ft_echo(t_ms *ms, t_cmd_list *curr);
 	[ ] int ft_cd(t_ms *ms, t_cmd_list *curr);
 	[x] int ft_pwd(t_ms *ms, t_cmd_list *curr);
 	[x] int ft_export(t_ms *ms, t_cmd_list *curr);
-	[ ] int ft_unset(t_ms *ms, t_cmd_list *curr);
-	[ ] int ft_env(t_ms *ms, t_cmd_list *curr);
-	[ ] int ft_exit(t_ms *ms, t_cmd_list *curr);
+	[x] int ft_unset(t_ms *ms, t_cmd_list *curr);
+	[x] int ft_env(t_ms *ms, t_cmd_list *curr);
+	[x] int ft_exit(t_ms *ms, t_cmd_list *curr);
+	[ ] get return values of builtins sorted!!
 [ ] find way to save stdin_fileno when dup2-ing for redirects.
 [x] solution to builtins in pipeline: run minishell with the builtin in a Child
 	[ ] able to run minishell as child with args

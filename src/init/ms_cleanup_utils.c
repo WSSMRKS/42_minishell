@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:15 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/11 15:45:04 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/13 11:42:08 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,9 @@ void	ft_clear_be(t_ms *ms)
 void	ft_clean_be(t_ms *ms)
 {
 	ft_free_2d(ms->be->builtins);
+	free(ms->be->cwd);
 	ft_free_2d(ms->be->path); /* [ ] maybe rewrite due to changeable variables*/
+	ft_free_symtab_stack(ms->be->global_symtabs);
 }
 
 
@@ -165,7 +167,6 @@ void	ft_cleanup_exit(t_ms *ms, int ex)
 {
 	rl_clear_history();
 	ft_clean_be(ms);
-	ft_free_symtab_stack(ms->be->global_symtabs);
 	free(ms->be);
 	ms->be = NULL;
 	exit(ex);

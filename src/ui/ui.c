@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/11 10:45:18 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/13 11:51:40 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,29 +26,27 @@ void	ft_front_end(char *cmd)
 
 char	*choose_prompt(int mode)
 {
-	// (void) mode;
 	if (mode == 0)
 		return (readline("minishell$ "));
 	else
 		return (readline("> "));
-	// return (NULL);
 }
 
-int last_is_escaped(char *cmd)
-{
-	int len;
-	len = ft_strlen(cmd);
-	if (cmd[len - 1] == '\\')
-	{
-		if (len >= 2 && cmd[len - 2] == '\\')
-		{
-			printf("last 2 chrs = %c and %c\n", cmd[len -1], cmd[len -2]);
-			return (false);
-		}
-		return (true);
-	}
-	return (false);
-}
+// int last_is_escaped(char *cmd)
+// {
+// 	int len;
+// 	len = ft_strlen(cmd);
+// 	if (cmd[len - 1] == '\\')
+// 	{
+// 		if (len >= 2 && cmd[len - 2] == '\\')
+// 		{
+// 			printf("last 2 chrs = %c and %c\n", cmd[len -1], cmd[len -2]);
+// 			return (false);
+// 		}
+// 		return (true);
+// 	}
+// 	return (false);
+// }
 
 void	ft_repl(int argc, char **argv, char **envp)
 {
@@ -56,15 +54,6 @@ void	ft_repl(int argc, char **argv, char **envp)
 	t_ms			ms;
 	int				i;
 
-	(void)argc;
-	// if (argc >= 2)
-	// {
-		// return (127);
-		// save exit code? 127?
-	// }
-	(void)argv;
-	(void)envp;
-	// ft_init_ms(minishell, envp);
 	mode = 0;
 	i = 0;
 	ft_init_ms(&ms);
@@ -80,11 +69,11 @@ void	ft_repl(int argc, char **argv, char **envp)
 		else
 			printf("{%s}\n", ms.cmd);
 		add_history(ms.cmd);
-		if (last_is_escaped(ms.cmd) == false)
-			mode = 1;
-		if (strcmp(ms.cmd, "ms_debug") == 0)
+		// if (last_is_escaped(ms.cmd) == false)
+		// 	mode = 1;
+		if (ft_strcmp(ms.cmd, "ms_debug") == 0)
 			ft_debug(&ms);
-		if (strcmp(ms.cmd, "exit") == 0) /* needs to be rewritten */
+		if (ft_strcmp(ms.cmd, "exit") == 0)
 		{
 			free(ms.cmd);
 			ms.cmd = NULL;

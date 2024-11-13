@@ -6,12 +6,11 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 11:16:12 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/11 16:21:42 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/13 11:32:25 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
-// #include "../array/ft_array.h"
 
 int		ft_echo(t_ms *ms, t_cmd_list *curr)
 {
@@ -19,6 +18,7 @@ int		ft_echo(t_ms *ms, t_cmd_list *curr)
 	t_list_words	*words;
 	int				i;
 
+	(void) ms;
 	i = 0;
 	newline = true;
 	if (ft_strncmp(curr->cmd->words->next->word, "-n\0", 3) == 0)
@@ -32,8 +32,8 @@ int		ft_echo(t_ms *ms, t_cmd_list *curr)
 	{
 		if (i != 0)
 			printf(" ");
-		if(words->flags == WORD_DOLLAR)
-			printf("%s", ft_lookup_symtab(ms->be->global_symtabs, words->word));
+		// if(words->flags == WORD_DOLLAR)
+		// 	printf("%s", ft_lookup_symtab(ms->be->global_symtabs, words->word));
 		else
 			printf("%s", words->word);
 		words = words->next;
@@ -68,9 +68,16 @@ int		ft_cd(t_ms *ms, t_cmd_list *curr)
 	return (0);
 }
 
+/*all cases where unset returns a return value other then 0 are not part of the minishell scope.*/
 int		ft_unset(t_ms *ms, t_cmd_list *curr)
 {
-	ft_remove_from_symtab(ms->be->global_symtabs, curr->cmd->words->word);
+	t_list_words	*words;
+	words = curr->cmd->words;
+	while (words)
+	{
+		ft_remove_from_symtab(ms->be->global_symtabs, words->word);
+		words = words->next;
+	}
 	return (0);
 }
 
@@ -88,7 +95,7 @@ static int		ft_add_vars(t_ms *ms, t_cmd_list *curr)
 	return (0);
 }
 
-void		ft_extract_keys(t_ms *ms, int lvl, char **sorted_array)
+static void		ft_extract_keys(t_ms *ms, int lvl, char **sorted_array)
 {
 	t_symtab_stack		*tmp;
 	t_symtab			*tmp2;
@@ -116,7 +123,7 @@ void		ft_extract_keys(t_ms *ms, int lvl, char **sorted_array)
 		tmp = tmp->next;
 	}
 }
-int ft_strcmp_handler(const void *ptr1, const void *ptr2)
+static int ft_strcmp_handler(const void *ptr1, const void *ptr2)
 {
 	char **str1 = (char **) ptr1;
 	char **str2 = (char **) ptr2;
@@ -129,7 +136,7 @@ Functionality:
 - sort the array
 - call ft_lookup value to print one after the other.
 */
-void	ft_print_alpha(t_ms *ms)
+static void	ft_print_alpha(t_ms *ms)
 {
 	char	**sorted_array;
 	int		i;
@@ -149,8 +156,6 @@ void	ft_print_alpha(t_ms *ms)
 	free(sorted_array);
 }
 
-
-
 int		ft_export(t_ms *ms, t_cmd_list *curr)
 {
 	(void) curr;
@@ -159,5 +164,39 @@ int		ft_export(t_ms *ms, t_cmd_list *curr)
 		ft_add_vars(ms, curr);
 	else
 		ft_print_alpha(ms);
+	return (0);
+}
+
+/* env is not printing empty variables!!*/
+int		ft_env(t_ms *ms, t_cmd_list *curr)
+{
+	t_symtab_stack	*global_symtab;
+	int				i;
+	int				printed;
+	t_symtab		*entry;
+
+	if (curr->cmd->words->next != NULL)
+	{
+		ft_printf_fd(2, "env: doesn't support arguments\n");
+		return (1);
+	}
+	i = 0;
+	printed = 0;
+	global_symtab = ms->be->global_symtabs;
+	while(printed < global_symtab->used)
+	{
+		if (global_symtab->symtab[i] != NULL)
+		{
+			entry = global_symtab->symtab[i];
+			while(entry)
+			{
+				if(entry->value != NULL)
+					printf("%s=%s\n", entry->key, entry->value);
+				printed++;
+				entry = entry->next;
+			}
+		}
+		i++;
+	}
 	return (0);
 }

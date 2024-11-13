@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/11 16:32:57 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/13 11:40:00 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ft_deb_commands(t_ms *ms)
 	int case_nb;
 
 	case_nb = INT_MIN;
-	setbuf(stdout, 0);
+	// setbuf(stdout, 0);
 
 	ft_printf("Debugging command execution\n");
 	ft_printf("Debug cases need to be finalized and doublechecked\n");
@@ -90,16 +90,13 @@ void	ft_deb_commands(t_ms *ms)
 	ft_printf("43 - export new=bla\n");
 	ft_printf("44 - export TEST1=20000 TEST2=30000 TEST3\n");
 	ft_printf("45 - export empty=\"\"\n");
-
-
-
-
-	// ft_printf("55 - cat | cat | cat\n"); // [ ]
-
-
+	ft_printf("46 - unset non existent var \"NONEXISTENT\"\n");
+	ft_printf("47 - unset NEW1 NEW2 NEW3 (execute debug case 28 before)\n");
+	ft_printf("48 - env with no arguments\n");
+	ft_printf("49 - env NEW1 NEW2 NEW3 should return error\n");
 
 	case_nb = ft_atoi(readline("Choose debug case: "));
-	while (case_nb < 0 || case_nb > 45)
+	while (case_nb < 0 || case_nb > 49)
 	{
 		ft_printf("Error: wrong selection\n");
 		case_nb = ft_atoi(readline("Choose debug case: "));
@@ -895,15 +892,18 @@ void	ft_deb_commands(t_ms *ms)
 	{
 		// case to add 20 new variables;
 		int i = 0;
+		char *nb_str;
 		char *tmp;
 
 		ft_printf("28 - add 20 new global variables\n");
 
 		while (i < 20)
 		{
-			tmp = ft_multistrjoin(4, "NEW", ft_itoa(i), "=contentofNEW", ft_itoa(i));
+			nb_str = ft_itoa(i);
+			tmp = ft_multistrjoin(4, "NEW", nb_str, "=contentofNEW", nb_str);
 			ft_add_global_value(ms, tmp);
 			free(tmp);
+			free(nb_str);
 			i++;
 		}
 		ft_printf("printing the symtabs\n");
@@ -1174,6 +1174,73 @@ void	ft_deb_commands(t_ms *ms)
 		ms->cmds->next = NULL;
 		ms->be->nb_cmds = 1;
 	}
+	else if (case_nb == 46)
+	{
+		ft_printf("46 - unset non existent var \"NONEXISTENT\"\n");
+		ms->cmd = ft_strdup("unset NONEXISTENT");
+
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("unset");
+		ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->word = ft_strdup("NONEXISTENT");
+		ms->cmds->cmd->words->next->next = NULL;
+		ms->cmds->next = NULL;
+		ms->be->nb_cmds = 1;
+	}
+		else if (case_nb == 47)
+	{
+		ft_printf("47 - unset NEW1 NEW2 NEW3 (execute debug case 28 before)\n");
+		ms->cmd = ft_strdup("unset NEW1 NEW2 NEW3");
+
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("unset");
+		ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->word = ft_strdup("NEW1");
+		ms->cmds->cmd->words->next->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->next->word = ft_strdup("NEW2");
+		ms->cmds->cmd->words->next->next->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->next->next->word = ft_strdup("NEW3");
+		ms->cmds->cmd->words->next->next->next->next = NULL;
+		ms->cmds->next = NULL;
+		ms->be->nb_cmds = 1;
+	}
+	else if (case_nb == 48)
+	{
+		ft_printf("48 - env with no arguments\n");
+		ms->cmd = ft_strdup("env");
+
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("env");
+		ms->cmds->cmd->words->next = NULL;
+		ms->cmds->next = NULL;
+		ms->be->nb_cmds = 1;
+	}
+		else if (case_nb == 49)
+	{
+		ft_printf("49 - env NEW1 NEW2 NEW3 should return error\n");
+		ms->cmd = ft_strdup("env NEW1 NEW2 NEW3");
+
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("env");
+		ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->word = ft_strdup("NEW1");
+		ms->cmds->cmd->words->next->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->next->word = ft_strdup("NEW2");
+		ms->cmds->cmd->words->next->next->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->next->next->word = ft_strdup("NEW3");
+		ms->cmds->cmd->words->next->next->next->next = NULL;
+		ms->cmds->next = NULL;
+		ms->be->nb_cmds = 1;
+	}
+
 
 	/*tests for symtabs:
 	[x] add a value to global

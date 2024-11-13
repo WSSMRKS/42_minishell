@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/11 11:14:09 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/13 11:39:26 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,8 @@ int	ft_builtin(t_ms *ms, t_cmd_list *curr)
 		ret = ft_export(ms, curr);
 	else if (curr->cmd->builtin_nr == 5)
 		ret = ft_unset(ms, curr);
-	// else if (curr->cmd->builtin_nr == 6)
-	// 	ret = ft_env(ms, curr);
+	else if (curr->cmd->builtin_nr == 6)
+		ret = ft_env(ms, curr);
 	// else if (curr->cmd->builtin_nr == 7)
 	// 	ret = ft_exit(ms, curr);
 	return (ret);
@@ -157,7 +157,7 @@ void	ft_is_builtin(t_cmd_list *curr, t_ms *ms)
 	while (ms->cmds->cmd->words && ms->be->builtins[++i])
 	{
 		len = ft_strlen(ms->be->builtins[i]);
-		if (strncmp(curr->cmd->words->word, ms->be->builtins[i], len) == 0
+		if (ft_strncmp(curr->cmd->words->word, ms->be->builtins[i], len) == 0
 			&& (int) ft_strlen(curr->cmd->words->word) == len)
 		{
 			curr->cmd->flags |= WORD_IS_BUILTIN;
