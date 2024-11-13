@@ -52,7 +52,7 @@ static bool	handle_quoted(t_str_slice *inp, t_vec *tokens)
 static bool	handle_word_or_op(t_str_slice *inp, t_vec *tokens)
 {
 	t_str_slice		word;
-	t_operator_ty	op;
+	t_op_ty	op;
 
 	word = cstr_slice(inp->str, word_len(inp->str, 0));
 	if (str_starts_with_op(*inp, &op))
@@ -73,9 +73,9 @@ static void	handle_whitespace(t_str_slice *inp, t_vec *tokens)
 	while (*inp->str == ' ' || *inp->str == '\t' || *inp->str == '\n')
 	{
 		if (*inp->str == '\n')
-			vec_push_tk(tokens, (t_token){.type = TOKEN_NL});
+			vec_push_tk(tokens, (t_token){.type = TK_NL});
 		else
-			vec_push_tk(tokens, (t_token){.type = TOKEN_SEPERATOR});
+			vec_push_tk(tokens, (t_token){.type = TK_SEPERATOR});
 		inp->str++;
 		inp->len--;
 	}

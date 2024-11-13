@@ -4,11 +4,11 @@
 /// @param tokens The token vector.
 static void	handle_continue_nl_token(t_vec *tokens)
 {
-	static t_token	newline = {.type = TOKEN_CONTINUE_NL};
+	static t_token	newline = {.type = TK_CONTINUE_NL};
 	t_token	*token;
 
 	token = vec_get_last(tokens);
-	if (token && token->type == TOKEN_WORD && token->str.len == 1 && cstr_ref(&token->str)[0] == '\\')
+	if (token && token->type == TK_WORD && token->str.len == 1 && cstr_ref(&token->str)[0] == '\\')
 	{
 		vec_remove_last(tokens);
 		vec_push(tokens, &newline);
@@ -43,7 +43,7 @@ void	unescape_chars(t_vec *tokens)
 	while (i < tokens->len)
 	{
 		token = vec_get_at(tokens, i);
-		if (token->type == TOKEN_WORD || token->type == TOKEN_DQUOTE)
+		if (token->type == TK_WORD || token->type == TK_DQUOTE)
 			str_unescape_chars(&token->str);
 		i++;
 	}

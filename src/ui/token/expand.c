@@ -9,7 +9,7 @@ static void	strip_empty_word_tokens(t_vec *tokens)
 	while (i < tokens->len)
 	{
 		token = vec_get_at(tokens, i);
-		if (token->type == TOKEN_WORD && token->str.len == 0)
+		if (token->type == TK_WORD && token->str.len == 0)
 			vec_remove_at(tokens, i);
 		else
 			i++;
@@ -53,7 +53,7 @@ void	expand_vars(t_vec *tokens, t_symtab_stack *st)
 	while (i < tokens->len)
 	{
 		token = vec_get_at(tokens, i);
-		if (token->type == TOKEN_WORD || token->type == TOKEN_DQUOTE)
+		if (token->type == TK_WORD || token->type == TK_DQUOTE)
 			str_expand_vars(&token->str, st);
 		i++;
 	}

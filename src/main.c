@@ -1,4 +1,5 @@
 #include "../headers/minishell.h"
+#include <stdio.h>
 
 void	symtab_add_value(t_symtab_stack *st, char *env)
 {
@@ -54,45 +55,69 @@ void	print_all_tokens(t_vec *tokens)
 	}
 }
 
+void	print_all_ast(t_vec *ast)
+{
+	for (size_t i = 0; i < ast->len; i++)
+	{
+		t_ast *node = vec_get_at(ast, i);
+		ast_print(node, STDOUT);
+		if (!write(STDOUT, "\n", 1))
+		{
+			perror("write error");
+			exit(1);
+		}
+	}
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char			*input;
 	t_vec			tokens;
+	t_vec			tmp;
+	t_vec			ast;
 	t_symtab_stack	st;
-
 
 	(void)argc;
 	(void)argv;
 	(void)envp;
 	st = init_symtab(envp);
 
-    while (1)
-    {
-        input = readline(">>> ");
-        if (!input)
-        {
-            break; // Exit on EOF (Ctrl+D)
-        }
-
-        if (*input)
-        {
-            add_history(input);
-        }
-
-		tokens = tokenize(cstr_view(input));
+	tokens = vec_empty(sizeof(t_token));
+	while (1)
+	{
+		if (tokens.len == 0)
+			input = readline(">>> ");
+		else
+			input = readline("> ");
+		if (!input)
+			break; // Exit on EOF (Ctrl+D)
+		if (*input)
+			add_history(input);
+		tmp = tokenize(cstr_view(input));
 		ft_printf("You entered: (%s)\n", input);
-		ft_printf("tokens: %lu\n", tokens.len);
-		print_all_tokens(&tokens);
-		expand_vars(&tokens, &st);
+		free(input);
+		ft_printf("tokens: %lu\n", tmp.len);
+		print_all_tokens(&tmp);
+		expand_vars(&tmp, &st);
 		ft_printf("--------------------------------\nEXPANDED\n");
-		print_all_tokens(&tokens);
-		unescape_chars(&tokens);
+		print_all_tokens(&tmp);
+		unescape_chars(&tmp);
 		ft_printf("--------------------------------\nUNESCAPED\n");
-		print_all_tokens(&tokens);
-		tokens_normalize(&tokens);
+		print_all_tokens(&tmp);
+		tokens_normalize(&tmp);
 		ft_printf("--------------------------------\nNORMALIZED\n");
-		print_all_tokens(&tokens);
-        free(input);
+		print_all_tokens(&tmp);
+		vec_pushvec(&tokens, &tmp);
+		if (tokens.len > 0 && ((t_token *)vec_get_last(&tokens))->type == TK_CONTINUE_NL)
+			vec_remove_last(&tokens);
+		else // use vec_destroy instead
+		{
+			if (!tokens_to_ast(&tokens, &ast))
+				perror("tokens to ast memerr");
+			ft_printf("--------------------------------\nAST\n");
+			print_all_ast(&ast);
+			tokens = vec_empty(sizeof(t_token));
+		}
     }
 
     return 0;
