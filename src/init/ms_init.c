@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_init.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 19:05:44 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/08 16:53:18 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/15 16:24:29 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void	ft_init_ms(t_ms *ms)
 {
 	ms->global_flags = 0;
 	ms->cmds = NULL;
-	ms->cmd = NULL;
 }
 
 void	ft_reinit_be(t_ms *ms)

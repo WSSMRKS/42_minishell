@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/15 15:59:31 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/11/15 16:39:38 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ static bool	cmdlist_has_heredoc(t_cmd_list *cmds)
 
 static t_ms_status	evaluate(t_ms *ms)
 {
-	if (strcmp("ms_debug", ms->cmds->cmd->argv[0]) == 0)
-		ft_debug(ms);
+	// if (strcmp("ms_debug", ms->cmds->cmd->argv[0]) == 0)
+	// 	ft_debug(ms);
 	if (strcmp("exit", ms->cmds->cmd->argv[0]) == 0)
 		return (MS_EOF);
 	if(ms->cmds)
@@ -65,6 +65,11 @@ void	repl(int argc, char **argv, char **envp)
 	t_ms		ms;
 	t_ms_status	status;
 
+	if (argc != 1)
+	{
+		ft_printf("usage: %s\n", argv[0]);
+		return ;
+	}
 	ms.parser = parser_init(&ms, read_input, get_symtab);
 	ft_init_ms(&ms);
 	ft_init_be(&ms, argc, argv, envp);
@@ -81,6 +86,7 @@ void	repl(int argc, char **argv, char **envp)
 		if (ms.parser.last_input.len > 0)
 			add_history(cstr_ref(&ms.parser.last_input));
 		status = evaluate(&ms);
+		ft_printf("done executing\n");
 		if (status != MS_OK)
 			break ;
 	}

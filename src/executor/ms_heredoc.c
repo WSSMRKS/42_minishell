@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/11 15:33:54 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/15 16:28:45 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ void	ft_hd_input(t_list_redir *curr, t_ms *ms)
 			curr->target = ft_calloc(sizeof(t_redir_aim), 1);
 			curr->target->filename = NULL;
 			curr->target->filename = ft_tmp_name(ms, &fd);
-			curr->target->flags = 0;
 		}
 		if (!line)
 		{
@@ -123,7 +122,7 @@ void	ft_here_doc(t_ms *ms)
 	while ((ms->global_flags & 1) != 0 && cmd_list != NULL)
 	{
 		curr_redir = cmd_list->cmd->redir;
-		while ((cmd_list->cmd->flags & 1) != 0 && curr_redir != NULL)
+		while (cmd_list->cmd->heredoc && curr_redir != NULL)
 		{
 			if (curr_redir->instruction == redir_here_doc)
 			{

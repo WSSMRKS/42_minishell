@@ -10,7 +10,7 @@ COMPILE_FLAGS = -Werror -Wall -Wextra -g3
 # Compiler #
 CC = cc
 # Source Files #
-SRC_FILES = main/minishell.c \
+SRC_FILES = \
 	ui/token/expand.c \
 	ui/token/token.c \
 	ui/token/tokenize.c \
@@ -21,18 +21,17 @@ SRC_FILES = main/minishell.c \
 	ui/parse/parser.c \
 	ui/ast.c \
 	ui/ui.c \
-	executor/ms_env.c
-	# main/minishell.c \
-	# ui/ui.c \
-	# debug/debug.c \
-	# init/ms_cleanup_utils.c \
-	# init/ms_init.c \
-	# ui/tokenizer/lexer.c \
-	# ui/tokenizer/token_utils.c \
-	# ui/tokenizer/lexer_quotes.c \
-	# ui/parser/parser.c \
-	# ui/parser/make_word.c \
-	# executor/ms_builtins.c
+	executor/ms_env.c \
+	main/minishell.c \
+	init/ms_cleanup_utils.c \
+	init/ms_init.c \
+	executor/ms_error.c \
+	executor/ms_executor.c \
+	executor/ms_ex_redir.c \
+	executor/ms_heredoc.c \
+	executor/ms_parenting.c \
+	executor/ms_builtins.c
+# debug/debug.c
 HEADER_FILES = minishell.h \
 	ms_parsing.h \
 	ms_executor.h \
@@ -47,20 +46,20 @@ LIBFT_SRC = $(LIBFTDIR)libft.a
 SRC_OBJ = $(SRC:.c=.o)
 
 # Compile .c to .o #
-%.o: %.c # maybe need? -I$(LIBFTDIR)
+%.o: %.c
 	$(CC) -c $(COMPILE_FLAGS) $^ -o $@
 
 # Targets #
 all: $(NAME)	# Compile the entire project including bonus.
 
-$(NAME): $(SRC_OBJ) $(LIBFT_SRC) # Compile mandatory part. # maybe need? -L$(LIBFTDIR) -lft
+$(NAME): $(LIBFT_SRC) $(SRC_OBJ) # Compile mandatory part. # maybe need? -L$(LIBFTDIR) -lft
 	$(CC) $(SRC_OBJ) $(LIBFT_SRC) $(COMPILE_OPTIONS) -o $(NAME)
 
 $(LIBFT_SRC): # Download and Compile libft
   ifeq ("$(wildcard $(LIBFTDIR))", "")
 	echo "Directory does not exist."
 	git clone https://github.com/WSSMRKS/ms_libft.git $(LIBFTDIR)
-	$(MAKE) all -C $(LIBFTDIR)
+	$(MAKE) all -C $(LIBFTDIR) CFLAGS='$(COMPILE_FLAGS)'
   else
 	@echo "Skipping download because directory already exists."
 	$(MAKE) all -C $(LIBFTDIR) CFLAGS='$(COMPILE_FLAGS)'
@@ -84,7 +83,8 @@ fclean: clean	# Fully clean project folders.
 	@echo "$(LIBFTDIR) deleted"
 	@echo "\"$(NAME)\" deleted"
 
-re: fclean	all# Recompile whole project.
+re: fclean	# Recompile whole project.
+	$(MAKE) all
 
 name: # print project name #
 	@echo "$(NAME)"

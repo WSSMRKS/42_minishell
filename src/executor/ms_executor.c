@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_executor.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/15 13:04:06 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/15 16:27:02 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void	ft_create_argv(t_cmd_list *curr)
 void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i)
 {
 
-	if ((curr->cmd->flags & WORD_IS_BUILTIN) != WORD_IS_BUILTIN || ms->be->nb_cmds > 1)
+	if (!curr->cmd->builtin || ms->be->nb_cmds > 1)
 		ms->be->child_pids[*i] = fork();
 	else
 		ms->be->child_pids[*i] = INT_MAX;
@@ -160,7 +160,7 @@ void	ft_is_builtin(t_cmd_list *curr, t_ms *ms)
 		if (ft_strncmp(curr->cmd->words->word, ms->be->builtins[i], len) == 0
 			&& (int) ft_strlen(curr->cmd->words->word) == len)
 		{
-			curr->cmd->flags |= WORD_IS_BUILTIN;
+			curr->cmd->builtin = true;
 			curr->cmd->builtin_nr = i + 1;
 		}
 	}
