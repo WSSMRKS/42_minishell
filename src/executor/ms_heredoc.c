@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/07 16:47:07 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/11 15:33:54 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	ft_hd_input(t_list_redir *curr, t_ms *ms)
 		}
 		if (ft_strncmp(curr->hd_del, line, ldel) == 0 && (int) ft_strlen(line) == ldel)
 			break ;
-		if ((ft_putstr_fd_ret(line, fd) < 0 || ft_putstr_fd_ret("\n", fd) < 0))
+		if ((ft_putstr_fd(line, fd) < 0 || ft_putstr_fd("\n", fd) < 0))
 			exit(errno);
 		line_nb++;
 		free(line);

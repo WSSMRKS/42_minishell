@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:56:05 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/15 14:52:06 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/11/15 15:58:03 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,16 @@ typedef struct s_list_redir {
 	char				*hd_del; /* EOF token string, after << */
 	int					rightmost;	/* valid redirection indicator*/
 }				t_list_redir;
+
+// typedef struct s_list_redir {
+// 	struct s_list_redir	*next;
+// 	enum e_redir_type	instruction;
+// 	t_redir_aim			*from;
+// 	t_redir_aim			*to;
+// 	char				*hd_del;
+// 	t_redir_aim			*hd_file;
+// 	int					rightmost;
+// }				t_list_redir;
 
 /*simple command struct: all commands that are without subshells and connections
 	flags:

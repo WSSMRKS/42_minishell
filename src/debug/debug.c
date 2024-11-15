@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/30 14:09:25 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/15 13:30:55 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ft_deb_commands(t_ms *ms)
 	int case_nb;
 
 	case_nb = INT_MIN;
-	setbuf(stdout, 0);
+	// setbuf(stdout, 0);
 
 	ft_printf("Debugging command execution\n");
 	ft_printf("Debug cases need to be finalized and doublechecked\n");
@@ -81,15 +81,22 @@ void	ft_deb_commands(t_ms *ms)
 	ft_printf("34 - case to recall a nonexistent value from symtab\n");
 	ft_printf("35 - Test with echo klsjhdsdf klsjhdsdf klsjhdsdf > home_directory.txt\n");
 	ft_printf("36 - Test with echo klsjhdsdf klsjhdsdf klsjhdsdf\n");
-
-
-
-	// ft_printf("55 - cat | cat | cat\n"); // [ ]
-
-
+	ft_printf("37 - Test with pwd klsjhdsdf klsjhdsdf klsjhdsdf\n");
+	ft_printf("38 - Test with pwd without any further arguments\n");
+	ft_printf("39 - Test with cd ..\n");
+	ft_printf("40 - export\n");
+	ft_printf("41 - export new=bla\n");
+	ft_printf("42 - export new2\n");
+	ft_printf("43 - export new=bla\n");
+	ft_printf("44 - export TEST1=20000 TEST2=30000 TEST3\n");
+	ft_printf("45 - export empty=\"\"\n");
+	ft_printf("46 - unset non existent var \"NONEXISTENT\"\n");
+	ft_printf("47 - unset NEW1 NEW2 NEW3 (execute debug case 28 before)\n");
+	ft_printf("48 - env with no arguments\n");
+	ft_printf("49 - env NEW1 NEW2 NEW3 should return error\n");
 
 	case_nb = ft_atoi(readline("Choose debug case: "));
-	while (case_nb < 0 || case_nb > 36)
+	while (case_nb < 0 || case_nb > 49)
 	{
 		ft_printf("Error: wrong selection\n");
 		case_nb = ft_atoi(readline("Choose debug case: "));
@@ -224,7 +231,7 @@ void	ft_deb_commands(t_ms *ms)
 	}
 	else if (case_nb == 4)  // case number 4 for "cat | cat | ls"
 	{
-		ft_printf_err("This command is not yet executed properly. It is a pipeline with 3 commands.\n");
+		ft_printf_fd(2, "This command is not yet executed properly. It is a pipeline with 3 commands.\n");
 		ms->cmd = ft_strdup("cat | cat | ls");
 
 		// Allocate first command (cat)
@@ -547,7 +554,7 @@ void	ft_deb_commands(t_ms *ms)
 	}
 		else if (case_nb == 14)  // case number 4 for "sjlfkdsjfs | dslkjsdlf | sljkdsdljf"
 	{
-		ft_printf_err("three fantasy commands to see behavior and error messages. It is a pipeline with 3 commands.\n");
+		ft_printf_fd(2, "three fantasy commands to see behavior and error messages. It is a pipeline with 3 commands.\n");
 		ms->cmd = ft_strdup("sjlfkdsjfs | dslkjsdlf | sljkdsdljf");
 
 		// Allocate first command (sjlfkdsjfs)
@@ -593,7 +600,7 @@ void	ft_deb_commands(t_ms *ms)
 	}
 	else if (case_nb == 15)  // case number 15 for "make -j re"
 	{
-		ft_printf_err("case number 15 for \"make -j re\"\n");
+		ft_printf_fd(2, "case number 15 for \"make -j re\"\n");
 		ms->cmd = ft_strdup("make -j re");
 
 		// Allocate first command (make -j)
@@ -610,7 +617,7 @@ void	ft_deb_commands(t_ms *ms)
 	}
 	else if (case_nb == 16) // case number 16 "make -j exv"
 	{
-		ft_printf_err("case number 16 for \"make -j exv\"\n");
+		ft_printf_fd(2, "case number 16 for \"make -j exv\"\n");
 		ms->cmd = ft_strdup("make -j exv");
 
 		// Allocate first command (make -j)
@@ -627,7 +634,7 @@ void	ft_deb_commands(t_ms *ms)
 	}
 	else if (case_nb == 17) // case number 17 "make -j fclean"
 	{
-		ft_printf_err("case number 17 for \"make -j fclean\"\n");
+		ft_printf_fd(2, "case number 17 for \"make -j fclean\"\n");
 		ms->cmd = ft_strdup("make -j fclean");
 
 		// Allocate first command (make -j)
@@ -644,7 +651,7 @@ void	ft_deb_commands(t_ms *ms)
 	}
 	else if (case_nb == 18) // case number 18 "./minishell"
 	{
-		ft_printf_err("case number 18 for \"./minishell\"\n");
+		ft_printf_fd(2, "case number 18 for \"./minishell\"\n");
 		ms->cmd = ft_strdup("./minishell");
 
 		// Allocate first command (./minishell)
@@ -657,7 +664,7 @@ void	ft_deb_commands(t_ms *ms)
 	}
 	else if (case_nb == 19) // case number 19 "clear"
 	{
-		ft_printf_err("case number 19 for \"clear\"\n");
+		ft_printf_fd(2, "case number 19 for \"clear\"\n");
 		ms->cmd = ft_strdup("clear");
 		// Allocate first command (clear)
 		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
@@ -669,7 +676,7 @@ void	ft_deb_commands(t_ms *ms)
 	}
 	else if (case_nb == 20) // case number 20 "<<eof cat | cat >hd_output1"
 	{
-		ft_printf_err("case number 20 for \"<<eof cat | cat >hd_output1\"\n");
+		ft_printf_fd(2, "case number 20 for \"<<eof cat | cat >hd_output1\"\n");
 		ms->cmd = ft_strdup("<<eof cat | cat >hd_output1");
 
 		// Allocate first command (<<eof cat)
@@ -696,12 +703,11 @@ void	ft_deb_commands(t_ms *ms)
 		ms->cmds->next->cmd->redir->target = ft_calloc(sizeof(t_redir_aim), 1); // [ ] free me
 		ms->cmds->next->cmd->redir->target->filename = ft_strdup("hd_output1");
 		ms->cmds->next->cmd->redir->rightmost = true;
-		ms->cmds->next->cmd->redir->target = NULL;
 		ms->cmds->next->next = NULL;
 	}
 	else if (case_nb == 21)  // case number 21 for "sjlfkdsjfs | cat | ls"
 	{
-		ft_printf_err("sjlfkdsjfs | cat | ls\n");
+		ft_printf_fd(2, "sjlfkdsjfs | cat | ls\n");
 		ms->cmd = ft_strdup("sjlfkdsjfs | cat | ls");
 
 		// Allocate first command (sjlfkdsjfs)
@@ -747,7 +753,7 @@ void	ft_deb_commands(t_ms *ms)
 	}
 	else if (case_nb == 22) // case number 22 for "cat | sjlfkdsjfs | ls"
 	{
-		ft_printf_err("cat | sjlfkdsjfs | ls\n");
+		ft_printf_fd(2, "cat | sjlfkdsjfs | ls\n");
 		ms->cmd = ft_strdup("cat | sjlfkdsjfs | ls");
 
 		// Allocate first command (sjlfkdsjfs)
@@ -885,15 +891,18 @@ void	ft_deb_commands(t_ms *ms)
 	{
 		// case to add 20 new variables;
 		int i = 0;
+		char *nb_str;
 		char *tmp;
 
 		ft_printf("28 - add 20 new global variables\n");
 
 		while (i < 20)
 		{
-			tmp = ft_multistrjoin(4, "NEW", ft_itoa(i), "=contentofNEW", ft_itoa(i));
+			nb_str = ft_itoa(i);
+			tmp = ft_multistrjoin(4, "NEW", nb_str, "=contentofNEW", nb_str);
 			ft_add_global_value(ms, tmp);
 			free(tmp);
+			free(nb_str);
 			i++;
 		}
 		ft_printf("printing the symtabs\n");
@@ -968,7 +977,7 @@ void	ft_deb_commands(t_ms *ms)
 		ft_printf("printing the local symtab:\n");
 		ft_print_symtab(ms, 2);
 	}
-		else if (case_nb == 35)
+	else if (case_nb == 35)
 	{
 		ft_printf("Test with echo klsjhdsdf klsjhdsdf klsjhdsdf > home_directory.txt\n");
 		ms->cmd = ft_strdup("echo klsjhdsdf klsjhdsdf klsjhdsdf > home_directory.txt");
@@ -998,12 +1007,11 @@ void	ft_deb_commands(t_ms *ms)
 		ms->cmds->next = NULL;
 		ms->be->nb_cmds = 1;
 	}
-			else if (case_nb == 36)
+	else if (case_nb == 36)
 	{
 		ft_printf("Test with echo klsjhdsdf klsjhdsdf klsjhdsdf\n");
 		ms->cmd = ft_strdup("echo klsjhdsdf klsjhdsdf klsjhdsdf");
 
-		// First command: echo $HOME
 		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
 		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
 		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
@@ -1019,8 +1027,218 @@ void	ft_deb_commands(t_ms *ms)
 		ms->cmds->next = NULL;
 		ms->be->nb_cmds = 1;
 	}
+	else if (case_nb == 37)
+	{
+		ft_printf("37 - Test with pwd klsjhdsdf klsjhdsdf klsjhdsdf\n");
+		ms->cmd = ft_strdup("pwd klsjhdsdf klsjhdsdf klsjhdsdf");
+
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("pwd");
+		ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->word = ft_strdup("klsjhdsdf");
+		ms->cmds->cmd->words->next->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->next->word = ft_strdup("klsjhdsdf");
+		ms->cmds->cmd->words->next->next->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->next->next->word = ft_strdup("klsjhdsdf");
+		ms->cmds->cmd->words->next->next->next->next = NULL;
+
+		ms->cmds->next = NULL;
+		ms->be->nb_cmds = 1;
+	}
+	else if (case_nb == 38)
+	{
+		ft_printf("38 - Test with pwd without any further arguments\n");
+		ms->cmd = ft_strdup("pwd");
+
+		// First command: echo $HOME
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("pwd");
+		ms->cmds->cmd->words->next = NULL;
+		ms->cmds->next = NULL;
+		ms->be->nb_cmds = 1;
+	}
+	else if (case_nb == 39)
+	{
+		ft_printf("39 - Test with cd ..\n");
+		ms->cmd = ft_strdup("cd");
+
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("cd");
+		ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->word = ft_strdup("..");
+		ms->cmds->cmd->words->next->next = NULL;
+		ms->cmds->next = NULL;
+		ms->be->nb_cmds = 1;
+	}
+	else if (case_nb == 40)
+	{
+		ft_printf("40 - export\n");
+
+		ms->cmd = ft_strdup("export");
+
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("export");
+		ms->cmds->cmd->words->next = NULL;
+		ms->cmds->next = NULL;
+		ms->be->nb_cmds = 1;
+	}
+	else if (case_nb == 41)
+	{
+		ft_printf("41 - export new=bla\n");
+
+		ms->cmd = ft_strdup("export");
+
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("export");
+		ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->word = ft_strdup("new=bla");
+		ms->cmds->cmd->words->next->next = NULL;
+		ms->cmds->next = NULL;
+		ms->be->nb_cmds = 1;
+	}
+	else if (case_nb == 42)
+	{
+		ft_printf("42 - export new2\n");
 
 
+		ms->cmd = ft_strdup("export");
+
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("export");
+		ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->word = ft_strdup("new2");
+		ms->cmds->cmd->words->next->next = NULL;
+		ms->cmds->next = NULL;
+		ms->be->nb_cmds = 1;
+	}
+		else if (case_nb == 43)
+	{
+		ft_printf("43 - export new=bla\n");
+		ms->cmd = ft_strdup("export");
+
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("export");
+		ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->word = ft_strdup("new=bla");
+		ms->cmds->cmd->words->next->next = NULL;
+		ms->cmds->next = NULL;
+		ms->be->nb_cmds = 1;
+	}
+		else if (case_nb == 44)
+	{
+		ft_printf("44 - export TEST1=20000 TEST2=30000 TEST3\n");
+		ms->cmd = ft_strdup("export TEST1=20000 TEST2=30000 TEST3");
+
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("export");
+		ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->word = ft_strdup("TEST1=20000");
+		ms->cmds->cmd->words->next->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->next->word = ft_strdup("TEST2=30000");
+		ms->cmds->cmd->words->next->next->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->next->next->word = ft_strdup("TEST3");
+		ms->cmds->cmd->words->next->next->next->next = NULL;
+
+		ms->cmds->next = NULL;
+		ms->be->nb_cmds = 1;
+	}
+			else if (case_nb == 45)
+	{
+		ft_printf("45 - export empty=\n");
+		ms->cmd = ft_strdup("export empty=");
+
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("export");
+		ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->word = ft_strdup("empty=");
+		ms->cmds->cmd->words->next->next = NULL;
+		ms->cmds->next = NULL;
+		ms->be->nb_cmds = 1;
+	}
+	else if (case_nb == 46)
+	{
+		ft_printf("46 - unset non existent var \"NONEXISTENT\"\n");
+		ms->cmd = ft_strdup("unset NONEXISTENT");
+
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("unset");
+		ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->word = ft_strdup("NONEXISTENT");
+		ms->cmds->cmd->words->next->next = NULL;
+		ms->cmds->next = NULL;
+		ms->be->nb_cmds = 1;
+	}
+		else if (case_nb == 47)
+	{
+		ft_printf("47 - unset NEW1 NEW2 NEW3 (execute debug case 28 before)\n");
+		ms->cmd = ft_strdup("unset NEW1 NEW2 NEW3");
+
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("unset");
+		ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->word = ft_strdup("NEW1");
+		ms->cmds->cmd->words->next->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->next->word = ft_strdup("NEW2");
+		ms->cmds->cmd->words->next->next->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->next->next->word = ft_strdup("NEW3");
+		ms->cmds->cmd->words->next->next->next->next = NULL;
+		ms->cmds->next = NULL;
+		ms->be->nb_cmds = 1;
+	}
+	else if (case_nb == 48)
+	{
+		ft_printf("48 - env with no arguments\n");
+		ms->cmd = ft_strdup("env");
+
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("env");
+		ms->cmds->cmd->words->next = NULL;
+		ms->cmds->next = NULL;
+		ms->be->nb_cmds = 1;
+	}
+		else if (case_nb == 49)
+	{
+		ft_printf("49 - env NEW1 NEW2 NEW3 should return error\n");
+		ms->cmd = ft_strdup("env NEW1 NEW2 NEW3");
+
+		ms->cmds = ft_calloc(sizeof(t_cmd_list), 1);  // [ ] free me
+		ms->cmds->cmd = ft_calloc(sizeof(t_simple_com), 1);  // [ ] free me
+		ms->cmds->cmd->words = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->word = ft_strdup("env");
+		ms->cmds->cmd->words->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->word = ft_strdup("NEW1");
+		ms->cmds->cmd->words->next->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->next->word = ft_strdup("NEW2");
+		ms->cmds->cmd->words->next->next->next = ft_calloc(sizeof(t_list_words), 1);  // [ ] free me
+		ms->cmds->cmd->words->next->next->next->word = ft_strdup("NEW3");
+		ms->cmds->cmd->words->next->next->next->next = NULL;
+		ms->cmds->next = NULL;
+		ms->be->nb_cmds = 1;
+	}
 
 
 	/*tests for symtabs:
@@ -1036,7 +1254,7 @@ void	ft_deb_commands(t_ms *ms)
 
 	// 	else if (case_nb == 55)  // case number 4 for "cat | cat | cat"
 	// {
-	// 	ft_printf_err("This command is not yet executed properly. It is a pipeline with 3 commands.\n");
+	// 	ft_printf_fd(2, "This command is not yet executed properly. It is a pipeline with 3 commands.\n");
 	// 	ms->cmd = ft_strdup("cat | cat | cat >test0815.txt");
 
 	// 	// Allocate first command (cat)

@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/15 15:17:44 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/11/15 15:57:55 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,12 +126,13 @@ void			ft_add_value(t_ms *ms, char *env);
 
 /* ms_builtins*/
 
-void			ft_env(t_ms *ms, t_cmd_list *curr);
-void			ft_export(t_ms *ms, t_cmd_list *curr);
-void			ft_unset(t_ms *ms, t_cmd_list *curr);
-void			ft_cd(t_ms *ms, t_cmd_list *curr);
-void			ft_pwd(t_ms *ms, t_cmd_list *curr);
 int				ft_echo(t_ms *ms, t_cmd_list *curr);
+int				ft_cd(t_ms *ms, t_cmd_list *curr);
+int				ft_pwd(t_ms *ms, t_cmd_list *curr);
+int				ft_export(t_ms *ms, t_cmd_list *curr);
+int				ft_unset(t_ms *ms, t_cmd_list *curr);
+int				ft_env(t_ms *ms, t_cmd_list *curr);
+int				ft_exit(t_ms *ms, t_cmd_list *curr);
 
 /* ms_parse */
 // int parse(t_token *tokens);

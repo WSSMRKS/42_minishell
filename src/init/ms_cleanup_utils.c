@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:15 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/07 16:47:15 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/13 11:42:08 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ void	ft_clear_redir(t_list_redir	*redir)
 			free(to_free->hd_del);
 			to_free->hd_del = NULL;
 		}
-		if(to_free->hd_file)
+		if(to_free->target)
 		{
-			free(to_free->hd_file);
-			to_free->hd_file = NULL;
+			free(to_free->target);
+			to_free->target = NULL;
 		}
 		if(to_free->target)
 		{
@@ -119,7 +119,9 @@ void	ft_clear_be(t_ms *ms)
 void	ft_clean_be(t_ms *ms)
 {
 	ft_free_2d(ms->be->builtins);
+	free(ms->be->cwd);
 	ft_free_2d(ms->be->path); /* [ ] maybe rewrite due to changeable variables*/
+	ft_free_symtab_stack(ms->be->global_symtabs);
 }
 
 
@@ -152,7 +154,7 @@ void	ft_delfree_hdgb(t_list_hdfiles **lst, void (*del)(void *))
 			nlst = tlst->next;
 			unlink(tlst->filename);
 			if (!access(tlst->filename, F_OK))
-				ft_printf_err("minishell: could not delete tempfile\"%s\"\n",
+				ft_printf_fd(2, "minishell: could not delete tempfile\"%s\"\n",
 					tlst->filename);
 			ft_lsthdgbdelone(tlst, (del));
 			tlst = nlst;
@@ -165,7 +167,6 @@ void	ft_cleanup_exit(t_ms *ms, int ex)
 {
 	rl_clear_history();
 	ft_clean_be(ms);
-	ft_free_symtab_stack(ms->be->global_symtabs);
 	free(ms->be);
 	ms->be = NULL;
 	exit(ex);

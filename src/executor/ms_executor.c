@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/31 12:51:14 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/15 13:04:06 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ char	*ft_search_cmd(t_ms *ms, t_cmd_list *curr)
 
 	i = 0;
 
-	// if ((curr->cmd->flags & WORD_IS_PATH) == WORD_IS_PATH)
-	// {
-	// 	path = ft_complete_path(ms, curr, curr->cmd->words->word);
-	// 	return (path);
-	// }
+	if (ft_strchr(curr->cmd->words->word, '/') != NULL)
+	{
+		path = ft_strdup(curr->cmd->words->word);
+		return (path);
+	}
 	while (ms->be->path[i])
 	{
 		path = ft_strjoin(ms->be->path[i], curr->cmd->words->word);
@@ -83,16 +83,16 @@ int	ft_builtin(t_ms *ms, t_cmd_list *curr)
 	ret = 0;
 	if (curr->cmd->builtin_nr == 1)
 		ret = ft_echo(ms, curr);
-	// else if (curr->cmd->builtin_nr == 2)
-	// 	ret = ft_cd(ms, curr);
-	// else if (curr->cmd->builtin_nr == 3)
-	// 	ret = ft_pwd(ms, curr);
-	// else if (curr->cmd->builtin_nr == 4)
-	// 	ret = ft_pwd(ms, curr);
-	// else if (curr->cmd->builtin_nr == 5)
-	// 	ret = ft_export(ms, curr);
-	// else if (curr->cmd->builtin_nr == 6)
-	// 	ret = ft_env(ms, curr);
+	else if (curr->cmd->builtin_nr == 2)
+		ret = ft_cd(ms, curr);
+	else if (curr->cmd->builtin_nr == 3)
+		ret = ft_pwd(ms, curr);
+	else if (curr->cmd->builtin_nr == 4)
+		ret = ft_export(ms, curr);
+	else if (curr->cmd->builtin_nr == 5)
+		ret = ft_unset(ms, curr);
+	else if (curr->cmd->builtin_nr == 6)
+		ret = ft_env(ms, curr);
 	// else if (curr->cmd->builtin_nr == 7)
 	// 	ret = ft_exit(ms, curr);
 	return (ret);
@@ -157,7 +157,7 @@ void	ft_is_builtin(t_cmd_list *curr, t_ms *ms)
 	while (ms->cmds->cmd->words && ms->be->builtins[++i])
 	{
 		len = ft_strlen(ms->be->builtins[i]);
-		if (strncmp(curr->cmd->words->word, ms->be->builtins[i], len) == 0
+		if (ft_strncmp(curr->cmd->words->word, ms->be->builtins[i], len) == 0
 			&& (int) ft_strlen(curr->cmd->words->word) == len)
 		{
 			curr->cmd->flags |= WORD_IS_BUILTIN;

@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/08 15:20:58 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/11/15 15:59:01 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,21 +113,26 @@ functionality:
 // 	int		i;
 // 	t_symtab_stack	*global;
 
-// 	i = 0;
-// 	while (env[i] && env[i] != '=')
-// 		i++;
-// 	global = ms->be->global_symtabs;
-// 	key = ft_substr(env, 0, i);
-// 	value = ft_strdup(&env[i + 1]);
-// 	if (ft_lookup_symtab(global, key) != NULL)
-// 	{
-// 		ft_update_symtab_value(global, key, value);
-// 		free(value);
-// 		free(key);
-// 	}
-// 	else
-// 		ft_add_to_symtab(global, key, value);
-// }
+	i = 0;
+	while (env[i] && env[i] != '=')
+		i++;
+	if (env[i] != '=') // [ ] account for cases with key not having value
+		value = NULL;
+	else if (env[i] == '=' && env[i + 1] == '\0')
+		value = ft_calloc(sizeof(char), 1);
+	else
+		value = ft_strdup(&env[i + 1]);
+	key = ft_substr(env, 0, i);
+	global = ms->be->global_symtabs;
+	if (ft_lookup_symtab(global, key) != NULL)
+	{
+		ft_update_symtab_value(global, key, value);
+		free(value);
+		free(key);
+	}
+	else
+		ft_add_to_symtab(global, key, value);
+}
 
 /* function to add a new value to the local variables
 functionality:
@@ -215,19 +220,22 @@ functionality:
 // 	int		i;
 // 	char	**env;
 
-// 	i = 0;
-// 	env = ms->be->envp;
-// 	while (env[i])
-// 		i++;
-// 	ms->be->global_symtabs = ft_calloc(sizeof(t_symtab_stack), 1);
-// 	ms->be->global_symtabs->size = ft_calc_symtab_size(i);
-// 	ms->be->global_symtabs->load_factor = 0;
-// 	ms->be->global_symtabs->level = 1;
-// 	ms->be->global_symtabs->symtab = ft_calloc(sizeof(char *), ms->be->global_symtabs->size);
-// 	i = 0;
-// 	while (env[i])
-// 		ft_add_global_value(ms, env[i++]);
-// }
+	i = 0;
+	env = ms->be->envp;
+	while (env[i])
+		i++;
+	ms->be->global_symtabs = ft_calloc(sizeof(t_symtab_stack), 1);
+	ms->be->global_symtabs->size = ft_calc_symtab_size(i);
+	ms->be->global_symtabs->load_factor = 0;
+	ms->be->global_symtabs->level = 1;
+	ms->be->global_symtabs->symtab = ft_calloc(sizeof(char *), ms->be->global_symtabs->size);
+	i = 0;
+	while (env[i])
+	{
+		ft_add_global_value(ms, env[i]);
+		i++;
+	}
+}
 
 // /* function to add a value to the symbol table
 // functionality:
