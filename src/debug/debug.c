@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/13 11:40:00 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/15 13:30:55 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -703,7 +703,6 @@ void	ft_deb_commands(t_ms *ms)
 		ms->cmds->next->cmd->redir->target = ft_calloc(sizeof(t_redir_aim), 1); // [ ] free me
 		ms->cmds->next->cmd->redir->target->filename = ft_strdup("hd_output1");
 		ms->cmds->next->cmd->redir->rightmost = true;
-		ms->cmds->next->cmd->redir->target = NULL;
 		ms->cmds->next->next = NULL;
 	}
 	else if (case_nb == 21)  // case number 21 for "sjlfkdsjfs | cat | ls"
