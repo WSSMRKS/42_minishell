@@ -8,14 +8,16 @@
 	[x] int ft_export(t_ms *ms, t_cmd_list *curr);
 	[x] int ft_unset(t_ms *ms, t_cmd_list *curr);
 	[x] int ft_env(t_ms *ms, t_cmd_list *curr);
-	[x] int ft_exit(t_ms *ms, t_cmd_list *curr);
+	[x] int ft_exit(t_ms *ms, t_cmd_list *curr); exit with 
 	[ ] get return values of builtins sorted!!;
 	[ ] test builtins with redirects!!!;
-[ ] find way to save stdin_fileno when dup2-ing for redirects.
+[ ] find way to save stdin_fileno when dup2-ing for redirects. builtins with redirects
 [x] solution to builtins in pipeline: run minishell with the builtin in a Child
 	[ ] able to run minishell as child with args
 [ ] Implement ./executable
 [x] simplify debugger
 [ ] implement execution of builtins
 [ ] implement signals
-[ ] symtabs account for empty variables
+[x] symtabs account for empty variables
+
+
