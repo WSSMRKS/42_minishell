@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/13 11:39:26 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/15 13:04:06 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ char	*ft_search_cmd(t_ms *ms, t_cmd_list *curr)
 
 	i = 0;
 
-	// if ((curr->cmd->flags & WORD_IS_PATH) == WORD_IS_PATH)
-	// {
-	// 	path = ft_complete_path(ms, curr, curr->cmd->words->word);
-	// 	return (path);
-	// }
+	if (ft_strchr(curr->cmd->words->word, '/') != NULL)
+	{
+		path = ft_strdup(curr->cmd->words->word);
+		return (path);
+	}
 	while (ms->be->path[i])
 	{
 		path = ft_strjoin(ms->be->path[i], curr->cmd->words->word);
