@@ -102,6 +102,8 @@ void	iter_ast_free(void *nodeptr)
 
 // handle and remove any TK_CONTINUE_NL tokens before using this function
 // postprocess by removing any commands that are not first and are not preceded by PIPE
+// the input tokens array will be cleared if done, otherwise there are more
+// commands left to be parsed for which this function should be called again
 bool	tokens_to_ast(t_vec *tokens, t_vec *out)
 {
 	size_t	i;
@@ -110,8 +112,11 @@ bool	tokens_to_ast(t_vec *tokens, t_vec *out)
 	i = 0;
 	while (i < tokens->len)
 	{
-		while (((t_token*)vec_get_at(tokens, i))->type == TK_NL)
-			i++;
+		if (((t_token*)vec_get_at(tokens, i))->type == TK_NL)
+		{
+			vec_remove_range(tokens, 0, i + 1);
+			return (true);
+		}
 		if (!try_add_command(tokens, &i, out)
 			|| (i < tokens->len && !try_add_operator(tokens, &i, out)))
 		{
@@ -119,5 +124,6 @@ bool	tokens_to_ast(t_vec *tokens, t_vec *out)
 			return (false);
 		}
 	}
+	vec_destroy(tokens, NULL); // TODO
 	return (true);
 }

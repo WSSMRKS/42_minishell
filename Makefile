@@ -10,14 +10,17 @@ COMPILE_FLAGS = -Werror -Wall -Wextra -g3
 # Compiler #
 CC = cc
 # Source Files #
-SRC_FILES = main.c \
+SRC_FILES = main/minishell.c \
 	ui/token/expand.c \
 	ui/token/token.c \
 	ui/token/tokenize.c \
 	ui/token/util.c \
 	ui/token/unescape.c \
 	ui/token/normalize.c \
+	ui/parse/parse.c \
+	ui/parse/parser.c \
 	ui/ast.c \
+	ui/ui.c \
 	executor/ms_env.c
 	# main/minishell.c \
 	# ui/ui.c \

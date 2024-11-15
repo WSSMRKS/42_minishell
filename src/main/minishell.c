@@ -3,14 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkoca <dkoca@student.42.fr>                +#+  +:+       +#+        */
+/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 11:17:01 by maweiss           #+#    #+#             */
-/*   Updated: 2024/10/07 16:29:21 by dkoca            ###   ########.fr       */
+/*   Updated: 2024/11/15 15:19:45 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
+#include <signal.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 // Signal handler for SIGINT (Ctrl+C)
 void handle_sigint(int sig) {
@@ -38,7 +41,7 @@ void handle_sigchld(int sig) {
 int	main(int argc, char **argv, char **envp)
 {
 	// Install the SIGINT handler
-	struct sigaction sa_int;
+	struct sigaction	sa_int;
 	sa_int.sa_handler = &handle_sigint;
 	sa_int.sa_flags = SA_RESTART; // Restart interrupted system calls
 	sigemptyset(&sa_int.sa_mask); // Don't block additional signals
@@ -56,5 +59,5 @@ int	main(int argc, char **argv, char **envp)
 		ft_printf("Input arguments not supported, use Bash ;)\n");
 		return (1);
 	}
-	ft_repl(argc, argv, envp);
+	repl(argc, argv, envp);
 }

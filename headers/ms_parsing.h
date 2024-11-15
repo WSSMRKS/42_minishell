@@ -6,13 +6,32 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:56:05 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/08 17:36:56 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/11/15 14:52:06 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MS_PARSING_H
 # define MS_PARSING_H
 # include "minishell.h"
+
+#define DEBUG_PARSER (false)
+
+typedef char			*(*t_read_input)(bool append_mode, void *data);
+typedef t_symtab_stack	*(*t_get_symtab)(void *data);
+
+typedef struct s_parser {
+	t_vec			tokens;
+	t_read_input	read_input;
+	t_get_symtab	get_symtab;
+	void			*data;
+	t_str			last_input;
+}					t_parser;
+
+typedef enum e_ms_status {
+	MS_ERROR,
+	MS_EOF,
+	MS_OK
+}	t_ms_status;
 
 typedef struct s_list_words {
 	struct s_list_words	*next;
@@ -30,11 +49,11 @@ typedef enum	e_redir_type {
 	redir_here_doc,
 	redir_infile,
 	redir_outfile,
-}	e_redir_type;
+}	t_redir_type;
 
 typedef struct s_list_redir {
 	struct s_list_redir	*next;
-	e_redir_type		instruction;	/* what is to be done*/
+	t_redir_type		instruction;	/* what is to be done*/
 	t_redir_aim			*target;	/* fd or variable to be redirected */
 	char				*hd_del; /* EOF token string, after << */
 	int					rightmost;	/* valid redirection indicator*/
@@ -59,8 +78,8 @@ typedef struct s_list_redir {
 	words: words the command consists of.
 	redirects: redirects of the command.*/
 typedef struct	s_simple_com {
-	int				heredoc: 1;
-	int				builtin: 1;
+	bool			heredoc: 1;
+	bool			builtin: 1;
 	t_list_words	*words;
 	t_list_redir	*redir;
 	char			**argv;
@@ -74,6 +93,10 @@ typedef struct	s_cmd_list {
 	struct s_cmd_list	*next;
 }	t_cmd_list;
 
+void    debug_print_simple_com(int fd, t_simple_com *cmd);
+t_parser	parser_init(void *data, t_read_input read_input,
+		t_get_symtab get_symtab);
+t_ms_status	parse_next_command(t_parser *p, t_cmd_list	**out);
 
 #endif
 

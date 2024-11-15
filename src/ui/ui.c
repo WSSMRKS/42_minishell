@@ -1,99 +1,91 @@
-// /* ************************************************************************** */
-// /*                                                                            */
-// /*                                                        :::      ::::::::   */
-// /*   ui.c                                               :+:      :+:    :+:   */
-// /*                                                    +:+ +:+         +:+     */
-// /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
-// /*                                                +#+#+#+#+#+   +#+           */
-// /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-// /*   Updated: 2024/10/07 17:12:48 by maweiss          ###   ########.fr       */
-// /*                                                                            */
-// /* ************************************************************************** */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ui.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
+/*   Updated: 2024/11/15 15:24:16 by kwurster         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-// #include "../../headers/minishell.h"
+#include "../../headers/minishell.h"
 
-// void	ft_front_end(char *cmd)
-// {
-// 	t_token *tokens;
-// 	// t_cmd_list *cmd_list;
-// 	// (void) cmd;
-// 	tokenizer(cmd, &tokens);
-// 	printf("first token = ");
-// 	print_token(tokens);
-// 	// parse(tokens);
-// }
+static char *read_input(bool append_mode, void *data)
+{
+	char		*input;
 
-// char	*choose_prompt(int mode)
-// {
-// 	// (void) mode;
-// 	if (mode == 0)
-// 		return (readline("minishell$ "));
-// 	else
-// 		return (readline("> "));
-// 	// return (NULL);
-// }
+	(void)data;
+	if (append_mode)
+		input = readline("> ");
+	else
+		input = readline("minishell$ ");
+	return (input);
+}
 
-// int last_is_escaped(char *cmd)
-// {
-// 	int len;
-// 	len = ft_strlen(cmd);
-// 	if (cmd[len - 1] == '\\')
-// 	{
-// 		if (len >= 2 && cmd[len - 2] == '\\')
-// 		{
-// 			printf("last 2 chrs = %c and %c\n", cmd[len -1], cmd[len -2]);
-// 			return (false);
-// 		}
-// 		return (true);
-// 	}
-// 	return (false);
-// }
+static t_symtab_stack	*get_symtab(void *data)
+{
+	t_ms	*ms;
 
-// void	ft_repl(int argc, char **argv, char **envp)
-// {
-// 	int				mode;
-// 	t_ms			ms;
-// 	int				i;
+	ms = (t_ms *)data;
+	return (ms->be->global_symtabs);
+}
 
-// 	(void)argc;
-// 	// if (argc >= 2)
-// 	// {
-// 		// return (127);
-// 		// save exit code? 127?
-// 	// }
-// 	(void)argv;
-// 	(void)envp;
-// 	// ft_init_ms(minishell, envp);
-// 	mode = 0;
-// 	i = 0;
-// 	ft_init_ms(&ms);
-// 	ft_init_be(&ms, argc, argv, envp);
-// 	while (1) // read eval print loop REPL
-// 	{
-// 		ms.cmd = choose_prompt(mode);
-// 		if (!ms.cmd)
-// 		{
-// 			printf("exit\n");
-// 			break ;
-// 		}
-// 		else
-// 			printf("{%s}\n", ms.cmd);
-// 		add_history(ms.cmd);
-// 		if (last_is_escaped(ms.cmd) == true)
-// 			mode = 1;
-// 		if (strcmp(ms.cmd, "ms_debug") == 0)
-// 			ft_debug(&ms);
-// 		if (strcmp(ms.cmd, "exit") == 0) /* needs to be rewritten */
-// 		{
-// 			free(ms.cmd);
-// 			ms.cmd = NULL;
-// 			break ;
-// 		}
-// 		ft_front_end(ms.cmd);
-// 		if(ms.cmds)
-// 			ft_back_end(&ms);
-// 		i++;
-// 	}
-// 	ft_cleanup_exit(&ms, 0);
-// }
+static bool	cmdlist_has_heredoc(t_cmd_list *cmds)
+{
+	t_cmd_list	*curr;
+
+	curr = cmds;
+	while (curr)
+	{
+		if (curr->cmd->heredoc)
+			return (true);
+		curr = curr->next;
+	}
+	return (false);
+}
+
+static t_ms_status	evaluate(t_ms *ms)
+{
+	if (strcmp("ms_debug", ms->cmds->cmd->argv[0]) == 0)
+		ft_debug(ms);
+	if (strcmp("exit", ms->cmds->cmd->argv[0]) == 0)
+		return (MS_EOF);
+	if(ms->cmds)
+	{
+		ms->global_flags = cmdlist_has_heredoc(ms->cmds);
+		ft_back_end(ms);
+	}
+	return (MS_OK);
+}
+
+void	repl(int argc, char **argv, char **envp)
+{
+	t_ms		ms;
+	t_ms_status	status;
+
+	ms.parser = parser_init(&ms, read_input, get_symtab);
+	ft_init_ms(&ms);
+	ft_init_be(&ms, argc, argv, envp);
+	while (true) // read eval print loop REPL
+	{
+		status = parse_next_command(&ms.parser, &ms.cmds);
+		if (status == MS_EOF)
+			break ;
+		else if (status == MS_ERROR)
+		{
+			perror("parse (memory) error");
+			break ;
+		}
+		if (ms.parser.last_input.len > 0)
+			add_history(cstr_ref(&ms.parser.last_input));
+		status = evaluate(&ms);
+		if (status != MS_OK)
+			break ;
+	}
+	if (status == MS_EOF)
+		ft_printf("exit\n");
+	ft_cleanup_exit(&ms, 0);
+}
 

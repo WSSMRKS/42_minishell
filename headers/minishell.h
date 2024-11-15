@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/11 16:31:14 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/11/15 15:17:44 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ in minishell.h */
 /* minishell struct. Main struct that is passed throughout the whole program.
 	global flags: 1 = heredoc present	*/
 typedef struct s_ms {
-	char			*cmd;
-	t_cmd_list		*cmds;
-	int				global_flags;
-	t_be			*be;
+	t_parser	parser;
+	t_cmd_list	*cmds;
+	bool		global_flags;
+	t_be		*be;
 }				t_ms;
 
 /* ms_cleanup_utils */
@@ -95,9 +95,7 @@ void			ft_init_be(t_ms *ms, int argc, char **argv, char **envp);
 
 /* ms_ui */
 
-void			ft_front_end(char *cmd);
-char			*choose_prompt(int mode);
-void			ft_repl(int argc, char **argv, char **envp);
+void	repl(int argc, char **argv, char **envp);
 
 /* ms_debug */
 

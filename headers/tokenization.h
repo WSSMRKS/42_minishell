@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 05:06:08 by dkoca             #+#    #+#             */
-/*   Updated: 2024/11/11 16:27:40 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/11/15 11:11:23 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,11 +94,12 @@ typedef struct s_ast {
 	};
 }	t_ast;
 
-t_vec	tokenize(t_str_slice inp);
-void	expand_vars(t_vec *tokens, t_symtab_stack *st);
-void	unescape_chars(t_vec *tokens);
-void	tokens_normalize(t_vec *tokens);
-bool	tokens_to_ast(t_vec *tokens, t_vec *out);
+t_vec		tokenize(t_str_slice inp);
+void		expand_vars(t_vec *tokens, t_symtab_stack *st);
+void		unescape_chars(t_vec *tokens);
+void		tokens_normalize(t_vec *tokens);
+bool		tokens_to_ast(t_vec *tokens, t_vec *out);
+t_cmd_list	*ast_to_commands(t_vec *ast);
 
 t_token	tk_word(t_str_slice word);
 t_token	tk_op(t_op_ty op);

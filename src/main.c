@@ -69,6 +69,8 @@ void	print_all_ast(t_vec *ast)
 	}
 }
 
+void    debug_print_simple_com(int fd, t_simple_com *cmd);
+
 int	main(int argc, char **argv, char **envp)
 {
 	char			*input;
@@ -76,6 +78,7 @@ int	main(int argc, char **argv, char **envp)
 	t_vec			tmp;
 	t_vec			ast;
 	t_symtab_stack	st;
+	t_cmd_list		*cmd_list;
 
 	(void)argc;
 	(void)argv;
@@ -104,18 +107,24 @@ int	main(int argc, char **argv, char **envp)
 		unescape_chars(&tmp);
 		ft_printf("--------------------------------\nUNESCAPED\n");
 		print_all_tokens(&tmp);
-		tokens_normalize(&tmp);
-		ft_printf("--------------------------------\nNORMALIZED\n");
-		print_all_tokens(&tmp);
 		vec_pushvec(&tokens, &tmp);
 		if (tokens.len > 0 && ((t_token *)vec_get_last(&tokens))->type == TK_CONTINUE_NL)
-			vec_remove_last(&tokens);
+			((t_token *)vec_get_last(&tokens))->type = TK_SEPERATOR;
 		else // use vec_destroy instead
 		{
+			tokens_normalize(&tokens);
+			ft_printf("--------------------------------\nNORMALIZED\n");
+			print_all_tokens(&tokens);
 			if (!tokens_to_ast(&tokens, &ast))
 				perror("tokens to ast memerr");
 			ft_printf("--------------------------------\nAST\n");
 			print_all_ast(&ast);
+			cmd_list = ast_to_commands(&ast);
+			while (cmd_list)
+			{
+				debug_print_simple_com(STDOUT, cmd_list->cmd);
+				cmd_list = cmd_list->next;
+			}
 			tokens = vec_empty(sizeof(t_token));
 		}
     }
