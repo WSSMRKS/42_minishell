@@ -54,7 +54,7 @@ static t_list_redir *create_redirection(t_op op)
 		perror("Pipe operator not supported in create_redirection");
 		return (NULL);
 	}
-	redir = calloc(sizeof(t_list_redir), 1);
+	redir = ft_calloc(sizeof(t_list_redir), 1);
 	if (!redir)
 		return (NULL);
 	redir->target = malloc(sizeof(t_redir_aim));
@@ -161,7 +161,7 @@ static t_simple_com	*create_simple_command(char **cmd)
 {
 	t_simple_com	*simple;
 
-	simple = calloc(sizeof(t_simple_com), 1);
+	simple = ft_calloc(sizeof(t_simple_com), 1);
 	if (!simple)
 		return NULL;
 	simple->words = word_list_from_argv(cmd);

@@ -89,11 +89,14 @@ re: fclean	# Recompile whole project.
 name: # print project name #
 	@echo "$(NAME)"
 
+supps: all
+	./create_rl_suppressions.sh
+
 exv: all
-	valgrind --suppressions=suppressions2.supp --leak-check=full --show-leak-kinds=all ./minishell
+	valgrind --suppressions=suppressions.supp --leak-check=full --show-leak-kinds=all ./minishell
 
 exvs: all
-	valgrind --suppressions=suppressions2.supp --gen-suppressions=all --leak-check=full --show-leak-kinds=all ./minishell
+	valgrind --suppressions=suppressions.supp --gen-suppressions=all --leak-check=full --show-leak-kinds=all ./minishell
 
 exval: all
 	valgrind --leak-check=full --show-leak-kinds=all ./minishell
@@ -111,5 +114,5 @@ help:	# Print this helpful message
 pargs:
 	gcc src/debug/print_args.c -o pargs
 
-.PHONY: all fclean clean re name help exes exv exvs exval ex pargs
+.PHONY: all fclean clean re name help exes exv exvs exval ex pargs supps
 .NOTPARALLEL: $(LIBFT_SRC)

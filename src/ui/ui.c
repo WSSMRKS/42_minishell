@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
+#include <readline/readline.h>
 
 static char *read_input(bool append_mode, void *data)
 {
@@ -92,6 +93,6 @@ void	repl(int argc, char **argv, char **envp)
 	}
 	if (status == MS_EOF)
 		ft_printf("exit\n");
+	rl_clear_history();
 	ft_cleanup_exit(&ms, 0);
 }
-
