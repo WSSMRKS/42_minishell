@@ -93,7 +93,7 @@ supps: all
 	./create_rl_suppressions.sh
 
 exv: all
-	valgrind --suppressions=suppressions.supp --leak-check=full --show-leak-kinds=all ./minishell
+	valgrind --suppressions=suppressions.supp --track-fds=yes --leak-check=full --show-leak-kinds=all ./minishell
 
 exvs: all
 	valgrind --suppressions=suppressions.supp --gen-suppressions=all --leak-check=full --show-leak-kinds=all ./minishell
