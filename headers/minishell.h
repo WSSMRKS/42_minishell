@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/15 15:57:55 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/11/18 15:27:49 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ void			ft_wait_error(t_ms *ms);
 /* ms_ex_redir */
 
 void			ft_outpipe(t_ms *ms, int i);
-void			ft_outfile(t_ms *ms, char *filename, int mode);
-void			ft_infile(t_ms *ms, char *filename);
+void			ft_outfile(t_ms *ms, t_list_redir *rd, int mode);
+void			ft_infile(t_ms *ms, t_list_redir *rd);
 void			ft_inpipe(t_ms *ms, int i);
 void			ft_redir_handler(t_ms *ms, t_cmd_list *curr, int i);
 void			ft_ex_prio(t_cmd_list *curr);
