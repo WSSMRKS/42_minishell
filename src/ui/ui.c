@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/18 18:16:20 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/11/18 18:27:27 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,14 +109,13 @@ static bool	cmdlist_has_heredoc(t_cmd_list *cmds)
 
 static t_ms_status	evaluate(t_ms *ms)
 {
-	// if (strcmp("ms_debug", ms->cmds->cmd->argv[0]) == 0)
-	// 	ft_debug(ms);
-	if (strcmp("exit", ms->cmds->cmd->argv[0]) == 0)
+	if (ms->cmds && ms->cmds->cmd && strcmp("exit", ms->cmds->cmd->argv[0]) == 0)
 		return (MS_EOF);
 	if(ms->cmds)
 	{
 		ms->global_flags = cmdlist_has_heredoc(ms->cmds);
 		ft_back_end(ms);
+		ms->cmds = NULL;
 	}
 	return (MS_OK);
 }
@@ -147,7 +146,6 @@ void	repl(int argc, char **argv, char **envp)
 		if (ms.parser.last_input.len > 0)
 			add_history(cstr_ref(&ms.parser.last_input));
 		status = evaluate(&ms);
-		ft_printf("done executing\n");
 		if (status != MS_OK)
 			break ;
 	}
