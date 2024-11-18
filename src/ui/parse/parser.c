@@ -58,6 +58,8 @@ static t_ms_status	read_tokens(t_parser *p)
 		vec_destroy(&tmp_tokens, NULL);
 		if (!last_tk_is_continue_nl(&p->tokens))
 			break;
+		else
+			str_pop(&p->last_input);
 		inp = p->read_input(true, p->data);
 		str_cat(&p->last_input, cstr_view(inp));
 		((t_token *)vec_get_last(&p->tokens))->type = TK_SEPERATOR;
@@ -84,7 +86,8 @@ t_ms_status	parse_next_command(t_parser *p, t_cmd_list	**out)
 		vec_destroy(&ast, NULL); // TODO
 		return (MS_ERROR);
 	}
-	vec_destroy(&p->tokens, NULL);
+	if (p->tokens.len == 0)
+		vec_destroy(&p->tokens, NULL);
 	*out = ast_to_commands(&ast);
 	vec_destroy(&ast, NULL);
 	return (MS_OK);

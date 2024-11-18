@@ -114,8 +114,16 @@ size_t	word_len(const char *str, size_t *out)
 		len = 1;
 	while (str[len])
 	{
-		if (str[len] == '\\' && str[len + 1] != 0)
+		if (str[len] == '\\')
+		{
+			if (str[len + 1] == 0)
+			{
+				if (len == 0)
+					len++;
+				break;
+			}
 			len += 2;
+		}
 		else if (!is_word_delimiter(str[len])
 			&& !str_starts_with_op(cstr_slice(&str[len], usizemin(total_len - len, 2)), 0))
 			len++;
