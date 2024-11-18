@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_executor.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/15 16:27:02 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/11/18 12:49:08 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,10 @@ int	ft_builtin(t_ms *ms, t_cmd_list *curr)
 		ret = ft_env(ms, curr);
 	// else if (curr->cmd->builtin_nr == 7)
 	// 	ret = ft_exit(ms, curr);
+	dup2(ms->be->saved_std[0], STDIN_FILENO);
+	close(ms->be->saved_std[0]);
+	dup2(ms->be->saved_std[1], STDOUT_FILENO);
+	close(ms->be->saved_std[1]);
 	return (ret);
 }
 
@@ -122,6 +126,12 @@ void	ft_create_argv(t_cmd_list *curr)
 	curr->cmd->argv = argv;
 }
 
+void	ft_safe_std(t_ms *ms)
+{
+	ms->be->saved_std[0] = dup(STDIN_FILENO);
+	ms->be->saved_std[1] = dup(STDOUT_FILENO);
+}
+
 
 void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i)
 {
@@ -137,6 +147,8 @@ void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i)
 	}
 	if (ms->be->child_pids[*i] == 0 || ms->be->child_pids[*i] == INT_MAX)
 	{
+		if (ms->be->child_pids[*i] == INT_MAX)
+			ft_safe_std(ms);
 		ft_redir_handler(ms, curr, *i);
 		ft_create_argv(curr);
 		if(ms->be->child_pids[*i] != INT_MAX)

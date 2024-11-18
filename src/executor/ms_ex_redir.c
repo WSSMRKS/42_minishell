@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/11 15:31:10 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/18 11:28:27 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ void	ft_redir_handler(t_ms *ms, t_cmd_list *curr, int i)
 	if (curr->next != NULL)
 		ft_outpipe(ms, i);
 	rd = curr->cmd->redir;
+	if (rd)
+		
 	while (rd)
 	{
 		if (curr->cmd->prio_in == 3 && rd->instruction == redir_here_doc
