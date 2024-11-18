@@ -6,22 +6,82 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/15 16:39:38 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/11/18 18:16:20 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
 #include <readline/readline.h>
 
+static bool	is_dot(const char *c)
+{
+	return (*c == '.');
+}
+
+t_str	get_trunc_hostname(void)
+{
+	t_str	hostname;
+	size_t	hostname_colon;
+
+	hostname = str_from2(ft_hostname());
+	str_trim(&hostname);
+	if (str_find(&hostname, is_dot, &hostname_colon))
+		str_remove_range(&hostname, hostname_colon, hostname.len);
+	return (hostname);
+}
+
+/// @brief Get the prompt string for the REPL
+/// @param ms The minishell struct
+/// @return The prompt string "ms/$USER@<hostname>:$PWD$ "
+static char	*get_prompt(t_ms *ms)
+{
+	t_str		out;
+	t_str_slice	user;
+	t_str		user_home;
+	t_str		hostname;
+	t_str		pwd;
+
+	out = str_clone_from(cstr_slice("ms/", 3));
+	user = cstr_view(ft_lookup_symtab(ms->be->global_symtabs, "USER"));
+	if (user.len == 0)
+		user = cstr_slice("?", 1);
+	user_home = str_clone_from(cstr_slice("/home/", 6));
+	str_pushstr(&user_home, user);
+	str_pushstr(&out, user);
+	str_pushstr(&out, cstr_slice("@", 1));
+	hostname = get_trunc_hostname();
+	if (hostname.len == 0)
+		str_push(&hostname, '?');
+	str_pushstr(&out, str_view(&hostname));
+	str_destroy(&hostname);
+	str_push(&out, ':');
+	pwd = str_clone_from(cstr_view(ft_lookup_symtab(ms->be->global_symtabs, "PWD")));
+	if (pwd.len == 0)
+		str_push(&out, '?');
+	if (str_starts_with(&pwd, &user_home))
+	{
+		str_remove_range(&pwd, 0, user_home.len);
+		str_push_front(&pwd, '~');
+	}
+	str_destroy(&user_home);
+	str_pushstr(&out, str_view(&pwd));
+	str_destroy(&pwd);
+	str_pushstr(&out, cstr_slice("$ ", 2));
+	return (cstr_take(&out));
+}
+
 static char *read_input(bool append_mode, void *data)
 {
+	char		*prompt;
 	char		*input;
 
 	(void)data;
+	prompt = get_prompt(data);
 	if (append_mode)
 		input = readline("> ");
 	else
-		input = readline("minishell$ ");
+		input = readline(prompt);
+	free(prompt);
 	return (input);
 }
 
