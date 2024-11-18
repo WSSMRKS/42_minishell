@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 11:16:12 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/13 11:32:25 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/18 11:15:04 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,7 @@ int		ft_echo(t_ms *ms, t_cmd_list *curr)
 			printf(" ");
 		// if(words->flags == WORD_DOLLAR)
 		// 	printf("%s", ft_lookup_symtab(ms->be->global_symtabs, words->word));
-		else
-			printf("%s", words->word);
+		printf("%s", words->word);
 		words = words->next;
 		i++;
 	}
