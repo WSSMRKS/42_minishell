@@ -46,7 +46,7 @@ That is, the word -d'' becomes -d after word splitting and null argument removal
 Note that if no expansion occurs, no splitting is performed.
 */
 
-typedef enum e_operator_ty
+typedef enum e_op_ty
 {
 	OP_PIPE,			// CMD1 | CMD2 (PIPE)
 	OP_REDIRECT,		// > ARG (OUTFILE)
@@ -98,6 +98,7 @@ t_vec		tokenize(t_str_slice inp);
 void		expand_vars(t_vec *tokens, t_symtab_stack *st);
 void		unescape_chars(t_vec *tokens);
 void		tokens_normalize(t_vec *tokens);
+void		tokens_normalize_for_continue_nl_check(t_vec *tokens);
 bool		tokens_to_ast(t_vec *tokens, t_vec *out);
 t_cmd_list	*ast_to_commands(t_vec *ast);
 
