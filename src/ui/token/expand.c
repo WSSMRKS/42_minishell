@@ -32,6 +32,11 @@ static void	str_expand_vars(t_str *str, t_symtab_stack *st)
 		{
 			var_str = str_clone_from(cstr_slice(&buf[i+1], var_len(&buf[i], &var_size) - 1));
 			var = cstr_view(ft_lookup_symtab(st, (char *)cstr_ref(&var_str)));
+			if (var_size == 0)
+			{
+				i++;
+				continue;
+			}
 			str_remove_range(str, i, i + var_size);
 			if (var.str)
 			{
