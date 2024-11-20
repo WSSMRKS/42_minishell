@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/18 12:49:08 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/20 13:32:26 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,14 @@ void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i)
 			ft_builtin(ms, curr);
 		else if (ms->be->child_pids[*i] == 0)
 			ft_execute(ms, curr);
+	}
+		if (*i > 0)
+	{
+		if (close(ms->be->pipes[(*i-1) & 1][0])
+		|| close(ms->be->pipes[(*i-1) & 1][1]))
+			perror("pipex");
+		pipe(ms->be->pipes[(*i-1) & 1]);
+		fprintf(stderr, "pipe: for child {%d} pipe  {%d} is recreated\n", *i, *i & 1);
 	}
 }
 
