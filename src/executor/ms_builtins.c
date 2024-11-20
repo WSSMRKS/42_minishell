@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 11:16:12 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/20 14:10:13 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/20 15:11:56 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ int		ft_echo(t_ms *ms, t_cmd_list *curr)
 	{
 		if (i != 0)
 			printf(" ");
-		// if(words->flags == WORD_DOLLAR)
-		// 	printf("%s", ft_lookup_symtab(ms->be->global_symtabs, words->word));
 		printf("%s", words->word);
 		words = words->next;
 		i++;
@@ -60,8 +58,17 @@ int		ft_pwd(t_ms *ms, t_cmd_list *curr)
 int		ft_cd(t_ms *ms, t_cmd_list *curr)
 {
 	int	ret;
+
+	DEBUG(fprintf(stderr, "%s\n", ft_lookup_symtab(ms->be->global_symtabs, "HOME")));
 	
-	ret = chdir(curr->cmd->words->next->word);
+	if (!curr->cmd->words->next)
+		ret = chdir(ft_lookup_symtab(ms->be->global_symtabs, "HOME"));
+		// ret = chdir("djfsldjf");
+	else
+	{
+		ret = chdir(curr->cmd->words->next->word);
+		DEBUG(fprintf(stderr, "%s\n", curr->cmd->words->next->word));
+	}
 	if (ret != 0)
 	{
 		ft_printf_fd(2, "ms: cd: %s: %s\n", curr->cmd->words->next->word, strerror(errno));
