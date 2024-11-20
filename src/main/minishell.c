@@ -35,7 +35,7 @@ void handle_sigchld(int sig) {
 
     // Wait for all child processes that have exited
     while ((pid = waitpid(-1, &status, WNOHANG)) > 0) {
-        printf("\nChild process %d terminated\n", pid);
+        ft_printf_fd(STDERR, "\nChild process %d terminated\n", pid);
     }
 }
 
