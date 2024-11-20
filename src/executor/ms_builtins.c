@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 11:16:12 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/18 11:15:04 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/20 14:10:13 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,14 @@ int		ft_pwd(t_ms *ms, t_cmd_list *curr)
 
 int		ft_cd(t_ms *ms, t_cmd_list *curr)
 {
-	if (chdir(curr->cmd->words->next->word) != 0)
-
+	int	ret;
+	
+	ret = chdir(curr->cmd->words->next->word);
+	if (ret != 0)
+	{
+		ft_printf_fd(2, "ms: cd: %s: %s\n", curr->cmd->words->next->word, strerror(errno));
+		return (ret);
+	}
 	ms->be->cwd = getcwd(ms->be->cwd, PATH_MAX);
 	ft_update_symtab_value(ms->be->global_symtabs, "PWD", ms->be->cwd);
 	ft_memset(ms->be->cwd, '\0', PATH_MAX);
