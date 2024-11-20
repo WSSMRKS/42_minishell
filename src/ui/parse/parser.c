@@ -86,7 +86,7 @@ static t_ms_status	read_tokens(t_parser *p)
 		vec_destroy(&tmp_tokens, NULL);
 		if (!last_tk_is_continue_nl(&p->tokens))
 			break;
-		else if (cstr_ref(&p->last_input)[p->last_input.len] == '\\')
+		else if (cstr_ref(&p->last_input)[p->last_input.len - 1] == '\\')
 			str_pop(&p->last_input);
 		else
 			str_push(&p->last_input, ' ');
