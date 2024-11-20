@@ -37,5 +37,5 @@ echo hi13 |
     echo hi14
 #comment before redirect
 echo hi15 < $NOTAVAR
-echo hi15 <#comment with redirect
 echo hi16 < $NOTAVAR #comment after redirect
+echo hi15 <#comment with redirect
