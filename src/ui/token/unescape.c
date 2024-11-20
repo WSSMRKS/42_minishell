@@ -14,8 +14,8 @@ static void	handle_continue_nl_token(t_vec *tokens)
 		vec_push(tokens, &newline);
 	}
 }
-
-static void	str_unescape_chars(t_str *str)
+// for double quotes only unescape <‘$’, ‘"’, ‘\’, newline>.
+static void	str_unescape_chars(t_str *str, t_token_ty tk_ty)
 {
 	size_t	i;
 	char	*buf;
@@ -26,7 +26,8 @@ static void	str_unescape_chars(t_str *str)
 		buf = cstr_mut(str);
 		if (buf[i] == 0)
 			break ;
-		if (buf[i] == '\\' && buf[i + 1] != 0)
+		if (buf[i] == '\\' && buf[i + 1] != 0
+			&& (tk_ty != TK_DQUOTE || ft_strchr("\"\\$", buf[i + 1])))
 			str_remove(str, i);
 		i++;
 	}
@@ -43,7 +44,7 @@ void	unescape_chars(t_vec *tokens)
 	{
 		token = vec_get_at(tokens, i);
 		if (token->type == TK_WORD || token->type == TK_DQUOTE)
-			str_unescape_chars(&token->str);
+			str_unescape_chars(&token->str, token->type);
 		i++;
 	}
 }
