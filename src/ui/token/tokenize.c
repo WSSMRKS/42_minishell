@@ -1,4 +1,5 @@
 #include "../../../headers/minishell.h"
+#include <stdio.h>
 
 /* ??????????????????????
 ```bash
@@ -68,7 +69,7 @@ static bool	handle_word_or_op(t_str_slice *inp, t_vec *tokens)
 	return (true);
 }
 
-static void	handle_whitespace(t_str_slice *inp, t_vec *tokens)
+static void	handle_space_and_comment(t_str_slice *inp, t_vec *tokens)
 {
 	while (*inp->str == ' ' || *inp->str == '\t' || *inp->str == '\n')
 	{
@@ -79,6 +80,11 @@ static void	handle_whitespace(t_str_slice *inp, t_vec *tokens)
 		inp->str++;
 		inp->len--;
 	}
+	if (tokens->len == 0
+		|| ((t_token*)vec_get_last(tokens))->type == TK_NL
+		|| ((t_token*)vec_get_last(tokens))->type == TK_SEPERATOR
+		|| ((t_token*)vec_get_last(tokens))->type == TK_OPERATOR)
+		strsl_move_inplace(inp, comment_len(inp->str));
 }
 
 // IMPORTANT FOR REPL AND NEWLINE TOKEN
@@ -116,7 +122,7 @@ t_vec	tokenize(t_str_slice inp)
 	out = vec_empty(sizeof(t_token));
 	while (true)
 	{
-		handle_whitespace(&inp, &out);
+		handle_space_and_comment(&inp, &out);
 		if (!inp.len)
 			break ;
 		if (handle_quoted(&inp, &out) || handle_word_or_op(&inp, &out))

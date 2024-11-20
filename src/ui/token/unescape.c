@@ -13,7 +13,6 @@ static void	handle_continue_nl_token(t_vec *tokens)
 		vec_remove_last(tokens);
 		vec_push(tokens, &newline);
 	}
-
 }
 
 static void	str_unescape_chars(t_str *str)
