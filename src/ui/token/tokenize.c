@@ -80,7 +80,11 @@ static void	handle_space_and_comment(t_str_slice *inp, t_vec *tokens)
 		inp->str++;
 		inp->len--;
 	}
-	strsl_move_inplace(inp, comment_len(inp->str));
+	if (tokens->len == 0
+		|| ((t_token*)vec_get_last(tokens))->type == TK_NL
+		|| ((t_token*)vec_get_last(tokens))->type == TK_SEPERATOR
+		|| ((t_token*)vec_get_last(tokens))->type == TK_OPERATOR)
+		strsl_move_inplace(inp, comment_len(inp->str));
 }
 
 // IMPORTANT FOR REPL AND NEWLINE TOKEN

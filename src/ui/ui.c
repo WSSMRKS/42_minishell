@@ -83,6 +83,8 @@ static char *read_input(bool append_mode, void *data)
 	if (!isatty(STDIN))
 	{
 		input = get_next_line(STDIN);
+		if (input && *input && input[ft_strlen(input) - 1] == '\n')
+			input[ft_strlen(input) - 1] = '\0';
 		return (input);
 	}
 	prompt = get_prompt(data);

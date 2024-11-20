@@ -2,6 +2,17 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+static void	print_all_tokens(t_vec *tokens)
+{
+	for (size_t i = 0; i < tokens->len; i++)
+	{
+		t_token *token = vec_get_at(tokens, i);
+		token_print(token, STDERR);
+		if (!write(STDERR, "\n", 1))
+			perror("write error");
+	}
+}
+
 void	parser_destroy(t_parser *p)
 {
 	vec_destroy(&p->tokens, NULL);
@@ -55,11 +66,17 @@ static t_ms_status	read_tokens(t_parser *p)
 			break;
 		}
 		tmp_tokens = tokenize(cstr_view(inp));
+		DBG_PARSER(ft_putstr_fd("[DBG_PARSE] TEMP TOKENS:\n", STDERR));
+		DBG_PARSER(print_all_tokens(&tmp_tokens));
 		free(inp);
 		if (tmp_tokens.mem_err)
 			return (MS_ERROR);
 		expand_vars(&tmp_tokens, p->get_symtab(p->data));
+		DBG_PARSER(ft_putstr_fd("[DBG_PARSE] TEMP TOKENS EXPANDED:\n", STDERR));
+		DBG_PARSER(print_all_tokens(&tmp_tokens));
 		unescape_chars(&tmp_tokens);
+		DBG_PARSER(ft_putstr_fd("[DBG_PARSE] TEMP TOKENS UNESCAPED:\n", STDERR));
+		DBG_PARSER(print_all_tokens(&tmp_tokens));
 		vec_pushvec(&p->tokens, &tmp_tokens);
 		if (p->tokens.mem_err)
 		{
@@ -78,7 +95,11 @@ static t_ms_status	read_tokens(t_parser *p)
 		if (((t_token *)vec_get_last(&p->tokens))->type == TK_CONTINUE_NL)
 			vec_remove_last(&p->tokens);
 	}
+	DBG_PARSER(ft_putstr_fd("[DBG_PARSE] ALL TOKENS:\n", STDERR));
+	DBG_PARSER(print_all_tokens(&p->tokens));
 	tokens_normalize(&p->tokens);
+	DBG_PARSER(ft_putstr_fd("[DBG_PARSE] ALL TOKENS NORMALIZED:\n", STDERR));
+	DBG_PARSER(print_all_tokens(&p->tokens));
 	return (MS_OK);
 }
 

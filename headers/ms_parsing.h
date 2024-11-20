@@ -14,7 +14,8 @@
 # define MS_PARSING_H
 # include "minishell.h"
 
-#define DEBUG_PARSER (false)
+# define DEBUG_PARSER (true)
+# define DBG_PARSER(x) if(DEBUG_PARSER) {x;}
 
 typedef char			*(*t_read_input)(bool append_mode, void *data);
 typedef t_symtab_stack	*(*t_get_symtab)(void *data);
