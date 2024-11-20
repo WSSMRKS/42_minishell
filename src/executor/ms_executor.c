@@ -142,7 +142,7 @@ void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i)
 		ms->be->child_pids[*i] = INT_MAX;
 	if (ms->be->child_pids[*i] < 0)
 	{
-		strerror(EPIPE);
+		perror("ft_fork_execute");
 		ft_cleanup_exit(ms, EPIPE);
 	}
 	if (ms->be->child_pids[*i] == 0 || ms->be->child_pids[*i] == INT_MAX)

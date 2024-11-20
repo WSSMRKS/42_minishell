@@ -134,11 +134,6 @@ void	repl(int argc, char **argv, char **envp)
 	t_ms		ms;
 	t_ms_status	status;
 
-	if (argc != 1)
-	{
-		ft_printf("usage: %s\n", argv[0]);
-		return ;
-	}
 	ms.parser = parser_init(&ms, read_input, get_symtab);
 	ft_init_ms(&ms);
 	ft_init_be(&ms, argc, argv, envp);

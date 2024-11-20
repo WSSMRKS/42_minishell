@@ -25,12 +25,15 @@ static bool	last_tk_is_continue_nl(t_vec *tokens)
 	t_vec	tokens_clone;
 	t_token_ty	last;
 
-	if (tokens->len == 0)
-		return (false);
 	tokens_clone = vec_clone(tokens);
 	if (tokens_clone.mem_err)
 		return (false);
 	tokens_normalize_for_continue_nl_check(&tokens_clone);
+	if (tokens_clone.len == 0)
+	{
+		vec_destroy(&tokens_clone, NULL);
+		return (false);
+	}
 	last = ((t_token*)vec_get_last(&tokens_clone))->type;
 	vec_destroy(&tokens_clone, NULL);
 	return (last == TK_CONTINUE_NL);
