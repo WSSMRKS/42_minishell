@@ -1,0 +1,145 @@
+# Test basic pipes
+ls -l | grep .txt | wc -l
+
+# Test pipe with line continuation
+ls -l |
+grep .txt |
+wc -l
+
+echo pattern >> input.txt
+echo Pattern >> input.txt
+echo old >> input.txt
+echo new >> input.txt
+echo -n input-eol >> input.txt
+
+# Test redirections
+echo "Hello" > test.txt
+cat < test.txt
+echo "World" >> test.txt
+cat < test.txt
+rm test.txt
+
+# Test escaping special characters
+echo \$PATH
+echo \|
+echo \>
+echo \<
+echo \#
+echo \\
+
+# Test line continuation with backslash
+# (THIS WILL NOT MIRROR BASH's BEHAVIOUR BECAUSE OF THE SINGULAR DOUBLE QUOTES;
+# LINE CONTINUATION IS ONLY SUPPORTED ON BEST EFFORT BASIS)
+#
+# echo "This is a very \
+# long command that \
+# continues across \
+# multiple lines"
+
+# Test single quotes (no variable expansion)
+echo '$HOME'
+echo '$PATH'
+echo 'Special chars: $|><'
+
+# Test double quotes (with variable expansion)
+echo "Home: $HOME"
+echo "Path: $PATH"
+echo "Special chars in quotes: $|><"
+
+# Test mixed quotes
+echo "Value of '$HOME' is $HOME"
+echo 'Value of "$HOME" is '"$HOME"
+
+# Test environment variables
+echo $USER
+# echo ${USER}
+echo $HOME/documents
+# echo ${HOME}/documents
+
+# Test nested environment variables
+export TEST_VAR="test"
+echo $HOME/$TEST_VAR/path
+
+# Test return code
+# true
+echo $?
+# false
+# echo $?
+
+# Test complex combinations
+echo "Running in $PWD" > output.txt |
+cat -n output.txt |
+grep "Running" > \
+final.txt
+
+# Test escaped quotes
+echo "\"Quoted text\""
+echo '\'Single quoted text\''
+
+# Test spaces and tabs handling
+echo    "Multiple    spaces"
+echo	"Tab	characters"
+
+# Test empty variables
+echo "$NONEXISTENT_VAR"
+# echo "${NONEXISTENT_VAR}"
+
+# Test complex variable usage
+export TEST="test string"
+# echo "${TEST# *}"  # Remove leading space
+# echo "${TEST% *}"  # Remove trailing space
+
+# Test multiple redirections
+cat < input.txt > output.txt
+
+# Test combinations of all features
+export FILENAME="test.txt"
+echo "Processing file: $FILENAME" |
+grep ":" > \
+"${FILENAME}.processed" 2> \
+error.log
+
+# Test escaping within quotes
+echo "Escaped \"quote\" within quotes"
+echo 'Escaped \'quote\' within single quotes'
+
+# Test variable with special chars
+export VAR="$HOME/path with spaces/\$special*chars"
+echo "$VAR"
+
+# Test complex pipe scenarios with redirections
+cat < input.txt |
+grep "pattern" |
+sed 's/old/new/' > \
+output.txt
+
+# Test line continuation
+echo first line \
+      second line \
+      third line
+
+# Test nested command substitution (if supported)
+# echo "Current directory: $(pwd)"
+# echo "Files: $(ls -l | grep txt)"
+
+# Test multiple variable expansions in one line
+echo "$HOME$PATH$USER"
+
+# Test special parameter expansion
+echo "Last return code: $?"
+echo "Script name: $0"
+
+# Test escaping spaces in paths
+touch "file with spaces.txt"
+cat file\ with\ spaces.txt
+
+# Test complex redirection scenarios
+# cat < input.txt > output.txt 2> error.log
+
+# Test quoted variables with spaces
+export VAR="value with spaces"
+echo "$VAR"
+echo '$VAR'
+
+# Clean up test files
+rm -f input.txt test.txt output.txt final.txt error.log "file with spaces.txt"
