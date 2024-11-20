@@ -80,6 +80,11 @@ static char *read_input(bool append_mode, void *data)
 	char		*input;
 
 	(void)data;
+	if (!isatty(STDIN))
+	{
+		input = get_next_line(STDIN);
+		return (input);
+	}
 	prompt = get_prompt(data);
 	if (append_mode)
 		input = readline("> ");
@@ -153,8 +158,9 @@ void	repl(int argc, char **argv, char **envp)
 		if (status != MS_OK)
 			break ;
 	}
-	if (status == MS_EOF)
+	if (status == MS_EOF && isatty(STDIN))
 		ft_printf("exit\n");
 	rl_clear_history();
+	get_next_line_finish(STDIN);
 	ft_cleanup_exit(&ms, 0);
 }
