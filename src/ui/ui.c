@@ -42,6 +42,7 @@ static char	*get_prompt(t_ms *ms)
 	t_str		pwd;
 
 	out = str_clone_from(cstr_slice("ms/", 3));
+	str_pushstr(&out, cstr_view(GREEN));
 	user = cstr_view(ft_lookup_symtab(ms->be->global_symtabs, "USER"));
 	if (user.len == 0)
 		user = cstr_slice("?", 1);
@@ -54,7 +55,9 @@ static char	*get_prompt(t_ms *ms)
 		str_push(&hostname, '?');
 	str_pushstr(&out, str_view(&hostname));
 	str_destroy(&hostname);
+	str_pushstr(&out, cstr_view(WHITE));
 	str_push(&out, ':');
+	str_pushstr(&out, cstr_view(GREEN));
 	pwd = str_clone_from(cstr_view(ft_lookup_symtab(ms->be->global_symtabs, "PWD")));
 	if (pwd.len == 0)
 		str_push(&out, '?');
@@ -66,6 +69,7 @@ static char	*get_prompt(t_ms *ms)
 	str_destroy(&user_home);
 	str_pushstr(&out, str_view(&pwd));
 	str_destroy(&pwd);
+	str_pushstr(&out, cstr_view(RESET));
 	str_pushstr(&out, cstr_slice("$ ", 2));
 	return (cstr_take(&out));
 }

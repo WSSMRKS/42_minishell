@@ -27,7 +27,7 @@ void	ft_wait_error(t_ms *ms)
 		waitpid(ms->be->child_pids[i], &(ms->be->child_ret[i]), 0);
 		if (WIFEXITED(ms->be->child_ret[i]))
 		{
-			ft_printf_fd(2, "Exit code of the childs: child nr. %d exitcode %d\n",i , WEXITSTATUS(ms->be->child_ret[i]));
+			DEBUG(ft_printf_fd(2, "Exit code of the childs: child nr. %d exitcode %d\n",i , WEXITSTATUS(ms->be->child_ret[i])));
 			ms->be->child_ret[i] = WEXITSTATUS(ms->be->child_ret[i]);
 			if (ms->be->child_ret[i] == 127)
 				ft_printf_fd(2, "%s: command not found\n", curr->cmd->words->word); // other errors are handled in child.

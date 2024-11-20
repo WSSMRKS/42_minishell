@@ -201,7 +201,7 @@ t_ms_status	parse_next_command(t_parser *p, t_cmd_list	**out)
 		return (MS_OK);
 	}
 	else
-		ast_printstr(&ast);
+		DEBUG(ast_printstr(&ast));
 	if (p->tokens.len == 0)
 		vec_destroy(&p->tokens, NULL);
 	*out = ast_to_commands(&ast);
