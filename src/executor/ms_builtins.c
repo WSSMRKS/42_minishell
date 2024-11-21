@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_builtins.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 11:16:12 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/20 14:10:13 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/21 18:02:19 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ int		ft_echo(t_ms *ms, t_cmd_list *curr)
 	{
 		if (i != 0)
 			printf(" ");
-		// if(words->flags == WORD_DOLLAR)
-		// 	printf("%s", ft_lookup_symtab(ms->be->global_symtabs, words->word));
 		printf("%s", words->word);
 		words = words->next;
 		i++;
@@ -61,10 +59,16 @@ int		ft_cd(t_ms *ms, t_cmd_list *curr)
 {
 	int	ret;
 	
-	ret = chdir(curr->cmd->words->next->word);
+	if (!curr->cmd->words->next)
+		ret = chdir(ft_lookup_symtab(ms->be->global_symtabs, "HOME"));
+	else
+		ret = chdir(curr->cmd->words->next->word);
 	if (ret != 0)
 	{
-		ft_printf_fd(2, "ms: cd: %s: %s\n", curr->cmd->words->next->word, strerror(errno));
+		if(!curr->cmd->words->next)
+			ft_printf_fd(2, "ms: cd: %s: %s\n", ft_lookup_symtab(ms->be->global_symtabs, "HOME"), strerror(errno));
+		else
+			ft_printf_fd(2, "ms: cd: %s: %s\n", curr->cmd->words->next->word, strerror(errno));
 		return (ret);
 	}
 	ms->be->cwd = getcwd(ms->be->cwd, PATH_MAX);
