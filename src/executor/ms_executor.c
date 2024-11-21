@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_executor.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/20 13:32:26 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/21 18:50:27 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,9 @@ int	ft_builtin(t_ms *ms, t_cmd_list *curr)
 		ret = ft_unset(ms, curr);
 	else if (curr->cmd->builtin_nr == 6)
 		ret = ft_env(ms, curr);
+	else if (curr->cmd->builtin_nr == 8)
+		ret = ft_status(ms, curr);
+	
 	// else if (curr->cmd->builtin_nr == 7)
 	// 	ret = ft_exit(ms, curr);
 	dup2(ms->be->saved_std[0], STDIN_FILENO);

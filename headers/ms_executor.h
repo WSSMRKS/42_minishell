@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_executor.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 15:50:51 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/11 12:59:32 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/21 18:55:25 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct s_be {
 	int				saved_std[2];	/*close after every execution*/
 	int				*child_pids;	/*clear after every execution, realloc after every execution*/
 	int				*child_ret;		/*return values of the childs*/
+	int				last_ret;		/*return value of the last command*/
 	char			**builtins;		/*clear at exit*/
 	char			*cwd;			/*clear at exit*/
 	t_symtab_stack	*global_symtabs;

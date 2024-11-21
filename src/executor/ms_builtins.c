@@ -6,7 +6,7 @@
 /*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 11:16:12 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/21 18:02:19 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/11/21 19:00:09 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,5 +207,16 @@ int		ft_env(t_ms *ms, t_cmd_list *curr)
 		}
 		i++;
 	}
+	return (0);
+}
+
+int		ft_status(t_ms *ms, t_cmd_list *curr)
+{
+	char	*print;
+
+	(void) curr;
+	print = ft_itoa(ms->be->last_ret);
+	printf("%s\n", ft_itoa(ms->be->last_ret));
+	free(print);
 	return (0);
 }
