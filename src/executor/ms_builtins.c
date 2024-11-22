@@ -6,7 +6,7 @@
 /*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 11:16:12 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/21 19:00:09 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/11/22 11:25:03 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,18 @@ int		ft_echo(t_ms *ms, t_cmd_list *curr)
 	(void) ms;
 	i = 0;
 	newline = true;
-	if (ft_strncmp(curr->cmd->words->next->word, "-n\0", 3) == 0)
+	words = curr->cmd->words->next;
+	if (words && ft_strncmp(curr->cmd->words->next->word, "-n\0", 3) == 0)
 	{
 		newline = false;
-		words = curr->cmd->words->next->next;
+		words = words->next;
 	}
-	else
-		words = curr->cmd->words->next;
 	while(words)
 	{
-		if (i != 0)
+		if (i++ != 0)
 			printf(" ");
 		printf("%s", words->word);
 		words = words->next;
-		i++;
 	}
 	if (newline == true)
 		printf("\n");
