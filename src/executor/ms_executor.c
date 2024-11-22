@@ -6,7 +6,7 @@
 /*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/21 18:50:27 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/11/22 12:10:17 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,6 @@ void	ft_safe_std(t_ms *ms)
 
 void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i)
 {
-
 	if (!curr->cmd->builtin || ms->be->nb_cmds > 1)
 		ms->be->child_pids[*i] = fork();
 	else
@@ -157,17 +156,16 @@ void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i)
 		if(ms->be->child_pids[*i] != INT_MAX)
 			ft_close_all_fds(ms);
 		if (ms->be->child_pids[*i] == INT_MAX)
-			ft_builtin(ms, curr);
+			ms->be->last_ret = ft_builtin(ms, curr);
 		else if (ms->be->child_pids[*i] == 0)
 			ft_execute(ms, curr);
 	}
-		if (*i > 0)
+	if (*i > 0)
 	{
 		if (close(ms->be->pipes[(*i-1) & 1][0])
 		|| close(ms->be->pipes[(*i-1) & 1][1]))
-			perror("pipex");
+			perror("ms");
 		pipe(ms->be->pipes[(*i-1) & 1]);
-		fprintf(stderr, "pipe: for child {%d} pipe  {%d} is recreated\n", *i, *i & 1);
 	}
 }
 
