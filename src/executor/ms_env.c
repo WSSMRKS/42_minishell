@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/15 16:30:24 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/11/22 09:12:01 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -331,7 +331,8 @@ char	**ft_create_envp(t_ms *ms)
 			tmp = global->symtab[i];
 			while (tmp)
 			{
-				envp[j++] = ft_multistrjoin(3, tmp->key, "=", tmp->value);
+				if(tmp->value)
+					envp[j++] = ft_multistrjoin(3, tmp->key, "=", tmp->value);
 				tmp = tmp->next;
 			}
 			i++;

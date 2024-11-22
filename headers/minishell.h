@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/18 15:27:49 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/21 18:58:45 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,8 @@ int				ft_export(t_ms *ms, t_cmd_list *curr);
 int				ft_unset(t_ms *ms, t_cmd_list *curr);
 int				ft_env(t_ms *ms, t_cmd_list *curr);
 int				ft_exit(t_ms *ms, t_cmd_list *curr);
+int				ft_status(t_ms *ms, t_cmd_list *curr);
+
 
 /* ms_parse */
 // int parse(t_token *tokens);
