@@ -1,2 +1,0 @@
-1.	no tilde expansion "~" is considered a char of the pathname.
-2.	Question: Should we list the path in front of the prompt as in bash?

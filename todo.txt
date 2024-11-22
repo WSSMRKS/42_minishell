@@ -1,5 +1,0 @@
-- better understanding of the actual UI;
-- think of multiline input in combination with readline and the history. is it important to get feedback from the lexer or the parser to update the history?
-- dive into signal handling to make ctrl-C, ctrl-D and ctrl-\ work
-- readline leaks: still reachable: 208,178 bytes in 222 blocks not my program
-
