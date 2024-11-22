@@ -104,6 +104,14 @@ static t_symtab_stack	*get_symtab(void *data)
 	return (ms->be->global_symtabs);
 }
 
+static int	get_last_ret(void *data)
+{
+	t_ms	*ms;
+
+	ms = (t_ms *)data;
+	return (ms->be->last_ret);
+}
+
 static bool	cmdlist_has_heredoc(t_cmd_list *cmds)
 {
 	t_cmd_list	*curr;
@@ -136,7 +144,7 @@ void	repl(int argc, char **argv, char **envp)
 	t_ms		ms;
 	t_ms_status	status;
 
-	ms.parser = parser_init(&ms, read_input, get_symtab);
+	ms.parser = parser_init(&ms, read_input, get_symtab, get_last_ret);
 	ft_init_ms(&ms);
 	ft_init_be(&ms, argc, argv, envp);
 	while (true) // read eval print loop REPL

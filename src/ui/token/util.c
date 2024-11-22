@@ -154,7 +154,12 @@ size_t	var_len(const char *str, size_t *out)
 	while (str[len] && (ft_isalnum(str[len]) || str[len] == '_'))
 		len++;
 	if (len == 1)
-		len = 0;
+	{
+		if (str[len] == '?')
+			len = 2;
+		else
+			len = 0;
+	}
 	if (out)
 		*out = len;
 	return (len);

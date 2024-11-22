@@ -95,7 +95,7 @@ typedef struct s_ast {
 }	t_ast;
 
 t_vec		tokenize(t_str_slice inp);
-void		expand_vars(t_vec *tokens, t_symtab_stack *st);
+void		expand_vars(t_vec *tokens, t_symtab_stack *st, int last_ret);
 void		unescape_chars(t_vec *tokens);
 void		tokens_normalize(t_vec *tokens);
 void		tokens_normalize_for_continue_nl_check(t_vec *tokens);
