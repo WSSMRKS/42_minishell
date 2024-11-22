@@ -19,13 +19,15 @@ void	parser_destroy(t_parser *p)
 	str_destroy(&p->last_input);
 }
 
-t_parser	parser_init(void *data, t_read_input read_input, t_get_symtab get_symtab)
+t_parser	parser_init(void *data, t_read_input read_input,
+	t_get_symtab get_symtab, t_get_last_ret get_last_ret)
 {
 	t_parser	p;
 
 	p.tokens = vec_empty(sizeof(t_token));
 	p.read_input = read_input;
 	p.get_symtab = get_symtab;
+	p.get_last_ret = get_last_ret;
 	p.data = data;
 	p.last_input = str_empty();
 	return (p);
@@ -71,7 +73,7 @@ static t_ms_status	read_tokens(t_parser *p)
 		free(inp);
 		if (tmp_tokens.mem_err)
 			return (MS_ERROR);
-		expand_vars(&tmp_tokens, p->get_symtab(p->data));
+		expand_vars(&tmp_tokens, p->get_symtab(p->data), p->get_last_ret(p->data));
 		DBG_PARSER(ft_putstr_fd("[DBG_PARSE] TEMP TOKENS EXPANDED:\n", STDERR));
 		DBG_PARSER(print_all_tokens(&tmp_tokens));
 		unescape_chars(&tmp_tokens);

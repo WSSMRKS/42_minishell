@@ -19,11 +19,13 @@
 
 typedef char			*(*t_read_input)(bool append_mode, void *data);
 typedef t_symtab_stack	*(*t_get_symtab)(void *data);
+typedef int				(*t_get_last_ret)(void *data);
 
 typedef struct s_parser {
 	t_vec			tokens;
 	t_read_input	read_input;
 	t_get_symtab	get_symtab;
+	t_get_last_ret	get_last_ret;
 	void			*data;
 	t_str			last_input;
 }					t_parser;
@@ -104,9 +106,9 @@ typedef struct	s_cmd_list {
 	struct s_cmd_list	*next;
 }	t_cmd_list;
 
-void    debug_print_simple_com(int fd, t_simple_com *cmd);
+void		debug_print_simple_com(int fd, t_simple_com *cmd);
 t_parser	parser_init(void *data, t_read_input read_input,
-		t_get_symtab get_symtab);
+		t_get_symtab get_symtab, t_get_last_ret get_last_ret);
 t_ms_status	parse_next_command(t_parser *p, t_cmd_list	**out);
 
 #endif
