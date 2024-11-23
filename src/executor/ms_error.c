@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_error.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 23:52:06 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/11 15:41:39 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/23 18:00:52 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,11 @@ void	ft_wait_error(t_ms *ms)
 		waitpid(ms->be->child_pids[i], &(ms->be->child_ret[i]), 0);
 		if (WIFEXITED(ms->be->child_ret[i]))
 		{
-			DEBUG(ft_printf_fd(2, "Exit code of the childs: child nr. %d exitcode %d\n",i , WEXITSTATUS(ms->be->child_ret[i])));
 			ms->be->child_ret[i] = WEXITSTATUS(ms->be->child_ret[i]);
-			if (ms->be->child_ret[i] == 127)
-				ft_printf_fd(2, "%s: command not found\n", curr->cmd->words->word); // other errors are handled in child.
-			// if (i == ms->be->nb_cmds - 1)
-				// err = ms->be->child_ret[i];
+			// DEBUG(ft_printf_fd(2, "Exit code of the childs: child nr. %d exitcode %d\n",i , WEXITSTATUS(ms->be->child_ret[i])));
 		}
 		curr = curr->next;
 		i++;
 	}
+	ms->be->last_ret = ms->be->child_ret[ms->be->nb_cmds - 1];
 }

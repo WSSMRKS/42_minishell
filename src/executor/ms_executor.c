@@ -6,7 +6,7 @@
 /*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/22 12:10:17 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/11/23 23:37:18 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,21 @@ char	*ft_search_cmd(t_ms *ms, t_cmd_list *curr)
 	return (NULL);
 }
 
+void	ft_prnt_stderr(char *name, char *cmd, int err)
+{
+	int	storage;
+	
+	storage = dup(STDOUT_FILENO);
+	dup2(STDERR_FILENO, STDOUT_FILENO);
+	if (name == NULL)
+		printf("%s: command not found\n", cmd);
+	else
+		printf("%s: %s: %s\n", name, cmd, strerror(err));
+	dup2(storage, STDOUT_FILENO);
+	close(storage);
+}
+
+
 void	ft_execute(t_ms *ms, t_cmd_list *curr)
 {
 	int		err;
@@ -64,11 +79,16 @@ void	ft_execute(t_ms *ms, t_cmd_list *curr)
 
 	cmdpath = ft_search_cmd(ms, curr);
 	if (cmdpath == NULL)
+	{
 		err = 127;
+		ft_prnt_stderr(NULL, curr->cmd->words->word, 2);
+	}
 	else
 	{
 		envp = ft_create_envp(ms);
-		err = execve(cmdpath, curr->cmd->argv, envp);
+		if (execve(cmdpath, curr->cmd->argv, envp) == -1)
+			err = 127;
+		ft_prnt_stderr("minishell", curr->cmd->words->word, errno);
 		ft_free_2d(envp);
 	}
 	ft_clear_ast(ms); // [ ] take care of this in case of not a child!!
@@ -135,38 +155,75 @@ void	ft_safe_std(t_ms *ms)
 	ms->be->saved_std[1] = dup(STDOUT_FILENO);
 }
 
+int	ft_grab_pid()
+{
+	int		fd;
+	char	buffer[256];
+	ssize_t bytes_read;
+	int		pid;
+	char	**split;
+
+	pid = 0;
+	fd = open("/proc/self/stat", O_RDONLY);
+	if (fd < 0)
+	{
+		perror("open");
+		return (-1);
+	}
+	bytes_read = read(fd, &buffer, sizeof(buffer) -1);
+	if (bytes_read < 0)
+	{
+		perror("read");
+		close(fd);
+		return (-1);
+	}
+	buffer[bytes_read] = '\0';
+	close(fd);
+	split = ft_split(buffer, ' ');
+	pid = ft_atoi(split[0]);
+	ft_free_2d(split);
+	return (pid);
+}
+
+void	ft_ex_prep(t_ms *ms, t_cmd_list *curr, int *i)
+{
+	ft_redir_handler(ms, curr, *i);
+	ft_create_argv(curr);
+}
+
+void	ft_pipe_reset(t_ms *ms, int *i)
+{
+	if (close(ms->be->pipes[(*i-1) & 1][0])
+	|| close(ms->be->pipes[(*i-1) & 1][1]))
+		perror("ms");
+	pipe(ms->be->pipes[(*i-1) & 1]);
+}
 
 void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i)
 {
 	if (!curr->cmd->builtin || ms->be->nb_cmds > 1)
 		ms->be->child_pids[*i] = fork();
 	else
-		ms->be->child_pids[*i] = INT_MAX;
+		ms->be->child_pids[*i] = ft_grab_pid();
 	if (ms->be->child_pids[*i] < 0)
 	{
-		perror("ft_fork_execute");
-		ft_cleanup_exit(ms, EPIPE);
+		perror("fork failed");
+		ft_cleanup_exit(ms, EPIPE); // find nice way for error handling
 	}
-	if (ms->be->child_pids[*i] == 0 || ms->be->child_pids[*i] == INT_MAX)
+	if(ms->be->child_pids[*i] == 0 || (curr->cmd->builtin && ms->be->nb_cmds == 1))
+		ft_ex_prep(ms, curr, i);
+	if (ms->be->child_pids[*i] == 0)
 	{
-		if (ms->be->child_pids[*i] == INT_MAX)
-			ft_safe_std(ms);
-		ft_redir_handler(ms, curr, *i);
-		ft_create_argv(curr);
-		if(ms->be->child_pids[*i] != INT_MAX)
-			ft_close_all_fds(ms);
-		if (ms->be->child_pids[*i] == INT_MAX)
-			ms->be->last_ret = ft_builtin(ms, curr);
-		else if (ms->be->child_pids[*i] == 0)
-			ft_execute(ms, curr);
+		ft_close_all_fds(ms);
+		ft_execute(ms, curr);
 	}
-	if (*i > 0)
+	else if (curr->cmd->builtin && ms->be->nb_cmds == 1)
 	{
-		if (close(ms->be->pipes[(*i-1) & 1][0])
-		|| close(ms->be->pipes[(*i-1) & 1][1]))
-			perror("ms");
-		pipe(ms->be->pipes[(*i-1) & 1]);
+		ft_safe_std(ms);
+		ms->be->last_ret = ft_builtin(ms, curr);
 	}
+	if (*i > 0 && ms->be->child_pids[*i] != 0)
+		ft_pipe_reset(ms, i);
 }
 
 void	ft_is_builtin(t_cmd_list *curr, t_ms *ms)
