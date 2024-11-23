@@ -6,7 +6,7 @@
 /*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/23 09:47:05 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/11/23 18:14:05 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,21 @@ char	*ft_search_cmd(t_ms *ms, t_cmd_list *curr)
 	return (NULL);
 }
 
+void	ft_prnt_stderr(char *name, char *cmd, int err)
+{
+	int	storage;
+	
+	storage = dup(STDOUT_FILENO);
+	dup2(STDERR_FILENO, STDOUT_FILENO);
+	if (!name)
+		printf("%s: command not found\n", cmd);
+	else
+		printf("%s: %s: %s", name, cmd, strerror(err));
+	dup2(storage, STDOUT_FILENO);
+	close(storage);
+}
+
+
 void	ft_execute(t_ms *ms, t_cmd_list *curr)
 {
 	int		err;
@@ -64,11 +79,16 @@ void	ft_execute(t_ms *ms, t_cmd_list *curr)
 
 	cmdpath = ft_search_cmd(ms, curr);
 	if (cmdpath == NULL)
+	{
 		err = 127;
+		ft_prnt_stderr(NULL, curr->cmd->words->word, 2);
+	}
 	else
 	{
 		envp = ft_create_envp(ms);
-		err = execve(cmdpath, curr->cmd->argv, envp);
+		if (execve(cmdpath, curr->cmd->argv, envp) == -1)
+			err = 127;
+		ft_prnt_stderr("minishell: ", curr->cmd->words->word, errno);
 		ft_free_2d(envp);
 	}
 	ft_clear_ast(ms); // [ ] take care of this in case of not a child!!
