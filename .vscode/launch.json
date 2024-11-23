@@ -29,7 +29,7 @@
 				{
                     // https://sourceware.org/gdb/onlinedocs/gdb/Forks.html
                     "description": "Fork follows Child process",
-                    "text": "set follow-fork-mode parent",
+                    "text": "set follow-fork-mode child",
                     "ignoreFailures": true
                 },
                 {
