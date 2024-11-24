@@ -6,7 +6,7 @@
 /*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/22 09:12:01 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/11/24 01:09:04 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,6 +206,19 @@ void	ft_add_to_symtab(t_symtab_stack *symtab_lvl, char *key, char *value)
 		ft_resize_symtab(&symtab_lvl);
 }
 
+void	ft_set_shell(t_ms *ms)
+{
+	char	*pwd;
+	char	*filename;
+	char	*shell;
+
+	pwd = ft_lookup_symtab(ms->be->global_symtabs, "PWD");
+	filename = ft_lookup_symtab(ms->be->global_symtabs, "_");
+	shell = ft_strjoin(pwd, &filename[1]);
+	ft_update_symtab_value(ms->be->global_symtabs, "SHELL", shell);
+	free(shell);
+}
+
 /* function to initialize the environmental variables
 functionality:
 1. Create a new symbol table stack
@@ -235,6 +248,7 @@ void	ft_init_symtab(t_ms *ms)
 		ft_add_global_value(ms, env[i]);
 		i++;
 	}
+	ft_set_shell(ms);
 }
 
 // /* function to add a value to the symbol table
