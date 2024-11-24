@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 11:17:01 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/15 15:19:45 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/11/24 00:46:01 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,12 +99,12 @@ int	main(int argc, char **argv, char **envp)
 	sigemptyset(&sa_int.sa_mask); // Don't block additional signals
 	sigaction(SIGINT, &sa_int, NULL);
 
-	// Install the SIGCHLD handler
-	struct sigaction sa_chld;
-	sa_chld.sa_handler = handle_sigchld;
-	sa_chld.sa_flags = SA_RESTART;
-	sigemptyset(&sa_chld.sa_mask);
-	sigaction(SIGCHLD, &sa_chld, NULL);
+	// // Install the SIGCHLD handler
+	// struct sigaction sa_chld;
+	// sa_chld.sa_handler = handle_sigchld;
+	// sa_chld.sa_flags = SA_RESTART;
+	// sigemptyset(&sa_chld.sa_mask);
+	// sigaction(SIGCHLD, &sa_chld, NULL);
 	file_in = redirect_stdin(argc, argv);
 	if (file_in == -1)
 		return (1);
