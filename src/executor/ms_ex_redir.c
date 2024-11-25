@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_ex_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/18 15:37:31 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/25 12:17:17 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,18 +100,12 @@ void	ft_ex_prio(t_cmd_list *curr)
 		else if (rd->instruction == redir_here_doc
 			&& rd->rightmost == true)
 			curr->cmd->prio_in = 3;
-		// else if (rd->instruction == redir_inpipe
-		// 	&& (curr->cmd->prio_in != 3 && curr->cmd->prio_in != 2))
-		// 	curr->cmd->prio_in = 1;
 		if (rd->instruction == redir_outfile
 			&& rd->rightmost == true)
 			curr->cmd->prio_out = 2;
 		else if (rd->instruction == redir_append
 			&& rd->rightmost == true)
 			curr->cmd->prio_out = 3;
-		// else if (rd->instruction == redir_outpipe
-		// 	&& (curr->cmd->prio_out != 3 && curr->cmd->prio_out != 2))
-		// 	curr->cmd->prio_out = 1;
 		rd = rd->next;
 	}
 }
