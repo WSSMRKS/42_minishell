@@ -6,7 +6,7 @@
 /*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/23 17:48:13 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/11/25 17:08:57 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,8 @@ void			ft_add_local_symtab(t_ms *ms);
 int				ft_calc_symtab_size(int size);
 int				ft_is_prime(int n);
 void			ft_add_value(t_ms *ms, char *env);
+char			*ft_lookup_key(t_symtab_stack *symtab_lvl, char *key);
+
 
 /* ms_builtins*/
 

@@ -6,7 +6,7 @@
 /*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/25 12:02:58 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/11/25 17:12:31 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,11 +124,16 @@ void	ft_add_global_value(t_ms *ms, char *env)
 		value = ft_strdup(&env[i + 1]);
 	key = ft_substr(env, 0, i);
 	global = ms->be->global_symtabs;
-	if (ft_lookup_symtab(global, key) != NULL)
+	if (ft_lookup_key(global, key) != NULL)
 	{
-		ft_update_symtab_value(global, key, value);
-		free(value);
-		free(key);
+		if (ft_lookup_symtab(global, key) != NULL)
+		{
+			ft_update_symtab_value(global, key, value);
+			free(value);
+			free(key);
+		}
+		else
+			ft_update_symtab_value(global, key, value);
 	}
 	else
 		ft_add_to_symtab(global, key, value);
@@ -294,6 +299,28 @@ void	ft_add_local_symtab(t_ms *ms)
 	local->used = 0;
 	local->load_factor = 0;
 	local->level = ms->be->global_symtabs->level + 1;
+}
+
+char	*ft_lookup_key(t_symtab_stack *symtab_lvl, char *key)
+{
+	unsigned long	hash;
+	t_symtab		*tmp;
+
+	if (!symtab_lvl)
+		return (NULL);
+	if (key[0] == '$')
+		key = &key[1];
+	hash = ft_hash_function(symtab_lvl, key);
+	if (symtab_lvl->symtab[hash] == NULL)
+		return (NULL);
+	tmp = symtab_lvl->symtab[hash];
+	while (tmp)
+	{
+		if (!ft_strncmp(tmp->key, key, ft_strlen(key)))
+			return (tmp->key);
+		tmp = tmp->next;
+	}
+	return (NULL);
 }
 
 /* function to lookup a value in the symbol table
