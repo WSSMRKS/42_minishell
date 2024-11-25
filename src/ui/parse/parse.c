@@ -267,7 +267,7 @@ void	debug_print_simple_com(int fd, t_simple_com *cmd)
 	dprintf(fd, "├─ Builtin flag: %d\n", cmd->builtin);
 	dprintf(fd, "├─ Builtin number: %d\n", cmd->builtin_nr);
 	dprintf(fd, "├─ Priority in: %d\n", cmd->prio_in);
-	dprintf(fd, "├─ Priority out: %d\n", cmd->prio_out);
+	// dprintf(fd, "├─ Priority out: %d\n", cmd->prio_out);
 
 	// Print words list
 	dprintf(fd, "├─ Words:\n");

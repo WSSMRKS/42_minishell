@@ -6,7 +6,7 @@
 /*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:56:05 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/23 18:14:19 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/11/25 15:33:51 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,7 @@ typedef struct	s_simple_com {
 	t_list_redir	*redir;
 	char			**argv;
 	int				builtin_nr;
-	int				prio_in;		// 0 = stdin, 1 = pipe, 2 = infile, 3 = here_doc; (init to 0)
-	int				prio_out;		// // 0 = stdout, 1 = pipe, 2 = outfile, 3 = append; (init to 0)
+	int				prio_in;		// 0 = no_infiles, 1 = infiles_present; (init to 0)
 }	t_simple_com;
 
 typedef struct	s_cmd_list {
