@@ -6,7 +6,7 @@
 /*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/25 17:08:57 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/11/25 17:43:22 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void			ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i);
 void			ft_is_builtin(t_cmd_list *curr, t_ms *ms);
 void			ft_executor(t_ms *ms);
 void			ft_back_end(t_ms *ms);
+void			ft_prnt_stderr(char *name, char *cmd, int err);
 
 /* ms_error */
 
@@ -144,6 +145,8 @@ int				ft_calc_symtab_size(int size);
 int				ft_is_prime(int n);
 void			ft_add_value(t_ms *ms, char *env);
 char			*ft_lookup_key(t_symtab_stack *symtab_lvl, char *key);
+char			*ft_validate_var(char *key);
+
 
 
 /* ms_builtins*/

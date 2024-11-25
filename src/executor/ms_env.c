@@ -6,7 +6,7 @@
 /*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/25 17:12:31 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/11/25 17:49:47 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,34 @@ void	ft_resize_symtab(t_symtab_stack **symtab_lvl)
 	free(new);
 }
 
+char *ft_validate_var(char *key)
+{
+	int	i;
+	
+	i = 0;
+	if (key[i] == '\0')
+	{
+		ft_printf_fd(2, "export: `%c\': not a valid identifier\n", key[i]);
+		return (&key[i]);
+	}
+	while (key && key[i])
+	{
+		if ((key[i] >= '0' && key[i] <= '9' && i != 0)
+			|| (key[i] >= 'a' && key[i] <= 'z')
+			|| (key[i] >= 'A' && key[i] <= 'Z') || key[i] == '_')
+			i++;
+		else
+		{
+			if ((key[i] >= '0' && key[i] <= '9'))
+				ft_printf_fd(2, "export: `%s\': not a valid identifier\n", key);
+			else
+				ft_printf_fd(2, "export: `%c\': not a valid identifier\n", key[i]);
+			return (&key[i]);
+		}
+	}
+	return (NULL);
+}
+
 /* function to add a new value to the environmental variables
 functionality:
 1. Find the position of the equal sign in the string
@@ -123,6 +151,11 @@ void	ft_add_global_value(t_ms *ms, char *env)
 	else
 		value = ft_strdup(&env[i + 1]);
 	key = ft_substr(env, 0, i);
+	if (ft_validate_var(key) != NULL)
+	{
+		free(value);
+		return ;
+	}
 	global = ms->be->global_symtabs;
 	if (ft_lookup_key(global, key) != NULL)
 	{
