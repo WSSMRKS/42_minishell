@@ -1,7 +1,7 @@
 #include "../headers/minishell.h"
 #include <stdio.h>
 
-void	symtab_add_value(t_symtab_stack *st, char *env)
+void	symtab_add_value(t_ms *ms, t_symtab_stack *st, char *env)
 {
 	char	*key;
 	char	*value;
@@ -19,7 +19,7 @@ void	symtab_add_value(t_symtab_stack *st, char *env)
 		free(key);
 	}
 	else
-		ft_add_to_symtab(st, key, value);
+		ft_add_to_symtab(ms, st, key, value);
 }
 
 t_symtab_stack	init_symtab(char **envp)

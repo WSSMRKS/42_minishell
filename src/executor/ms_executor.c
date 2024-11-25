@@ -6,7 +6,7 @@
 /*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/25 15:46:34 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/11/25 21:31:43 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,8 @@ int	ft_builtin(t_ms *ms, t_cmd_list *curr)
 		ret = ft_env(ms, curr);
 	else if (curr->cmd->builtin_nr == 8)
 		ret = ft_status(ms, curr);
+	else if (curr->cmd->builtin_nr == 9)
+		ret = ft_resize(ms, curr);
 	
 	// else if (curr->cmd->builtin_nr == 7)
 	// 	ret = ft_exit(ms, curr);

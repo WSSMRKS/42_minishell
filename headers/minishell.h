@@ -6,7 +6,7 @@
 /*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/25 17:43:22 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/11/25 18:57:37 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,8 +138,8 @@ char			**ft_update_envp_runtime(char **envp, char *key, char *value);
 char			**ft_create_envp(t_ms *ms);
 void			ft_print_symtab(t_ms *ms, int lvl);
 unsigned long	ft_hash_function(t_symtab_stack *current_symtab, char *key);
-void			ft_resize_symtab(t_symtab_stack **symtab_lvl);
-void			ft_add_to_symtab(t_symtab_stack *symtab_lvl, char *key, char *value);
+void			ft_resize_symtab(t_ms *ms, t_symtab_stack **symtab_lvl);
+void			ft_add_to_symtab(t_ms *ms, t_symtab_stack *symtab_lvl, char *key, char *value);
 void			ft_add_local_symtab(t_ms *ms);
 int				ft_calc_symtab_size(int size);
 int				ft_is_prime(int n);
@@ -159,6 +159,7 @@ int				ft_unset(t_ms *ms, t_cmd_list *curr);
 int				ft_env(t_ms *ms, t_cmd_list *curr);
 int				ft_exit(t_ms *ms, t_cmd_list *curr);
 int				ft_status(t_ms *ms, t_cmd_list *curr);
+int				ft_resize(t_ms *ms, t_cmd_list *curr);
 
 
 /* ms_parse */
