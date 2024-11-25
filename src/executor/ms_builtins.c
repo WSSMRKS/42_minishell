@@ -6,7 +6,7 @@
 /*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 11:16:12 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/22 11:25:03 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/11/25 18:55:32 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,5 +216,12 @@ int		ft_status(t_ms *ms, t_cmd_list *curr)
 	print = ft_itoa(ms->be->last_ret);
 	printf("%s\n", ft_itoa(ms->be->last_ret));
 	free(print);
+	return (0);
+}
+
+int		ft_resize(t_ms *ms, t_cmd_list *curr)
+{
+	(void) curr;
+	ft_resize_symtab(ms, &ms->be->global_symtabs);
 	return (0);
 }

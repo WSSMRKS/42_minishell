@@ -6,7 +6,7 @@
 /*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 19:05:44 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/21 18:58:03 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/11/25 21:35:21 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	ft_init_be(t_ms *ms, int argc, char **argv, char **envp)
 	ms->be->argv = argv;
 	ms->be->envp = envp;
 	ms->be->path = ft_grab_envp(envp);
-	ms->be->builtins = ft_calloc(sizeof(char *), 8);
+	ms->be->builtins = ft_calloc(sizeof(char *), 10);
 	ms->be->builtins[0] = ft_strdup("echo");
 	ms->be->builtins[1] = ft_strdup("cd");
 	ms->be->builtins[2] = ft_strdup("pwd");
@@ -89,6 +89,8 @@ void	ft_init_be(t_ms *ms, int argc, char **argv, char **envp)
 	ms->be->builtins[5] = ft_strdup("env");
 	ms->be->builtins[6] = ft_strdup("exit");
 	ms->be->builtins[7] = ft_strdup("status");
+	ms->be->builtins[8] = ft_strdup("resize");
+	ms->be->builtins[9] = NULL;
 	ms->be->cwd = ft_calloc(sizeof(char), PATH_MAX);
 	ms->be->global_symtabs = NULL;
 	ms->be->last_ret = 0;

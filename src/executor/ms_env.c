@@ -6,7 +6,7 @@
 /*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/25 12:02:58 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/11/25 21:29:52 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ functionality:
 4. Free the old symbol table
 5. Set the new symbol table to the old symbol table
 */
-void	ft_resize_symtab(t_symtab_stack **symtab_lvl)
+void	ft_resize_symtab(t_ms *ms, t_symtab_stack **symtab_lvl)
 {
 	int				i;
 	t_symtab_stack	*new;
@@ -76,23 +76,51 @@ void	ft_resize_symtab(t_symtab_stack **symtab_lvl)
 
 	i = 0;
 	new = ft_calloc(sizeof(t_symtab_stack), 1);
-	ft_calc_symtab_size((*symtab_lvl)->size);
-	new->size = (*symtab_lvl)->size;
-	new->load_factor = 0;
-	new->symtab = ft_calloc(sizeof(char *), new->size);
+	new->size = ft_calc_symtab_size((*symtab_lvl)->size);
+	new->symtab = ft_calloc(sizeof(char *), (new->size + 1));
+	new->used = 0;
+	new->level = 1;
 	while (i < (*symtab_lvl)->size)
 	{
 		tmp = (*symtab_lvl)->symtab[i];
 		while (tmp)
 		{
-			ft_add_to_symtab(new, tmp->key, tmp->value);
+			ft_add_to_symtab(ms, new, tmp->key, tmp->value);
 			tmp = tmp->next;
 		}
 		i++;
 	}
+	new->load_factor = new->used / new->size;
 	free((*symtab_lvl)->symtab);
-	(*symtab_lvl)->symtab = new->symtab;
-	free(new);
+	ms->be->global_symtabs = new;
+}
+
+char *ft_validate_var(char *key)
+{
+	int	i;
+	
+	i = 0;
+	if (key[i] == '\0')
+	{
+		ft_printf_fd(2, "export: `%c\': not a valid identifier\n", key[i]);
+		return (&key[i]);
+	}
+	while (key && key[i])
+	{
+		if ((key[i] >= '0' && key[i] <= '9' && i != 0)
+			|| (key[i] >= 'a' && key[i] <= 'z')
+			|| (key[i] >= 'A' && key[i] <= 'Z') || key[i] == '_')
+			i++;
+		else
+		{
+			if ((key[i] >= '0' && key[i] <= '9'))
+				ft_printf_fd(2, "export: `%s\': not a valid identifier\n", key);
+			else
+				ft_printf_fd(2, "export: `%c\': not a valid identifier\n", key[i]);
+			return (&key[i]);
+		}
+	}
+	return (NULL);
 }
 
 /* function to add a new value to the environmental variables
@@ -123,15 +151,25 @@ void	ft_add_global_value(t_ms *ms, char *env)
 	else
 		value = ft_strdup(&env[i + 1]);
 	key = ft_substr(env, 0, i);
-	global = ms->be->global_symtabs;
-	if (ft_lookup_symtab(global, key) != NULL)
+	if (ft_validate_var(key) != NULL)
 	{
-		ft_update_symtab_value(global, key, value);
 		free(value);
-		free(key);
+		return ;
+	}
+	global = ms->be->global_symtabs;
+	if (ft_lookup_key(global, key) != NULL)
+	{
+		if (ft_lookup_symtab(global, key) != NULL)
+		{
+			ft_update_symtab_value(global, key, value);
+			free(value);
+			free(key);
+		}
+		else
+			ft_update_symtab_value(global, key, value);
 	}
 	else
-		ft_add_to_symtab(global, key, value);
+		ft_add_to_symtab(ms, global, key, value);
 }
 
 /* function to add a new value to the local variables
@@ -167,7 +205,7 @@ void	ft_add_local_value(t_ms *ms, char *env)
 		free(key);
 	}
 	else
-		ft_add_to_symtab(local, key, value);
+		ft_add_to_symtab(ms, local, key, value);
 }
 
 /* function to add a new value to the symbol table
@@ -177,7 +215,7 @@ functionality:
 3. If the position in the symbol table is empty, add the value
 4. If the position in the symbol table is not empty, traverse the linked list and add the value
 */
-void	ft_add_to_symtab(t_symtab_stack *symtab_lvl, char *key, char *value)
+void	ft_add_to_symtab(t_ms *ms, t_symtab_stack *symtab_lvl, char *key, char *value)
 {
 	unsigned long	hash;
 	t_symtab		*new;
@@ -203,7 +241,7 @@ void	ft_add_to_symtab(t_symtab_stack *symtab_lvl, char *key, char *value)
 	symtab_lvl->used++;
 	symtab_lvl->load_factor = (float)symtab_lvl->used / (float)symtab_lvl->size;
 	if (symtab_lvl->load_factor > 0.7)
-		ft_resize_symtab(&symtab_lvl);
+		ft_resize_symtab(ms, &symtab_lvl);
 }
 
 void	ft_set_shell(t_ms *ms)
@@ -276,7 +314,7 @@ void	ft_add_value(t_ms *ms, char *env)
 		i++;
 	key = ft_substr(env, 0, i);
 	value = ft_strdup(&env[i + 1]);
-	ft_add_to_symtab(ms->be->global_symtabs, key, value);
+	ft_add_to_symtab(ms, ms->be->global_symtabs, key, value);
 }
 
 /* function to add the local symtab
@@ -294,6 +332,28 @@ void	ft_add_local_symtab(t_ms *ms)
 	local->used = 0;
 	local->load_factor = 0;
 	local->level = ms->be->global_symtabs->level + 1;
+}
+
+char	*ft_lookup_key(t_symtab_stack *symtab_lvl, char *key)
+{
+	unsigned long	hash;
+	t_symtab		*tmp;
+
+	if (!symtab_lvl)
+		return (NULL);
+	if (key[0] == '$')
+		key = &key[1];
+	hash = ft_hash_function(symtab_lvl, key);
+	if (symtab_lvl->symtab[hash] == NULL)
+		return (NULL);
+	tmp = symtab_lvl->symtab[hash];
+	while (tmp)
+	{
+		if (!ft_strncmp(tmp->key, key, ft_strlen(key)))
+			return (tmp->key);
+		tmp = tmp->next;
+	}
+	return (NULL);
 }
 
 /* function to lookup a value in the symbol table
@@ -382,7 +442,7 @@ int	ft_make_global(t_ms *ms, char *key)
 		return (-1);
 	value = ft_strdup(value);
 	key = ft_strdup(key);
-	ft_add_to_symtab(global, key, value);
+	ft_add_to_symtab(ms, global, key, value);
 	ft_remove_from_symtab(local, key);
 	return (0);
 }
@@ -488,8 +548,11 @@ int	ft_update_symtab_value(t_symtab_stack *symtab_lvl, char *key, char *value)
 	{
 		if (!ft_strncmp(tmp->key, key, ft_strlen(key)))
 		{
-			free(tmp->value);
-			tmp->value = ft_strdup(value);
+			if (value)
+			{
+				free(tmp->value);
+				tmp->value = ft_strdup(value);
+			}
 			return (0);
 		}
 		tmp = tmp->next;
