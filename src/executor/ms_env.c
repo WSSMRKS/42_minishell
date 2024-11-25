@@ -6,7 +6,7 @@
 /*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/25 17:49:47 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/11/25 18:00:59 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -548,8 +548,11 @@ int	ft_update_symtab_value(t_symtab_stack *symtab_lvl, char *key, char *value)
 	{
 		if (!ft_strncmp(tmp->key, key, ft_strlen(key)))
 		{
-			free(tmp->value);
-			tmp->value = ft_strdup(value);
+			if (value)
+			{
+				free(tmp->value);
+				tmp->value = ft_strdup(value);
+			}
 			return (0);
 		}
 		tmp = tmp->next;
