@@ -6,7 +6,7 @@
 /*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/23 23:37:18 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/11/25 15:46:34 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,10 @@ void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i)
 	if (!curr->cmd->builtin || ms->be->nb_cmds > 1)
 		ms->be->child_pids[*i] = fork();
 	else
+	{
 		ms->be->child_pids[*i] = ft_grab_pid();
+		ft_safe_std(ms);
+	}
 	if (ms->be->child_pids[*i] < 0)
 	{
 		perror("fork failed");
@@ -219,7 +222,6 @@ void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i)
 	}
 	else if (curr->cmd->builtin && ms->be->nb_cmds == 1)
 	{
-		ft_safe_std(ms);
 		ms->be->last_ret = ft_builtin(ms, curr);
 	}
 	if (*i > 0 && ms->be->child_pids[*i] != 0)
@@ -254,10 +256,6 @@ void	ft_executor(t_ms *ms)
 	while (curr)
 	{
 		ft_is_builtin(curr, ms);
-		if (curr->cmd->redir)
-		{
-			ft_ex_prio(curr);
-		}
 		ft_fork_execute(ms, curr, &i);
 		curr = curr->next;
 		i++;

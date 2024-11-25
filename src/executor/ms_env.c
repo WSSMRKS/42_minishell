@@ -6,7 +6,7 @@
 /*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/24 01:09:04 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/11/25 12:02:58 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,14 @@ void	ft_set_shell(t_ms *ms)
 
 	pwd = ft_lookup_symtab(ms->be->global_symtabs, "PWD");
 	filename = ft_lookup_symtab(ms->be->global_symtabs, "_");
+	if (!pwd || !filename)
+	{
+		ft_printf_fd(2, "minishell: unable to set $SHELL variable\n");
+		return ;
+	}
 	shell = ft_strjoin(pwd, &filename[1]);
+	if (!shell)
+		ft_cleanup_exit(ms, 1);
 	ft_update_symtab_value(ms->be->global_symtabs, "SHELL", shell);
 	free(shell);
 }

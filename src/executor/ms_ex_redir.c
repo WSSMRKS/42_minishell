@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_ex_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/18 15:37:31 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/25 15:48:04 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ void	ft_outpipe(t_ms *ms, int i)
 void	ft_redir_handler(t_ms *ms, t_cmd_list *curr, int i)
 {
 	t_list_redir	*rd;
-
+	
+	curr->cmd->prio_in = 1;	
 	if (i > 0)
 		ft_inpipe(ms, i);
 	if (curr->next != NULL)
@@ -73,45 +74,19 @@ void	ft_redir_handler(t_ms *ms, t_cmd_list *curr, int i)
 	rd = curr->cmd->redir;
 	while (rd)
 	{
-		if (curr->cmd->prio_in == 3 && rd->instruction == redir_here_doc)
+		if (rd->instruction == redir_here_doc && curr->cmd->prio_in == 1)
 			ft_infile(ms, rd);
-		else if (curr->cmd->prio_in == 2
-			&& rd->instruction == redir_infile)
+		else if (rd->instruction == redir_infile && curr->cmd->prio_in == 1)
 			ft_infile(ms, rd);
-		if (curr->cmd->prio_out == 3 && rd->instruction == redir_append)
+		if (rd->instruction == redir_append && curr->cmd->prio_in == 0)
 			ft_outfile(ms, rd, O_APPEND);
-		else if (curr->cmd->prio_out == 2
-			&& rd->instruction == redir_outfile)
+		else if (rd->instruction == redir_outfile && curr->cmd->prio_in == 0)
 			ft_outfile(ms, rd, O_WRONLY);
 		rd = rd->next;
-	}
-}
-
-void	ft_ex_prio(t_cmd_list *curr)
-{
-	t_list_redir	*rd;
-
-	rd = curr->cmd->redir;
-	while (rd)
-	{
-		if (rd->instruction == redir_infile
-			&& rd->rightmost == true)
-			curr->cmd->prio_in = 2;
-		else if (rd->instruction == redir_here_doc
-			&& rd->rightmost == true)
-			curr->cmd->prio_in = 3;
-		// else if (rd->instruction == redir_inpipe
-		// 	&& (curr->cmd->prio_in != 3 && curr->cmd->prio_in != 2))
-		// 	curr->cmd->prio_in = 1;
-		if (rd->instruction == redir_outfile
-			&& rd->rightmost == true)
-			curr->cmd->prio_out = 2;
-		else if (rd->instruction == redir_append
-			&& rd->rightmost == true)
-			curr->cmd->prio_out = 3;
-		// else if (rd->instruction == redir_outpipe
-		// 	&& (curr->cmd->prio_out != 3 && curr->cmd->prio_out != 2))
-		// 	curr->cmd->prio_out = 1;
-		rd = rd->next;
+		if (!rd && curr->cmd->prio_in == 1)
+		{
+			curr->cmd->prio_in = 0;
+			rd = curr->cmd->redir;
+		}
 	}
 }
