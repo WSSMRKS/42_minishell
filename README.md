@@ -46,7 +46,9 @@
 
 This project is developed collaboratively by:
 - **@kjzl** – Main collaborator and contributor.
-- **@wssmrks** – Collaborator and contributor.
+- **@wssmrks** – Main collaborator and contributor.
+- **@dafneko** – Contributor in the early phase of the project.
+
 
 ## Future Enhancements
 
