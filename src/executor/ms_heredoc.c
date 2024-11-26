@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/15 16:28:45 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/11/26 11:50:21 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,12 +85,8 @@ void	ft_hd_input(t_list_redir *curr, t_ms *ms)
 	while (1)
 	{
 		line = readline("> ");
-		if (!curr->target)
-		{
-			curr->target = ft_calloc(sizeof(t_redir_aim), 1);
-			curr->target->filename = NULL;
+		if (!curr->target->filename)
 			curr->target->filename = ft_tmp_name(ms, &fd);
-		}
 		if (!line)
 		{
 			printf("minishell: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", line_nb, curr->hd_del);
