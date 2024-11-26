@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_executor.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
+/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/25 21:31:43 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/11/26 10:33:33 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,18 +56,29 @@ char	*ft_search_cmd(t_ms *ms, t_cmd_list *curr)
 	return (NULL);
 }
 
+// void	ft_prnt_stderr(char *name, char *cmd, int err)
+// {
+// 	int	storage;
+	
+// 	storage = dup(STDOUT_FILENO);
+// 	dup2(STDERR_FILENO, STDOUT_FILENO);
+// 	if (name == NULL)
+// 		printf("%s: command not found\n", cmd);
+// 	else
+// 		printf("%s: %s: %s\n", name, cmd, strerror(err));
+// 	dup2(storage, STDOUT_FILENO);
+// 	close(storage);
+// }
+
 void	ft_prnt_stderr(char *name, char *cmd, int err)
 {
-	int	storage;
-	
-	storage = dup(STDOUT_FILENO);
 	dup2(STDERR_FILENO, STDOUT_FILENO);
 	if (name == NULL)
 		printf("%s: command not found\n", cmd);
 	else
 		printf("%s: %s: %s\n", name, cmd, strerror(err));
-	dup2(storage, STDOUT_FILENO);
-	close(storage);
+	close(STDOUT_FILENO);
+	open("/dev/tty", O_WRONLY);
 }
 
 
@@ -113,13 +124,13 @@ int	ft_builtin(t_ms *ms, t_cmd_list *curr)
 		ret = ft_unset(ms, curr);
 	else if (curr->cmd->builtin_nr == 6)
 		ret = ft_env(ms, curr);
+	else if (curr->cmd->builtin_nr == 7)
+		ret = ft_exit(ms, curr);
 	else if (curr->cmd->builtin_nr == 8)
 		ret = ft_status(ms, curr);
 	else if (curr->cmd->builtin_nr == 9)
 		ret = ft_resize(ms, curr);
 	
-	// else if (curr->cmd->builtin_nr == 7)
-	// 	ret = ft_exit(ms, curr);
 	dup2(ms->be->saved_std[0], STDIN_FILENO);
 	close(ms->be->saved_std[0]);
 	dup2(ms->be->saved_std[1], STDOUT_FILENO);
@@ -278,3 +289,4 @@ void	ft_back_end(t_ms *ms)
 	}
 	ft_clear_be(ms);
 }
+
