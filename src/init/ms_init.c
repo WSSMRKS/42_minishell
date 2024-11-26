@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_init.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
+/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 19:05:44 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/25 21:35:21 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/11/26 15:16:04 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,5 +94,6 @@ void	ft_init_be(t_ms *ms, int argc, char **argv, char **envp)
 	ms->be->cwd = ft_calloc(sizeof(char), PATH_MAX);
 	ms->be->global_symtabs = NULL;
 	ms->be->last_ret = 0;
+	ms->be->redir_err = 0;
 	ft_init_symtab(ms);
 }
