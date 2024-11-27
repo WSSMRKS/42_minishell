@@ -6,13 +6,13 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/27 14:02:28 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/27 15:27:59 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
 
-void	ft_extr_key_val(char *env, char *key, char *val)
+void	ft_extr_key_val(char *env, char **key, char **val)
 {
 	int			i;
 
@@ -20,19 +20,19 @@ void	ft_extr_key_val(char *env, char *key, char *val)
 	while (env[i] && env[i] != '=')
 		i++;
 	if (env[i] != '=')
-		val = NULL;
+		*val = NULL;
 	else if (env[i] == '=' && env[i + 1] == '\0')
 	{
-		val = ft_calloc(sizeof(char), 1);
-		ft_mprotect((void *)val);
+		*val = ft_calloc(sizeof(char), 1);
+		ft_mprotect((void *)*val);
 	}
 	else
 	{
-		val = ft_strdup(&env[i + 1]);
-		ft_mprotect((void *)val);
+		*val = ft_strdup(&env[i + 1]);
+		ft_mprotect((void *)*val);
 	}
-	key = ft_substr(env, 0, i);
-	ft_mprotect((void *)key);
+	*key = ft_substr(env, 0, i);
+	ft_mprotect((void *)*key);
 }
 
 /* function to add a new val to the environmental variables
@@ -53,7 +53,7 @@ void	ft_add_global_val(t_ms *ms, char *env)
 
 	key = NULL;
 	val = NULL;
-	ft_extr_key_val(env, key, val);
+	ft_extr_key_val(env, &key, &val);
 	if (ft_validate_var(key) != NULL)
 	{
 		free(key);
@@ -65,7 +65,9 @@ void	ft_add_global_val(t_ms *ms, char *env)
 	else
 		ft_add_to_stab(ms, ms->be->global_stabs, key, val);
 	free(val);
+	val = NULL;
 	free(key);
+	key = NULL;
 }
 
 /* function to add a new val to the symbol table
@@ -148,7 +150,7 @@ void	ft_init_stab(t_ms *ms)
 	ms->be->global_stabs->load_factor = 0;
 	ms->be->global_stabs->level = 1;
 	ms->be->global_stabs->stab = ft_calloc(sizeof(char *),
-			ms->be->global_stabs->size);
+	ms->be->global_stabs->size);
 	i = 0;
 	while (env[i])
 	{

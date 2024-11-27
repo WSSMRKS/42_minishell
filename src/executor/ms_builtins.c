@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 11:16:12 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/27 13:05:43 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/27 14:52:20 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int		ft_unset(t_ms *ms, t_cmd_list *curr)
 	words = curr->cmd->words;
 	while (words)
 	{
-		ft_remove_from_stab(ms->be->global_stabs, words->word);
+		ft_rem_fr_stab(ms->be->global_stabs, words->word);
 		words = words->next;
 	}
 	return (0);

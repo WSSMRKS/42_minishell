@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/27 14:03:48 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/27 15:02:44 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,42 +100,11 @@ char	**ft_create_envp(t_ms *ms)
 	return (envp);
 }
 
-
-/* function to alter one particular val when executing a command
-functionality:
-1. take actual **envp
-2. find the stated val
-3. If val is there update
-4. If val is not there add
-*/
-char	**ft_update_envp_runtime(char **envp, char *key, char *val)
+void	ft_free_3(void *tofree1, void *tofree2, void *tofree3)
 {
-	int		i;
-	char	*tmp;
-	char	**tmp2;
-
-	i = -1;
-	if (!envp)
-		return (NULL);
-	tmp = ft_multistrjoin(3, key, "=", val);
-	if (!tmp)
-		return (NULL);
-	while (envp[++i])
-	{
-		if (!ft_strncmp(envp[i], tmp, ft_strlen(key) + 1))
-		{
-			free(envp[i]);
-			envp[i] = tmp;
-			return (envp);
-		}
-	}
-	tmp2 = ft_calloc(sizeof(char *), i + 2);
-	i = -1;
-	while (envp[++i])
-		tmp2[i] = envp[i];
-	tmp2[i] = tmp;
-	free(envp);
-	return (tmp2);
+	free(tofree1);
+	free(tofree2);
+	free(tofree3);
 }
 
 /* function that removes a variable from the stab
@@ -146,14 +115,12 @@ functionality:
 traverse the linked list and remove the val
 4. Return 0
 */
-int	ft_remove_from_stab(t_stab_st *stab_lvl, char *key)
+int	ft_rem_fr_stab(t_stab_st *stab_lvl, char *key)
 {
 	unsigned long	hash;
 	t_stab			*tmp;
 	t_stab			*prev;
-	int				i;
 
-	i = 0;
 	hash = ft_hash_function(stab_lvl, key);
 	if (stab_lvl->stab[hash] == NULL)
 		return (1);
@@ -167,96 +134,12 @@ int	ft_remove_from_stab(t_stab_st *stab_lvl, char *key)
 				prev->next = tmp->next;
 			else
 				stab_lvl->stab[hash] = tmp->next;
-			free(tmp->key);
-			tmp->key = NULL;
-			free(tmp->val);
-			tmp->val = NULL;
-			free(tmp);
-			tmp = NULL;
+			ft_free_3((void *)tmp->key,(void *) tmp->val,(void *) tmp);
 			stab_lvl->used--;
 			return (0);
 		}
 		prev = tmp;
-		i++;
 		tmp = tmp->next;
 	}
 	return (1);
-}
-
-/* function that updates a val in the stab
-functionality:
-1. Calculate the hash val of the key
-2. If the position in the symbol table is empty, return 1
-3. If the position in the symbol table is not empty,
-traverse the linked list and update the val
-4. Return 0
-*/
-int	ft_upd_stab_val(t_stab_st *stab_lvl, char *key, char *val)
-{
-	unsigned long	hash;
-	t_stab			*tmp;
-
-	hash = ft_hash_function(stab_lvl, key);
-	if (stab_lvl->stab[hash] == NULL)
-		return (1);
-	tmp = stab_lvl->stab[hash];
-	while (tmp)
-	{
-		if (!ft_strncmp(tmp->key, key, ft_strlen(key)))
-		{
-			if (val)
-			{
-				free(tmp->val);
-				tmp->val = ft_strdup(val);
-			}
-			return (0);
-		}
-		tmp = tmp->next;
-	}
-	return (1);
-}
-
-/* function to free the whole stab_stack
-functionality:
-1. Traverse the symbol table stack and free the symbol table
-2. Free the symbol table stack
-*/
-void	ft_free_stab_stack(t_stab_st *stab_stack)
-{
-	t_stab_st		*tmp;
-	t_stab			*tmp2;
-	t_stab			*tmp3;
-	int				i;
-
-	while (stab_stack)
-	{
-		i = 0;
-		while (i < stab_stack->size)
-		{
-			tmp2 = stab_stack->stab[i];
-			while (tmp2)
-			{
-				tmp3 = tmp2;
-				if (tmp2 && tmp2->key != NULL)
-				{
-					free(tmp2->key);
-					tmp2->key = NULL;
-				}
-				if (tmp2 && tmp2->val != NULL)
-				{
-					free(tmp2->val);
-					tmp2->val = NULL;
-				}
-				tmp2 = tmp2->next;
-				free(tmp3);
-				tmp3 = NULL;
-			}
-			i++;
-		}
-		free(stab_stack->stab);
-		tmp = stab_stack;
-		stab_stack = stab_stack->next;
-		free(tmp);
-		tmp = NULL;
-	}
 }
