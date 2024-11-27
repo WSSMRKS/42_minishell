@@ -47,8 +47,8 @@ echo "Path: $PATH"
 echo "Special chars in quotes: $|><"
 
 # Test mixed quotes
-echo "Value of '$HOME' is $HOME"
-echo 'Value of "$HOME" is '"$HOME"
+echo "val of '$HOME' is $HOME"
+echo 'val of "$HOME" is '"$HOME"
 
 # Test environment variables
 echo $USER
@@ -137,7 +137,7 @@ cat file\ with\ spaces.txt
 # cat < input.txt > output.txt 2> error.log
 
 # Test quoted variables with spaces
-export VAR="value with spaces"
+export VAR="val with spaces"
 echo "$VAR"
 echo '$VAR'
 

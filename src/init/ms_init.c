@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 19:05:44 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/27 12:17:51 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/27 13:02:56 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,8 @@ void	ft_init_be(t_ms *ms, int argc, char **argv, char **envp)
 	ms->be->builtins[8] = ft_strdup("resize");
 	ms->be->builtins[9] = NULL;
 	ms->be->cwd = ft_calloc(sizeof(char), PATH_MAX);
-	ms->be->global_symtabs = NULL;
+	ms->be->global_stabs = NULL;
 	ms->be->last_ret = 0;
 	ms->be->redir_err = 0;
-	ft_init_symtab(ms);
+	ft_init_stab(ms);
 }

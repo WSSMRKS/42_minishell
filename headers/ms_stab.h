@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_symtab.h                                        :+:      :+:    :+:   */
+/*   ms_stab.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,26 +10,28 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-/* ms_symtab.h: Header file responsible for all the structures necessary to work with the symbol table. */
+/* ms_stab.h: Header file responsible for all 
+the structures necessary to work with the symbol table. */
 
-
-#ifndef MS_SYMTAB_H
-# define MS_SYMTAB_H
+#ifndef MS_STAB_H
+# define MS_STAB_H
 # include "minishell.h"
 
-typedef struct s_symtab {
+typedef struct s_stab
+{
 	char				*key;
-	char				*value;
-	struct s_symtab		*next;
-}				t_symtab;
+	char				*val;
+	struct s_stab		*next;
+}				t_stab;
 
-typedef struct s_symtab_stack {
+typedef struct s_stab_stack
+{
 	int						level;
-	t_symtab				**symtab;
+	t_stab					**stab;
 	int						size;
 	int						used;
 	float					load_factor;
-	struct s_symtab_stack	*next;
-}				t_symtab_stack;
+	struct s_stab_stack		*next;
+}				t_stab_st;
 
 #endif

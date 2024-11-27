@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/15 16:22:18 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/11/27 13:05:43 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,17 +68,17 @@ void	ft_deb_commands(t_ms *ms)
 	ft_printf("21 - sjlfkdsjfs | cat | ls\n"); // [ ]
 	ft_printf("22 - cat | sjlfkdsjfs | ls\n"); // [ ]
 	ft_printf("23 - nc -l 80\n"); // [ ]
-	ft_printf("24 - print current symtabs\n"); // [ ]
-	ft_printf("25 - case to add a new variable to the local symtab\n"); // [ ]
+	ft_printf("24 - print current stabs\n"); // [ ]
+	ft_printf("25 - case to add a new variable to the local stab\n"); // [ ]
 	ft_printf("26 - case to make local variable global\n"); // [ ]
 	ft_printf("27 - add a new global variable\n");
 	ft_printf("28 - add 20 new global variables\n");
 	ft_printf("29 - remove a global variable\n");
 	ft_printf("30 - change a global variable\n");
 	ft_printf("31 - change a local variable\n");
-	ft_printf("32 - case to update a value at runtime\n");
-	ft_printf("33 - case to recall a value from symtab\n");
-	ft_printf("34 - case to recall a nonexistent value from symtab\n");
+	ft_printf("32 - case to update a val at runtime\n");
+	ft_printf("33 - case to recall a val from stab\n");
+	ft_printf("34 - case to recall a nonexistent val from stab\n");
 	ft_printf("35 - Test with echo klsjhdsdf klsjhdsdf klsjhdsdf > home_directory.txt\n");
 	ft_printf("36 - Test with echo klsjhdsdf klsjhdsdf klsjhdsdf\n");
 	ft_printf("37 - Test with pwd klsjhdsdf klsjhdsdf klsjhdsdf\n");
@@ -814,76 +814,76 @@ ms->cmds->next->next->cmd->builtin = 0;
 	}
 	else if(case_nb == 24)
 	{
-		ft_printf("24 - print current symtabs\n"); // [ ]
-		ft_printf("Global_symtab\n"); // [ ]
-		ft_print_symtab(ms, 1);
-		if (ms->be->global_symtabs->next)
+		ft_printf("24 - print current stabs\n"); // [ ]
+		ft_printf("Global_stab\n"); // [ ]
+		ft_print_stab(ms, 1);
+		if (ms->be->global_stabs->next)
 		{
-			ft_printf("local_symtab\n"); // [ ]
-			ft_print_symtab(ms, 2);
+			ft_printf("local_stab\n"); // [ ]
+			ft_print_stab(ms, 2);
 		}
 	}
 	else if(case_nb == 25)
 	{
-		// case to add a new variable to the local symtab
-		ft_printf("25 - add new variable to local symtab\n");
-		if (ft_lookup_symtab(ms->be->global_symtabs->next, "NEW_VAR"))
+		// case to add a new variable to the local stab
+		ft_printf("25 - add new variable to local stab\n");
+		if (ft_lookup_stab(ms->be->global_stabs->next, "NEW_VAR"))
 		{
-			ft_printf("variable NEW_VAR already exists in local symtab\n");
-			if (ft_update_symtab_value(ms->be->global_symtabs->next, "NEW_VAR", "23061989"))
-				ft_printf("variable NEW_VAR added to local symtab\n");
+			ft_printf("variable NEW_VAR already exists in local stab\n");
+			if (ft_upd_stab_val(ms->be->global_stabs->next, "NEW_VAR", "23061989"))
+				ft_printf("variable NEW_VAR added to local stab\n");
 			else
-				ft_printf("variable NEW_VAR not added to local symtab\n");
+				ft_printf("variable NEW_VAR not added to local stab\n");
 		}
 		else
 		{
-			ft_printf("variable NEW_VAR does not exist in local symtab\n");
-			ft_add_local_value(ms, "NEW_VAR=23061989");
+			ft_printf("variable NEW_VAR does not exist in local stab\n");
+			ft_add_local_val(ms, "NEW_VAR=23061989");
 		}
-		ft_printf("added variable NEW_VAR to local symtab\n");
-		ft_printf("the newly added Variable is: %s\n", ft_lookup_symtab(ms->be->global_symtabs->next, "NEW_VAR"));
-		ft_printf("printing the global symtab:\n");
-		ft_print_symtab(ms, 1);
-		ft_printf("printing the local symtab:\n");
-		ft_print_symtab(ms, 2);
+		ft_printf("added variable NEW_VAR to local stab\n");
+		ft_printf("the newly added Variable is: %s\n", ft_lookup_stab(ms->be->global_stabs->next, "NEW_VAR"));
+		ft_printf("printing the global stab:\n");
+		ft_print_stab(ms, 1);
+		ft_printf("printing the local stab:\n");
+		ft_print_stab(ms, 2);
 	}
 	else if(case_nb == 26)
 	{
 		// case to make the variable NEW_VAR global
 		ft_printf("26 - make variable NEW_VAR global\n");
-		if (ft_lookup_symtab(ms->be->global_symtabs, "NEW_VAR"))
+		if (ft_lookup_stab(ms->be->global_stabs, "NEW_VAR"))
 		{
-			ft_printf("variable NEW_VAR already exists in global symtab\n");
+			ft_printf("variable NEW_VAR already exists in global stab\n");
 		}
 		else
 		{
-			ft_printf("variable NEW_VAR does not exist in global symtab\n");
-			ft_printf("return value of ft_make_global = %d\n", ft_make_global(ms, "NEW_VAR"));
-			ft_printf("the newly added Variable is: %s\n", ft_lookup_symtab(ms->be->global_symtabs, "NEW_VAR"));
+			ft_printf("variable NEW_VAR does not exist in global stab\n");
+			ft_printf("return val of ft_make_global = %d\n", ft_make_global(ms, "NEW_VAR"));
+			ft_printf("the newly added Variable is: %s\n", ft_lookup_stab(ms->be->global_stabs, "NEW_VAR"));
 		}
-		ft_printf("printing the symtabs\n");
-		ft_printf("printing the global symtab:\n");
-		ft_print_symtab(ms, 1);
-		ft_printf("printing the local symtab:\n");
-		ft_print_symtab(ms, 2);
+		ft_printf("printing the stabs\n");
+		ft_printf("printing the global stab:\n");
+		ft_print_stab(ms, 1);
+		ft_printf("printing the local stab:\n");
+		ft_print_stab(ms, 2);
 	}
 	else if(case_nb == 27)
 	{
 		// case to make the variable NEW_VAR global
 		ft_printf("27 - add a new global variable\n");
-		if (ft_lookup_symtab(ms->be->global_symtabs, "NEW_IN_GLOBAL"))
+		if (ft_lookup_stab(ms->be->global_stabs, "NEW_IN_GLOBAL"))
 		{
-			ft_printf("variable NEW_IN_GLOBAL already exists in global symtab\n");
+			ft_printf("variable NEW_IN_GLOBAL already exists in global stab\n");
 		}
 		else
 		{
-			ft_add_global_value(ms, "NEW_IN_GLOBAL=thisisanewvar");
+			ft_add_global_val(ms, "NEW_IN_GLOBAL=thisisanewvar");
 		}
-		ft_printf("printing the symtabs\n");
-		ft_printf("printing the global symtab:\n");
-		ft_print_symtab(ms, 1);
-		ft_printf("printing the local symtab:\n");
-		ft_print_symtab(ms, 2);
+		ft_printf("printing the stabs\n");
+		ft_printf("printing the global stab:\n");
+		ft_print_stab(ms, 1);
+		ft_printf("printing the local stab:\n");
+		ft_print_stab(ms, 2);
 	}
 	else if(case_nb == 28)
 	{
@@ -898,82 +898,82 @@ ms->cmds->next->next->cmd->builtin = 0;
 		{
 			nb_str = ft_itoa(i);
 			tmp = ft_multistrjoin(4, "NEW", nb_str, "=contentofNEW", nb_str);
-			ft_add_global_value(ms, tmp);
+			ft_add_global_val(ms, tmp);
 			free(tmp);
 			free(nb_str);
 			i++;
 		}
-		ft_printf("printing the symtabs\n");
-		ft_printf("printing the global symtab:\n");
-		ft_print_symtab(ms, 1);
-		ft_printf("printing the local symtab:\n");
-		ft_print_symtab(ms, 2);
+		ft_printf("printing the stabs\n");
+		ft_printf("printing the global stab:\n");
+		ft_print_stab(ms, 1);
+		ft_printf("printing the local stab:\n");
+		ft_print_stab(ms, 2);
 	}
 	else if(case_nb == 29)
 	{
 		// case to remove a variable from global
 		ft_printf("29 - remove a global variable\n");
-		ft_remove_from_symtab(ms->be->global_symtabs, "NEW_VAR");
-		ft_printf("printing the symtabs\n");
-		ft_printf("printing the global symtab:\n");
-		ft_print_symtab(ms, 1);
-		ft_printf("printing the local symtab:\n");
-		ft_print_symtab(ms, 2);
+		ft_remove_from_stab(ms->be->global_stabs, "NEW_VAR");
+		ft_printf("printing the stabs\n");
+		ft_printf("printing the global stab:\n");
+		ft_print_stab(ms, 1);
+		ft_printf("printing the local stab:\n");
+		ft_print_stab(ms, 2);
 	}
 	else if(case_nb == 30)
 	{
-		// case to change a global value
+		// case to change a global val
 		ft_printf("30 - change a global variable\n");
-		ft_update_symtab_value(ms->be->global_symtabs, "NEW_VAR", "new_value");
-		ft_printf("printing the symtabs\n");
-		ft_printf("printing the global symtab:\n");
-		ft_print_symtab(ms, 1);
-		ft_printf("printing the local symtab:\n");
-		ft_print_symtab(ms, 2);
+		ft_upd_stab_val(ms->be->global_stabs, "NEW_VAR", "new_val");
+		ft_printf("printing the stabs\n");
+		ft_printf("printing the global stab:\n");
+		ft_print_stab(ms, 1);
+		ft_printf("printing the local stab:\n");
+		ft_print_stab(ms, 2);
 	}
 	else if(case_nb == 31)
 	{
-		// case to change a local value
+		// case to change a local val
 		ft_printf("31 - change a local variable\n");
-		ft_update_symtab_value(ms->be->global_symtabs->next, "NEW_VAR", "new_value");
-		ft_printf("printing the symtabs\n");
-		ft_printf("printing the global symtab:\n");
-		ft_print_symtab(ms, 1);
-		ft_printf("printing the local symtab:\n");
-		ft_print_symtab(ms, 2);
+		ft_upd_stab_val(ms->be->global_stabs->next, "NEW_VAR", "new_val");
+		ft_printf("printing the stabs\n");
+		ft_printf("printing the global stab:\n");
+		ft_print_stab(ms, 1);
+		ft_printf("printing the local stab:\n");
+		ft_print_stab(ms, 2);
 	}
 	else if(case_nb == 32)
 	{
-		// case to update a value at runtime
-		ft_printf("32 - case to update a value at runtime\n");
+		// case to update a val at runtime
+		ft_printf("32 - case to update a val at runtime\n");
 		ft_update_envp_runtime(ft_create_envp(ms), "PATH", "./");
-		ft_printf("printing the symtabs\n");
-		ft_printf("printing the global symtab:\n");
-		ft_print_symtab(ms, 1);
-		ft_printf("printing the local symtab:\n");
-		ft_print_symtab(ms, 2);
+		ft_printf("printing the stabs\n");
+		ft_printf("printing the global stab:\n");
+		ft_print_stab(ms, 1);
+		ft_printf("printing the local stab:\n");
+		ft_print_stab(ms, 2);
 	}
 	else if(case_nb == 33)
 	{
-		// case to recall a value from symtab
-		ft_printf("33 - case to recall a value from symtab\n");
-		ft_printf("GFM_LANG is: %s\n",ft_lookup_symtab(ms->be->global_symtabs, "GDM_LANG"));
-		ft_printf("printing the symtabs\n");
-		ft_printf("printing the global symtab:\n");
-		ft_print_symtab(ms, 1);
-		ft_printf("printing the local symtab:\n");
-		ft_print_symtab(ms, 2);
+		// case to recall a val from stab
+		ft_printf("33 - case to recall a val from stab\n");
+		ft_printf("GFM_LANG is: %s\n",ft_lookup_stab(ms->be->global_stabs, "GDM_LANG"));
+		ft_printf("printing the stabs\n");
+		ft_printf("printing the global stab:\n");
+		ft_print_stab(ms, 1);
+		ft_printf("printing the local stab:\n");
+		ft_print_stab(ms, 2);
 	}
 	else if(case_nb == 34)
 	{
-		// case to recall a nonexistent value from symtab
-		ft_printf("34 - case to recall a nonexistent value from symtab\n");
-		ft_printf("DOESNTEXIST is: %s\n",ft_lookup_symtab(ms->be->global_symtabs, "DOESNTEXIST"));
-		ft_printf("printing the symtabs\n");
-		ft_printf("printing the global symtab:\n");
-		ft_print_symtab(ms, 1);
-		ft_printf("printing the local symtab:\n");
-		ft_print_symtab(ms, 2);
+		// case to recall a nonexistent val from stab
+		ft_printf("34 - case to recall a nonexistent val from stab\n");
+		ft_printf("DOESNTEXIST is: %s\n",ft_lookup_stab(ms->be->global_stabs, "DOESNTEXIST"));
+		ft_printf("printing the stabs\n");
+		ft_printf("printing the global stab:\n");
+		ft_print_stab(ms, 1);
+		ft_printf("printing the local stab:\n");
+		ft_print_stab(ms, 2);
 	}
 	else if (case_nb == 35)
 	{

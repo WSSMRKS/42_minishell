@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_parsing.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
+/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:56:05 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/25 15:33:51 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/11/27 13:04:52 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@
 # define DBG_PARSER(x) if(DEBUG_PARSER) {x;}
 
 typedef char			*(*t_read_input)(bool append_mode, void *data);
-typedef t_symtab_stack	*(*t_get_symtab)(void *data);
+typedef t_stab_st	*(*t_get_stab)(void *data);
 typedef int				(*t_get_last_ret)(void *data);
 
 typedef struct s_parser {
 	t_vec			tokens;
 	t_read_input	read_input;
-	t_get_symtab	get_symtab;
+	t_get_stab	get_stab;
 	t_get_last_ret	get_last_ret;
 	void			*data;
 	t_str			last_input;
@@ -107,7 +107,7 @@ typedef struct	s_cmd_list {
 
 void		debug_print_simple_com(int fd, t_simple_com *cmd);
 t_parser	parser_init(void *data, t_read_input read_input,
-		t_get_symtab get_symtab, t_get_last_ret get_last_ret);
+		t_get_stab get_stab, t_get_last_ret get_last_ret);
 t_ms_status	parse_next_command(t_parser *p, t_cmd_list	**out);
 
 #endif

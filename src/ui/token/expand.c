@@ -16,7 +16,7 @@ static void	strip_empty_word_tokens(t_vec *tokens)
 	}
 }
 
-static void	str_expand_vars(t_str *str, t_symtab_stack *st, int last_ret)
+static void	str_expand_vars(t_str *str, t_stab_st *st, int last_ret)
 {
 	t_str	var_str;
 	size_t	var_size;
@@ -41,7 +41,7 @@ static void	str_expand_vars(t_str *str, t_symtab_stack *st, int last_ret)
 				str_insert_itoa(last_ret, base10(), str, i);
 			else
 			{
-				var = cstr_view(ft_lookup_symtab(st, (char *)cstr_ref(&var_str)));
+				var = cstr_view(ft_lookup_stab(st, (char *)cstr_ref(&var_str)));
 				if (var.str)
 				{
 					str_insertstr(str, i, var);
@@ -55,7 +55,7 @@ static void	str_expand_vars(t_str *str, t_symtab_stack *st, int last_ret)
 	}
 }
 
-void	expand_vars(t_vec *tokens, t_symtab_stack *st, int last_ret)
+void	expand_vars(t_vec *tokens, t_stab_st *st, int last_ret)
 {
 	t_token	*token;
 	size_t	i;

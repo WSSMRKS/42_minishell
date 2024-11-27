@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 05:06:08 by dkoca             #+#    #+#             */
-/*   Updated: 2024/11/15 11:11:23 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/11/27 13:05:43 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@
 /*
 Explicit null arguments ("" or '') are retained and passed to commands as empty strings.
 
-Unquoted implicit null arguments, resulting from the expansion of parameters that have no values, are removed.
+Unquoted implicit null arguments, resulting from the expansion of parameters that have no vals, are removed.
 
-If a parameter with no value is expanded within double quotes, a null argument results and is retained and passed to a command as an empty string.
+If a parameter with no val is expanded within double quotes, a null argument results and is retained and passed to a command as an empty string.
 When a quoted null argument appears as part of a word whose expansion is non-null, the null argument is removed.
 That is, the word -d'' becomes -d after word splitting and null argument removal.
 
@@ -95,7 +95,7 @@ typedef struct s_ast {
 }	t_ast;
 
 t_vec		tokenize(t_str_slice inp);
-void		expand_vars(t_vec *tokens, t_symtab_stack *st, int last_ret);
+void		expand_vars(t_vec *tokens, t_stab_st *st, int last_ret);
 void		unescape_chars(t_vec *tokens);
 void		tokens_normalize(t_vec *tokens);
 void		tokens_normalize_for_continue_nl_check(t_vec *tokens);
