@@ -1,4 +1,6 @@
 #include "../../../headers/minishell.h"
+#include <stdbool.h>
+#include <stddef.h>
 
 // set flags like heredoc, redir->rightmost, ...
 void	post_process_cmd(t_simple_com *cmd)
@@ -45,45 +47,48 @@ t_redir_type	op_to_redir(t_op op)
 	return (redir_map[op.ty]);
 }
 
-static t_list_redir *create_redirection(t_op op)
+static void	list_add_redirection(t_simple_com *cmd, t_list_redir *redir)
+{
+	t_list_redir	*tmp;
+
+	if (!cmd->redir)
+	{
+		cmd->redir = redir;
+		return ;
+	}
+	tmp = cmd->redir;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = redir;
+}
+
+static bool	add_redirection(t_simple_com *cmd, t_op *op)
 {
 	t_list_redir	*redir;
 
-	if (op.ty == OP_PIPE)
+	if (op->ty == OP_PIPE)
 	{
 		perror("Pipe operator not supported in create_redirection");
-		return (NULL);
+		return (false);
 	}
 	redir = ft_calloc(sizeof(t_list_redir), 1);
 	if (!redir)
-		return (NULL);
-	redir->target = malloc(sizeof(t_redir_aim));
-	if (!redir->target)
+		return (false);
+	redir->target.fd = -1;
+	redir->instruction = op_to_redir(*op);
+	if (op->ty == OP_HEREDOC)
 	{
-		free(redir);
-		return (NULL);
+		redir->hd_del = op->arg;
+		redir->target.filename = NULL;
 	}
-	redir->target->fd = -1;
-	redir->target->filename = op.arg;
-	redir->instruction = op_to_redir(op);
-	if (op.ty != OP_HEREDOC)
-		return (redir);
-	redir->hd_del = redir->target->filename;
-	redir->target->filename = NULL;
-	return (redir);
-}
-
-void	free_list_words(t_list_words *head)
-{
-	t_list_words *tmp;
-
-	while (head)
+	else
 	{
-		tmp = head;
-		head = head->next;
-		free(tmp->word);
-		free(tmp);
+		redir->hd_del = NULL;
+		redir->target.filename = op->arg;
 	}
+	list_add_redirection(cmd, redir);
+	op->arg = NULL;
+	return (true);
 }
 
 static t_list_words *word_list_from_argv(char **cmd)
@@ -101,8 +106,8 @@ static t_list_words *word_list_from_argv(char **cmd)
 		tmp = malloc(sizeof(t_list_words));
 		if (!tmp)
 		{
-			free_list_words(head);
-			return NULL;
+			free_list_words(&head);
+			return (NULL);
 		}
 		tmp->word = ft_strdup(cmd[i]);
 		tmp->next = NULL;
@@ -113,143 +118,83 @@ static t_list_words *word_list_from_argv(char **cmd)
 		current = tmp;
 		i++;
 	}
-	return head;
+	return (head);
 }
 
-void	free_list_redir(t_list_redir *redir)
+void	skip_pipe(t_ast *ast, size_t *i, size_t len)
 {
-	t_list_redir *tmp;
+	if (*i < len && ast[*i].ty == AST_OP && ast[*i].op.ty == OP_PIPE)
+		(*i)++;
+}
 
-	while (redir)
+t_simple_com	com_from_ast(t_ast *ast, size_t *i, size_t len)
+{
+	t_simple_com	cmd;
+
+	cmd = (t_simple_com){0};
+	while (*i < len && (ast[*i].ty != AST_OP || ast[*i].op.ty != OP_PIPE))
 	{
-		tmp = redir;
-		redir = redir->next;
-		if (tmp->target)
+		if (ast[*i].ty == AST_CMD)
 		{
-			free(tmp->target->filename);
-			free(tmp->target);
+			cmd.words = word_list_from_argv(ast[*i].cmd);
+			if (cmd.words == NULL)
+			{
+				free_simple_com(&cmd);
+				return ((t_simple_com){0});
+			}
+			cmd.argv = ast[*i].cmd;
+			ast[*i].cmd = NULL;
 		}
-		free(tmp->hd_del);
-		free(tmp);
+		else if (ast[*i].ty == AST_OP)
+		{
+			if (!add_redirection(&cmd, &ast[*i].op))
+			{
+				free_simple_com(&cmd);
+				return ((t_simple_com){0});
+			}
+		}
+		(*i)++;
 	}
+	post_process_cmd(&cmd);
+	return (cmd);
 }
 
-void	free_2d(char **strs);
-
-void	free_simple_command(t_simple_com *cmd)
-{
-	free_list_words(cmd->words);
-	free_list_redir(cmd->redir);
-	free_2d(cmd->argv);
-	free(cmd);
-}
-
-void	free_list_commands(t_cmd_list *head)
-{
-	t_cmd_list *tmp;
-
-	while (head)
-	{
-		tmp = head;
-		head = head->next;
-		free_simple_command(tmp->cmd);
-		free(tmp);
-	}
-}
-
-static t_simple_com	*create_simple_command(char **cmd)
-{
-	t_simple_com	*simple;
-
-	simple = ft_calloc(sizeof(t_simple_com), 1);
-	if (!simple)
-		return NULL;
-	simple->words = word_list_from_argv(cmd);
-	simple->argv = cmd;
-	return simple;
-}
-
+/// input: ast with minimum one item
 t_cmd_list	*ast_to_commands(t_vec *ast)
 {
-	t_cmd_list		*head;
-	t_cmd_list		*prev;
-	t_cmd_list		*current;
-	t_list_redir	*redir_head;
-	t_list_redir	*redir_prev;
-	t_list_redir	*redir_current;
-	t_ast			*current_ast;
-	size_t			i;
+	t_cmd_list	*head;
+	t_cmd_list	*current;
+	size_t		i;
 
 	head = NULL;
-	prev = NULL;
-	redir_head = NULL;
-	redir_prev = NULL;
 	i = 0;
-	redir_current = NULL;
-	current = NULL;
 	while (i < ast->len)
 	{
-		current_ast = vec_get_at(ast, i);
-		if (current_ast->ty == AST_CMD)
+		if (head != NULL)
+		{
+			current->next = ft_calloc(sizeof(t_cmd_list), 1);
+			current = current->next;
+		}
+		else
 		{
 			current = ft_calloc(sizeof(t_cmd_list), 1);
-			if (!current)
-			{
-				free_list_commands(head);
-				free_list_redir(redir_head);
-				return (NULL);
-			}
-			current->cmd = create_simple_command(current_ast->cmd);
-			if (current->cmd == NULL)
-			{
-				free_list_commands(head);
-				free_list_redir(redir_head);
-				return (NULL);
-			}
-			if (!head)
-				head = current;
-			else
-				prev->next = current;
-			prev = current;
+			head = current;
 		}
-		else if (current_ast->ty == AST_OP && current_ast->op.ty != OP_PIPE)
+		current->cmd = com_from_ast(vec_get(ast), &i, ast->len);
+		skip_pipe(vec_get(ast), &i, ast->len);
+		DEBUG(debug_print_simple_com(STDERR, &current->cmd, true))
+		if (current->cmd.words == NULL && current->cmd.redir == NULL)
 		{
-			redir_current = create_redirection(current_ast->op);
-			if (!redir_current)
-			{
-				free_list_commands(head);
-				free_list_redir(redir_head);
-				return (NULL);
-			}
-			if (!redir_head)
-				redir_head = redir_current;
-			else
-				redir_prev->next = redir_current;
-			redir_prev = redir_current;
+			free_list_cmds(&head);
+			return (NULL);
 		}
-		if (redir_head && current)
-		{
-			if (!current->cmd->redir)
-				current->cmd->redir = redir_head;
-			else
-			{
-				redir_current = current->cmd->redir;
-				while (redir_current->next)
-					redir_current = redir_current->next;
-				redir_current->next = redir_head;
-			}
-			redir_head = NULL;
-		}
-		if (current)
-			post_process_cmd(current->cmd);
-		i++;
 	}
 	return (head);
 }
 
 #include <stdio.h>
 
-void	debug_print_simple_com(int fd, t_simple_com *cmd)
+void	debug_print_simple_com(int fd, t_simple_com *cmd, bool parser)
 {
 	t_list_words *word_ptr;
 	t_list_redir *redir_ptr;
@@ -264,9 +209,12 @@ void	debug_print_simple_com(int fd, t_simple_com *cmd)
 	// Print flags and builtin info
 	dprintf(fd, "Simple Command:\n");
 	dprintf(fd, "├─ Heredoc flag: %d\n", cmd->heredoc);
-	dprintf(fd, "├─ Builtin flag: %d\n", cmd->builtin);
-	dprintf(fd, "├─ Builtin number: %d\n", cmd->builtin_nr);
-	dprintf(fd, "├─ Priority in: %d\n", cmd->prio_in);
+	if (!parser)
+	{
+		dprintf(fd, "├─ Builtin flag: %d\n", cmd->builtin);
+		dprintf(fd, "├─ Builtin number: %d\n", cmd->builtin_nr);
+		dprintf(fd, "├─ Priority in: %d\n", cmd->prio_in);
+	}
 	// dprintf(fd, "├─ Priority out: %d\n", cmd->prio_out);
 
 	// Print words list
@@ -313,10 +261,11 @@ void	debug_print_simple_com(int fd, t_simple_com *cmd)
 				dprintf(fd, "OUTFILE\n");
 				break;
 		}
-		if (redir_ptr->target)
+		if (redir_ptr->target.filename)
 		{
-			dprintf(fd, "   │  ├─ Target FD: %d\n", redir_ptr->target->fd);
-			dprintf(fd, "   │  └─ Filename: %s\n", redir_ptr->target->filename);
+			if (!parser)
+				dprintf(fd, "   │  ├─ Target FD: %d\n", redir_ptr->target.fd);
+			dprintf(fd, "   │  └─ Filename: %s\n", redir_ptr->target.filename);
 		}
 		if (redir_ptr->hd_del)
 			dprintf(fd, "   │  └─ Heredoc delimiter: %s\n", redir_ptr->hd_del);

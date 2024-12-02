@@ -34,14 +34,14 @@ char	*ft_search_cmd(t_ms *ms, t_cmd_list *curr)
 
 	i = 0;
 
-	if (ft_strchr(curr->cmd->words->word, '/') != NULL)
+	if (ft_strchr(curr->cmd.words->word, '/') != NULL)
 	{
-		path = ft_strdup(curr->cmd->words->word);
+		path = ft_strdup(curr->cmd.words->word);
 		return (path);
 	}
 	while (ms->be->path[i])
 	{
-		path = ft_strjoin(ms->be->path[i], curr->cmd->words->word);
+		path = ft_strjoin(ms->be->path[i], curr->cmd.words->word);
 		if (path == NULL)
 		{
 			perror("malloc fail!\n");
@@ -59,7 +59,7 @@ char	*ft_search_cmd(t_ms *ms, t_cmd_list *curr)
 // void	ft_prnt_stderr(char *name, char *cmd, int err)
 // {
 // 	int	storage;
-	
+
 // 	storage = dup(STDOUT_FILENO);
 // 	dup2(STDERR_FILENO, STDOUT_FILENO);
 // 	if (name == NULL)
@@ -89,17 +89,18 @@ void	ft_execute(t_ms *ms, t_cmd_list *curr)
 	char	**envp;
 
 	cmdpath = ft_search_cmd(ms, curr);
+	err = 0;
 	if (cmdpath == NULL)
 	{
 		err = 127;
-		ft_prnt_stderr(NULL, curr->cmd->words->word, 2);
+		ft_prnt_stderr(NULL, curr->cmd.words->word, 2);
 	}
 	else
 	{
 		envp = ft_create_envp(ms);
-		if (execve(cmdpath, curr->cmd->argv, envp) == -1)
+		if (execve(cmdpath, curr->cmd.argv, envp) == -1)
 			err = 127;
-		ft_prnt_stderr("minishell", curr->cmd->words->word, errno);
+		ft_prnt_stderr("minishell", curr->cmd.words->word, errno);
 		ft_free_2d(envp);
 	}
 	ft_clear_ast(ms); // [ ] take care of this in case of not a child!!
@@ -112,25 +113,25 @@ int	ft_builtin(t_ms *ms, t_cmd_list *curr)
 	int		ret;
 
 	ret = 0;
-	if (curr->cmd->builtin_nr == 1)
+	if (curr->cmd.builtin_nr == 1)
 		ret = ft_echo(ms, curr);
-	else if (curr->cmd->builtin_nr == 2)
+	else if (curr->cmd.builtin_nr == 2)
 		ret = ft_cd(ms, curr);
-	else if (curr->cmd->builtin_nr == 3)
+	else if (curr->cmd.builtin_nr == 3)
 		ret = ft_pwd(ms, curr);
-	else if (curr->cmd->builtin_nr == 4)
+	else if (curr->cmd.builtin_nr == 4)
 		ret = ft_export(ms, curr);
-	else if (curr->cmd->builtin_nr == 5)
+	else if (curr->cmd.builtin_nr == 5)
 		ret = ft_unset(ms, curr);
-	else if (curr->cmd->builtin_nr == 6)
+	else if (curr->cmd.builtin_nr == 6)
 		ret = ft_env(ms, curr);
-	else if (curr->cmd->builtin_nr == 7)
+	else if (curr->cmd.builtin_nr == 7)
 		ret = ft_exit(ms, curr);
-	else if (curr->cmd->builtin_nr == 8)
+	else if (curr->cmd.builtin_nr == 8)
 		ret = ft_status(ms, curr);
-	else if (curr->cmd->builtin_nr == 9)
+	else if (curr->cmd.builtin_nr == 9)
 		ret = ft_resize(ms, curr);
-	
+
 	dup2(ms->be->saved_std[0], STDIN_FILENO);
 	close(ms->be->saved_std[0]);
 	dup2(ms->be->saved_std[1], STDOUT_FILENO);
@@ -144,7 +145,7 @@ void	ft_create_argv(t_cmd_list *curr)
 	char			**argv;
 	int				i;
 
-	words = curr->cmd->words;
+	words = curr->cmd.words;
 	i = 0;
 	while (words)
 	{
@@ -152,14 +153,14 @@ void	ft_create_argv(t_cmd_list *curr)
 		words = words->next;
 	}
 	argv = ft_calloc(sizeof(char *), i + 1);
-	words = curr->cmd->words;
+	words = curr->cmd.words;
 	i = 0;
 	while (words)
 	{
 		argv[i++] = ft_strdup(words->word);
 		words = words->next;
 	}
-	curr->cmd->argv = argv;
+	curr->cmd.argv = argv;
 }
 
 void	ft_safe_std(t_ms *ms)
@@ -214,7 +215,7 @@ void	ft_pipe_reset(t_ms *ms, int *i)
 
 void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i)
 {
-	if (!curr->cmd->builtin || ms->be->nb_cmds > 1)
+	if (!curr->cmd.builtin || ms->be->nb_cmds > 1)
 		ms->be->child_pids[*i] = fork();
 	else
 	{
@@ -226,14 +227,14 @@ void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i)
 		perror("fork failed");
 		ft_cleanup_exit(ms, EPIPE); // find nice way for error handling
 	}
-	if(ms->be->child_pids[*i] == 0 || (curr->cmd->builtin && ms->be->nb_cmds == 1))
+	if(ms->be->child_pids[*i] == 0 || (curr->cmd.builtin && ms->be->nb_cmds == 1))
 		ft_ex_prep(ms, curr, i);
 	if (ms->be->child_pids[*i] == 0)
 	{
 		ft_close_all_fds(ms);
 		ft_execute(ms, curr);
 	}
-	else if (curr->cmd->builtin && ms->be->nb_cmds == 1)
+	else if (curr->cmd.builtin && ms->be->nb_cmds == 1)
 	{
 		ms->be->last_ret = ft_builtin(ms, curr);
 	}
@@ -247,14 +248,14 @@ void	ft_is_builtin(t_cmd_list *curr, t_ms *ms)
 	int		len;
 
 	i = -1;
-	while (ms->cmds->cmd->words && ms->be->builtins[++i])
+	while (ms->cmds->cmd.words && ms->be->builtins[++i])
 	{
 		len = ft_strlen(ms->be->builtins[i]);
-		if (ft_strncmp(curr->cmd->words->word, ms->be->builtins[i], len) == 0
-			&& (int) ft_strlen(curr->cmd->words->word) == len)
+		if (ft_strncmp(curr->cmd.words->word, ms->be->builtins[i], len) == 0
+			&& (int) ft_strlen(curr->cmd.words->word) == len)
 		{
-			curr->cmd->builtin = true;
-			curr->cmd->builtin_nr = i + 1;
+			curr->cmd.builtin = true;
+			curr->cmd.builtin_nr = i + 1;
 		}
 	}
 }
@@ -280,7 +281,7 @@ void	ft_back_end(t_ms *ms)
 	ft_reinit_be(ms);
 	if (ms->global_flags == 1)
 		ft_here_doc(ms);
-	if(ms->cmds->cmd)
+	if(ms->cmds)
 	{
 		ft_executor(ms);
 		ft_close_all_fds(ms);
@@ -289,4 +290,3 @@ void	ft_back_end(t_ms *ms)
 	}
 	ft_clear_be(ms);
 }
-
