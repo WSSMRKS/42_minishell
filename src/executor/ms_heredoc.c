@@ -85,8 +85,8 @@ void	ft_hd_input(t_list_redir *curr, t_ms *ms)
 	while (1)
 	{
 		line = readline("> ");
-		if (!curr->target->filename)
-			curr->target->filename = ft_tmp_name(ms, &fd);
+		if (!curr->target.filename)
+			curr->target.filename = ft_tmp_name(ms, &fd);
 		if (!line)
 		{
 			printf("minishell: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", line_nb, curr->hd_del);
@@ -117,8 +117,8 @@ void	ft_here_doc(t_ms *ms)
 	cmd_list = ms->cmds;
 	while ((ms->global_flags & 1) != 0 && cmd_list != NULL)
 	{
-		curr_redir = cmd_list->cmd->redir;
-		while (cmd_list->cmd->heredoc && curr_redir != NULL)
+		curr_redir = cmd_list->cmd.redir;
+		while (cmd_list->cmd.heredoc && curr_redir != NULL)
 		{
 			if (curr_redir->instruction == redir_here_doc)
 			{
