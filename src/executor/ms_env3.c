@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/03 15:46:54 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/03 15:53:05 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ int	ft_rem_fr_stab(t_stab_st *stab_lvl, char *key)
 				prev->next = tmp->next;
 			else
 				stab_lvl->stab[hash] = tmp->next;
-			ft_free_3((void *)tmp->key,(void *) tmp->val,(void *) tmp);
+			ft_free_3((void *)tmp->key, (void *) tmp->val, (void *) tmp);
 			stab_lvl->used--;
 			return (0);
 		}
