@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/27 13:26:29 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/03 15:05:59 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ int	ft_calc_stab_size(int size)
 	{
 		i++;
 	}
-
 	return (i);
 }
 
@@ -99,7 +98,6 @@ int	ft_is_prime(int n)
 	}
 	return (1);
 }
-
 
 /* function to resize the symbol table
 functionality:

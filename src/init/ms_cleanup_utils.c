@@ -12,89 +12,67 @@
 
 #include "../../headers/minishell.h"
 
-void	ft_clear_redir(t_list_redir	*redir)
+void	free_list_words(t_list_words **head)
 {
-	t_list_redir	*to_free;
+	t_list_words *current;
+	t_list_words *next;
 
-	while (redir)
+	current = *head;
+	*head = NULL;
+	while (current)
 	{
-		to_free = redir;
-		redir = redir->next;
-		if(to_free->target)
-		{
-			if (to_free->target->filename)
-			{
-				free(to_free->target->filename);
-				to_free->target->filename = NULL;
-			}
-			free(to_free->target);
-			to_free->target = NULL;
-		}
-		if(to_free->hd_del)
-		{
-			free(to_free->hd_del);
-			to_free->hd_del = NULL;
-		}
-		if(to_free->target)
-		{
-			free(to_free->target);
-			to_free->target = NULL;
-		}
-		if(to_free->target)
-		{
-			if (to_free->target->filename)
-			{
-				free(to_free->target->filename);
-				to_free->target->filename = NULL;
-			}
-			free(to_free->target);
-			to_free->target = NULL;
-		}
-		free(to_free);
-		to_free = NULL;
+		next = current->next;
+		free(current->word);
+		free(current);
+		current = next;
 	}
 }
 
-void	ft_clear_words(t_list_words	*words)
+void	free_list_redir(t_list_redir **head)
 {
-	t_list_words	*to_free;
+	t_list_redir *current;
+	t_list_redir *next;
 
-	while (words)
+	current = *head;
+	*head = NULL;
+	while (current)
 	{
-		to_free = words;
-		words = words->next;
-		if(to_free->word)
-		{
-			free(to_free->word);
-			to_free->word = NULL;
-		}
-		free(to_free);
-		to_free = NULL;
+		next = current->next;
+		free(current->target.filename);
+		free(current->hd_del);
+		free(current);
+		current = next;
+	}
+}
+
+void	free_simple_com(t_simple_com *cmd)
+{
+	free_list_words(&cmd->words);
+	free_list_redir(&cmd->redir);
+	ft_free_2d(cmd->argv);
+	*cmd = (t_simple_com){0};
+}
+
+void	free_list_cmds(t_cmd_list **head)
+{
+	t_cmd_list *current;
+	t_cmd_list *next;
+
+	current = *head;
+	*head = NULL;
+	while (current)
+	{
+		next = current->next;
+		free_simple_com(&current->cmd);
+		free(current);
+		current = next;
 	}
 }
 
 /* There are no cases where ms->cmd && ms->cmds are empty. Therefore this function is always freeing everything*/
 void	ft_clear_ast(t_ms *ms)
 {
-	t_cmd_list *subject;
-	t_cmd_list *to_free;
-
-	subject = ms->cmds;
-
-	while (subject)
-	{
-		to_free = subject;
-		subject = subject->next;
-		if(to_free->cmd)
-		{
-			ft_clear_redir(to_free->cmd->redir);
-			ft_clear_words(to_free->cmd->words);
-			ft_free_2d(to_free->cmd->argv);
-			free(to_free->cmd);
-			to_free->cmd = NULL;
-		}
-		free(to_free);
-	}
+	free_list_cmds(&ms->cmds);
 }
 
 void	ft_clear_be(t_ms *ms)

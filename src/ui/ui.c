@@ -119,7 +119,7 @@ static bool	cmdlist_has_heredoc(t_cmd_list *cmds)
 	curr = cmds;
 	while (curr)
 	{
-		if (curr->cmd->heredoc)
+		if (curr->cmd.heredoc)
 			return (true);
 		curr = curr->next;
 	}
@@ -128,9 +128,7 @@ static bool	cmdlist_has_heredoc(t_cmd_list *cmds)
 
 static t_ms_status	evaluate(t_ms *ms)
 {
-	// if (ms->cmds && ms->cmds->cmd && strcmp("exit", ms->cmds->cmd->argv[0]) == 0)
-	// 	return (MS_EOF);
-	if(ms->cmds)
+	if (ms->cmds)
 	{
 		ms->global_flags = cmdlist_has_heredoc(ms->cmds);
 		ft_back_end(ms);

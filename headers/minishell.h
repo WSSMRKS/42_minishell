@@ -66,6 +66,10 @@ typedef struct s_ms
 
 /* ms_cleanup_utils */
 
+void			free_list_cmds(t_cmd_list **head);
+void			free_simple_com(t_simple_com *cmd);
+void			free_list_redir(t_list_redir **head);
+void			free_list_words(t_list_words **head);
 void			ft_clear_be(t_ms *ms);
 void			ft_clean_be(t_ms *ms);
 void			ft_clear_ast(t_ms *ms);

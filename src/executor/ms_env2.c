@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/27 15:27:59 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/03 15:44:44 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,12 @@ void	ft_add_global_val(t_ms *ms, char *env)
 		return ;
 	}
 	if (ft_lookup_key(ms->be->global_stabs, key) != NULL)
+	{
 		ft_upd_stab_val(ms->be->global_stabs, key, val);
+		free(key);
+	}
 	else
 		ft_add_to_stab(ms, ms->be->global_stabs, key, val);
-	free(val);
-	val = NULL;
-	free(key);
-	key = NULL;
 }
 
 /* function to add a new val to the symbol table
@@ -83,7 +82,6 @@ void	ft_add_to_stab(t_ms *ms, t_stab_st *stab_lvl, char *key, char *val)
 	unsigned long	hash;
 	t_stab			*new;
 	t_stab			*tmp;
-
 
 	hash = ft_hash_function(stab_lvl, key);
 	new = ft_calloc(sizeof(t_stab), 1);
@@ -159,4 +157,3 @@ void	ft_init_stab(t_ms *ms)
 	}
 	ft_set_shell(ms);
 }
-
