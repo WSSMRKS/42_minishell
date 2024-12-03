@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 11:16:12 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/27 13:05:43 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/03 14:35:06 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,13 @@ int		ft_pwd(t_ms *ms, t_cmd_list *curr)
 int		ft_cd(t_ms *ms, t_cmd_list *curr)
 {
 	int	ret;
-	if (!curr->cmd->words->next)
+	if (!curr->cmd.words->next)
 		ret = chdir(ft_lookup_stab(ms->be->global_stabs, "HOME"));
 	else
 		ret = chdir(curr->cmd.words->next->word);
 	if (ret != 0)
 	{
-		if(!curr->cmd->words->next)
+		if(!curr->cmd.words->next)
 			ft_printf_fd(2, "ms: cd: %s: %s\n", ft_lookup_stab(ms->be->global_stabs, "HOME"), strerror(errno));
 		else
 			ft_printf_fd(2, "ms: cd: %s: %s\n", curr->cmd.words->next->word, strerror(errno));

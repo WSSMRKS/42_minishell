@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/27 11:53:30 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/03 14:34:48 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ void	ft_infile(t_ms *ms, t_list_redir *rd)
 	fdin = open(rd->target.filename, O_RDONLY);
 	if (fdin < 0)
 	{
-		ft_printf_fd(2, "%s: %s\n", rd->target->filename, strerror(errno));
-		if (ms->cmds->cmd->builtin == 0 && ms->be->nb_cmds == 1)
+		ft_printf_fd(2, "%s: %s\n", rd->target.filename, strerror(errno));
+		if (ms->cmds->cmd.builtin == 0 && ms->be->nb_cmds == 1)
 		{
-			ft_clear_ast(ms); // [ ] take care of this in case of not a child!!
-			ft_clear_be(ms); // [ ] take care of this in case of not a child!!
+			ft_clear_ast(ms);
+			ft_clear_be(ms);
 			ft_cleanup_exit(ms, errno);
 		}
 		else
@@ -53,8 +53,8 @@ void	ft_outfile(t_ms *ms, t_list_redir *rd, int mode)
 		fdout = open(rd->target.filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fdout < 0)
 	{
-		ft_printf_fd(2, "%s: %s\n", rd->target->filename, strerror(errno));
-		if (ms->cmds->cmd->builtin == 0 && ms->be->nb_cmds == 1)
+		ft_printf_fd(2, "%s: %s\n", rd->target.filename, strerror(errno));
+		if (ms->cmds->cmd.builtin == 0 && ms->be->nb_cmds == 1)
 		{
 			ft_clear_ast(ms); // [ ] take care of this in case of not a child!!
 			ft_clear_be(ms); // [ ] take care of this in case of not a child!!

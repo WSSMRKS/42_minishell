@@ -6,13 +6,13 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/27 14:02:28 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/03 15:05:41 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
 
-void	ft_extr_key_val(char *env, char *key, char *val)
+void	ft_extr_key_val(char *env, char **key, char **val)
 {
 	int			i;
 
@@ -20,19 +20,19 @@ void	ft_extr_key_val(char *env, char *key, char *val)
 	while (env[i] && env[i] != '=')
 		i++;
 	if (env[i] != '=')
-		val = NULL;
+		*val = NULL;
 	else if (env[i] == '=' && env[i + 1] == '\0')
 	{
-		val = ft_calloc(sizeof(char), 1);
-		ft_mprotect((void *)val);
+		*val = ft_calloc(sizeof(char), 1);
+		ft_mprotect((void *)*val);
 	}
 	else
 	{
-		val = ft_strdup(&env[i + 1]);
-		ft_mprotect((void *)val);
+		*val = ft_strdup(&env[i + 1]);
+		ft_mprotect((void *)*val);
 	}
-	key = ft_substr(env, 0, i);
-	ft_mprotect((void *)key);
+	*key = ft_substr(env, 0, i);
+	ft_mprotect((void *)*key);
 }
 
 /* function to add a new val to the environmental variables
@@ -53,7 +53,7 @@ void	ft_add_global_val(t_ms *ms, char *env)
 
 	key = NULL;
 	val = NULL;
-	ft_extr_key_val(env, key, val);
+	ft_extr_key_val(env, &key, &val);
 	if (ft_validate_var(key) != NULL)
 	{
 		free(key);
@@ -61,11 +61,12 @@ void	ft_add_global_val(t_ms *ms, char *env)
 		return ;
 	}
 	if (ft_lookup_key(ms->be->global_stabs, key) != NULL)
+	{
 		ft_upd_stab_val(ms->be->global_stabs, key, val);
+		free(key);
+	}
 	else
 		ft_add_to_stab(ms, ms->be->global_stabs, key, val);
-	free(val);
-	free(key);
 }
 
 /* function to add a new val to the symbol table
@@ -81,7 +82,6 @@ void	ft_add_to_stab(t_ms *ms, t_stab_st *stab_lvl, char *key, char *val)
 	unsigned long	hash;
 	t_stab			*new;
 	t_stab			*tmp;
-
 
 	hash = ft_hash_function(stab_lvl, key);
 	new = ft_calloc(sizeof(t_stab), 1);
@@ -157,4 +157,3 @@ void	ft_init_stab(t_ms *ms)
 	}
 	ft_set_shell(ms);
 }
-

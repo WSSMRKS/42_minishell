@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/27 14:03:48 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/03 15:06:14 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,6 @@ char	**ft_create_envp(t_ms *ms)
 	}
 	return (envp);
 }
-
 
 /* function to alter one particular val when executing a command
 functionality:
@@ -206,8 +205,9 @@ int	ft_upd_stab_val(t_stab_st *stab_lvl, char *key, char *val)
 		{
 			if (val)
 			{
-				free(tmp->val);
-				tmp->val = ft_strdup(val);
+				if (tmp->val)
+					free(tmp->val);
+				tmp->val = val;
 			}
 			return (0);
 		}
