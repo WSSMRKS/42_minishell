@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/27 13:05:43 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/27 14:52:20 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -913,7 +913,7 @@ ms->cmds->next->next->cmd->builtin = 0;
 	{
 		// case to remove a variable from global
 		ft_printf("29 - remove a global variable\n");
-		ft_remove_from_stab(ms->be->global_stabs, "NEW_VAR");
+		ft_rem_fr_stab(ms->be->global_stabs, "NEW_VAR");
 		ft_printf("printing the stabs\n");
 		ft_printf("printing the global stab:\n");
 		ft_print_stab(ms, 1);

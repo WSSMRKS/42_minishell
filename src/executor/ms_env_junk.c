@@ -6,11 +6,48 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/27 13:24:18 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/27 15:03:40 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
+
+/* function to alter one particular val when executing a command
+functionality:
+1. take actual **envp
+2. find the stated val
+3. If val is there update
+4. If val is not there add
+*/
+// char	**ft_update_envp_runtime(char **envp, char *key, char *val)
+// {
+// 	int		i;
+// 	char	*tmp;
+// 	char	**tmp2;
+
+// 	i = -1;
+// 	if (!envp)
+// 		return (NULL);
+// 	tmp = ft_multistrjoin(3, key, "=", val);
+// 	if (!tmp)
+// 		return (NULL);
+// 	while (envp[++i])
+// 	{
+// 		if (!ft_strncmp(envp[i], tmp, ft_strlen(key) + 1))
+// 		{
+// 			free(envp[i]);
+// 			envp[i] = tmp;
+// 			return (envp);
+// 		}
+// 	}
+// 	tmp2 = ft_calloc(sizeof(char *), i + 2);
+// 	i = -1;
+// 	while (envp[++i])
+// 		tmp2[i] = envp[i];
+// 	tmp2[i] = tmp;
+// 	free(envp);
+// 	return (tmp2);
+// }
 
 // /* function to add a new val to the local variables
 // functionality:
@@ -106,7 +143,7 @@ functionality:
 // 	val = ft_strdup(val);
 // 	key = ft_strdup(key);
 // 	ft_add_to_stab(ms, global, key, val);
-// 	ft_remove_from_stab(local, key);
+// 	ft_rem_fr_stab(local, key);
 // 	return (0);
 // }
 
@@ -138,5 +175,50 @@ functionality:
 // 			}
 // 		}
 // 		tmp = tmp->next;
+// 	}
+// }
+
+// /* function to free the whole stab_stack
+// functionality:
+// 1. Traverse the symbol table stack and free the symbol table
+// 2. Free the symbol table stack
+// */
+// void	ft_free_stab_stack(t_stab_st *stab_stack)
+// {
+// 	t_stab_st		*tmp;
+// 	t_stab			*tmp2;
+// 	t_stab			*tmp3;
+// 	int				i;
+
+// 	while (stab_stack)
+// 	{
+// 		i = 0;
+// 		while (i < stab_stack->size)
+// 		{
+// 			tmp2 = stab_stack->stab[i];
+// 			while (tmp2)
+// 			{
+// 				tmp3 = tmp2;
+// 				if (tmp2 && tmp2->key != NULL)
+// 				{
+// 					free(tmp2->key);
+// 					tmp2->key = NULL;
+// 				}
+// 				if (tmp2 && tmp2->val != NULL)
+// 				{
+// 					free(tmp2->val);
+// 					tmp2->val = NULL;
+// 				}
+// 				tmp2 = tmp2->next;
+// 				free(tmp3);
+// 				tmp3 = NULL;
+// 			}
+// 			i++;
+// 		}
+// 		free(stab_stack->stab);
+// 		tmp = stab_stack;
+// 		stab_stack = stab_stack->next;
+// 		free(tmp);
+// 		tmp = NULL;
 // 	}
 // }

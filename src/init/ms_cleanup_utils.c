@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:15 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/27 13:50:29 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/27 15:04:10 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	ft_clean_be(t_ms *ms)
 	ft_free_2d(ms->be->builtins);
 	free(ms->be->cwd);
 	ft_free_2d(ms->be->path); /* [ ] maybe rewrite due to changeable variables*/
-	ft_free_stab_stack(ms->be->global_stabs);
+	ft_free_stab(ms->be->global_stabs);
 }
 
 

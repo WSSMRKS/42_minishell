@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/27 13:50:57 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/27 15:04:32 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,10 +133,10 @@ void			ft_debug(t_ms *ms);
 /* ms_env */
 
 void			ft_init_stab(t_ms *ms);
-void			ft_free_stab_stack(t_stab_st *stab_stack);
+void			ft_free_stab(t_stab_st *stab_stack);
 void			ft_add_global_val(t_ms *ms, char *env);
 void			ft_add_local_val(t_ms *ms, char *env);
-int				ft_remove_from_stab(t_stab_st *stab_lvl, char *key);
+int				ft_rem_fr_stab(t_stab_st *stab_lvl, char *key);
 char			*ft_lookup_stab(t_stab_st *stab_lvl, char *key);
 int				ft_upd_stab_val(t_stab_st *stab_lvl, char *key, char *val);
 int				ft_make_global(t_ms *ms, char *key);

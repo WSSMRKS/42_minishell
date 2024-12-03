@@ -27,6 +27,7 @@ SRC_FILES = \
 	executor/ms_env.c \
 	executor/ms_env2.c \
 	executor/ms_env3.c \
+	executor/ms_env4.c \
 	executor/ms_error.c \
 	executor/ms_executor.c \
 	executor/ms_ex_redir.c \
