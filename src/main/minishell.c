@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 11:17:01 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/26 10:43:15 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/03 14:33:27 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,6 @@ void handle_sigint(int sig) {
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
-}
-
-// Signal handler for SIGCHLD (when child processes exit)
-void handle_sigchld(int sig) {
-    (void) sig;
-	int status;
-    pid_t pid;
-
-    // Wait for all child processes that have exited
-    while ((pid = waitpid(-1, &status, WNOHANG)) > 0) {
-        ft_printf_fd(STDERR, "\nChild process %d terminated\n", pid);
-    }
 }
 
 char	*in_file_ref(int argc, char **argv)
@@ -98,7 +86,6 @@ int	main(int argc, char **argv, char **envp)
 	sa_int.sa_flags = SA_RESTART; // Restart interrupted system calls
 	sigemptyset(&sa_int.sa_mask); // Don't block additional signals
 	sigaction(SIGINT, &sa_int, NULL);
-
 	// // Install the SIGCHLD handler
 	// struct sigaction sa_chld;
 	// sa_chld.sa_handler = handle_sigchld;
