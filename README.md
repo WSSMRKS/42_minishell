@@ -1,70 +1,92 @@
 # Minishell Project - Abstract
 
-**Minishell** is a lightweight and educational shell implementation developed in C for Ubuntu. This project, undertaken as part of the **42 School curriculum**, provides a hands-on opportunity to explore system programming concepts such as process management, file I/O, and inter-process communication. Designed to be compact yet functional, **Minishell** mimics the behavior of standard shells while offering an educational experience in low-level programming.
+**Minishell** is a lightweight and educational shell implementation developed in C for Ubuntu as part of the **42 School curriculum**. This project immerses developers in system-level programming, offering practical experience in managing processes, file descriptors, and inter-process communication. With a focus on simplicity and educational value, **Minishell** replicates essential behaviors of standard Unix shells while adhering to strict coding standards.
 
 ## Features
 
-- **Full Command Execution**: Support for executing all commands, including complex pipelines.
-- **Built-in Commands**: Fully implemented built-in commands include:
-  - `cd` – Change the current working directory.
-  - `exit` – Exit the shell gracefully.
-  - `env` – Display environment variables.
-  - `export` – Add or modify environment variables.
-  - `unset` – Remove environment variables.
-  - `echo` – Display text with support for options like `-n`.
-- **Pipes and Redirections**: 
-  - **Pipes (`|`)**: Chain multiple commands, passing output from one as input to the next, with robust handling of difficult pipeline scenarios.
-  - **Redirections (`<`, `>`, `>>`)**: Handle input and output redirection efficiently.
-- **Process Management**: Leverages `fork` and `exec` system calls to handle command execution in child processes.
-- **Environment Variable Handling**: Parse, modify, and utilize environment variables dynamically during command execution.
-- **Error Handling**: Robust handling of invalid commands, arguments, and runtime errors.
-- **Limitations**: Logical operators (`&&` and `||`) are not implemented.
+- **Prompt Display**: Provides an interactive prompt when waiting for commands.
+- **Command Execution**:
+  - Execute commands using absolute paths, relative paths, or the `PATH` environment variable.
+  - Supports advanced features such as pipelines and I/O redirections.
+- **Built-in Commands**:
+  - `echo` – Display text with the `-n` option.
+  - `cd` – Change directories using relative or absolute paths.
+  - `pwd` – Display the current working directory.
+  - `export` – Manage environment variables without options.
+  - `unset` – Remove environment variables without options.
+  - `env` – List environment variables without options.
+  - `exit` – Exit the shell with proper cleanup.
+- **Redirection Operators**:
+  - `<` – Redirect standard input.
+  - `>` – Redirect standard output.
+  - `>>` – Append to standard output.
+  - `<<` – Handle heredoc input until a specified delimiter is reached.
+- **Pipes (`|`)**: Implemented to connect commands in pipelines.
+- **Environment Variable Handling**:
+  - Expand variables prefixed with `$`.
+  - Support `$?` to reflect the exit status of the last executed pipeline.
+- **Signal Handling**:
+  - `Ctrl-C`: Interrupts the current command and displays a new prompt.
+  - `Ctrl-D`: Exits the shell.
+  - `Ctrl-\`: No action (default behavior in `bash`).
+- **Input Parsing**:
+  - Handles single (`'`) and double (`"`) quotes correctly, with double quotes allowing `$` expansion.
+  - Avoids interpreting unclosed quotes or special characters like `;` or `\`.
+- **Error Management**:
+  - Includes robust handling for invalid commands and runtime errors.
+  - Prevents undefined behavior (e.g., segmentation faults).
 
 ## Objectives
 
-- Provide an in-depth understanding of:
-  - Process creation and communication.
-  - File descriptor management.
-  - Parsing and tokenization of shell input.
-- Encourage learning through problem-solving and hands-on implementation.
-- Deliver a structured, functional shell while adhering to the constraints and goals of the **42 School** project.
+1. Develop a deeper understanding of:
+   - Process creation and management using `fork`, `exec`, and related system calls.
+   - File descriptor operations, including redirection and pipe handling.
+   - Input parsing and tokenization.
+2. Build an educational shell that adheres strictly to the **42 School's Norm** and constraints.
+3. Provide a framework to explore system programming concepts through a hands-on approach.
 
-## Why Minishell?
-
-**Minishell** is an educational tool and a stepping stone toward mastering low-level programming and Linux system interaction. It enables developers to:
-- Build a functional shell from the ground up.
-- Understand the complexities of terminal-based applications.
-- Strengthen debugging and optimization skills in C programming.
+### Current Scope
+The mandatory implementation includes:
+- Core built-ins.
+- Pipelines and redirection.
+- Proper handling of shell-specific behavior (e.g., `Ctrl+C`, environment variables).
 
 ## Development Environment
 
 - **Language**: C
 - **Platform**: Ubuntu Linux
-- **Tools**: `gcc`, `make`, and any preferred editor or IDE.
+- **Libraries**: `readline`, `ncurses` (for terminal capabilities).
+- **Compilation**:
+  - Complies with `gcc` and adheres to `-Wall -Wextra -Werror` flags.
+  - Includes a Makefile with standard rules (`all`, `clean`, `fclean`, `re`, `bonus`).
+- **Memory Management**:
+  - Ensures all heap allocations are freed (excluding known leaks in external libraries like `readline`).
 
 ## Collaboration and Credits
 
-This project is developed collaboratively by:
-- **@kjzl** – Main collaborator and contributor.
-- **@wssmrks** – Main collaborator and contributor.
-- **@dafneko** – Contributor in the early phase of the project.
-
-
-## Future Enhancements
-
-Although **Minishell** already supports pipes, redirections, and full command execution, potential extensions may include:
-- Adding job control features (e.g., background processes).
-- Enhancing compatibility with advanced shell scripting scenarios.
-- Implementing logical operators like `&&` and `||`.
+Developed collaboratively by:
+- **@kjzl** – Main contributor and collaborator.
+- **@wssmrks** – Main contributor and collaborator.
+- **@dafneko** – Contributed to initial phases.
 
 ## Contributing
 
-Contributions to the project are welcome! If you'd like to contribute:
+Contributions are welcome! To contribute:
 1. Fork the repository.
-2. Clone it to your local environment.
-3. Create a new branch for your feature or fix.
-4. Submit a pull request with a clear and detailed description of your changes.
+2. Clone your fork locally.
+3. Create a feature branch.
+4. Commit changes with clear messages.
+5. Submit a pull request for review.
 
----
+## Future Directions
 
-This README outlines the foundation and objectives of the **Minishell** project, highlighting its role as an educational endeavor for students and developers alike. Dive in, explore, and enhance your understanding of shell development with **Minishell**!
+Potential enhancements for **Minishell**:
+- Add job control (e.g., background processes with `&`).
+- Improve scripting capabilities with logical operators and advanced syntax.
+- Implement additional built-ins or custom shell features.
+- Logical operators `&&` and `||`, including precedence management using parentheses.
+- Wildcard `*` support for matching files in the current directory.
+
+## Educational Insights
+
+The project not only reinforces knowledge of shell operations but also builds expertise in debugging, memory management, and handling edge cases. Aspiring developers gain a foundation for advanced Linux programming and systems-level projects.
