@@ -21,8 +21,8 @@ int		ft_echo(t_ms *ms, t_cmd_list *curr)
 	(void) ms;
 	i = 0;
 	newline = true;
-	words = curr->cmd->words->next;
-	if (words && ft_strncmp(curr->cmd->words->next->word, "-n\0", 3) == 0)
+	words = curr->cmd.words->next;
+	if (words && ft_strncmp(curr->cmd.words->next->word, "-n\0", 3) == 0)
 	{
 		newline = false;
 		words = words->next;
@@ -41,7 +41,7 @@ int		ft_echo(t_ms *ms, t_cmd_list *curr)
 
 int		ft_pwd(t_ms *ms, t_cmd_list *curr)
 {
-	if (curr->cmd->words->next != NULL)
+	if (curr->cmd.words->next != NULL)
 	{
 		ft_printf_fd(2, "pwd: doesn't support arguments\n");
 		return (1);
@@ -56,17 +56,16 @@ int		ft_pwd(t_ms *ms, t_cmd_list *curr)
 int		ft_cd(t_ms *ms, t_cmd_list *curr)
 {
 	int	ret;
-	
 	if (!curr->cmd->words->next)
 		ret = chdir(ft_lookup_stab(ms->be->global_stabs, "HOME"));
 	else
-		ret = chdir(curr->cmd->words->next->word);
+		ret = chdir(curr->cmd.words->next->word);
 	if (ret != 0)
 	{
 		if(!curr->cmd->words->next)
 			ft_printf_fd(2, "ms: cd: %s: %s\n", ft_lookup_stab(ms->be->global_stabs, "HOME"), strerror(errno));
 		else
-			ft_printf_fd(2, "ms: cd: %s: %s\n", curr->cmd->words->next->word, strerror(errno));
+			ft_printf_fd(2, "ms: cd: %s: %s\n", curr->cmd.words->next->word, strerror(errno));
 		return (ret);
 	}
 	ms->be->cwd = getcwd(ms->be->cwd, PATH_MAX);
@@ -79,7 +78,7 @@ int		ft_cd(t_ms *ms, t_cmd_list *curr)
 int		ft_unset(t_ms *ms, t_cmd_list *curr)
 {
 	t_list_words	*words;
-	words = curr->cmd->words;
+	words = curr->cmd.words;
 	while (words)
 	{
 		ft_remove_from_stab(ms->be->global_stabs, words->word);
@@ -92,7 +91,7 @@ static int		ft_add_vars(t_ms *ms, t_cmd_list *curr)
 {
 	t_list_words *words;
 
-	words = curr->cmd->words->next;
+	words = curr->cmd.words->next;
 
 	while(words)
 	{
@@ -167,7 +166,7 @@ int		ft_export(t_ms *ms, t_cmd_list *curr)
 {
 	(void) curr;
 
-	if (curr->cmd->words->next != NULL)
+	if (curr->cmd.words->next != NULL)
 		ft_add_vars(ms, curr);
 	else
 		ft_print_alpha(ms);
@@ -182,7 +181,7 @@ int		ft_env(t_ms *ms, t_cmd_list *curr)
 	int				printed;
 	t_stab		*entry;
 
-	if (curr->cmd->words->next != NULL)
+	if (curr->cmd.words->next != NULL)
 	{
 		ft_printf_fd(2, "env: doesn't support arguments\n");
 		return (1);
@@ -234,9 +233,9 @@ int	ft_exit(t_ms *ms, t_cmd_list *curr)
 
 	ex = 0;
 	i = 0;
-	if (curr->cmd->words->next != NULL)
+	if (curr->cmd.words->next != NULL)
 	{
-		input = curr->cmd->words->next->word;
+		input = curr->cmd.words->next->word;
 		while (input && input[i])
 		{
 			if ((i == 0 && input[i] == '-') || (input[i] >= '0' && input[i] <= '9'))
