@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_executor.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
+/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 15:50:51 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/21 18:55:25 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/11/26 15:15:20 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ typedef struct s_be {
 	char			**argv;			/*no need to free*/
 	char			**envp;			/*no need to free*/
 	char			**path;			/*clear at exit*/
+	int				redir_err;		/*error in redirects*/
 	int				nb_cmds;		/*clear after every execution*/
 	int				pipes[2][2];	/*reinit after every execution*/
 	int				saved_std[2];	/*close after every execution*/

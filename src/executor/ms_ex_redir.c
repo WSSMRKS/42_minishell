@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_ex_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
+/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/25 15:48:04 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/12/03 08:53:29 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,15 @@ void	ft_infile(t_ms *ms, t_list_redir *rd)
 	if (fdin < 0)
 	{
 		ft_printf_fd(2, "%s: %s\n", rd->target.filename, strerror(errno));
-		ft_clear_ast(ms); // [ ] take care of this in case of not a child!!
-		ft_clear_be(ms); // [ ] take care of this in case of not a child!!
-		ft_cleanup_exit(ms, errno);
+		if (ms->cmds->cmd.builtin == 0 && ms->be->nb_cmds == 1)
+		{
+			ft_clear_ast(ms); // [ ] take care of this in case of not a child!!
+			ft_clear_be(ms); // [ ] take care of this in case of not a child!!
+			ft_cleanup_exit(ms, errno);
+		}
+		else
+			ms->be->redir_err = 1;
+		return ;
 	}
 	// if (ms->cmds->cmd->flags & IS_BUILTIN == IS_BUILTIN)
 	// 		ms->be->saved_std[0] = dup(STDIN_FILENO);
@@ -48,9 +54,15 @@ void	ft_outfile(t_ms *ms, t_list_redir *rd, int mode)
 	if (fdout < 0)
 	{
 		ft_printf_fd(2, "%s: %s\n", rd->target.filename, strerror(errno));
-		ft_clear_ast(ms); // [ ] take care of this in case of not a child!!
-		ft_clear_be(ms); // [ ] take care of this in case of not a child!!
-		ft_cleanup_exit(ms, errno);
+		if (ms->cmds->cmd.builtin == 0 && ms->be->nb_cmds == 1)
+		{
+			ft_clear_ast(ms); // [ ] take care of this in case of not a child!!
+			ft_clear_be(ms); // [ ] take care of this in case of not a child!!
+			ft_cleanup_exit(ms, errno);
+		}
+		else
+			ms->be->redir_err = 1;
+		return ;
 	}
 	if (rd->rightmost == true)
 		dup2(fdout, STDOUT_FILENO);
@@ -88,5 +100,7 @@ void	ft_redir_handler(t_ms *ms, t_cmd_list *curr, int i)
 			curr->cmd.prio_in = 0;
 			rd = curr->cmd.redir;
 		}
+		if (ms->be->redir_err != 0)
+			break ;
 	}
 }

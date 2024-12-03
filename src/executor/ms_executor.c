@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/26 10:33:33 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/27 12:13:15 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,11 +131,6 @@ int	ft_builtin(t_ms *ms, t_cmd_list *curr)
 		ret = ft_status(ms, curr);
 	else if (curr->cmd.builtin_nr == 9)
 		ret = ft_resize(ms, curr);
-
-	dup2(ms->be->saved_std[0], STDIN_FILENO);
-	close(ms->be->saved_std[0]);
-	dup2(ms->be->saved_std[1], STDOUT_FILENO);
-	close(ms->be->saved_std[1]);
 	return (ret);
 }
 
@@ -236,7 +231,14 @@ void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i)
 	}
 	else if (curr->cmd.builtin && ms->be->nb_cmds == 1)
 	{
+	if(ms->be->redir_err == 0)
+	{
 		ms->be->last_ret = ft_builtin(ms, curr);
+		dup2(ms->be->saved_std[0], STDIN_FILENO);
+		dup2(ms->be->saved_std[1], STDOUT_FILENO);
+	}
+	close(ms->be->saved_std[0]);
+	close(ms->be->saved_std[1]);
 	}
 	if (*i > 0 && ms->be->child_pids[*i] != 0)
 		ft_pipe_reset(ms, i);
