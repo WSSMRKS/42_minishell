@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/26 10:22:14 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/03 14:08:47 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,8 +128,6 @@ static bool	cmdlist_has_heredoc(t_cmd_list *cmds)
 
 static t_ms_status	evaluate(t_ms *ms)
 {
-	// if (ms->cmds && ms->cmds->cmd && strcmp("exit", ms->cmds->cmd->argv[0]) == 0)
-	// 	return (MS_EOF);
 	if (ms->cmds)
 	{
 		ms->global_flags = cmdlist_has_heredoc(ms->cmds);
