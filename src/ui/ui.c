@@ -128,8 +128,6 @@ static bool	cmdlist_has_heredoc(t_cmd_list *cmds)
 
 static t_ms_status	evaluate(t_ms *ms)
 {
-	// if (ms->cmds && ms->cmds->cmd && strcmp("exit", ms->cmds->cmd->argv[0]) == 0)
-	// 	return (MS_EOF);
 	if (ms->cmds)
 	{
 		ms->global_flags = cmdlist_has_heredoc(ms->cmds);
