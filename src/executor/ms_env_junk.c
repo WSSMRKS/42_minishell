@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/27 15:03:40 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/03 15:53:36 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,8 @@ functionality:
 // 	return (0);
 // }
 
-// /* function to print the contents of either the local or the global symbol table
+// /* function to print the contents of either the local
+// or the global symbol table
 // functionality:
 // 1. Traverse the selected symbol table and print the key and val
 // */

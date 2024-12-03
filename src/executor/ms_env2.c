@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/03 15:44:44 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/03 15:52:44 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ void	ft_init_stab(t_ms *ms)
 	ms->be->global_stabs->load_factor = 0;
 	ms->be->global_stabs->level = 1;
 	ms->be->global_stabs->stab = ft_calloc(sizeof(char *),
-	ms->be->global_stabs->size);
+			ms->be->global_stabs->size);
 	i = 0;
 	while (env[i])
 	{
