@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/03 14:08:47 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/27 13:04:52 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static char	*get_prompt(t_ms *ms)
 
 	out = str_clone_from(cstr_slice("ms/", 3));
 	str_pushstr(&out, cstr_view(GREEN));
-	user = cstr_view(ft_lookup_symtab(ms->be->global_symtabs, "USER"));
+	user = cstr_view(ft_lookup_stab(ms->be->global_stabs, "USER"));
 	if (user.len == 0)
 		user = cstr_slice("?", 1);
 	user_home = str_clone_from(cstr_slice("/home/", 6));
@@ -58,7 +58,7 @@ static char	*get_prompt(t_ms *ms)
 	str_pushstr(&out, cstr_view(WHITE));
 	str_push(&out, ':');
 	str_pushstr(&out, cstr_view(GREEN));
-	pwd = str_clone_from(cstr_view(ft_lookup_symtab(ms->be->global_symtabs, "PWD")));
+	pwd = str_clone_from(cstr_view(ft_lookup_stab(ms->be->global_stabs, "PWD")));
 	if (pwd.len == 0)
 		str_push(&out, '?');
 	if (str_starts_with(&pwd, &user_home))
@@ -96,12 +96,12 @@ static char *read_input(bool append_mode, void *data)
 	return (input);
 }
 
-static t_symtab_stack	*get_symtab(void *data)
+static t_stab_st	*get_stab(void *data)
 {
 	t_ms	*ms;
 
 	ms = (t_ms *)data;
-	return (ms->be->global_symtabs);
+	return (ms->be->global_stabs);
 }
 
 static int	get_last_ret(void *data)
@@ -142,7 +142,7 @@ void	repl(int argc, char **argv, char **envp)
 	t_ms		ms;
 	t_ms_status	status;
 
-	ms.parser = parser_init(&ms, read_input, get_symtab, get_last_ret);
+	ms.parser = parser_init(&ms, read_input, get_stab, get_last_ret);
 	ft_init_ms(&ms);
 	ft_init_be(&ms, argc, argv, envp);
 	while (true) // read eval print loop REPL

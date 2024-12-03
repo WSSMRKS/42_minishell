@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:15 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/26 10:22:07 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/27 13:50:29 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	ft_clean_be(t_ms *ms)
 	ft_free_2d(ms->be->builtins);
 	free(ms->be->cwd);
 	ft_free_2d(ms->be->path); /* [ ] maybe rewrite due to changeable variables*/
-	ft_free_symtab_stack(ms->be->global_symtabs);
+	ft_free_stab_stack(ms->be->global_stabs);
 }
 
 
@@ -146,4 +146,13 @@ void	ft_cleanup_exit(t_ms *ms, int ex)
 	free(ms->be);
 	ms->be = NULL;
 	exit(ex);
+}
+
+void	ft_mprotect(void *subject)
+{
+	if (!subject)
+	{
+		ft_printf_fd(STDERR_FILENO, "malloc fail");
+		exit(ENOMEM);
+	}
 }

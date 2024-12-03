@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
+/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/25 18:57:37 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/11/27 13:50:57 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,17 @@ in minishell.h */
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#define RED     "\001\033[31m\002"
-#define GREEN   "\001\033[32m\002"
-#define YELLOW  "\001\033[33m\002"
-#define BLUE    "\001\033[34m\002"
-#define MAGENTA "\001\033[35m\002"
-#define CYAN    "\001\033[36m\002"
-#define WHITE   "\001\033[37m\002"
-#define RESET   "\001\033[0m\002"
+# define RED     "\001\033[31m\002"
+# define GREEN   "\001\033[32m\002"
+# define YELLOW  "\001\033[33m\002"
+# define BLUE    "\001\033[34m\002"
+# define MAGENTA "\001\033[35m\002"
+# define CYAN    "\001\033[36m\002"
+# define WHITE   "\001\033[37m\002"
+# define RESET   "\001\033[0m\002"
 
 # ifndef NO_DEBUG
-#  define NO_DEBUG (0)
+#  define NO_DEBUG 0
 # endif
 
 # ifdef NO_DEBUG
@@ -48,7 +48,7 @@ in minishell.h */
 # include <stdbool.h>
 # include <signal.h>
 # include "../libft/libft.h"
-# include "ms_symtab.h"
+# include "ms_stab.h"
 # include "ms_parsing.h"
 # include "ms_garbage.h"
 # include "ms_executor.h"
@@ -56,7 +56,8 @@ in minishell.h */
 
 /* minishell struct. Main struct that is passed throughout the whole program.
 	global flags: 1 = heredoc present	*/
-typedef struct s_ms {
+typedef struct s_ms
+{
 	t_parser	parser;
 	t_cmd_list	*cmds;
 	bool		global_flags;
@@ -76,6 +77,7 @@ void			clean_garbage(void);
 void			ft_lsthdgbdelone(t_list_hdfiles *lst, void (*del)(void *));
 void			ft_delfree_hdgb(t_list_hdfiles **lst, void (*del)(void *));
 void			ft_cleanup_exit(t_ms *ms, int ex);
+void			ft_mprotect(void *subject);
 
 /* ms_executor */
 
@@ -120,7 +122,7 @@ void			ft_init_be(t_ms *ms, int argc, char **argv, char **envp);
 
 /* ms_ui */
 
-void	repl(int argc, char **argv, char **envp);
+void			repl(int argc, char **argv, char **envp);
 
 /* ms_debug */
 
@@ -130,25 +132,25 @@ void			ft_debug(t_ms *ms);
 
 /* ms_env */
 
-void			ft_init_symtab(t_ms *ms);
-void			ft_free_symtab_stack(t_symtab_stack *symtab_stack);
-void			ft_add_global_value(t_ms *ms, char *env);
-void			ft_add_local_value(t_ms *ms, char *env);
-int				ft_remove_from_symtab(t_symtab_stack *symtab_lvl, char *key);
-char			*ft_lookup_symtab(t_symtab_stack *symtab_lvl, char *key);
-int				ft_update_symtab_value(t_symtab_stack *symtab_lvl, char *key, char *value);
+void			ft_init_stab(t_ms *ms);
+void			ft_free_stab_stack(t_stab_st *stab_stack);
+void			ft_add_global_val(t_ms *ms, char *env);
+void			ft_add_local_val(t_ms *ms, char *env);
+int				ft_remove_from_stab(t_stab_st *stab_lvl, char *key);
+char			*ft_lookup_stab(t_stab_st *stab_lvl, char *key);
+int				ft_upd_stab_val(t_stab_st *stab_lvl, char *key, char *val);
 int				ft_make_global(t_ms *ms, char *key);
-char			**ft_update_envp_runtime(char **envp, char *key, char *value);
+char			**ft_update_envp_runtime(char **envp, char *key, char *val);
 char			**ft_create_envp(t_ms *ms);
-void			ft_print_symtab(t_ms *ms, int lvl);
-unsigned long	ft_hash_function(t_symtab_stack *current_symtab, char *key);
-void			ft_resize_symtab(t_ms *ms, t_symtab_stack **symtab_lvl);
-void			ft_add_to_symtab(t_ms *ms, t_symtab_stack *symtab_lvl, char *key, char *value);
-void			ft_add_local_symtab(t_ms *ms);
-int				ft_calc_symtab_size(int size);
+void			ft_print_stab(t_ms *ms, int lvl);
+unsigned long	ft_hash_function(t_stab_st *current_stab, char *key);
+void			ft_resize_stab(t_ms *ms, t_stab_st **stab_lvl);
+void			ft_add_to_stab(t_ms *ms, t_stab_st *stab_lvl, char *key, char *val);
+void			ft_add_local_stab(t_ms *ms);
+int				ft_calc_stab_size(int size);
 int				ft_is_prime(int n);
-void			ft_add_value(t_ms *ms, char *env);
-char			*ft_lookup_key(t_symtab_stack *symtab_lvl, char *key);
+void			ft_add_val(t_ms *ms, char *env);
+char			*ft_lookup_key(t_stab_st *stab_lvl, char *key);
 char			*ft_validate_var(char *key);
 
 

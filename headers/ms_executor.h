@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 15:50:51 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/26 15:15:20 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/11/27 13:05:43 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@ typedef struct s_be {
 	int				pipes[2][2];	/*reinit after every execution*/
 	int				saved_std[2];	/*close after every execution*/
 	int				*child_pids;	/*clear after every execution, realloc after every execution*/
-	int				*child_ret;		/*return values of the childs*/
-	int				last_ret;		/*return value of the last command*/
+	int				*child_ret;		/*return vals of the childs*/
+	int				last_ret;		/*return val of the last command*/
 	char			**builtins;		/*clear at exit*/
 	char			*cwd;			/*clear at exit*/
-	t_symtab_stack	*global_symtabs;
-	t_symtab		*alphabetic_vars;
+	t_stab_st	*global_stabs;
+	t_stab		*alphabetic_vars;
 }				t_be;
 
 #endif

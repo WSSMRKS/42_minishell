@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 11:16:12 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/26 10:17:30 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/03 14:35:06 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,33 +56,32 @@ int		ft_pwd(t_ms *ms, t_cmd_list *curr)
 int		ft_cd(t_ms *ms, t_cmd_list *curr)
 {
 	int	ret;
-
 	if (!curr->cmd.words->next)
-		ret = chdir(ft_lookup_symtab(ms->be->global_symtabs, "HOME"));
+		ret = chdir(ft_lookup_stab(ms->be->global_stabs, "HOME"));
 	else
 		ret = chdir(curr->cmd.words->next->word);
 	if (ret != 0)
 	{
 		if(!curr->cmd.words->next)
-			ft_printf_fd(2, "ms: cd: %s: %s\n", ft_lookup_symtab(ms->be->global_symtabs, "HOME"), strerror(errno));
+			ft_printf_fd(2, "ms: cd: %s: %s\n", ft_lookup_stab(ms->be->global_stabs, "HOME"), strerror(errno));
 		else
 			ft_printf_fd(2, "ms: cd: %s: %s\n", curr->cmd.words->next->word, strerror(errno));
 		return (ret);
 	}
 	ms->be->cwd = getcwd(ms->be->cwd, PATH_MAX);
-	ft_update_symtab_value(ms->be->global_symtabs, "PWD", ms->be->cwd);
+	ft_upd_stab_val(ms->be->global_stabs, "PWD", ms->be->cwd);
 	ft_memset(ms->be->cwd, '\0', PATH_MAX);
 	return (0);
 }
 
-/*all cases where unset returns a return value other then 0 are not part of the minishell scope.*/
+/*all cases where unset returns a return val other then 0 are not part of the minishell scope.*/
 int		ft_unset(t_ms *ms, t_cmd_list *curr)
 {
 	t_list_words	*words;
 	words = curr->cmd.words;
 	while (words)
 	{
-		ft_remove_from_symtab(ms->be->global_symtabs, words->word);
+		ft_remove_from_stab(ms->be->global_stabs, words->word);
 		words = words->next;
 	}
 	return (0);
@@ -96,7 +95,7 @@ static int		ft_add_vars(t_ms *ms, t_cmd_list *curr)
 
 	while(words)
 	{
-		ft_add_global_value(ms, words->word);
+		ft_add_global_val(ms, words->word);
 		words = words->next;
 	}
 	return (0);
@@ -104,13 +103,13 @@ static int		ft_add_vars(t_ms *ms, t_cmd_list *curr)
 
 static void		ft_extract_keys(t_ms *ms, int lvl, char **sorted_array)
 {
-	t_symtab_stack		*tmp;
-	t_symtab			*tmp2;
+	t_stab_st		*tmp;
+	t_stab			*tmp2;
 	int					i;
 	int					j;
 
 	j = 0;
-	tmp = ms->be->global_symtabs;
+	tmp = ms->be->global_stabs;
 	while (tmp)
 	{
 		if (tmp->level == lvl)
@@ -118,7 +117,7 @@ static void		ft_extract_keys(t_ms *ms, int lvl, char **sorted_array)
 			i = 0;
 			while (i < tmp->size)
 			{
-				tmp2 = tmp->symtab[i];
+				tmp2 = tmp->stab[i];
 				while (tmp2 != NULL)
 				{
 					sorted_array[j++] = tmp2->key;
@@ -139,9 +138,9 @@ static int ft_strcmp_handler(const void *ptr1, const void *ptr2)
 
 /*
 Functionality:
-- extract all the values in the hash table to an array. (without mallocing the keys&values)
+- extract all the vals in the hash table to an array. (without mallocing the keys&vals)
 - sort the array
-- call ft_lookup value to print one after the other.
+- call ft_lookup val to print one after the other.
 */
 static void	ft_print_alpha(t_ms *ms)
 {
@@ -149,15 +148,15 @@ static void	ft_print_alpha(t_ms *ms)
 	int		i;
 
 	i = 0;
-	sorted_array = ft_calloc(sizeof(char*), ms->be->global_symtabs->used + 1);
+	sorted_array = ft_calloc(sizeof(char*), ms->be->global_stabs->used + 1);
 	ft_extract_keys(ms, 1, sorted_array);
-	arr_qsort(sorted_array, ms->be->global_symtabs->used, sizeof(char*), ft_strcmp_handler);
+	arr_qsort(sorted_array, ms->be->global_stabs->used, sizeof(char*), ft_strcmp_handler);
 	while(sorted_array[i])
 	{
-		if (ft_lookup_symtab(ms->be->global_symtabs, sorted_array[i]) == NULL)
+		if (ft_lookup_stab(ms->be->global_stabs, sorted_array[i]) == NULL)
 			printf("declare -x %s\n", sorted_array[i]);
 		else
-			printf("declare -x %s=\"%s\"\n", sorted_array[i], ft_lookup_symtab(ms->be->global_symtabs, sorted_array[i]));
+			printf("declare -x %s=\"%s\"\n", sorted_array[i], ft_lookup_stab(ms->be->global_stabs, sorted_array[i]));
 		i++;
 	}
 	free(sorted_array);
@@ -177,10 +176,10 @@ int		ft_export(t_ms *ms, t_cmd_list *curr)
 /* env is not printing empty variables!!*/
 int		ft_env(t_ms *ms, t_cmd_list *curr)
 {
-	t_symtab_stack	*global_symtab;
+	t_stab_st	*global_stab;
 	int				i;
 	int				printed;
-	t_symtab		*entry;
+	t_stab		*entry;
 
 	if (curr->cmd.words->next != NULL)
 	{
@@ -189,16 +188,16 @@ int		ft_env(t_ms *ms, t_cmd_list *curr)
 	}
 	i = 0;
 	printed = 0;
-	global_symtab = ms->be->global_symtabs;
-	while(printed < global_symtab->used)
+	global_stab = ms->be->global_stabs;
+	while(printed < global_stab->used)
 	{
-		if (global_symtab->symtab[i] != NULL)
+		if (global_stab->stab[i] != NULL)
 		{
-			entry = global_symtab->symtab[i];
+			entry = global_stab->stab[i];
 			while(entry)
 			{
-				if(entry->value != NULL)
-					printf("%s=%s\n", entry->key, entry->value);
+				if(entry->val != NULL)
+					printf("%s=%s\n", entry->key, entry->val);
 				printed++;
 				entry = entry->next;
 			}
@@ -222,7 +221,7 @@ int		ft_status(t_ms *ms, t_cmd_list *curr)
 int		ft_resize(t_ms *ms, t_cmd_list *curr)
 {
 	(void) curr;
-	ft_resize_symtab(ms, &ms->be->global_symtabs);
+	ft_resize_stab(ms, &ms->be->global_stabs);
 	return (0);
 }
 

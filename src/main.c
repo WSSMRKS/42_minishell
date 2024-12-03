@@ -1,43 +1,43 @@
 #include "../headers/minishell.h"
 #include <stdio.h>
 
-void	symtab_add_value(t_ms *ms, t_symtab_stack *st, char *env)
+void	stab_add_val(t_ms *ms, t_stab_st *st, char *env)
 {
 	char	*key;
-	char	*value;
+	char	*val;
 	int		i;
 
 	i = 0;
 	while (env[i] && env[i] != '=')
 		i++;
 	key = ft_substr(env, 0, i);
-	value = ft_strdup(&env[i + 1]);
-	if (ft_lookup_symtab(st, key) != NULL)
+	val = ft_strdup(&env[i + 1]);
+	if (ft_lookup_stab(st, key) != NULL)
 	{
-		ft_update_symtab_value(st, key, value);
-		free(value);
+		ft_upd_stab_val(st, key, val);
+		free(val);
 		free(key);
 	}
 	else
-		ft_add_to_symtab(ms, st, key, value);
+		ft_add_to_stab(ms, st, key, val);
 }
 
-t_symtab_stack	init_symtab(char **envp)
+t_stab_st	init_stab(char **envp)
 {
 	size_t			i;
-	t_symtab_stack	st;
+	t_stab_st	st;
 
 	i = 0;
 	while (envp[i])
 		i++;
-	st = (t_symtab_stack){0};
-	st.size = ft_calc_symtab_size(i);
+	st = (t_stab_st){0};
+	st.size = ft_calc_stab_size(i);
 	st.load_factor = 0;
 	st.level = 1;
-	st.symtab = ft_calloc(sizeof(char *), st.size);
+	st.stab = ft_calloc(sizeof(char *), st.size);
 	i = 0;
 	while (envp[i])
-		symtab_add_value(&st, envp[i++]);
+		stab_add_val(&st, envp[i++]);
 	return (st);
 }
 
@@ -77,13 +77,13 @@ int	main(int argc, char **argv, char **envp)
 	t_vec			tokens;
 	t_vec			tmp;
 	t_vec			ast;
-	t_symtab_stack	st;
+	t_stab_st	st;
 	t_cmd_list		*cmd_list;
 
 	(void)argc;
 	(void)argv;
 	(void)envp;
-	st = init_symtab(envp);
+	st = init_stab(envp);
 
 	tokens = vec_empty(sizeof(t_token));
 	while (1)

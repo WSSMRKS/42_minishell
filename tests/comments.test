@@ -26,7 +26,7 @@ echo hi9 \
 #this comment should be ignored due to line continuation
     echo hi10
 echo "multiple # # # hashes" #final comment
-export TEST="value #not a comment" #this is a comment
+export TEST="val #not a comment" #this is a comment
 echo $TEST
 echo "$TEST"
 echo '$TEST'

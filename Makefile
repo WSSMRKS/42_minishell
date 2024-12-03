@@ -21,10 +21,12 @@ SRC_FILES = \
 	ui/parse/parser.c \
 	ui/ast.c \
 	ui/ui.c \
-	executor/ms_env.c \
 	main/minishell.c \
 	init/ms_cleanup_utils.c \
 	init/ms_init.c \
+	executor/ms_env.c \
+	executor/ms_env2.c \
+	executor/ms_env3.c \
 	executor/ms_error.c \
 	executor/ms_executor.c \
 	executor/ms_ex_redir.c \
@@ -36,7 +38,7 @@ HEADER_FILES = minishell.h \
 	ms_parsing.h \
 	ms_executor.h \
 	ms_garbage.h \
-	ms_symtab.h \
+	ms_stab.h \
 	tokenizer.h
 SRC = $(addprefix $(SRCDIR), $(SRC_FILES))
 HEADERS = $(addprefix $(HDRDIR), $(HEADER_FILES))

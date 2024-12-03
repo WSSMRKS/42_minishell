@@ -1,7 +1,7 @@
 {
 	"files.associations": {
 		"string.h": "c",
-		"ms_symtab.h": "c",
+		"ms_stab.h": "c",
 		"ms_executor.h": "c",
 		"tokenization.h": "c"
 	}
