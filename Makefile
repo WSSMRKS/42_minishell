@@ -23,6 +23,8 @@ SRC_FILES = \
 	ui/ui.c \
 	main/minishell.c \
 	init/ms_cleanup_utils.c \
+	init/ms_cleanup_utils2.c \
+	init/ms_cleanup_utils3.c \
 	init/ms_init.c \
 	executor/ms_env.c \
 	executor/ms_env2.c \
