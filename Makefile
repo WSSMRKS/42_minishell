@@ -32,7 +32,6 @@ SRC_FILES = \
 	executor/ms_executor.c \
 	executor/ms_ex_redir.c \
 	executor/ms_heredoc.c \
-	executor/ms_parenting.c \
 	builtins/ms_cd.c \
 	builtins/ms_echo.c \
 	builtins/ms_env.c \

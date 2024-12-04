@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/03 14:34:48 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/04 19:03:00 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,9 @@ void	ft_infile(t_ms *ms, t_list_redir *rd)
 			ms->be->redir_err = 1;
 		return ;
 	}
-	// if (ms->cmds->cmd->flags & IS_BUILTIN == IS_BUILTIN)
-	// 		ms->be->saved_std[0] = dup(STDIN_FILENO);
-	// 	ms->be->saved_std[1] = dup(STDOUT_FILENO);
 	if (rd->rightmost == true)
 		dup2(fdin, STDIN_FILENO);
 	close(fdin);
-}
-
-void	ft_inpipe(t_ms *ms, int i)
-{
-	dup2(ms->be->pipes[(i-1) & 1][0], STDIN_FILENO);
 }
 
 void	ft_outfile(t_ms *ms, t_list_redir *rd, int mode)
@@ -56,8 +48,8 @@ void	ft_outfile(t_ms *ms, t_list_redir *rd, int mode)
 		ft_printf_fd(2, "%s: %s\n", rd->target.filename, strerror(errno));
 		if (ms->cmds->cmd.builtin == 0 && ms->be->nb_cmds == 1)
 		{
-			ft_clear_ast(ms); // [ ] take care of this in case of not a child!!
-			ft_clear_be(ms); // [ ] take care of this in case of not a child!!
+			ft_clear_ast(ms);
+			ft_clear_be(ms);
 			ft_cleanup_exit(ms, errno);
 		}
 		else
@@ -69,9 +61,12 @@ void	ft_outfile(t_ms *ms, t_list_redir *rd, int mode)
 	close(fdout);
 }
 
-void	ft_outpipe(t_ms *ms, int i)
+void	ft_create_pipeline(t_ms *ms, t_cmd_list *curr, int i)
 {
-	dup2(ms->be->pipes[i & 1][1], STDOUT_FILENO);
+	if (i > 0)
+		dup2(ms->be->pipes[(i - 1) & 1][0], STDIN_FILENO);
+	if (curr->next != NULL)
+		dup2(ms->be->pipes[i & 1][1], STDOUT_FILENO);
 }
 
 void	ft_redir_handler(t_ms *ms, t_cmd_list *curr, int i)
@@ -79,10 +74,7 @@ void	ft_redir_handler(t_ms *ms, t_cmd_list *curr, int i)
 	t_list_redir	*rd;
 
 	curr->cmd.prio_in = 1;
-	if (i > 0)
-		ft_inpipe(ms, i);
-	if (curr->next != NULL)
-		ft_outpipe(ms, i);
+	ft_create_pipeline(ms, curr, i);
 	rd = curr->cmd.redir;
 	while (rd)
 	{
