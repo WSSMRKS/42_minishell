@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/04 14:59:37 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/04 15:54:20 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,10 +127,6 @@ int	ft_builtin(t_ms *ms, t_cmd_list *curr)
 		ret = ft_env(ms, curr);
 	else if (curr->cmd.builtin_nr == 7)
 		ret = ft_exit(ms, curr);
-	else if (curr->cmd.builtin_nr == 8)
-		ret = ft_status(ms, curr);
-	else if (curr->cmd.builtin_nr == 9)
-		ret = ft_resize(ms, curr);
 	return (ret);
 }
 

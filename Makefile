@@ -33,7 +33,14 @@ SRC_FILES = \
 	executor/ms_ex_redir.c \
 	executor/ms_heredoc.c \
 	executor/ms_parenting.c \
-	executor/ms_builtins.c
+	builtins/ms_cd.c \
+	builtins/ms_echo.c \
+	builtins/ms_env.c \
+	builtins/ms_exit.c \
+	builtins/ms_export.c \
+	builtins/ms_pwd.c \
+	builtins/ms_unset.c
+
 # debug/debug.c
 HEADER_FILES = minishell.h \
 	ms_parsing.h \
