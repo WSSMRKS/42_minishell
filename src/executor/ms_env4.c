@@ -6,20 +6,23 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/27 15:07:42 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/04 15:39:05 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
 
-/* function that updates a val in the stab
-functionality:
-1. Calculate the hash val of the key
-2. If the position in the symbol table is empty, return 1
-3. If the position in the symbol table is not empty,
-traverse the linked list and update the val
-4. Return 0
-*/
+/// @brief Update a value in the symbol table.
+///        Functionality:
+///        1. Calculate the hash value of the key.
+///        2. If the position in the symbol table is empty, return 1.
+///        3. If the position in the symbol table is not empty,
+///           traverse the linked list and update the value if the key matches.
+///        4. Return 0 if the value was successfully updated, 1 otherwise.
+/// @param stab_lvl Pointer to the symbol table structure.
+/// @param key The key string whose value needs to be updated.
+/// @param val The new value string to assoc. with the key. If NULL, no update.
+/// @return 0 if the value was successfully updated, 1 if the key was not found.
 int	ft_upd_stab_val(t_stab_st *stab_lvl, char *key, char *val)
 {
 	unsigned long	hash;
@@ -45,11 +48,12 @@ int	ft_upd_stab_val(t_stab_st *stab_lvl, char *key, char *val)
 	return (1);
 }
 
-/* function to free the whole stab_stack
-functionality:
-1. Traverse the symbol table stack and free the symbol table
-2. Free the symbol table stack
-*/
+/// @brief Free the entire symbol table stack.
+///        Functionality:
+///        1. Traverse the symbol table stack and free all entries.
+///        2. Free the symbol table stack array and the stack structure itself.
+/// @param stab_stack Pointer to the symbol table stack to be freed.
+/// @return Void. The symbol table stack and its contents are deallocated.
 void	ft_free_stab(t_stab_st *stab_stack)
 {
 	t_stab			*tmp2;

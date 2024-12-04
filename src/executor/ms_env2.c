@@ -6,12 +6,21 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/03 15:52:44 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/04 15:39:46 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
 
+/// @brief Extract the key and value from an environmental variable string.
+///        Functionality:
+///        1. Find the position of the '=' character.
+///        2. Create the key as a substring up to the '='.
+///        3. Create the value as a substring after the '='
+///        or handle NULL values appropriately.
+/// @param env The environmental variable string in the form "KEY=VALUE".
+/// @param key Pointer to store the extracted key.
+/// @param val Pointer to store the extracted value.
 void	ft_extr_key_val(char *env, char **key, char **val)
 {
 	int			i;
@@ -35,17 +44,14 @@ void	ft_extr_key_val(char *env, char **key, char **val)
 	ft_mprotect((void *)*key);
 }
 
-/* function to add a new val to the environmental variables
-functionality:
-1. Find the position of the equal sign in the string
-2. Create a new string with the key
-3. Create a new string with the val
-4. Check if the load factor is greater than 0.7
-5. If the load factor is greater than 0.7, resize the symbol table
-6. Increment the used variable
-7. Calculate the new load factor
-8. Add the val to the symbol table
-*/
+/// @brief Add a new value to the global environmental variables.
+///        Functionality:
+///        1. Extract the key and value from the input string.
+///        2. Validate the key as a valid identifier.
+///        3. Check if the key exists; update or add it to the
+///        global symbol table.
+/// @param ms Pointer to the main structure containing global states.
+/// @param env The environmental variable string to be added.
 void	ft_add_global_val(t_ms *ms, char *env)
 {
 	char		*key;
@@ -69,14 +75,16 @@ void	ft_add_global_val(t_ms *ms, char *env)
 		ft_add_to_stab(ms, ms->be->global_stabs, key, val);
 }
 
-/* function to add a new val to the symbol table
-functionality:
-1. Calculate the hash val of the key
-2. Create a new symbol table entry
-3. If the position in the symbol table is empty, add the val
-4. If the position in the symbol table is not empty,
-traverse the linked list and add the val
-*/
+/// @brief Add a new key-value pair to the symbol table.
+///        Functionality:
+///        1. Calculate the hash value of the key.
+///        2. Create a new entry in the symbol table.
+///        3. Add the entry to the table or its linked list.
+///        4. Update the load factor and resize if necessary.
+/// @param ms Pointer to the main structure.
+/// @param stab_lvl The symbol table to which the key-value pair is added.
+/// @param key The key string.
+/// @param val The value string.
 void	ft_add_to_stab(t_ms *ms, t_stab_st *stab_lvl, char *key, char *val)
 {
 	unsigned long	hash;
@@ -105,6 +113,12 @@ void	ft_add_to_stab(t_ms *ms, t_stab_st *stab_lvl, char *key, char *val)
 		ft_resize_stab(ms, &stab_lvl);
 }
 
+/// @brief Set the $SHELL variable using the current PWD and filename.
+///        Functionality:
+///        1. Retrieve the current PWD and the program's filename.
+///        2. Construct the $SHELL variable and update its value.
+///        3. Handle errors if the required variables are missing.
+/// @param ms Pointer to the main structure containing global states.
 void	ft_set_shell(t_ms *ms)
 {
 	char	*pwd;
@@ -125,15 +139,14 @@ void	ft_set_shell(t_ms *ms)
 	free(shell);
 }
 
-/* function to initialize the environmental variables
-functionality:
-1. Create a new symbol table stack
-2. Find the next prime number
-3. Initialize the size of the symbol table
-4. Initialize the load factor
-5. Initialize the symbol table
-6. Traverse the environmental variables and add them to the symbol table
-*/
+/// @brief Initialize the global environmental variables symbol table.
+///        Functionality:
+///        1. Create a new symbol table.
+///        2. Calculate the appropriate size (next prime number).
+///        3. Initialize symbol table properties and allocate memory.
+///        4. Traverse the environmental variables and add them to the table.
+///        5. Set the $SHELL variable.
+/// @param ms Pointer to the main structure containing global states.
 void	ft_init_stab(t_ms *ms)
 {
 	int		i;

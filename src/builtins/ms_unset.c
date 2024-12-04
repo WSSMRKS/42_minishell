@@ -1,32 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_error.c                                         :+:      :+:    :+:   */
+/*   ms_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/10 23:52:06 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/04 19:25:53 by maweiss          ###   ########.fr       */
+/*   Created: 2024/12/04 15:49:59 by maweiss           #+#    #+#             */
+/*   Updated: 2024/12/04 15:52:27 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
 
-void	ft_wait_error(t_ms *ms)
+int	ft_unset(t_ms *ms, t_cmd_list *curr)
 {
-	int				i;
-	t_cmd_list		*curr;
+	t_list_words	*words;
 
-	curr = ms->cmds;
-	i = 0;
-	while (i < ms->be->nb_cmds)
+	words = curr->cmd.words;
+	while (words)
 	{
-		ms->be->child_ret[i] = 0;
-		waitpid(ms->be->child_pids[i], &(ms->be->child_ret[i]), 0);
-		if (WIFEXITED(ms->be->child_ret[i]))
-			ms->be->child_ret[i] = WEXITSTATUS(ms->be->child_ret[i]);
-		curr = curr->next;
-		i++;
+		ft_rem_fr_stab(ms->be->global_stabs, words->word);
+		words = words->next;
 	}
-	ms->be->last_ret = ms->be->child_ret[ms->be->nb_cmds - 1];
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/26 11:50:21 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/04 19:24:53 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	ft_garbage_add(char *filename, t_ms *ms)
 	t_list_hdfiles	*curr;
 
 	i = 1;
-
 	curr = ms->be->garbage->heredoc;
 	if (ms->be->garbage->nb_heredocs == 0)
 	{
@@ -73,34 +72,32 @@ char	*ft_tmp_name(t_ms *ms, int *fd)
 	return (filename);
 }
 
-void	ft_hd_input(t_list_redir *curr, t_ms *ms)
+void	ft_hd_input(t_list_redir *cl, t_ms *ms)
 {
-	char		*line;
+	char		*l;
+	int			l_nb;
 	int			ldel;
 	int			fd;
-	int			line_nb;
 
-	line_nb = 0;
-	ldel = ft_strlen(curr->hd_del);
-	while (1)
+	l_nb = 0;
+	ldel = ft_strlen(cl->hd_del);
+	while (true)
 	{
-		line = readline("> ");
-		if (!curr->target.filename)
-			curr->target.filename = ft_tmp_name(ms, &fd);
-		if (!line)
-		{
-			printf("minishell: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", line_nb, curr->hd_del);
-			break;
-		}
-		if (ft_strncmp(curr->hd_del, line, ldel) == 0 && (int) ft_strlen(line) == ldel)
+		l = readline("> ");
+		if (!cl->target.filename)
+			cl->target.filename = ft_tmp_name(ms, &fd);
+		if (!l && ft_printf_fd(2, "minishell: warning: here-document at line %d \
+delimited by end-of-file (wanted `%s')\n", l_nb, cl->hd_del) != 0)
 			break ;
-		if ((ft_putstr_fd(line, fd) < 0 || ft_putstr_fd("\n", fd) < 0))
+		if (ft_strncmp(cl->hd_del, l, ldel) == 0 && (int) ft_strlen(l) == ldel)
+			break ;
+		if ((ft_putstr_fd(l, fd) < 0 || ft_putstr_fd("\n", fd) < 0))
 			exit(errno);
-		line_nb++;
-		free(line);
-		line = NULL;
+		l_nb++;
+		free(l);
+		l = NULL;
 	}
-	free(line);
+	free(l);
 	close(fd);
 }
 

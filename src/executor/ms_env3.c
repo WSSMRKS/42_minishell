@@ -6,12 +6,23 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/03 15:53:05 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/04 15:38:18 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
 
+/// @brief Lookup a key in the symbol table
+/// and return the corresponding key string.
+///		Functionality:
+///		1. Calculate the hash value of the key.
+///		2. Check if the position in the symbol table is empty;
+///		if so, return NULL.
+///		3. Traverse the linked list in the symbol table at the computed hash
+///		and match the key.
+/// @param stab_lvl Pointer to the symbol table structure.
+/// @param key The key string to be looked up.
+/// @return The key string if found; NULL otherwise.
 char	*ft_lookup_key(t_stab_st *stab_lvl, char *key)
 {
 	unsigned long	hash;
@@ -34,13 +45,17 @@ char	*ft_lookup_key(t_stab_st *stab_lvl, char *key)
 	return (NULL);
 }
 
-/* function to lookup a val in the symbol table
-functionality:
-1. Calculate the hash val of the key
-2. If the position in the symbol table is empty, return NULL
-3. If the position in the symbol table is not empty,
-traverse the linked list and return the val
-*/
+/// @brief Lookup a key in the symbol table and return the
+/// corresponding value string.
+///        Functionality:
+///        1. Calculate the hash value of the key.
+///        2. Check if the position in the symbol table is empty;
+///        if so, return NULL.
+///        3. Traverse the linked list in the symbol table at the computed hash
+///        and match the key.
+/// @param stab_lvl Pointer to the symbol table structure.
+/// @param key The key string to be looked up.
+/// @return The value string if found; NULL otherwise.
 char	*ft_lookup_stab(t_stab_st *stab_lvl, char *key)
 {
 	unsigned long	hash;
@@ -63,14 +78,18 @@ char	*ft_lookup_stab(t_stab_st *stab_lvl, char *key)
 	return (NULL);
 }
 
-/* function to create **envp out of the current state of the 
-environmental variables
-functionality:
-1. Traverse the global symbol table and count the number of variables
-2. Create a new **envp with the size of the number of variables + 1
-3. Traverse the global symbol table and add the variables to the **envp
-4. Return the **envp
-*/
+/// @brief Create an environment variable array (**envp)
+///        from the current global symbol table.
+///        Functionality:
+///        1. Traverse the global symbol table and count the number of variables
+///        2. Allocate memory for a new **envp of size equal to the
+///        number of variables + 1.
+///        3. Traverse the symbol table again and add each variable
+///        in the format `key=value` to **envp.
+///        4. Return the **envp.
+/// @param ms Pointer to the main structure containing the global symbol table.
+/// @return A newly allocated **envp array with the current variable state.
+
 char	**ft_create_envp(t_ms *ms)
 {
 	int				i;
@@ -100,6 +119,11 @@ char	**ft_create_envp(t_ms *ms)
 	return (envp);
 }
 
+/// @brief Free three dynamically allocated memory blocks.
+/// @param tofree1 Pointer to the first memory block to be freed.
+/// @param tofree2 Pointer to the second memory block to be freed.
+/// @param tofree3 Pointer to the third memory block to be freed.
+/// @return Void.
 void	ft_free_3(void *tofree1, void *tofree2, void *tofree3)
 {
 	free(tofree1);
@@ -107,14 +131,19 @@ void	ft_free_3(void *tofree1, void *tofree2, void *tofree3)
 	free(tofree3);
 }
 
-/* function that removes a variable from the stab
-functionality:
-1. Calculate the hash val of the key
-2. If the position in the symbol table is empty, return 1
-3. If the position in the symbol table is not empty,
-traverse the linked list and remove the val
-4. Return 0
-*/
+/// @brief Remove a key-value pair from the symbol table.
+///        Functionality:
+///        1. Calculate the hash value of the key.
+///        2. If the position in the symbol table is empty, return 1.
+///        3. Traverse the linked list at the computed hash
+///        and find the key to remove.
+///        4. Adjust the linked list to bypass the removed entry.
+///        5. Free the memory for the key, value, and entry.
+///        6. Decrement the used count in the symbol table.
+///        7. Return 0 on successful removal; 1 if the key was not found.
+/// @param stab_lvl Pointer to the symbol table structure.
+/// @param key The key string to be removed.
+/// @return 0 on successful removal; 1 if the key was not found.
 int	ft_rem_fr_stab(t_stab_st *stab_lvl, char *key)
 {
 	unsigned long	hash;
