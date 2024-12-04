@@ -67,7 +67,10 @@ static t_ms_status	read_tokens(t_parser *p)
 				return (MS_EOF);
 			break;
 		}
-		tmp_tokens = tokenize(cstr_view(inp));
+		if (!tokenize(cstr_view(inp), &tmp_tokens))
+		{
+			// TODO handle error
+		}
 		DBG_PARSER(ft_putstr_fd("[DBG_PARSE] TEMP TOKENS:\n", STDERR));
 		DBG_PARSER(print_all_tokens(&tmp_tokens));
 		free(inp);
@@ -90,12 +93,13 @@ static t_ms_status	read_tokens(t_parser *p)
 			break;
 		else if (cstr_ref(&p->last_input)[p->last_input.len - 1] == '\\')
 			str_pop(&p->last_input);
-		else
-			str_push(&p->last_input, ' ');
-		inp = p->read_input(true, p->data);
+		ft_putendl_fd("minishell syntax error:", STDERR);
+		ft_putendl_fd("Multiline commands (e.g. via line continuation)"
+		" are unsupported", STDERR);
+		vec_clear(&p->tokens);
+		str_clear(&p->last_input);
+		inp = p->read_input(false, p->data);
 		str_cat(&p->last_input, cstr_view(inp));
-		if (((t_token *)vec_get_last(&p->tokens))->type == TK_CONTINUE_NL)
-			vec_remove_last(&p->tokens);
 	}
 	DBG_PARSER(ft_putstr_fd("[DBG_PARSE] ALL TOKENS:\n", STDERR));
 	DBG_PARSER(print_all_tokens(&p->tokens));
@@ -149,7 +153,7 @@ static void	ast_printstr(t_vec *ast)
 	str_destroy(&ast_line);
 }
 
-static void	ast_printerr(t_vec *ast, size_t err_i)
+static void	ast_printerr(t_vec *ast, size_t err_i, const char *err)
 {
 	size_t	i;
 	t_str	ast_line;
@@ -164,7 +168,7 @@ static void	ast_printerr(t_vec *ast, size_t err_i)
 		{
 			str_pushn(&err_line, ' ', ast_line.len);
 			str_push_ast(&ast_line, vec_get_at(ast, i), i == 0);
-			if (ast_line.len > err_line.len)
+			if (i != 0)
 				str_push(&err_line, ' ');
 			str_pushn(&err_line, '^', ast_line.len - err_line.len);
 		}
@@ -174,28 +178,62 @@ static void	ast_printerr(t_vec *ast, size_t err_i)
 	}
 	str_push(&ast_line, '\n');
 	str_push(&err_line, '\n');
-	write(2, "minishell syntax error:\n", 24);
-	write(2, cstr_ref(&ast_line), ast_line.len);
-	write(2, cstr_ref(&err_line), err_line.len);
+	ft_printf_fd(STDERR, "minishell syntax error: %s\n", err);
+	write(STDERR, cstr_ref(&ast_line), ast_line.len);
+	write(STDERR, cstr_ref(&err_line), err_line.len);
 	str_destroy(&ast_line);
 	str_destroy(&err_line);
 }
 
+/// @brief
+/// @param ast
+/// @param i
+/// @return false if given ast at i is no pipe.
+/// If it is a pipe it will return true if the pipe has no argument.
+static bool	is_pipe_without_arg_at(t_vec *ast, size_t i)
+{
+	t_ast	*pipe;
+	t_ast	*next;
+
+	pipe = vec_get_at(ast, i);
+	if (pipe->ty != AST_OP || pipe->op.ty != OP_PIPE)
+		return (false);
+	if (i == 0 || i + 1 >= ast->len)
+		return (true);
+	next = vec_get_at(ast, i + 1);
+	if (next->ty == AST_OP && next->op.ty == OP_PIPE)
+		return (true);
+	return (false);
+}
+
+/// @brief
+/// @param ast
+/// @param i
+/// @return false if given ast at i is no op
+static bool	is_op_without_arg_at(t_vec *ast, size_t i)
+{
+	t_ast	*op;
+
+	op = vec_get_at(ast, i);
+	if (op->ty != AST_OP || op->op.ty == OP_PIPE)
+		return (false);
+	return (op->op.arg == NULL);
+}
+
+// throw error when two pipes next to each other
 static bool	ast_has_integrity(t_vec *ast)
 {
 	size_t	i;
-	t_ast	*node;
 	bool	ok;
 
 	i = 0;
 	ok = true;
 	while (i < ast->len)
 	{
-		node = vec_get_at(ast, i);
-		if ((node->ty == AST_OP && node->op.ty == OP_PIPE && i == 0)
-			|| (node->ty == AST_OP && node->op.ty != OP_PIPE && node->op.arg == NULL))
+		if (is_pipe_without_arg_at(ast, i)
+			|| is_op_without_arg_at(ast, i))
 		{
-			ast_printerr(ast, i);
+			ast_printerr(ast, i, "operator is missing an argument");
 			ok = false;
 		}
 		i++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 05:06:08 by dkoca             #+#    #+#             */
-/*   Updated: 2024/11/27 13:05:43 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/04 16:21:56 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@ That is, the word -d'' becomes -d after word splitting and null argument removal
 Note that if no expansion occurs, no splitting is performed.
 */
 
+# define SINGLE_QUO '\''
+# define DOUBLE_QUO '"'
+
 typedef enum e_op_ty
 {
 	OP_PIPE,			// CMD1 | CMD2 (PIPE)
@@ -58,11 +61,11 @@ typedef enum e_op_ty
 typedef enum e_token_ty
 {
 	TK_SEPERATOR,		// space or tab
-	TK_WORD,				// string
+	TK_WORD,			// string
 	TK_LITERAL,			// 'string'
 	TK_DQUOTE,			// "string"
-	TK_OPERATOR,			// | > < >> <<
-	TK_CONTINUE_NL,		// \ (at the end of the line for continuation)
+	TK_OPERATOR,		// | > < >> <<
+	TK_CONTINUE_NL,		// \ (indicating line continuation) -- UNSUPPORTED
 	TK_NL,				// \n (indicating another command following)
 }	t_token_ty;
 
@@ -94,7 +97,7 @@ typedef struct s_ast {
 	};
 }	t_ast;
 
-t_vec		tokenize(t_str_slice inp);
+bool		tokenize(t_str_slice inp, t_vec *out);
 void		expand_vars(t_vec *tokens, t_stab_st *st, int last_ret);
 void		unescape_chars(t_vec *tokens);
 void		tokens_normalize(t_vec *tokens);
@@ -110,7 +113,7 @@ void	vec_push_tk(t_vec *vec, t_token tk);
 bool	token_has_str(t_token *token);
 
 void		strsl_trim_start_delim(t_str_slice *s);
-size_t		bounded_token_len(const char *str, char open, char close, size_t *out);
+size_t		bounded_token_len(const char *str, char bounds, size_t *out);
 size_t		word_len(const char *str, size_t *out);
 size_t		comment_len(const char *str);
 size_t		var_len(const char *str, size_t *out);
