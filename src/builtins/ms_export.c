@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_builtins2.c                                     :+:      :+:    :+:   */
+/*   ms_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 15:49:59 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/04 15:50:12 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/04 18:48:43 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ static int	ft_strcmp_handler(const void *ptr1, const void *ptr2)
 
 /*
 Functionality:
-- extract all the vals in the hash table to an array. (without mallocing the keys&vals)
+- extract all the vals in the hash table to an array.
+  (without mallocing the keys&vals)
 - sort the array
 - call ft_lookup val to print one after the other.
 */
@@ -76,24 +77,25 @@ static void	ft_print_alpha(t_ms *ms)
 	int		i;
 
 	i = 0;
-	sorted_array = ft_calloc(sizeof(char*), ms->be->global_stabs->used + 1);
+	sorted_array = ft_calloc(sizeof(char *), ms->be->global_stabs->used + 1);
 	ft_extract_keys(ms, 1, sorted_array);
-	arr_qsort(sorted_array, ms->be->global_stabs->used, sizeof(char*), ft_strcmp_handler);
-	while(sorted_array[i])
+	arr_qsort(sorted_array, ms->be->global_stabs->used, sizeof(char *),
+		ft_strcmp_handler);
+	while (sorted_array[i])
 	{
 		if (ft_lookup_stab(ms->be->global_stabs, sorted_array[i]) == NULL)
 			printf("declare -x %s\n", sorted_array[i]);
 		else
-			printf("declare -x %s=\"%s\"\n", sorted_array[i], ft_lookup_stab(ms->be->global_stabs, sorted_array[i]));
+			printf("declare -x %s=\"%s\"\n", sorted_array[i],
+				ft_lookup_stab(ms->be->global_stabs, sorted_array[i]));
 		i++;
 	}
 	free(sorted_array);
 }
 
-int		ft_export(t_ms *ms, t_cmd_list *curr)
+int	ft_export(t_ms *ms, t_cmd_list *curr)
 {
 	(void) curr;
-
 	if (curr->cmd.words->next != NULL)
 		ft_add_vars(ms, curr);
 	else
