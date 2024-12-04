@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/27 15:04:32 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/04 18:57:20 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,12 +124,6 @@ void			ft_init_be(t_ms *ms, int argc, char **argv, char **envp);
 
 void			repl(int argc, char **argv, char **envp);
 
-/* ms_debug */
-
-void			ft_deb_here_doc(t_ms *ms);
-void			ft_deb_commands(t_ms *ms);
-void			ft_debug(t_ms *ms);
-
 /* ms_env */
 
 void			ft_init_stab(t_ms *ms);
@@ -145,7 +139,8 @@ char			**ft_create_envp(t_ms *ms);
 void			ft_print_stab(t_ms *ms, int lvl);
 unsigned long	ft_hash_function(t_stab_st *current_stab, char *key);
 void			ft_resize_stab(t_ms *ms, t_stab_st **stab_lvl);
-void			ft_add_to_stab(t_ms *ms, t_stab_st *stab_lvl, char *key, char *val);
+void			ft_add_to_stab(t_ms *ms, t_stab_st *stab_lvl,
+					char *key, char *val);
 void			ft_add_local_stab(t_ms *ms);
 int				ft_calc_stab_size(int size);
 int				ft_is_prime(int n);
