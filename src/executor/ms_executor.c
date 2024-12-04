@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/27 12:13:15 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/04 14:59:37 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,6 +210,9 @@ void	ft_pipe_reset(t_ms *ms, int *i)
 
 void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i)
 {
+
+	int	err;
+
 	if (!curr->cmd.builtin || ms->be->nb_cmds > 1)
 		ms->be->child_pids[*i] = fork();
 	else
@@ -227,7 +230,15 @@ void	ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i)
 	if (ms->be->child_pids[*i] == 0)
 	{
 		ft_close_all_fds(ms);
-		ft_execute(ms, curr);
+		if (curr->cmd.builtin == true)
+		{
+			err = ft_builtin(ms, curr);
+			ft_clear_ast(ms); // [ ] take care of this in case of not a child!!
+			ft_clear_be(ms); // [ ] take care of this in case of not a child!!
+			ft_cleanup_exit(ms, err);
+		}
+		else
+			ft_execute(ms, curr);
 	}
 	else if (curr->cmd.builtin && ms->be->nb_cmds == 1)
 	{
