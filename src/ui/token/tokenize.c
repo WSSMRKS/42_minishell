@@ -100,6 +100,7 @@ static void	span_printerr(t_str_slice s, size_t err_i, const char *err)
 	}
 	ft_putfill_fd(' ', STDERR, err_i);
 	ft_putchar_fd('^', STDERR);
+	ft_putchar_fd('\n', STDERR);
 	vec_destroy(&lines, NULL);
 }
 
