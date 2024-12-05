@@ -6,13 +6,13 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:46:43 by kwurster          #+#    #+#             */
-/*   Updated: 2024/12/05 17:57:52 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/05 18:11:40 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../headers/minishell.h"
-#include "util.h"
-#include "../token/util.h"
+#include "parse_util.h"
+#include "../token/tk_util.h"
 
 void	str_push_ast(t_str *str, t_ast *ast, bool first)
 {

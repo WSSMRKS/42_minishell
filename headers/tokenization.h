@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 05:06:08 by kwurster          #+#    #+#             */
-/*   Updated: 2024/12/05 17:57:52 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/05 17:59:31 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,6 @@
 # define	TOKENIZATION_H
 
 #include "../headers/minishell.h"
-
-// int current_command_line_count;
-
-// /* The number of lines in a command saved while we run parse_and_execute */
-// int saved_command_line_count;
-
-// /* The token that currently denotes the end of parse. */
-// int shell_eof_token;
-
-// /* The token currently being read. */
-// int current_token;
-
-// int last_was_backslash;
-
-
-// {"&", 1},
-// {";", 1},
-// {"&&", 2},
-// {"||", 2},
 
 /*
 Explicit null arguments ("" or '') are retained and passed to commands as empty strings.

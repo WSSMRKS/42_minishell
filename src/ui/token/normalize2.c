@@ -6,12 +6,12 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:37:25 by kwurster          #+#    #+#             */
-/*   Updated: 2024/12/05 17:57:52 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/05 18:11:53 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../headers/minishell.h"
-#include "util.h"
+#include "tk_util.h"
 
 // repeating seperators -> single seperator
 // remove seperator before or after one of [TOKEN_OPERATOR, TOKEN_CONTINUE_NL, TOKEN_NL]

@@ -6,12 +6,12 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:21:21 by kwurster          #+#    #+#             */
-/*   Updated: 2024/12/05 17:57:52 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/05 18:11:36 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../headers/minishell.h"
-#include "util.h"
+#include "parse_util.h"
 
 // TODO remove (debug only)
 void	print_all_tokens(t_vec *tokens);

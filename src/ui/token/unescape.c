@@ -6,12 +6,12 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 20:18:24 by kwurster          #+#    #+#             */
-/*   Updated: 2024/12/05 17:57:52 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/05 18:12:09 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../headers/minishell.h"
-#include "util.h"
+#include "tk_util.h"
 
 /// @brief If the last token is word(\), replace the token with newline().
 /// @param tokens The token vector.

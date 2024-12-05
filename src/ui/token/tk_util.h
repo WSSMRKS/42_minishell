@@ -1,16 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   util.h                                             :+:      :+:    :+:   */
+/*   tk_util.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:40:44 by kwurster          #+#    #+#             */
-/*   Updated: 2024/12/05 17:57:52 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/05 18:11:02 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../headers/minishell.h"
+#ifndef TK_UTIL_H
+# define TK_UTIL_H
+# include "../../../headers/minishell.h"
 
 void		span_printerr(t_str_slice s, size_t err_i, const char *err);
 void		token_print(const t_token *token, int fd);
@@ -38,3 +40,5 @@ bool		is_redundant_separator(t_vec *tokens, size_t i);
 void		remove_redundant_separators(t_vec *tokens);
 void		merge_chained_word_tokens(t_vec *tokens);
 void		remove_all_seperators(t_vec *tokens);
+
+#endif

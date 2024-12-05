@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 13:00:38 by kwurster          #+#    #+#             */
-/*   Updated: 2024/12/05 17:57:52 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/05 17:59:31 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	vec_push_tk(t_vec *vec, t_token tk)
 
 bool	is_word_delimiter(char c)
 {
-	return (c == ' ' || c == '\t' || c == '\n' || c == '"' || c == '\'');
+	return (c == ' ' || c == '\t' || c == '\n'
+		|| c == DOUBLE_QUO || c == SINGLE_QUO);
 }
 
 /// @brief Removes leading whitespace from a stringview.

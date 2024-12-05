@@ -6,9 +6,12 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:52:06 by kwurster          #+#    #+#             */
-/*   Updated: 2024/12/05 17:57:52 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/05 18:11:28 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../../../headers/minishell.h"
+#include "parse_util.h"
 
 /// @brief
 /// @param ast
