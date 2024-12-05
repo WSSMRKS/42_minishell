@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/05 11:42:40 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/05 12:47:02 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*ft_search_cmd(t_ms *ms, t_cmd_list *curr)
 		path = ft_strdup(curr->cmd.words->word);
 		return (path);
 	}
-	while (ms->be->path[i])
+	while (ms->be->path && ms->be->path[i])
 	{
 		path = ft_strjoin(ms->be->path[i], curr->cmd.words->word);
 		if (path == NULL)

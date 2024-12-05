@@ -6,27 +6,17 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 19:05:44 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/05 11:59:44 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/05 12:48:13 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
 
-char	**ft_grab_envp(char **envp)
+char	**ft_split_path(char **paths)
 {
 	int		i;
-	char	**paths;
 	char	*tmp;
 
-	i = -1;
-	while (envp && envp[++i])
-	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-			break ;
-	}
-	paths = ft_split(&envp[i][5], ':');
-	if (paths == NULL)
-		return (NULL);
 	i = -1;
 	while (paths[++i])
 	{
@@ -39,6 +29,27 @@ char	**ft_grab_envp(char **envp)
 		}
 	}
 	return (paths);
+}
+
+char	**ft_grab_envp(char **envp)
+{
+	int		i;
+	char	**paths;
+
+	i = -1;
+	paths = NULL;
+	while (envp && envp[++i])
+	{
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+			break ;
+	}
+	if (envp && envp[i] && envp[i][5])
+		paths = ft_split(&envp[i][5], ':');
+	else
+		ft_printf_fd(2, "minishell: unable to set $PATH variable\n");
+	if (paths == NULL)
+		return (NULL);
+	return (ft_split_path(paths));
 }
 
 void	ft_init_ms(t_ms *ms)
