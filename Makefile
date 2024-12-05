@@ -32,6 +32,9 @@ SRC_FILES = \
 	executor/ms_env4.c \
 	executor/ms_error.c \
 	executor/ms_executor.c \
+	executor/ms_executor2.c \
+	executor/ms_executor3.c \
+	executor/ms_executor4.c \
 	executor/ms_ex_redir.c \
 	executor/ms_heredoc.c \
 	builtins/ms_cd.c \

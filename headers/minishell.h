@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/04 18:57:20 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/05 11:39:50 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,14 +83,18 @@ void			ft_mprotect(void *subject);
 
 void			ft_close_all_fds(t_ms *ms);
 char			*ft_search_cmd(t_ms *ms, t_cmd_list *curr);
-void			ft_execute(t_ms *ms, t_cmd_list *curr);
-int				ft_builtin(t_ms *ms, t_cmd_list *curr);
+void			ft_ms_execve(t_ms *ms, t_cmd_list *curr);
+int				ft_builtin(t_ms *ms, t_cmd_list *curr, int *i);
 void			ft_create_argv(t_cmd_list *curr);
-void			ft_fork_execute(t_ms *ms, t_cmd_list *curr, int *i);
+void			ft_fork(t_ms *ms, t_cmd_list *curr, int *i);
 void			ft_is_builtin(t_cmd_list *curr, t_ms *ms);
-void			ft_executor(t_ms *ms);
+void			ft_execution(t_ms *ms);
 void			ft_back_end(t_ms *ms);
 void			ft_prnt_stderr(char *name, char *cmd, int err);
+void			ft_ex_prep(t_ms *ms, t_cmd_list *curr, int *i);
+void			ft_safe_std(t_ms *ms);
+int				ft_grab_pid(void);
+void			ft_execute(t_ms *ms, t_cmd_list *curr, int *i);
 
 /* ms_error */
 

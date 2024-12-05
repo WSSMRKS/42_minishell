@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 19:05:44 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/04 19:36:04 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/04 19:39:03 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ void	ft_init_be(t_ms *ms, int argc, char **argv, char **envp)
 	ms->be->builtins[4] = ft_strdup("unset");
 	ms->be->builtins[5] = ft_strdup("env");
 	ms->be->builtins[6] = ft_strdup("exit");
-	ms->be->builtins[7] = ft_strdup("status");
-	ms->be->builtins[8] = ft_strdup("resize");
+	ms->be->builtins[7] = ft_strdup("status"); // remove me
+	ms->be->builtins[8] = ft_strdup("resize"); // remove me
 	ms->be->builtins[9] = NULL;
 	ms->be->cwd = ft_calloc(sizeof(char), PATH_MAX);
 	ms->be->global_stabs = NULL;
