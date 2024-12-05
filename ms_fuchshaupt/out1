@@ -1,0 +1,13 @@
+total 148$$
+drwxrwxr-x 7 kwurster 2023_berlin    145 Dec  5 13:26 .$$
+drwxrwxr-x 9 kwurster 2023_berlin    167 Dec  5 13:17 ..$$
+drwxrwxr-x 2 kwurster 2023_berlin     41 Dec  5 13:17 inc$$
+drwxrwxr-x 5 kwurster 2023_berlin     70 Dec  5 13:23 libft$$
+-rw-rw-r-- 1 kwurster 2023_berlin   2750 Dec  5 13:17 Makefile$$
+-rwxr-xr-x 1 kwurster 2023_berlin 133472 Dec  5 13:23 minishell$$
+drwxr-xr-x 2 kwurster 2023_berlin   4096 Dec  5 13:23 obj$$
+-rw-r--r-- 1 kwurster 2023_berlin      0 Dec  5 13:26 out1$$
+-rw-r--r-- 1 kwurster 2023_berlin      0 Dec  5 13:26 out2$$
+drwxrwxr-x 2 kwurster 2023_berlin   4096 Dec  5 13:17 src$$
+-rw-rw-r-- 1 kwurster 2023_berlin    114 Dec  5 13:17 valgrind.supp$$
+drwxrwxr-x 2 kwurster 2023_berlin     75 Dec  5 13:17 .vscode$$
