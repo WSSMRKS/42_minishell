@@ -80,21 +80,20 @@ bool	str_starts_with_op(t_str_slice str, t_op_ty *out)
 /// @brief Checks if the string starts with a specific opening character
 /// and contains its closing character.
 /// @param str The string to check.
-/// @param open The opening character (e.g., '"', '\'', '(')
-/// @param close The closing character (e.g., '"', '\'', ')')
+/// @param bounds The opening/closing character (e.g., '"', '\'', '(')
 /// @param out The length of the bounded substring including delimiters.
 /// @return The length of the bounded substring.
 /// Returns 0 if not found or unterminated.
-size_t	bounded_token_len(const char *str, char open, char close, size_t *out)
+size_t	bounded_token_len(const char *str, char bounds, size_t *out)
 {
-	if (*str != open)
+	if (*str != bounds)
 		return (0);
 	*out = 1;
 	while (str[*out])
 	{
 		if (str[*out] == '\\' && str[*out + 1] != 0)
 			(*out) += 2;
-		else if (str[(*out)++] == close)
+		else if (str[(*out)++] == bounds)
 			return (*out);
 	}
 	return (0);

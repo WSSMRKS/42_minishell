@@ -111,28 +111,6 @@ static void	remove_all_seperators(t_vec *tokens)
 	}
 }
 
-static void	rm_nl_after_pipe(t_vec	*tokens)
-{
-	t_token	*token;
-	size_t	i;
-
-	i = 0;
-	while (i < tokens->len)
-	{
-		token = vec_get_at(tokens, i);
-		if (token->type == TK_OPERATOR && token->op == OP_PIPE)
-		{
-			if (i + 1 < tokens->len)
-			{
-				token = vec_get_at(tokens, i + 1);
-				if (token->type == TK_NL)
-					vec_remove_at(tokens, i + 1);
-			}
-		}
-		i++;
-	}
-}
-
 // repeating seperators -> single seperator
 // remove seperator before or after one of [TOKEN_OPERATOR, TOKEN_CONTINUE_NL, TOKEN_NL]
 // chained tokens of kind TOKEN_WORD, TOKEN_LITERAL, TOKEN_DQUOTE -> single WORD token
@@ -142,29 +120,6 @@ void	tokens_normalize(t_vec *tokens)
 	remove_redundant_separators(tokens);
 	merge_chained_word_tokens(tokens);
 	remove_all_seperators(tokens);
-	rm_nl_after_pipe(tokens);
-}
-
-static void	add_continue_nl_after_empty_pipe(t_vec *tokens)
-{
-	static const t_token	continue_nl = {.type = TK_CONTINUE_NL};
-	t_token					*token;
-	size_t					i;
-
-	i = 0;
-	while (i < tokens->len)
-	{
-		token = vec_get_at(tokens, i);
-		if (token->type == TK_OPERATOR && token->op == OP_PIPE)
-		{
-			if (i + 1 == tokens->len)
-			{
-				vec_push(tokens, (t_token*)&continue_nl);
-				return ;
-			}
-		}
-		i++;
-	}
 }
 
 void	tokens_normalize_for_continue_nl_check(t_vec *tokens)
@@ -172,6 +127,4 @@ void	tokens_normalize_for_continue_nl_check(t_vec *tokens)
 	remove_dup_seperators(tokens);
 	remove_redundant_separators(tokens);
 	remove_all_seperators(tokens);
-	rm_nl_after_pipe(tokens);
-	add_continue_nl_after_empty_pipe(tokens);
 }

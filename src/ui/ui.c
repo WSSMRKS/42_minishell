@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ui.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/27 13:04:52 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/04 18:43:47 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,7 @@ void	repl(int argc, char **argv, char **envp)
 			perror("parse (memory) error");
 			break ;
 		}
+		// TODO on multiline input split the input and add to history seperately as lines
 		if (ms.parser.last_input.len > 0)
 			add_history(cstr_ref(&ms.parser.last_input));
 		status = evaluate(&ms);

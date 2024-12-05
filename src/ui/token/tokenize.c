@@ -1,49 +1,26 @@
 #include "../../../headers/minishell.h"
 #include <stdio.h>
 
-/* ??????????????????????
-```bash
-$ echo "hello"world""
-helloworld
-
-$ echo hello"world"
-helloworld
-
-$ echo hello"world
->
-
-$ echo "hello"world
-helloworld
-
-$ echo hello"world"hey
-helloworldhey
-
-$ echo hello'world'hey
-helloworldhey
-
-$ ./pargs my 1 "very" "'complex'" "sentence" and multi tests" sentence end"? 'no no "nooo"'
-argc: 10
-argv[0]: ./pargs
-argv[1]: my
-argv[2]: 1
-argv[3]: very
-argv[4]: 'complex'
-argv[5]: sentence
-argv[6]: and
-argv[7]: multi
-argv[8]: tests sentence end?
-argv[9]: no no "nooo"
-```
-*/
-
-static bool	handle_quoted(t_str_slice *inp, t_vec *tokens)
+/// @brief
+/// @param inp
+/// @param tokens
+/// @return -1 for syntax error, 0 for false, 1 for true
+static int	handle_quoted(t_str_slice *inp, t_vec *tokens)
 {
 	size_t	len;
 
-	if (bounded_token_len(inp->str, '"', '"', &len))
+	if (*inp->str == DOUBLE_QUO)
+	{
+		if (!bounded_token_len(inp->str, DOUBLE_QUO, &len))
+			return (-1);
 		vec_push_tk(tokens, tk_dquote(cstr_slice(inp->str, len)));
-	else if (bounded_token_len(inp->str, '\'', '\'', &len))
+	}
+	else if (*inp->str == SINGLE_QUO)
+	{
+		if (!bounded_token_len(inp->str, SINGLE_QUO, &len))
+			return (-1);
 		vec_push_tk(tokens, tk_lit(cstr_slice(inp->str, len)));
+	}
 	else
 		return (false);
 	strsl_move_inplace(inp, len);
@@ -93,6 +70,52 @@ static void	handle_space_and_comment(t_str_slice *inp, t_vec *tokens)
 // with a special merge of the tokens but without
 // the newline token which was there before
 
+/// prints
+/// ```
+/// minishell syntax error: <error message>\n
+/// echo hello "world\n
+///            ^
+/// ```
+/// input is allowed to be multiline, though only the affected line will print
+static void	span_printerr(t_str_slice s, size_t err_i, const char *err)
+{
+	size_t	i;
+	t_vec	lines;
+
+	ft_printf_fd(STDERR, "minishell syntax error: %s\n", err);
+	lines = strsl_split(s, cstr_slice("\n", 1));
+	if (lines.mem_err)
+		return ;
+	i = 0;
+	while (i < lines.len)
+	{
+		s = *(t_str_slice *)vec_get_at(&lines, i++);
+		if (err_i < s.len)
+		{
+			ft_putstrsl_fd(s, STDERR);
+			write(STDERR, "\n", 1);
+			break ;
+		}
+		err_i -= s.len + 1;
+	}
+	ft_putfill_fd(' ', STDERR, err_i);
+	ft_putchar_fd('^', STDERR);
+	ft_putchar_fd('\n', STDERR);
+	vec_destroy(&lines, NULL);
+}
+
+/// @brief Sets the input cursor to the start of next line or the end and
+/// and removes the last few gathered tokens after the last newline
+/// @param tokens
+/// @param err_input
+static void	tokens_reset_current_line(t_vec *tokens, t_str_slice *err_input)
+{
+	while (tokens->len && ((t_token *)vec_get_last(tokens))->type != TK_NL)
+		vec_remove_last(tokens);
+	while (err_input->len && *err_input->str != '\n')
+		strsl_move_inplace(err_input, 1);
+}
+
 /// @brief Tokenizes the input string.
 /// @param inp The input string.
 /// @return A vector of tokenized strings (t_token).
@@ -115,20 +138,34 @@ static void	handle_space_and_comment(t_str_slice *inp, t_vec *tokens)
 /// LIT : (bla)
 /// OP  : (>)
 /// WORD: (myfile)
-t_vec	tokenize(t_str_slice inp)
+///
+/// returns false if unknown error without clearing the out vec
+bool	tokenize(t_str_slice inp, t_vec *out)
 {
-	t_vec	out;
+	t_str_slice	inp_start;
+	int		ok;
 
-	out = vec_empty(sizeof(t_token));
+	inp_start = inp;
+	*out = vec_empty(sizeof(t_token));
 	while (true)
 	{
-		handle_space_and_comment(&inp, &out);
+		handle_space_and_comment(&inp, out);
 		if (!inp.len)
 			break ;
-		if (handle_quoted(&inp, &out) || handle_word_or_op(&inp, &out))
+		ok = handle_quoted(&inp, out);
+		if (ok == 1)
 			continue ;
-		perror("tokenize error");
-		break ;
+		if (ok == -1)
+		{
+			span_printerr(inp_start, inp_start.len - inp.len,
+				"unclosed quotes");
+			tokens_reset_current_line(out, &inp);
+			continue;
+		}
+		else if (handle_word_or_op(&inp, out))
+			continue ;
+		ft_putendl_fd("minishell tokenization: unknown error", STDERR);
+		return (false);
 	}
-	return (out);
+	return (true);
 }
