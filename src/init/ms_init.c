@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 19:05:44 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/04 19:39:03 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/05 11:59:44 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,15 @@ char	**ft_grab_envp(char **envp)
 	char	**paths;
 	char	*tmp;
 
-	i = 0;
-	while (envp && envp[i])
+	i = -1;
+	while (envp && envp[++i])
 	{
 		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
 			break ;
-		i++;
 	}
 	paths = ft_split(&envp[i][5], ':');
 	if (paths == NULL)
-		return (NULL); // [ ] free propperly;
+		return (NULL);
 	i = -1;
 	while (paths[++i])
 	{
@@ -81,7 +80,7 @@ void	ft_init_be(t_ms *ms, int argc, char **argv, char **envp)
 	ms->be->argv = argv;
 	ms->be->envp = envp;
 	ms->be->path = ft_grab_envp(envp);
-	ms->be->builtins = ft_calloc(sizeof(char *), 10);
+	ms->be->builtins = ft_calloc(sizeof(char *), 8);
 	ms->be->builtins[0] = ft_strdup("echo");
 	ms->be->builtins[1] = ft_strdup("cd");
 	ms->be->builtins[2] = ft_strdup("pwd");
@@ -89,9 +88,7 @@ void	ft_init_be(t_ms *ms, int argc, char **argv, char **envp)
 	ms->be->builtins[4] = ft_strdup("unset");
 	ms->be->builtins[5] = ft_strdup("env");
 	ms->be->builtins[6] = ft_strdup("exit");
-	ms->be->builtins[7] = ft_strdup("status"); // remove me
-	ms->be->builtins[8] = ft_strdup("resize"); // remove me
-	ms->be->builtins[9] = NULL;
+	ms->be->builtins[7] = NULL;
 	ms->be->cwd = ft_calloc(sizeof(char), PATH_MAX);
 	ms->be->global_stabs = NULL;
 	ms->be->last_ret = 0;
