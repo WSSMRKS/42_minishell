@@ -66,8 +66,8 @@ SRC_OBJ = $(SRC:.c=.o)
 # Targets #
 all: $(NAME)	# Compile the entire project including bonus.
 
-nodbg: COMPILE_FLAGS = -Werror -Wall -Wextra -g3 -DNO_DEBUG=1
-nodbg: $(NAME)
+debug: COMPILE_FLAGS = -Werror -Wall -Wextra -g3 -DDEBUG_ON=1
+debug: $(NAME)
 
 $(NAME): $(LIBFT_SRC) $(SRC_OBJ) # Compile mandatory part. # maybe need? -L$(LIBFTDIR) -lft
 	$(CC) $(SRC_OBJ) $(LIBFT_SRC) $(COMPILE_OPTIONS) -o $(NAME)

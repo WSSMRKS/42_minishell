@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/05 11:39:50 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/05 12:26:31 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@ in minishell.h */
 # define WHITE   "\001\033[37m\002"
 # define RESET   "\001\033[0m\002"
 
-# ifndef NO_DEBUG
-#  define NO_DEBUG 0
+# ifndef DEBUG_ON
+#  define DEBUG_ON 0
 # endif
 
-# ifdef NO_DEBUG
-#  define DEBUG(x) if(!NO_DEBUG) {x;}
+# ifdef DEBUG_ON
+#  define DEBUG(x) if(DEBUG_ON) {x;}
 # else
 #  define DEBUG(x)
 # endif
