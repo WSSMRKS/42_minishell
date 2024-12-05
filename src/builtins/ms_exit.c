@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 15:49:59 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/04 18:50:21 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/05 12:24:30 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,9 @@ int	ft_exit(t_ms *ms, t_cmd_list *curr)
 	}
 	if (isatty(STDIN_FILENO))
 		ft_printf("exit\n");
+	close(ms->be->saved_std[0]);
+	close(ms->be->saved_std[1]);
+	ft_close_all_fds(ms);
 	ft_clear_ast(ms);
 	ft_clear_be(ms);
 	ft_cleanup_exit(ms, ex);
