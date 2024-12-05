@@ -52,6 +52,18 @@ static bool	last_tk_is_continue_nl(t_vec *tokens)
 	return (last == TK_CONTINUE_NL);
 }
 
+static t_ms_status	add_tokens_to_parser(t_parser *p)
+{
+
+}
+
+// DBG_PARSER(ft_putstr_fd("[DBG_PARSE] TEMP TOKENS:\n", STDERR));
+// DBG_PARSER(print_all_tokens(&tmp_tokens));
+// DBG_PARSER(ft_putstr_fd("[DBG_PARSE] TEMP TOKENS EXPANDED:\n", STDERR));
+// DBG_PARSER(print_all_tokens(&tmp_tokens));
+// DBG_PARSER(ft_putstr_fd("[DBG_PARSE] TEMP TOKENS UNESCAPED:\n", STDERR));
+// DBG_PARSER(print_all_tokens(&tmp_tokens));
+// This function is called if there are no leftover tokens in the parser
 static t_ms_status	read_tokens(t_parser *p)
 {
 	char	*inp;
@@ -59,48 +71,35 @@ static t_ms_status	read_tokens(t_parser *p)
 
 	inp = p->read_input(false, p->data);
 	str_cat(&p->last_input, cstr_view(inp));
-	while (true)
+	if (!inp)
+		return (MS_EOF);
+	if (!tokenize(cstr_view(inp), &tmp_tokens))
 	{
-		if (!inp)
-		{
-			if (p->tokens.len == 0)
-				return (MS_EOF);
-			break;
-		}
-		if (!tokenize(cstr_view(inp), &tmp_tokens))
-		{
-			// TODO handle error
-		}
-		DBG_PARSER(ft_putstr_fd("[DBG_PARSE] TEMP TOKENS:\n", STDERR));
-		DBG_PARSER(print_all_tokens(&tmp_tokens));
-		free(inp);
-		if (tmp_tokens.mem_err)
-			return (MS_ERROR);
-		expand_vars(&tmp_tokens, p->get_stab(p->data), p->get_last_ret(p->data));
-		DBG_PARSER(ft_putstr_fd("[DBG_PARSE] TEMP TOKENS EXPANDED:\n", STDERR));
-		DBG_PARSER(print_all_tokens(&tmp_tokens));
-		unescape_chars(&tmp_tokens);
-		DBG_PARSER(ft_putstr_fd("[DBG_PARSE] TEMP TOKENS UNESCAPED:\n", STDERR));
-		DBG_PARSER(print_all_tokens(&tmp_tokens));
-		vec_pushvec(&p->tokens, &tmp_tokens);
-		if (p->tokens.mem_err)
-		{
-			vec_destroy(&tmp_tokens, NULL); // TODO
-			return (MS_ERROR);
-		}
-		vec_destroy(&tmp_tokens, NULL);
-		if (!last_tk_is_continue_nl(&p->tokens))
-			break;
-		else if (cstr_ref(&p->last_input)[p->last_input.len - 1] == '\\')
-			str_pop(&p->last_input);
-		ft_putendl_fd("minishell syntax error:", STDERR);
-		ft_putendl_fd("Multiline commands (e.g. via line continuation)"
-		" are unsupported", STDERR);
-		vec_clear(&p->tokens);
-		str_clear(&p->last_input);
-		inp = p->read_input(false, p->data);
-		str_cat(&p->last_input, cstr_view(inp));
+		// TODO handle error
 	}
+	free(inp);
+	if (tmp_tokens.mem_err)
+		return (MS_ERROR);
+	expand_vars(&tmp_tokens, p->get_stab(p->data), p->get_last_ret(p->data));
+	unescape_chars(&tmp_tokens);
+	vec_pushvec(&p->tokens, &tmp_tokens);
+	if (p->tokens.mem_err)
+	{
+		vec_destroy(&tmp_tokens, NULL); // TODO
+		return (MS_ERROR);
+	}
+	vec_destroy(&tmp_tokens, NULL);
+	if (!last_tk_is_continue_nl(&p->tokens))
+		break;
+	else if (cstr_ref(&p->last_input)[p->last_input.len - 1] == '\\')
+		str_pop(&p->last_input);
+	ft_putendl_fd("minishell syntax error:", STDERR);
+	ft_putendl_fd("Multiline commands (e.g. via line continuation)"
+	" are unsupported", STDERR);
+	vec_clear(&p->tokens);
+	str_clear(&p->last_input);
+	inp = p->read_input(false, p->data);
+	str_cat(&p->last_input, cstr_view(inp));
 	DBG_PARSER(ft_putstr_fd("[DBG_PARSE] ALL TOKENS:\n", STDERR));
 	DBG_PARSER(print_all_tokens(&p->tokens));
 	tokens_normalize(&p->tokens);

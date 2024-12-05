@@ -23,3 +23,8 @@ t_token	tk_dquote(t_str_slice quoted)
 	quoted.str += 1;
 	return ((t_token){.type = TK_DQUOTE, .str = str_clone_from(quoted)});
 }
+
+t_token	tk_empty(t_token_ty ty)
+{
+	return ((t_token){.type = ty, .str = str_empty()});
+}
