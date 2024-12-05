@@ -1,37 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/05 17:21:21 by kwurster          #+#    #+#             */
+/*   Updated: 2024/12/05 17:57:52 by kwurster         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../headers/minishell.h"
-#include <stdbool.h>
-#include <stdio.h>
+#include "util.h"
 
-static void	print_all_tokens(t_vec *tokens)
-{
-	for (size_t i = 0; i < tokens->len; i++)
-	{
-		t_token *token = vec_get_at(tokens, i);
-		token_print(token, STDERR);
-		if (!write(STDERR, "\n", 1))
-			perror("write error");
-	}
-}
-
-void	parser_destroy(t_parser *p)
-{
-	vec_destroy(&p->tokens, NULL);
-	str_destroy(&p->last_input);
-}
-
-t_parser	parser_init(void *data, t_read_input read_input,
-	t_get_stab get_stab, t_get_last_ret get_last_ret)
-{
-	t_parser	p;
-
-	p.tokens = vec_empty(sizeof(t_token));
-	p.read_input = read_input;
-	p.get_stab = get_stab;
-	p.get_last_ret = get_last_ret;
-	p.data = data;
-	p.last_input = str_empty();
-	return (p);
-}
+// TODO remove (debug only)
+void	print_all_tokens(t_vec *tokens);
 
 static bool	last_tk_is_continue_nl(t_vec *tokens)
 {
@@ -54,7 +37,8 @@ static bool	last_tk_is_continue_nl(t_vec *tokens)
 
 static t_ms_status	add_tokens_to_parser(t_parser *p)
 {
-
+	(void)p;
+	return (MS_ERROR);
 }
 
 // DBG_PARSER(ft_putstr_fd("[DBG_PARSE] TEMP TOKENS:\n", STDERR));
@@ -106,138 +90,6 @@ static t_ms_status	read_tokens(t_parser *p)
 	DBG_PARSER(ft_putstr_fd("[DBG_PARSE] ALL TOKENS NORMALIZED:\n", STDERR));
 	DBG_PARSER(print_all_tokens(&p->tokens));
 	return (MS_OK);
-}
-
-static void	str_push_ast(t_str *str, t_ast *ast, bool first)
-{
-	size_t	i;
-
-	if (ast->ty == AST_OP)
-	{
-		if (!first)
-			str_push(str, ' ');
-		str_pushstr(str, cstr_view(op_str(ast->op.ty)));
-		if (ast->op.arg)
-		{
-			str_push(str, ' ');
-			str_pushstr(str, cstr_view(ast->op.arg));
-		}
-		return ;
-	}
-	i = 0;
-	while (ast->cmd[i])
-	{
-		if (!first || i > 0)
-			str_push(str, ' ');
-		str_pushstr(str, cstr_view(ast->cmd[i]));
-		i++;
-	}
-}
-
-static void	ast_printstr(t_vec *ast)
-{
-	size_t	i;
-	t_str	ast_line;
-
-	i = 0;
-	ast_line = str_empty();
-	while (i < ast->len)
-	{
-		str_push_ast(&ast_line, vec_get_at(ast, i), i == 0);
-		i++;
-	}
-	write(2, "[DBG] parsed AST: ", 18);
-	write(2, cstr_ref(&ast_line), ast_line.len);
-	write(2, "\n", 1);
-	str_destroy(&ast_line);
-}
-
-static void	ast_printerr(t_vec *ast, size_t err_i, const char *err)
-{
-	size_t	i;
-	t_str	ast_line;
-	t_str	err_line;
-
-	i = 0;
-	ast_line = str_empty();
-	err_line = str_empty();
-	while (i < ast->len)
-	{
-		if (i == err_i)
-		{
-			str_pushn(&err_line, ' ', ast_line.len);
-			str_push_ast(&ast_line, vec_get_at(ast, i), i == 0);
-			if (i != 0)
-				str_push(&err_line, ' ');
-			str_pushn(&err_line, '^', ast_line.len - err_line.len);
-		}
-		else
-			str_push_ast(&ast_line, vec_get_at(ast, i), i == 0);
-		i++;
-	}
-	str_push(&ast_line, '\n');
-	str_push(&err_line, '\n');
-	ft_printf_fd(STDERR, "minishell syntax error: %s\n", err);
-	write(STDERR, cstr_ref(&ast_line), ast_line.len);
-	write(STDERR, cstr_ref(&err_line), err_line.len);
-	str_destroy(&ast_line);
-	str_destroy(&err_line);
-}
-
-/// @brief
-/// @param ast
-/// @param i
-/// @return false if given ast at i is no pipe.
-/// If it is a pipe it will return true if the pipe has no argument.
-static bool	is_pipe_without_arg_at(t_vec *ast, size_t i)
-{
-	t_ast	*pipe;
-	t_ast	*next;
-
-	pipe = vec_get_at(ast, i);
-	if (pipe->ty != AST_OP || pipe->op.ty != OP_PIPE)
-		return (false);
-	if (i == 0 || i + 1 >= ast->len)
-		return (true);
-	next = vec_get_at(ast, i + 1);
-	if (next->ty == AST_OP && next->op.ty == OP_PIPE)
-		return (true);
-	return (false);
-}
-
-/// @brief
-/// @param ast
-/// @param i
-/// @return false if given ast at i is no op
-static bool	is_op_without_arg_at(t_vec *ast, size_t i)
-{
-	t_ast	*op;
-
-	op = vec_get_at(ast, i);
-	if (op->ty != AST_OP || op->op.ty == OP_PIPE)
-		return (false);
-	return (op->op.arg == NULL);
-}
-
-// throw error when two pipes next to each other
-static bool	ast_has_integrity(t_vec *ast)
-{
-	size_t	i;
-	bool	ok;
-
-	i = 0;
-	ok = true;
-	while (i < ast->len)
-	{
-		if (is_pipe_without_arg_at(ast, i)
-			|| is_op_without_arg_at(ast, i))
-		{
-			ast_printerr(ast, i, "operator is missing an argument");
-			ok = false;
-		}
-		i++;
-	}
-	return (ok);
 }
 
 t_ms_status	parse_next_command(t_parser *p, t_cmd_list	**out)

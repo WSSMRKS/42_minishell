@@ -1,42 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token.c                                            :+:      :+:    :+:   */
+/*   util.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/05 17:21:21 by kwurster          #+#    #+#             */
+/*   Created: 2024/12/05 17:49:22 by kwurster          #+#    #+#             */
 /*   Updated: 2024/12/05 17:57:52 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../headers/minishell.h"
+#include "util.h"
 
-t_token	tk_word(t_str_slice word)
+void	parser_destroy(t_parser *p)
 {
-	return ((t_token){.type = TK_WORD, .str = str_clone_from(word)});
+	vec_destroy(&p->tokens, NULL);
+	str_destroy(&p->last_input);
 }
 
-t_token	tk_op(t_op_ty op)
+t_parser	parser_init(void *data, t_read_input read_input,
+	t_get_stab get_stab, t_get_last_ret get_last_ret)
 {
-	return ((t_token){.type = TK_OPERATOR, .op = op});
-}
+	t_parser	p;
 
-t_token	tk_lit(t_str_slice quoted)
-{
-	quoted.len -= 2;
-	quoted.str += 1;
-	return ((t_token){.type = TK_LITERAL, .str = str_clone_from(quoted)});
-}
-
-t_token	tk_dquote(t_str_slice quoted)
-{
-	quoted.len -= 2;
-	quoted.str += 1;
-	return ((t_token){.type = TK_DQUOTE, .str = str_clone_from(quoted)});
-}
-
-t_token	tk_empty(t_token_ty ty)
-{
-	return ((t_token){.type = ty, .str = str_empty()});
+	p.tokens = vec_empty(sizeof(t_token));
+	p.read_input = read_input;
+	p.get_stab = get_stab;
+	p.get_last_ret = get_last_ret;
+	p.data = data;
+	p.last_input = str_empty();
+	return (p);
 }

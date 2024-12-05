@@ -1,22 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_token.c                                       :+:      :+:    :+:   */
+/*   util.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/05 13:02:00 by kwurster          #+#    #+#             */
-/*   Updated: 2024/12/05 13:13:42 by kwurster         ###   ########.fr       */
+/*   Created: 2024/12/05 17:46:51 by kwurster          #+#    #+#             */
+/*   Updated: 2024/12/05 17:57:52 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../headers/minishell.h"
 
-void	free_token(void *token)
-{
-	t_token	*tk;
-
-	tk = token;
-	if (tk->type != TK_OPERATOR)
-		str_destroy(&tk->str);
-}
+void		debug_print_simple_com(int fd, t_simple_com *cmd, bool parser);
+bool		ast_has_integrity(t_vec *ast);
+void		str_push_ast(t_str *str, t_ast *ast, bool first);

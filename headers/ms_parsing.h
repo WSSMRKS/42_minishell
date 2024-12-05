@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:56:05 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/27 13:04:52 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/05 17:57:52 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,10 @@ typedef struct	s_cmd_list {
 	struct s_cmd_list	*next;
 }	t_cmd_list;
 
-void		debug_print_simple_com(int fd, t_simple_com *cmd, bool parser);
 t_parser	parser_init(void *data, t_read_input read_input,
-		t_get_stab get_stab, t_get_last_ret get_last_ret);
+				t_get_stab get_stab, t_get_last_ret get_last_ret);
+void		parser_destroy(t_parser *p);
+
 t_ms_status	parse_next_command(t_parser *p, t_cmd_list	**out);
 
 #endif

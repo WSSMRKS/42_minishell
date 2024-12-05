@@ -1,5 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenize.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/05 17:21:21 by kwurster          #+#    #+#             */
+/*   Updated: 2024/12/05 17:57:52 by kwurster         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../headers/minishell.h"
-#include <stdio.h>
+#include "util.h"
 
 /// @brief
 /// @param inp
@@ -70,40 +82,6 @@ static void	handle_space_and_comment(t_str_slice *inp, t_vec *tokens)
 // with a special merge of the tokens but without
 // the newline token which was there before
 
-/// prints
-/// ```
-/// minishell syntax error: <error message>\n
-/// echo hello "world\n
-///            ^
-/// ```
-/// input is allowed to be multiline, though only the affected line will print
-static void	span_printerr(t_str_slice s, size_t err_i, const char *err)
-{
-	size_t	i;
-	t_vec	lines;
-
-	ft_printf_fd(STDERR, "minishell syntax error: %s\n", err);
-	lines = strsl_split(s, cstr_slice("\n", 1));
-	if (lines.mem_err)
-		return ;
-	i = 0;
-	while (i < lines.len)
-	{
-		s = *(t_str_slice *)vec_get_at(&lines, i++);
-		if (err_i < s.len)
-		{
-			ft_putstrsl_fd(s, STDERR);
-			write(STDERR, "\n", 1);
-			break ;
-		}
-		err_i -= s.len + 1;
-	}
-	ft_putfill_fd(' ', STDERR, err_i);
-	ft_putchar_fd('^', STDERR);
-	ft_putchar_fd('\n', STDERR);
-	vec_destroy(&lines, NULL);
-}
-
 /// @brief Sets the input cursor to the start of next line or the end and
 /// and removes the last few gathered tokens after the last newline
 /// @param tokens
@@ -164,7 +142,7 @@ bool	tokenize(t_str_slice inp, t_vec *out)
 		}
 		else if (handle_word_or_op(&inp, out))
 			continue ;
-		ft_putendl_fd("minishell tokenization: unknown error", STDERR);
+		ft_putendl_fd("minishell tokenization: error", STDERR);
 		return (false);
 	}
 	return (true);

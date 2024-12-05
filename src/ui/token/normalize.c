@@ -1,7 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   normalize.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/05 17:17:32 by kwurster          #+#    #+#             */
+/*   Updated: 2024/12/05 17:57:52 by kwurster         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../headers/minishell.h"
+#include "util.h"
 
 // repeating seperators -> single seperator
-static void	remove_dup_seperators(t_vec *tokens)
+void	remove_dup_seperators(t_vec *tokens)
 {
 	t_token	*token;
 	t_token	*next;
@@ -26,7 +39,7 @@ static void	remove_dup_seperators(t_vec *tokens)
 	}
 }
 
-static bool	is_redundant_separator(t_vec *tokens, size_t i)
+bool	is_redundant_separator(t_vec *tokens, size_t i)
 {
     t_token	*prev;
     t_token	*next;
@@ -48,7 +61,7 @@ static bool	is_redundant_separator(t_vec *tokens, size_t i)
     return (false);
 }
 
-static void	remove_redundant_separators(t_vec *tokens)
+void	remove_redundant_separators(t_vec *tokens)
 {
     t_token	*token;
     size_t	i;
@@ -65,7 +78,7 @@ static void	remove_redundant_separators(t_vec *tokens)
 }
 
 // chained tokens of kind TOKEN_WORD, TOKEN_LITERAL, TOKEN_DQUOTE -> single WORD token
-static void	merge_chained_word_tokens(t_vec *tokens)
+void	merge_chained_word_tokens(t_vec *tokens)
 {
 	t_token	*token;
 	t_token	*next;
@@ -95,7 +108,7 @@ static void	merge_chained_word_tokens(t_vec *tokens)
 }
 
 // after merging chained word tokens, seperators are not needed anymore
-static void	remove_all_seperators(t_vec *tokens)
+void	remove_all_seperators(t_vec *tokens)
 {
 	t_token	*token;
 	size_t	i;
@@ -109,22 +122,4 @@ static void	remove_all_seperators(t_vec *tokens)
 		else
 			i++;
 	}
-}
-
-// repeating seperators -> single seperator
-// remove seperator before or after one of [TOKEN_OPERATOR, TOKEN_CONTINUE_NL, TOKEN_NL]
-// chained tokens of kind TOKEN_WORD, TOKEN_LITERAL, TOKEN_DQUOTE -> single WORD token
-void	tokens_normalize(t_vec *tokens)
-{
-	remove_dup_seperators(tokens);
-	remove_redundant_separators(tokens);
-	merge_chained_word_tokens(tokens);
-	remove_all_seperators(tokens);
-}
-
-void	tokens_normalize_for_continue_nl_check(t_vec *tokens)
-{
-	remove_dup_seperators(tokens);
-	remove_redundant_separators(tokens);
-	remove_all_seperators(tokens);
 }

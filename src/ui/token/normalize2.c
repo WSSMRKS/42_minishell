@@ -1,42 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token.c                                            :+:      :+:    :+:   */
+/*   normalize2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/05 17:21:21 by kwurster          #+#    #+#             */
+/*   Created: 2024/12/05 17:37:25 by kwurster          #+#    #+#             */
 /*   Updated: 2024/12/05 17:57:52 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../headers/minishell.h"
+#include "util.h"
 
-t_token	tk_word(t_str_slice word)
+// repeating seperators -> single seperator
+// remove seperator before or after one of [TOKEN_OPERATOR, TOKEN_CONTINUE_NL, TOKEN_NL]
+// chained tokens of kind TOKEN_WORD, TOKEN_LITERAL, TOKEN_DQUOTE -> single WORD token
+void	tokens_normalize(t_vec *tokens)
 {
-	return ((t_token){.type = TK_WORD, .str = str_clone_from(word)});
+	remove_dup_seperators(tokens);
+	remove_redundant_separators(tokens);
+	merge_chained_word_tokens(tokens);
+	remove_all_seperators(tokens);
 }
 
-t_token	tk_op(t_op_ty op)
+void	tokens_normalize_for_continue_nl_check(t_vec *tokens)
 {
-	return ((t_token){.type = TK_OPERATOR, .op = op});
-}
-
-t_token	tk_lit(t_str_slice quoted)
-{
-	quoted.len -= 2;
-	quoted.str += 1;
-	return ((t_token){.type = TK_LITERAL, .str = str_clone_from(quoted)});
-}
-
-t_token	tk_dquote(t_str_slice quoted)
-{
-	quoted.len -= 2;
-	quoted.str += 1;
-	return ((t_token){.type = TK_DQUOTE, .str = str_clone_from(quoted)});
-}
-
-t_token	tk_empty(t_token_ty ty)
-{
-	return ((t_token){.type = ty, .str = str_empty()});
+	remove_dup_seperators(tokens);
+	remove_redundant_separators(tokens);
+	remove_all_seperators(tokens);
 }

@@ -6,11 +6,12 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 12:57:03 by kwurster          #+#    #+#             */
-/*   Updated: 2024/12/05 12:57:06 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/05 17:57:52 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../headers/minishell.h"
+#include "util.h"
 
 void	token_print(const t_token *token, int fd)
 {

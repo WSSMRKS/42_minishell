@@ -1,18 +1,32 @@
-#include "../../headers/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ast.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/25 19:53:28 by kwurster          #+#    #+#             */
+/*   Updated: 2024/12/05 17:57:52 by kwurster         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void	free_2d(char **strs)
+#include "../../../headers/minishell.h"
+
+void	free_ast(void *ast_node)
 {
-	size_t	i;
+	t_ast	*ast;
 
-	if (strs == NULL)
-		return ;
-	i = 0;
-	while (strs[i] != NULL)
+	ast = ast_node;
+	if (ast->ty == AST_CMD)
 	{
-		free(strs[i]);
-		i++;
+		ft_free_2d(ast->cmd);
+		ast->cmd = NULL;
 	}
-	free(strs);
+	else
+	{
+		free(ast->op.arg);
+		ast->op.arg = NULL;
+	}
 }
 
 // token at i == string (command exe), rest every token = one argument except for when token == operator
@@ -56,7 +70,7 @@ bool	try_add_command(t_vec *tokens, size_t *i, t_vec *ast)
 	}
 	if (vec_push(ast, &ast_cmd))
 		return (true);
-	free_2d(ast_cmd.cmd);
+	ft_free_2d(ast_cmd.cmd);
 	return (false);
 }
 
@@ -87,17 +101,6 @@ bool	try_add_operator(t_vec *tokens, size_t *i, t_vec *ast)
 		return (true);
 	free(ast_op.op.arg);
 	return (false);
-}
-
-void	iter_ast_free(void *nodeptr)
-{
-	t_ast	*node;
-
-	node = (t_ast*)nodeptr;
-	if (node->ty == AST_CMD)
-		free_2d(node->cmd);
-	else
-		free(node->op.arg);
 }
 
 // handle and remove any TK_CONTINUE_NL tokens before using this function
