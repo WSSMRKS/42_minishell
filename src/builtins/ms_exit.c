@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 15:49:59 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/05 12:24:30 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/06 11:55:13 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	ft_exit(t_ms *ms, t_cmd_list *curr)
 {
 	int		ex;
 
-	ex = 0;
+	ex = ms->be->last_ret;
 	if (curr->cmd.words->next != NULL)
 	{
 		if (ft_validate_num(curr->cmd.words->next->word) == 0)
