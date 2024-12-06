@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/06 11:47:07 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/06 16:18:41 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ in minishell.h */
 # include "ms_garbage.h"
 # include "ms_executor.h"
 # include "tokenization.h"
+
+extern int g_signal;
 
 /* minishell struct. Main struct that is passed throughout the whole program.
 	global flags: 1 = heredoc present	*/

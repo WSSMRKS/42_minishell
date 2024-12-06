@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/05 11:45:31 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/06 16:22:48 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	ft_execute(t_ms *ms, t_cmd_list *curr, int *i)
 	{
 		if (ms->be->redir_err == 0)
 		{
-			ms->be->last_ret = ft_builtin(ms, curr, i);
+			g_signal = ft_builtin(ms, curr, i);
 			dup2(ms->be->saved_std[0], STDIN_FILENO);
 			dup2(ms->be->saved_std[1], STDOUT_FILENO);
 		}

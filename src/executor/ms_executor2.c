@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/06 13:47:05 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/06 16:51:11 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,10 @@ int	ft_grab_pid(void)
 void	ft_ex_prep(t_ms *ms, t_cmd_list *curr, int *i)
 {
 	ft_redir_handler(ms, curr, *i);
+	if (ms->be->child_pids[*i] == 0 && !signal(SIGQUIT, SIG_DFL))
+	{
+		perror("signal");
+		exit(EXIT_FAILURE);
+	}
 	ft_create_argv(curr);
 }

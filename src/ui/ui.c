@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ui.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/04 18:43:47 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/06 16:19:24 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,8 @@ static int	get_last_ret(void *data)
 	t_ms	*ms;
 
 	ms = (t_ms *)data;
-	return (ms->be->last_ret);
+	(void) ms;
+	return (g_signal);
 }
 
 static bool	cmdlist_has_heredoc(t_cmd_list *cmds)
