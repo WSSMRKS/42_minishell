@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/06 12:36:28 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/06 13:46:50 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ft_infile(t_ms *ms, t_list_redir *rd)
 	if (fdin < 0)
 	{
 		ft_printf_fd(2, "%s: %s\n", rd->target.filename, strerror(errno));
-		if (ms->cmds->cmd.builtin == 0 && ms->be->nb_cmds == 1)
+		if (ms->cmds->cmd.builtin == 0)
 		{
 			ft_close_all_fds(ms);
 			ft_clear_ast(ms);
