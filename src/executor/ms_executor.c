@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/05 12:47:02 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/06 12:44:04 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ char	*ft_search_cmd(t_ms *ms, t_cmd_list *curr)
 	char	*path;
 
 	i = 0;
-	if (ft_strchr(curr->cmd.words->word, '/') != NULL)
+	if (curr->cmd.words && ft_strchr(curr->cmd.words->word, '/') != NULL)
 	{
 		path = ft_strdup(curr->cmd.words->word);
 		return (path);
 	}
-	while (ms->be->path && ms->be->path[i])
+	while (curr->cmd.words && ms->be->path && ms->be->path[i])
 	{
 		path = ft_strjoin(ms->be->path[i], curr->cmd.words->word);
 		if (path == NULL)
@@ -70,8 +70,13 @@ void	ft_ms_execve(t_ms *ms, t_cmd_list *curr)
 	err = 0;
 	if (cmdpath == NULL)
 	{
-		err = 127;
-		ft_prnt_stderr(NULL, curr->cmd.words->word, 2);
+		if (!curr->cmd.words)
+			err = 0;
+		else
+		{
+			err = 127;
+			ft_prnt_stderr(NULL, curr->cmd.words->word, 2);
+		}
 	}
 	else
 	{
