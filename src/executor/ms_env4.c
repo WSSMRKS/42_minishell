@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/04 15:39:05 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/06 11:46:05 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,38 @@ void	ft_free_stab(t_stab_st *stab_stack)
 	}
 	free(stab_stack->stab);
 	free(stab_stack);
+}
+
+/// @brief Update the $SHLVL variable by incrementing its value.
+///        Functionality:
+///        1. Retrieve the current value of the $SHLVL variable.
+///        2. If $SHLVL is missing, initialize it to 1 and add it to the env.
+///        3. If $SHLVL exists, increment its value. If negative, reset it to 1.
+///        4. Update the $SHLVL variable in the global environment.
+///        5. Handle errors, including memory allocation failures.
+/// @param ms Pointer to the main structure containing global states.
+void	ft_upd_shlvl(t_ms *ms)
+{
+	char	*shlvl;
+	int		curr_shlvl;
+
+	shlvl = ft_lookup_stab(ms->be->global_stabs, "SHLVL");
+	if (!shlvl)
+	{
+		ft_printf_fd(2, "minishell: variable $SHLVL not found. Set to 1\n");
+		ft_add_global_val(ms, "SHLVL=1");
+	}
+	else
+	{
+		curr_shlvl = ft_atoi(shlvl);
+		if (curr_shlvl < 0)
+			curr_shlvl = 1;
+		else
+			curr_shlvl += 1;
+		shlvl = ft_itoa(curr_shlvl);
+		if (!shlvl)
+			ft_cleanup_exit(ms, ENOMEM);
+		ft_upd_stab_val(ms->be->global_stabs, "SHLVL", shlvl);
+		free(shlvl);
+	}
 }

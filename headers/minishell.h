@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/05 12:26:31 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/06 11:47:07 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,8 @@ int				ft_is_prime(int n);
 void			ft_add_val(t_ms *ms, char *env);
 char			*ft_lookup_key(t_stab_st *stab_lvl, char *key);
 char			*ft_validate_var(char *key);
+void			ft_upd_shlvl(t_ms *ms);
+
 
 
 
