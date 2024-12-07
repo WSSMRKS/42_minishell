@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_executor3.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/06 16:22:48 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/07 23:11:36 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,10 @@ void	ft_execute(t_ms *ms, t_cmd_list *curr, int *i)
 	}
 }
 
+void handle_sigint_exec(int sig) {
+    (void)sig;
+}
+
 void	ft_fork(t_ms *ms, t_cmd_list *curr, int *i)
 {
 	if (!curr->cmd.builtin || ms->be->nb_cmds > 1)
@@ -60,6 +64,12 @@ void	ft_fork(t_ms *ms, t_cmd_list *curr, int *i)
 	if (ms->be->child_pids[*i] == 0
 		|| (curr->cmd.builtin && ms->be->nb_cmds == 1))
 		ft_ex_prep(ms, curr, i);
+	//implement signal handler to do nothing while in child.
+	struct sigaction	sa_int_exec;
+	sa_int_exec.sa_handler = &handle_sigint_exec;
+	sa_int_exec.sa_flags = SA_RESTART; // Restart interrupted system calls
+	sigemptyset(&sa_int_exec.sa_mask); // Don't block additional signals
+	sigaction(SIGINT, &sa_int_exec, NULL);
 	ft_execute(ms, curr, i);
 	if (*i > 0 && ms->be->child_pids[*i] != 0)
 		ft_pipe_reset(ms, i);
