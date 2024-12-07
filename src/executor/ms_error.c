@@ -6,7 +6,7 @@
 /*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 23:52:06 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/07 23:51:36 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/12/08 00:00:33 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	ft_wait_error(t_ms *ms)
 					if (ms->be->child_ret[i] == 131)
 						printf("Quit (core dumped)\n");
 				}
+				break ;
 			}
 		}
 	}
