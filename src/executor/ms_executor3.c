@@ -6,7 +6,7 @@
 /*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/07 23:11:36 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/12/07 23:40:05 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,16 @@ void	ft_execute(t_ms *ms, t_cmd_list *curr, int *i)
 	}
 }
 
-void handle_sigint_exec(int sig) {
-    (void)sig;
+void	handle_sigint_exec(int sig)
+{
+	(void)sig;
+	printf("\n");
 }
 
 void	ft_fork(t_ms *ms, t_cmd_list *curr, int *i)
 {
+	struct sigaction	sa_int_exec;
+
 	if (!curr->cmd.builtin || ms->be->nb_cmds > 1)
 		ms->be->child_pids[*i] = fork();
 	else
@@ -64,11 +68,9 @@ void	ft_fork(t_ms *ms, t_cmd_list *curr, int *i)
 	if (ms->be->child_pids[*i] == 0
 		|| (curr->cmd.builtin && ms->be->nb_cmds == 1))
 		ft_ex_prep(ms, curr, i);
-	//implement signal handler to do nothing while in child.
-	struct sigaction	sa_int_exec;
 	sa_int_exec.sa_handler = &handle_sigint_exec;
-	sa_int_exec.sa_flags = SA_RESTART; // Restart interrupted system calls
-	sigemptyset(&sa_int_exec.sa_mask); // Don't block additional signals
+	sa_int_exec.sa_flags = SA_RESTART;
+	sigemptyset(&sa_int_exec.sa_mask);
 	sigaction(SIGINT, &sa_int_exec, NULL);
 	ft_execute(ms, curr, i);
 	if (*i > 0 && ms->be->child_pids[*i] != 0)
@@ -90,21 +92,5 @@ void	ft_is_builtin(t_cmd_list *curr, t_ms *ms)
 			curr->cmd.builtin = true;
 			curr->cmd.builtin_nr = i + 1;
 		}
-	}
-}
-
-void	ft_execution(t_ms *ms)
-{
-	t_cmd_list			*curr;
-	int					i;
-
-	curr = ms->cmds;
-	i = 0;
-	while (curr)
-	{
-		ft_is_builtin(curr, ms);
-		ft_fork(ms, curr, &i);
-		curr = curr->next;
-		i++;
 	}
 }

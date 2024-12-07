@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_error.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 23:52:06 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/06 16:56:14 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/07 23:51:36 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,15 @@ void	ft_wait_error(t_ms *ms)
 				if (WIFEXITED(status))
 					ms->be->child_ret[i] = WEXITSTATUS(status);
 				else if (WIFSIGNALED(status))
+				{
 					ms->be->child_ret[i] = 128 + WTERMSIG(status);
-				break ;
+					if (ms->be->child_ret[i] == 131)
+						printf("Quit (core dumped)\n");
+				}
 			}
 		}
 	}
 	if (pid == -1 && errno != ECHILD)
-	{
 		perror("waitpid error");
-	}
 	g_signal = ms->be->child_ret[ms->be->nb_cmds - 1];
 }

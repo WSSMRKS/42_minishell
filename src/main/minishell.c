@@ -6,7 +6,7 @@
 /*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 11:17:01 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/07 23:16:03 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/12/07 23:46:43 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,12 @@ int	redirect_stdin(int argc, char **argv)
     return (1);
 }
 
-
 int	main(int argc, char **argv, char **envp)
 {
 	int	file_in;
 
 	if (signal(SIGQUIT, SIG_IGN)) {
-		perror("signalthisistheproblem");
+		perror("signal");
 		exit(EXIT_FAILURE);
 	}
 	file_in = redirect_stdin(argc, argv);
