@@ -6,7 +6,7 @@
 /*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/08 01:49:55 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/12/08 16:49:44 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,15 @@ char	*ft_tmp_name(t_ms *ms, int *fd)
 	return (filename);
 }
 
+char	*ft_hd_var_expansion(t_ms *ms, char *l)
+{
+	t_str	wrapped;
+	
+	wrapped = str_from_parts(l, ft_strlen(l));
+	str_expand_vars(&wrapped, ms->be->global_stabs, g_signal);
+	return (wrapped._large_str);
+}
+
 void	ft_hd_input(t_list_redir *cl, t_ms *ms)
 {
 	char		*l;
@@ -94,6 +103,9 @@ delimited by end-of-file (wanted `%s')\n", l_nb, cl->hd_del) != 0)
 			break ;
 		if (ft_strncmp(cl->hd_del, l, ldel) == 0 && (int) ft_strlen(l) == ldel)
 			break ;
+		if (cl->instruction != redir_append) //change to redir_hd_quotes after implemented.
+			l = ft_hd_var_expansion(ms, l);
+			//add error handling.
 		if ((ft_putstr_fd(l, fd) < 0 || ft_putstr_fd("\n", fd) < 0))
 			exit(errno);
 		l_nb++;
