@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 05:06:08 by dkoca             #+#    #+#             */
-/*   Updated: 2024/12/04 16:21:56 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/08 16:22:50 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ typedef struct s_ast {
 
 bool		tokenize(t_str_slice inp, t_vec *out);
 void		expand_vars(t_vec *tokens, t_stab_st *st, int last_ret);
+void		str_expand_vars(t_str *str, t_stab_st *st, int last_ret);
 void		unescape_chars(t_vec *tokens);
 void		tokens_normalize(t_vec *tokens);
 void		tokens_normalize_for_continue_nl_check(t_vec *tokens);

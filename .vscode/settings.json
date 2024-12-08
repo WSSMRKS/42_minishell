@@ -8,6 +8,8 @@
 		"libft.h": "c",
 		"ioctl.h": "c",
 		"termios.h": "c",
-		"features.h": "c"
+		"features.h": "c",
+		"ms_parsing.h": "c",
+		"ms_garbage.h": "c"
 	}
 }

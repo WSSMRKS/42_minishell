@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_parsing.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:56:05 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/06 16:23:33 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/08 16:47:53 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_redir_aim {
 typedef enum	e_redir_type {
 	redir_append,
 	redir_here_doc,
+	//redir_hd_quotes,
 	redir_infile,
 	redir_outfile,
 }	t_redir_type;
