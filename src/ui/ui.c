@@ -6,7 +6,7 @@
 /*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/07 23:15:49 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/12/08 00:58:35 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,7 @@ void	repl(int argc, char **argv, char **envp)
 		// sa_chld.sa_flags = SA_RESTART;
 		// sigemptyset(&sa_chld.sa_mask);
 		// sigaction(SIGCHLD, &sa_chld, NULL);
-	
+		g_signal = 0;
 		status = parse_next_command(&ms.parser, &ms.cmds);
 		if (status == MS_EOF)
 			break ;

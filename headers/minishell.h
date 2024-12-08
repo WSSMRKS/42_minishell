@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/06 16:18:41 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/08 01:54:03 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,16 @@ in minishell.h */
 # include <limits.h>
 # include <stdbool.h>
 # include <signal.h>
+# include <sys/ioctl.h>
+# include <linux/ioctl.h>
 # include "../libft/libft.h"
 # include "ms_stab.h"
 # include "ms_parsing.h"
 # include "ms_garbage.h"
 # include "ms_executor.h"
 # include "tokenization.h"
+
+
 
 extern int g_signal;
 

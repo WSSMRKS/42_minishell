@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/04 19:24:53 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/08 01:49:55 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,15 @@ void	ft_hd_input(t_list_redir *cl, t_ms *ms)
 	int			fd;
 
 	l_nb = 0;
+	fd = -1;
 	ldel = ft_strlen(cl->hd_del);
-	while (true)
+	while (true && g_signal != 130)
 	{
 		l = readline("> ");
 		if (!cl->target.filename)
 			cl->target.filename = ft_tmp_name(ms, &fd);
+		if (g_signal == 130)
+			break ;
 		if (!l && ft_printf_fd(2, "minishell: warning: here-document at line %d \
 delimited by end-of-file (wanted `%s')\n", l_nb, cl->hd_del) != 0)
 			break ;
@@ -101,6 +104,14 @@ delimited by end-of-file (wanted `%s')\n", l_nb, cl->hd_del) != 0)
 	close(fd);
 }
 
+void	handle_sigint_hd(int sig)
+{
+	(void)sig;
+	g_signal = 128 + SIGINT;
+	rl_replace_line("", 0);
+	ioctl(STDOUT_FILENO, TIOCSTI, "\n");
+}
+
 /*heredoc insights:
 	- several heredocs in one command are handled left to right.
 	  only the most left here doc is handled.
@@ -108,14 +119,19 @@ delimited by end-of-file (wanted `%s')\n", l_nb, cl->hd_del) != 0)
 */
 void	ft_here_doc(t_ms *ms)
 {
-	t_cmd_list		*cmd_list;
-	t_list_redir	*curr_redir;
+	t_cmd_list			*cmd_list;
+	t_list_redir		*curr_redir;
+	struct sigaction	sa_int_hd;
 
+	sa_int_hd.sa_handler = &handle_sigint_hd;
+	sa_int_hd.sa_flags = SA_RESTART;
+	sigemptyset(&sa_int_hd.sa_mask);
+	sigaction(SIGINT, &sa_int_hd, NULL);
 	cmd_list = ms->cmds;
-	while ((ms->global_flags & 1) != 0 && cmd_list != NULL)
+	while ((ms->global_flags & 1) != 0 && cmd_list != NULL && g_signal != 130)
 	{
 		curr_redir = cmd_list->cmd.redir;
-		while (cmd_list->cmd.heredoc && curr_redir != NULL)
+		while (cmd_list->cmd.heredoc && curr_redir != NULL && g_signal != 130)
 		{
 			if (curr_redir->instruction == redir_here_doc)
 			{
@@ -124,5 +140,10 @@ void	ft_here_doc(t_ms *ms)
 			curr_redir = curr_redir->next;
 		}
 		cmd_list = cmd_list->next;
+	}
+	if (!signal(SIGINT, SIG_DFL))
+	{
+		perror("signal");
+		exit(EXIT_FAILURE);
 	}
 }
