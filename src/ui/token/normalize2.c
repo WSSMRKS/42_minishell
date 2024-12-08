@@ -14,8 +14,10 @@
 #include "tk_util.h"
 
 // repeating seperators -> single seperator
-// remove seperator before or after one of [TOKEN_OPERATOR, TOKEN_CONTINUE_NL, TOKEN_NL]
-// chained tokens of kind TOKEN_WORD, TOKEN_LITERAL, TOKEN_DQUOTE -> single WORD token
+// remove seperator before or after one of
+// [TOKEN_OPERATOR, TOKEN_CONTINUE_NL, TOKEN_NL]
+// chained tokens of kind TOKEN_WORD, TOKEN_LITERAL, TOKEN_DQUOTE
+// -> single WORD token
 void	tokens_normalize(t_vec *tokens)
 {
 	remove_dup_seperators(tokens);

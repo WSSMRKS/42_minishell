@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../../headers/minishell.h"
+#include "../token/tk_util.h"
 
 void	free_ast(void *ast_node)
 {
@@ -29,7 +30,8 @@ void	free_ast(void *ast_node)
 	}
 }
 
-// token at i == string (command exe), rest every token = one argument except for when token == operator
+// token at i == string (command exe),
+// rest every token = one argument except for when token == operator
 // returns false if there was a mem error, true otherwise
 bool	try_add_command(t_vec *tokens, size_t *i, t_vec *ast)
 {
@@ -104,7 +106,8 @@ bool	try_add_operator(t_vec *tokens, size_t *i, t_vec *ast)
 }
 
 // handle and remove any TK_CONTINUE_NL tokens before using this function
-// postprocess by removing any commands that are not first and are not preceded by PIPE
+// postprocess by removing any commands that are not first
+// and are not preceded by PIPE
 // the input tokens array will be cleared if done, otherwise there are more
 // commands left to be parsed for which this function should be called again
 bool	tokens_to_ast(t_vec *tokens, t_vec *out)
@@ -115,7 +118,7 @@ bool	tokens_to_ast(t_vec *tokens, t_vec *out)
 	i = 0;
 	while (i < tokens->len)
 	{
-		if (((t_token*)vec_get_at(tokens, i))->type == TK_NL)
+		if (((t_token *)vec_get_at(tokens, i))->type == TK_NL)
 		{
 			vec_remove_range(tokens, 0, i + 1);
 			return (true);
@@ -123,10 +126,10 @@ bool	tokens_to_ast(t_vec *tokens, t_vec *out)
 		if (!try_add_command(tokens, &i, out)
 			|| (i < tokens->len && !try_add_operator(tokens, &i, out)))
 		{
-			vec_destroy(out, iter_ast_free);
+			vec_destroy(out, free_ast);
 			return (false);
 		}
 	}
-	vec_destroy(tokens, NULL); // TODO
+	vec_destroy(tokens, free_token);
 	return (true);
 }

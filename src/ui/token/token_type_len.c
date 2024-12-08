@@ -12,6 +12,7 @@
 
 #include "../../../headers/minishell.h"
 #include "tk_util.h"
+#include <stddef.h>
 
 /// @brief Checks if the string starts with a specific opening character
 /// and contains its closing character.
@@ -35,7 +36,8 @@ size_t	bounded_token_len(const char *str, char bounds, size_t *out)
 	return (0);
 }
 
-/// if the first character is '#' the rest of the string is treated as comment and should be thrown out
+/// if the first character is '#' the rest of the string
+/// is treated as comment and should be thrown out
 size_t	comment_len(const char *str)
 {
 	if (*str != '#')
@@ -47,35 +49,32 @@ size_t	comment_len(const char *str)
 /// @param str The string to check.
 /// @param out The length of the word. (nullpointer allowed)
 /// @return The length of the word.
-size_t	word_len(const char *str, size_t *out)
+size_t	word_len(const char *str)
 {
-	size_t	len;
-	size_t	total_len;
+	t_str_slice	s;
+	size_t		len;
 
-	total_len = ft_strlen(str);
 	len = 0;
-	if (is_word_delimiter(str[len]))
-		len = 1;
-	while (str[len])
+	s = cstr_view(str);
+	while (s.str[len])
 	{
 		if (str[len] == '\\')
 		{
-			if (str[len + 1] == 0)
+			if (len == s.len)
 			{
 				if (len == 0)
 					len++;
-				break;
+				break ;
 			}
 			len += 2;
 		}
 		else if (!is_word_delimiter(str[len])
-			&& !str_starts_with_op(cstr_slice(&str[len], usizemin(total_len - len, 2)), 0))
+			&& !str_starts_with_op(cstr_slice(&str[len],
+					usizemin(s.len - len, 2)), 0))
 			len++;
 		else
 			break ;
 	}
-	if (out)
-		*out = len;
 	return (len);
 }
 

@@ -15,10 +15,11 @@
 
 // TODO remove (debug only)
 void	print_all_tokens(t_vec *tokens);
+void	ast_printstr(t_vec *ast);
 
 static bool	last_tk_is_continue_nl(t_vec *tokens)
 {
-	t_vec	tokens_clone;
+	t_vec		tokens_clone;
 	t_token_ty	last;
 
 	tokens_clone = vec_clone(tokens);
@@ -30,16 +31,16 @@ static bool	last_tk_is_continue_nl(t_vec *tokens)
 		vec_destroy(&tokens_clone, NULL);
 		return (false);
 	}
-	last = ((t_token*)vec_get_last(&tokens_clone))->type;
+	last = ((t_token *)vec_get_last(&tokens_clone))->type;
 	vec_destroy(&tokens_clone, NULL);
 	return (last == TK_CONTINUE_NL);
 }
 
-static t_ms_status	add_tokens_to_parser(t_parser *p)
-{
-	(void)p;
-	return (MS_ERROR);
-}
+// static t_ms_status	add_tokens_to_parser(t_parser *p)
+// {
+// 	(void)p;
+// 	return (MS_ERROR);
+// }
 
 // DBG_PARSER(ft_putstr_fd("[DBG_PARSE] TEMP TOKENS:\n", STDERR));
 // DBG_PARSER(print_all_tokens(&tmp_tokens));
@@ -69,26 +70,31 @@ static t_ms_status	read_tokens(t_parser *p)
 	vec_pushvec(&p->tokens, &tmp_tokens);
 	if (p->tokens.mem_err)
 	{
-		vec_destroy(&tmp_tokens, NULL); // TODO
+		vec_destroy(&tmp_tokens, free_token);
 		return (MS_ERROR);
 	}
 	vec_destroy(&tmp_tokens, NULL);
+	print_all_tokens(&p->tokens);
 	if (!last_tk_is_continue_nl(&p->tokens))
-		break;
+	{
+		tokens_normalize(&p->tokens);
+		return (MS_OK);
+	}
 	else if (cstr_ref(&p->last_input)[p->last_input.len - 1] == '\\')
 		str_pop(&p->last_input);
+	tokens_normalize(&p->tokens);
 	ft_putendl_fd("minishell syntax error:", STDERR);
 	ft_putendl_fd("Multiline commands (e.g. via line continuation)"
-	" are unsupported", STDERR);
+		" are unsupported", STDERR);
 	vec_clear(&p->tokens);
 	str_clear(&p->last_input);
-	inp = p->read_input(false, p->data);
-	str_cat(&p->last_input, cstr_view(inp));
-	DBG_PARSER(ft_putstr_fd("[DBG_PARSE] ALL TOKENS:\n", STDERR));
-	DBG_PARSER(print_all_tokens(&p->tokens));
-	tokens_normalize(&p->tokens);
-	DBG_PARSER(ft_putstr_fd("[DBG_PARSE] ALL TOKENS NORMALIZED:\n", STDERR));
-	DBG_PARSER(print_all_tokens(&p->tokens));
+	// inp = p->read_input(false, p->data);
+	// str_cat(&p->last_input, cstr_view(inp));
+	// DBG_PARSER(ft_putstr_fd("[DBG_PARSE] ALL TOKENS:\n", STDERR));
+	//DBG_PARSER(print_all_tokens(&p->tokens));
+
+	// DBG_PARSER(ft_putstr_fd("[DBG_PARSE] ALL TOKENS NORMALIZED:\n", STDERR));
+	// DBG_PARSER(print_all_tokens(&p->tokens));
 	return (MS_OK);
 }
 
@@ -106,8 +112,8 @@ t_ms_status	parse_next_command(t_parser *p, t_cmd_list	**out)
 	}
 	if (!tokens_to_ast(&p->tokens, &ast))
 	{
-		vec_destroy(&p->tokens, NULL); // TODO
-		vec_destroy(&ast, NULL); // TODO
+		vec_destroy(&p->tokens, free_token);
+		vec_destroy(&ast, free_token);
 		return (MS_ERROR);
 	}
 	if (!ast_has_integrity(&ast))

@@ -11,16 +11,26 @@ COMPILE_FLAGS = -Werror -Wall -Wextra -g3
 CC = cc
 # Source Files #
 SRC_FILES = \
-	ui/token/expand.c \
-	ui/token/token.c \
-	ui/token/tokenize.c \
-	ui/token/util.c \
-	ui/token/unescape.c \
-	ui/token/normalize.c \
-	ui/parse/parse.c \
-	ui/parse/parser.c \
-	ui/ast.c \
 	ui/ui.c \
+	ui/ast/ast.c \
+	ui/parse/debug.c \
+	ui/parse/integrity_check.c \
+	ui/parse/parse.c \
+	ui/token/debug.c \
+	ui/token/expand.c \
+	ui/parse/parser.c \
+	ui/token/normalize.c \
+	ui/parse/printerr.c \
+	ui/token/normalize2.c \
+	ui/parse/util.c \
+	ui/token/operator_util.c \
+	ui/token/token.c \
+	ui/token/token_type_len.c \
+	ui/token/token_util.c \
+	ui/token/tokenize.c \
+	ui/token/tokenize_util.c \
+	ui/token/unescape.c \
+	ui/parse/redir.c \
 	main/minishell.c \
 	init/ms_cleanup_utils.c \
 	init/ms_cleanup_utils2.c \

@@ -95,10 +95,10 @@ int	main(int argc, char **argv, char **envp)
 	file_in = redirect_stdin(argc, argv);
 	if (file_in == -1)
 		return (1);
-	if (argc > 1 && file_in == 0)
-	{
-		ft_printf("Input arguments not supported, use Bash ;)\n");
-		return (1);
-	}
+	// if (argc > 1 && file_in == 0)
+	// {
+	// 	ft_printf("Input arguments not supported, use Bash ;)\n");
+	// 	return (1);
+	// }
 	repl(argc, argv, envp);
 }

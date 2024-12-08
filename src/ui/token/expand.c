@@ -31,11 +31,11 @@ static void	strip_empty_word_tokens(t_vec *tokens)
 
 static void	str_expand_vars(t_str *str, t_stab_st *st, int last_ret)
 {
-	t_str	var_str;
-	size_t	var_size;
-	size_t	i;
-	char	*buf;
-	t_str_slice var;
+	t_str		var_str;
+	size_t		var_size;
+	size_t		i;
+	char		*buf;
+	t_str_slice	var;
 
 	i = 0;
 	while (i < str->len)
@@ -43,18 +43,20 @@ static void	str_expand_vars(t_str *str, t_stab_st *st, int last_ret)
 		buf = cstr_mut(str);
 		if (buf[i] == '$' && (i == 0 || buf[i - 1] != '\\'))
 		{
-			var_str = str_clone_from(cstr_slice(&buf[i+1], var_len(&buf[i], &var_size) - 1));
+			var_str = str_clone_from(cstr_slice(&buf[i +1],
+						var_len(&buf[i], &var_size) - 1));
 			if (var_size == 0)
 			{
 				i++;
-				continue;
+				continue ;
 			}
 			str_remove_range(str, i, i + var_size);
 			if (strsl_eq(str_view(&var_str), cstr_slice("?", 1)))
 				str_insert_itoa(last_ret, base10(), str, i);
 			else
 			{
-				var = cstr_view(ft_lookup_stab(st, (char *)cstr_ref(&var_str)));
+				var = cstr_view(ft_lookup_stab(st,
+							(char *)cstr_ref(&var_str)));
 				if (var.str)
 				{
 					str_insertstr(str, i, var);

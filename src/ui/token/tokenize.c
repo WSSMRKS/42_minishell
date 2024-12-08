@@ -41,10 +41,10 @@ static int	handle_quoted(t_str_slice *inp, t_vec *tokens)
 
 static bool	handle_word_or_op(t_str_slice *inp, t_vec *tokens)
 {
-	t_str_slice		word;
-	t_op_ty	op;
+	t_str_slice	word;
+	t_op_ty		op;
 
-	word = cstr_slice(inp->str, word_len(inp->str, 0));
+	word = cstr_slice(inp->str, word_len(inp->str));
 	if (str_starts_with_op(*inp, &op))
 	{
 		vec_push_tk(tokens, tk_op(op));
@@ -58,7 +58,8 @@ static bool	handle_word_or_op(t_str_slice *inp, t_vec *tokens)
 	return (true);
 }
 
-static void	handle_space_and_comment(t_str_slice *inp, t_vec *tokens)
+/// Returns true if the remaining input string > 0
+static bool	handle_space_and_comment(t_str_slice *inp, t_vec *tokens)
 {
 	while (*inp->str == ' ' || *inp->str == '\t' || *inp->str == '\n')
 	{
@@ -74,6 +75,7 @@ static void	handle_space_and_comment(t_str_slice *inp, t_vec *tokens)
 		|| ((t_token*)vec_get_last(tokens))->type == TK_SEPERATOR
 		|| ((t_token*)vec_get_last(tokens))->type == TK_OPERATOR)
 		strsl_move_inplace(inp, comment_len(inp->str));
+	return (inp->len != 0);
 }
 
 // IMPORTANT FOR REPL AND NEWLINE TOKEN
@@ -96,40 +98,17 @@ static void	tokens_reset_current_line(t_vec *tokens, t_str_slice *err_input)
 
 /// @brief Tokenizes the input string.
 /// @param inp The input string.
-/// @return A vector of tokenized strings (t_token).
-/// Example input and output:
-///
-/// You entered: (mycmd "hello"world"" wooord "'mystring' with space" $HOME 'bla'>myfile)
-/// tokens: 15
-/// WORD: (mycmd)
-/// SEP : ()
-/// DQUO: (hello)
-/// WORD: (world)
-/// DQUO: ()
-/// SEP : ()
-/// WORD: (wooord)
-/// SEP : ()
-/// DQUO: ('mystring' with space)
-/// SEP : ()
-/// WORD: ($HOME)
-/// SEP : ()
-/// LIT : (bla)
-/// OP  : (>)
-/// WORD: (myfile)
-///
-/// returns false if unknown error without clearing the out vec
+/// @param out The output vector.
+/// @return false if unknown error without clearing the out vec
 bool	tokenize(t_str_slice inp, t_vec *out)
 {
 	t_str_slice	inp_start;
-	int		ok;
+	int			ok;
 
 	inp_start = inp;
 	*out = vec_empty(sizeof(t_token));
-	while (true)
+	while (handle_space_and_comment(&inp, out))
 	{
-		handle_space_and_comment(&inp, out);
-		if (!inp.len)
-			break ;
 		ok = handle_quoted(&inp, out);
 		if (ok == 1)
 			continue ;
@@ -138,12 +117,12 @@ bool	tokenize(t_str_slice inp, t_vec *out)
 			span_printerr(inp_start, inp_start.len - inp.len,
 				"unclosed quotes");
 			tokens_reset_current_line(out, &inp);
-			continue;
 		}
-		else if (handle_word_or_op(&inp, out))
-			continue ;
-		ft_putendl_fd("minishell tokenization: error", STDERR);
-		return (false);
+		else if (!handle_word_or_op(&inp, out))
+		{
+			ft_putendl_fd("minishell tokenization: error", STDERR);
+			return (false);
+		}
 	}
 	return (true);
 }

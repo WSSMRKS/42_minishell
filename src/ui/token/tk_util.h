@@ -29,7 +29,7 @@ bool		token_has_str(t_token *token);
 bool		is_word_delimiter(char c);
 void		strsl_trim_start_delim(t_str_slice *s);
 size_t		bounded_token_len(const char *str, char bounds, size_t *out);
-size_t		word_len(const char *str, size_t *out);
+size_t		word_len(const char *str);
 size_t		comment_len(const char *str);
 size_t		var_len(const char *str, size_t *out);
 bool		str_is_operator(t_str_slice str, t_op_ty *out);
