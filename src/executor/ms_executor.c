@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_executor.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/06 12:44:04 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/07 23:30:57 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,13 @@ void	ft_prnt_stderr(char *name, char *cmd, int err)
 	open("/dev/tty", O_WRONLY);
 }
 
+void	ft_execve_fail(t_ms *ms, int err)
+{
+	ft_clear_ast(ms);
+	ft_clear_be(ms);
+	ft_cleanup_exit(ms, err);
+}
+
 void	ft_ms_execve(t_ms *ms, t_cmd_list *curr)
 {
 	int		err;
@@ -86,35 +93,5 @@ void	ft_ms_execve(t_ms *ms, t_cmd_list *curr)
 		ft_prnt_stderr("minishell", curr->cmd.words->word, errno);
 		ft_free_2d(envp);
 	}
-	ft_clear_ast(ms);
-	ft_clear_be(ms);
-	ft_cleanup_exit(ms, err);
-}
-
-int	ft_builtin(t_ms *ms, t_cmd_list *curr, int *i)
-{
-	int		ret;
-
-	ret = 0;
-	if (curr->cmd.builtin_nr == 1)
-		ret = ft_echo(ms, curr);
-	else if (curr->cmd.builtin_nr == 2)
-		ret = ft_cd(ms, curr);
-	else if (curr->cmd.builtin_nr == 3)
-		ret = ft_pwd(ms, curr);
-	else if (curr->cmd.builtin_nr == 4)
-		ret = ft_export(ms, curr);
-	else if (curr->cmd.builtin_nr == 5)
-		ret = ft_unset(ms, curr);
-	else if (curr->cmd.builtin_nr == 6)
-		ret = ft_env(ms, curr);
-	else if (curr->cmd.builtin_nr == 7)
-		ret = ft_exit(ms, curr);
-	if (ms->be->child_pids[*i] == 0)
-	{
-		ft_clear_ast(ms);
-		ft_clear_be(ms);
-		ft_cleanup_exit(ms, ret);
-	}
-	return (ret);
+	ft_execve_fail(ms, err);
 }

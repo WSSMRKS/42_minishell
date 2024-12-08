@@ -4,6 +4,10 @@
 		"ms_stab.h": "c",
 		"ms_executor.h": "c",
 		"tokenization.h": "c",
-		"minishell.h": "c"
+		"minishell.h": "c",
+		"libft.h": "c",
+		"ioctl.h": "c",
+		"termios.h": "c",
+		"features.h": "c"
 	}
 }

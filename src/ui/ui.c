@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ui.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/04 18:43:47 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/08 00:58:35 by wssmrks          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,8 @@ static int	get_last_ret(void *data)
 	t_ms	*ms;
 
 	ms = (t_ms *)data;
-	return (ms->be->last_ret);
+	(void) ms;
+	return (g_signal);
 }
 
 static bool	cmdlist_has_heredoc(t_cmd_list *cmds)
@@ -137,6 +138,30 @@ static t_ms_status	evaluate(t_ms *ms)
 	return (MS_OK);
 }
 
+// Signal handler for SIGINT (Ctrl+C)
+void handle_sigint(int sig) {
+	(void) sig;
+	g_signal = 128 + SIGINT;
+	// printf("\nCaught signal %d (SIGINT), ignoring Ctrl+C\n", sig);
+	printf("\n");
+	// Re-prompt the user after ignoring SIGINT
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+}
+
+// Signal handler for SIGCHLD (when child processes exit)
+void handle_sigchld(int sig) {
+    (void) sig;
+	int status;
+    pid_t pid;
+
+    // Wait for all child processes that have exited
+    while ((pid = waitpid(-1, &status, WNOHANG)) > 0) {
+        printf("\nChild process %d terminated\n", pid);
+    }
+}
+
 void	repl(int argc, char **argv, char **envp)
 {
 	t_ms		ms;
@@ -147,6 +172,20 @@ void	repl(int argc, char **argv, char **envp)
 	ft_init_be(&ms, argc, argv, envp);
 	while (true) // read eval print loop REPL
 	{
+
+		//put signal handler here to make sure it is reinitiated after prompt is finished!!
+		struct sigaction	sa_int;
+		sa_int.sa_handler = &handle_sigint;
+		sa_int.sa_flags = SA_RESTART; // Restart interrupted system calls
+		sigemptyset(&sa_int.sa_mask); // Don't block additional signals
+		sigaction(SIGINT, &sa_int, NULL);
+		// // Install the SIGCHLD handler
+		// struct sigaction sa_chld;
+		// sa_chld.sa_handler = &handle_sigchld;
+		// sa_chld.sa_flags = SA_RESTART;
+		// sigemptyset(&sa_chld.sa_mask);
+		// sigaction(SIGCHLD, &sa_chld, NULL);
+		g_signal = 0;
 		status = parse_next_command(&ms.parser, &ms.cmds);
 		if (status == MS_EOF)
 			break ;

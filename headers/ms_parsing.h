@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:56:05 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/27 13:04:52 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/06 16:23:33 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ typedef int				(*t_get_last_ret)(void *data);
 typedef struct s_parser {
 	t_vec			tokens;
 	t_read_input	read_input;
-	t_get_stab	get_stab;
+	t_get_stab		get_stab;
 	t_get_last_ret	get_last_ret;
 	void			*data;
 	t_str			last_input;
