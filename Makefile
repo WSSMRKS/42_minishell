@@ -73,31 +73,18 @@ $(NAME): $(LIBFT_SRC) $(SRC_OBJ) # Compile mandatory part. # maybe need? -L$(LIB
 	$(CC) $(SRC_OBJ) $(LIBFT_SRC) $(COMPILE_OPTIONS) -o $(NAME)
 
 $(LIBFT_SRC): # Download and Compile libft
-  ifeq ("$(wildcard $(LIBFTDIR))", "")
-	echo "Directory does not exist."
-	git clone https://github.com/WSSMRKS/ms_libft.git $(LIBFTDIR)
 	$(MAKE) all -C $(LIBFTDIR) CFLAGS='$(COMPILE_FLAGS)'
-  else
-	@echo "Skipping download because directory already exists."
-	$(MAKE) all -C $(LIBFTDIR) CFLAGS='$(COMPILE_FLAGS)'
-  endif
 
 exes: $(NAME) clean # Compile all project parts including bonus clean up after compilation.
 
 # clean, fclean, re
 clean:	# Clean project folders, leave executables.
 	rm -f $(SRC_OBJ)
-  ifeq ("$(wildcard $(LIBFTDIR))", "")
-	@echo "libft: Directory does not exist."
-  else
 	$(MAKE) fclean -C $(LIBFTDIR)
 	@echo "libft folder cleaned"
-  endif
 
 fclean: clean	# Fully clean project folders.
 	rm -f $(NAME)
-	rm -rf $(LIBFTDIR)
-	@echo "$(LIBFTDIR) deleted"
 	@echo "\"$(NAME)\" deleted"
 
 re: fclean	# Recompile whole project.
