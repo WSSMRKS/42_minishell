@@ -76,11 +76,11 @@ static t_ms_status	read_tokens(t_parser *p)
 		free(inp);
 		if (tmp_tokens.mem_err)
 			return (MS_ERROR);
-		expand_vars(&tmp_tokens, p->get_stab(p->data), p->get_last_ret(p->data));
-		DBG_PARSER(ft_putstr_fd("[DBG_PARSE] TEMP TOKENS EXPANDED:\n", STDERR));
-		DBG_PARSER(print_all_tokens(&tmp_tokens));
 		unescape_chars(&tmp_tokens);
 		DBG_PARSER(ft_putstr_fd("[DBG_PARSE] TEMP TOKENS UNESCAPED:\n", STDERR));
+		DBG_PARSER(print_all_tokens(&tmp_tokens));
+		expand_vars(&tmp_tokens, p->get_stab(p->data), p->get_last_ret(p->data));
+		DBG_PARSER(ft_putstr_fd("[DBG_PARSE] TEMP TOKENS EXPANDED:\n", STDERR));
 		DBG_PARSER(print_all_tokens(&tmp_tokens));
 		vec_pushvec(&p->tokens, &tmp_tokens);
 		if (p->tokens.mem_err)

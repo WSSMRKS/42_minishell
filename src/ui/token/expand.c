@@ -66,6 +66,8 @@ void	expand_vars(t_vec *tokens, t_stab_st *st, int last_ret)
 		token = vec_get_at(tokens, i);
 		if (token->type == TK_WORD || token->type == TK_DQUOTE)
 			str_expand_vars(&token->str, st, last_ret);
+		// TODO split if TK_WORD
+		// interaction with escaping/unescaping?
 		i++;
 	}
 	strip_empty_word_tokens(tokens);
