@@ -72,13 +72,14 @@ char	*ft_tmp_name(t_ms *ms, int *fd)
 	return (filename);
 }
 
+/// Returns NULL if there was a malloc error
 char	*ft_hd_var_expansion(t_ms *ms, char *l)
 {
 	t_str	wrapped;
-	
-	wrapped = str_from_parts(l, ft_strlen(l));
+
+	wrapped = str_from2(l);
 	str_expand_vars(&wrapped, ms->be->global_stabs, g_signal);
-	return (wrapped._large_str);
+	return (cstr_take(&wrapped));
 }
 
 void	ft_hd_input(t_list_redir *cl, t_ms *ms)
@@ -105,7 +106,7 @@ delimited by end-of-file (wanted `%s')\n", l_nb, cl->hd_del) != 0)
 			break ;
 		if (cl->instruction != redir_append) //change to redir_hd_quotes after implemented.
 			l = ft_hd_var_expansion(ms, l);
-			//add error handling.
+			// TODO add error handling.
 		if ((ft_putstr_fd(l, fd) < 0 || ft_putstr_fd("\n", fd) < 0))
 			exit(errno);
 		l_nb++;
