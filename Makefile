@@ -118,5 +118,8 @@ help:	# Print this helpful message
 pargs:
 	gcc src/debug/print_args.c -o pargs
 
+retval: $(LIBFT_SRC)
+	$(CC) src/debug/retval.c $(LIBFT_SRC) -o retval
+
 .PHONY: all fclean clean re name help exes exv exvs exval ex pargs supps
 .NOTPARALLEL: $(LIBFT_SRC)
