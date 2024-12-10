@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/10 11:35:17 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/10 12:54:52 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void	ft_execute(t_ms *ms, t_cmd_list *curr, int *i)
 void	handle_sigint_exec(int sig)
 {
 	(void)sig;
-	printf("\n");
 }
 
 void	ft_fork(t_ms *ms, t_cmd_list *curr, int *i)
