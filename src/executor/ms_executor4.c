@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_executor4.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
+/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/08 00:56:07 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/12/10 12:34:30 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ void	ft_back_end(t_ms *ms)
 		ft_here_doc(ms);
 	if (ms->cmds)
 	{
-		if (g_signal != 130)
-			ft_execution(ms);
+		// printf("g_signal = %d\n", g_signal);
+		ft_execution(ms);
 		ft_close_all_fds(ms);
 		ft_wait_error(ms);
 		ft_clear_ast(ms);

@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 23:52:06 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/10 11:36:00 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/10 12:34:15 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,6 @@ void	ft_wait_error(t_ms *ms)
 	}
 	if (pid == -1 && errno != ECHILD)
 		perror("waitpid error");
-	printf("last return value : %d", ms->be->child_ret[ms->be->nb_cmds - 1]);
+	// printf("last return value : %d", ms->be->child_ret[ms->be->nb_cmds - 1]);
 	ms->be->last_ret = ms->be->child_ret[ms->be->nb_cmds - 1];
 }

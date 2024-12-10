@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/10 11:34:43 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/10 12:32:52 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,10 @@ static int	get_last_ret(void *data)
 
 	ms = (t_ms *)data;
 	(void) ms;
-	return (ms->be->last_ret);
+	if (g_signal != 0)
+		return (g_signal);
+	else
+		return (ms->be->last_ret);
 }
 
 static bool	cmdlist_has_heredoc(t_cmd_list *cmds)
@@ -167,7 +170,8 @@ void	repl(int argc, char **argv, char **envp)
 		sa_int.sa_flags = SA_RESTART; // Restart interrupted system calls
 		sigemptyset(&sa_int.sa_mask); // Don't block additional signals
 		sigaction(SIGINT, &sa_int, NULL);
-		g_signal = 0;
+		if (g_signal != 0)
+			g_signal = 0;
 		status = parse_next_command(&ms.parser, &ms.cmds);
 		if (status == MS_EOF)
 			break ;
