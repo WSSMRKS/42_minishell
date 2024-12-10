@@ -16,7 +16,7 @@ static void	strip_empty_word_tokens(t_vec *tokens)
 	}
 }
 
-void	str_expand_vars(t_str *str, t_stab_st *st, int last_ret)
+static void	str_expand_vars(t_str *str, t_stab_st *st, int last_ret)
 {
 	t_str	var_str;
 	size_t	var_size;

@@ -99,7 +99,6 @@ typedef struct s_ast {
 
 bool		tokenize(t_str_slice inp, t_vec *out);
 void		expand_vars(t_vec *tokens, t_stab_st *st, int last_ret);
-void		str_expand_vars(t_str *str, t_stab_st *st, int last_ret);
 void		unescape_chars(t_vec *tokens);
 void		tokens_normalize(t_vec *tokens);
 void		tokens_normalize_for_continue_nl_check(t_vec *tokens);
