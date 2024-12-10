@@ -4,7 +4,7 @@
 /// @param tokens The token vector.
 static void	handle_continue_nl_token(t_vec *tokens)
 {
-	static t_token	newline = {.type = TK_CONTINUE_NL};
+	static t_token	newline = tk_empty(TK_CONTINUE_NL);
 	t_token	*token;
 
 	token = vec_get_last(tokens);

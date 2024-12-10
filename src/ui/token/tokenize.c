@@ -92,9 +92,9 @@ static void	handle_space_and_comment(t_str_slice *inp, t_vec *tokens)
 	while (*inp->str == ' ' || *inp->str == '\t' || *inp->str == '\n')
 	{
 		if (*inp->str == '\n')
-			vec_push_tk(tokens, (t_token){.type = TK_NL});
+			vec_push_tk(tokens, tk_empty(TK_NL));
 		else
-			vec_push_tk(tokens, (t_token){.type = TK_SEPERATOR});
+			vec_push_tk(tokens, tk_empty(TK_SEPERATOR));
 		inp->str++;
 		inp->len--;
 	}

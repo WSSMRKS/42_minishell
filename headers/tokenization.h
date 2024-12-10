@@ -106,6 +106,7 @@ void		tokens_normalize_for_continue_nl_check(t_vec *tokens);
 bool		tokens_to_ast(t_vec *tokens, t_vec *out);
 t_cmd_list	*ast_to_commands(t_vec *ast);
 
+t_token	tk_empty(t_token_ty ty);
 t_token	tk_word(t_str_slice word);
 t_token	tk_op(t_op_ty op);
 t_token	tk_lit(t_str_slice quoted);

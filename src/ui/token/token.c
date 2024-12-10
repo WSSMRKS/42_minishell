@@ -1,5 +1,10 @@
 #include "../../../headers/minishell.h"
 
+t_token	tk_empty(t_token_ty ty)
+{
+	return ((t_token){.type = ty, .str = str_empty()});
+}
+
 t_token	tk_word(t_str_slice word)
 {
 	return ((t_token){.type = TK_WORD, .str = str_clone_from(word)});
@@ -22,4 +27,13 @@ t_token	tk_dquote(t_str_slice quoted)
 	quoted.len -= 2;
 	quoted.str += 1;
 	return ((t_token){.type = TK_DQUOTE, .str = str_clone_from(quoted)});
+}
+
+void	free_token(void *token)
+{
+	t_token	*tk;
+
+	tk = token;
+	if (tk->type != TK_OPERATOR)
+		str_destroy(&tk->str);
 }
