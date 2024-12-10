@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 23:52:06 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/10 12:51:10 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/10 13:07:26 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ void	ft_wait_error(t_ms *ms)
 						printf("Quit (core dumped)\n");
 					if (ms->be->child_ret[i] == 130)
 						printf("\n");
-
 				}
 				break ;
 			}

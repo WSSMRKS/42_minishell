@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
+/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/08 16:49:44 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/12/10 13:07:11 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,7 @@ delimited by end-of-file (wanted `%s')\n", l_nb, cl->hd_del) != 0)
 			break ;
 		if (ft_strncmp(cl->hd_del, l, ldel) == 0 && (int) ft_strlen(l) == ldel)
 			break ;
-		if (cl->instruction != redir_append) //change to redir_hd_quotes after implemented.
-			l = ft_hd_var_expansion(ms, l);
-			// TODO add error handling.
+		l = ft_hd_var_expansion(ms, l);
 		if ((ft_putstr_fd(l, fd) < 0 || ft_putstr_fd("\n", fd) < 0))
 			exit(errno);
 		l_nb++;
