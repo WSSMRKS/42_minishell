@@ -105,6 +105,8 @@ void		tokens_normalize(t_vec *tokens);
 void		tokens_normalize_for_continue_nl_check(t_vec *tokens);
 bool		tokens_to_ast(t_vec *tokens, t_vec *out);
 t_cmd_list	*ast_to_commands(t_vec *ast);
+void		free_token(void *token);
+void		free_ast(void *ast_node);
 
 t_token	tk_empty(t_token_ty ty);
 t_token	tk_word(t_str_slice word);

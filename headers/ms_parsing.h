@@ -81,5 +81,6 @@ void		debug_print_simple_com(int fd, t_simple_com *cmd, bool parser);
 t_parser	parser_init(void *data, t_read_input read_input,
 		t_get_stab get_stab, t_get_last_ret get_last_ret);
 t_ms_status	parse_next_command(t_parser *p, t_cmd_list	**out);
+void	parser_destroy(t_parser *p);
 
 #endif

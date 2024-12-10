@@ -85,7 +85,7 @@ static t_ms_status	read_tokens(t_parser *p)
 		vec_pushvec(&p->tokens, &tmp_tokens);
 		if (p->tokens.mem_err)
 		{
-			vec_destroy(&tmp_tokens, NULL); // TODO
+			vec_destroy(&tmp_tokens, free_token);
 			return (MS_ERROR);
 		}
 		vec_destroy(&tmp_tokens, NULL);
@@ -255,20 +255,20 @@ t_ms_status	parse_next_command(t_parser *p, t_cmd_list	**out)
 	}
 	if (!tokens_to_ast(&p->tokens, &ast))
 	{
-		vec_destroy(&p->tokens, NULL); // TODO
-		vec_destroy(&ast, NULL); // TODO
+		vec_destroy(&p->tokens, free_token);
+		vec_destroy(&ast, free_ast);
 		return (MS_ERROR);
 	}
 	if (!ast_has_integrity(&ast))
 	{
-		vec_destroy(&ast, NULL);
+		vec_destroy(&ast, free_ast);
 		return (MS_OK);
 	}
 	else
 		DEBUG(ast_printstr(&ast));
 	if (p->tokens.len == 0)
-		vec_destroy(&p->tokens, NULL);
+		vec_destroy(&p->tokens, free_token);
 	*out = ast_to_commands(&ast);
-	vec_destroy(&ast, NULL);
+	vec_destroy(&ast, free_ast);
 	return (MS_OK);
 }

@@ -91,17 +91,6 @@ bool	try_add_operator(t_vec *tokens, size_t *i, t_vec *ast)
 	return (false);
 }
 
-void	iter_ast_free(void *nodeptr)
-{
-	t_ast	*node;
-
-	node = (t_ast*)nodeptr;
-	if (node->ty == AST_CMD)
-		ft_free_2d(node->cmd);
-	else
-		free(node->op.arg);
-}
-
 // handle and remove any TK_CONTINUE_NL tokens before using this function
 // postprocess by removing any commands that are not first and are not preceded by PIPE
 // the input tokens array will be cleared if done, otherwise there are more
@@ -117,15 +106,16 @@ bool	tokens_to_ast(t_vec *tokens, t_vec *out)
 		if (((t_token*)vec_get_at(tokens, i))->type == TK_NL)
 		{
 			vec_remove_range(tokens, 0, i + 1);
+			// TODO free in range before removing
 			return (true);
 		}
 		if (!try_add_command(tokens, &i, out)
 			|| (i < tokens->len && !try_add_operator(tokens, &i, out)))
 		{
-			vec_destroy(out, iter_ast_free);
+			vec_destroy(out, free_ast);
 			return (false);
 		}
 	}
-	vec_destroy(tokens, NULL); // TODO
+	vec_destroy(tokens, free_token);
 	return (true);
 }

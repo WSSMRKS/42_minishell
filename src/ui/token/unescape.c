@@ -4,14 +4,13 @@
 /// @param tokens The token vector.
 static void	handle_continue_nl_token(t_vec *tokens)
 {
-	static t_token	newline = tk_empty(TK_CONTINUE_NL);
 	t_token	*token;
 
 	token = vec_get_last(tokens);
 	if (token && token->type == TK_WORD && token->str.len == 1 && cstr_ref(&token->str)[0] == '\\')
 	{
 		vec_remove_last(tokens);
-		vec_push(tokens, &newline);
+		vec_push_tk(tokens, tk_empty(TK_CONTINUE_NL));
 	}
 }
 // for double quotes only unescape <‘$’, ‘"’, ‘\’, newline>.

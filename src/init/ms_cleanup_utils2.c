@@ -72,6 +72,7 @@ void	ft_delfree_hdgb(t_list_hdfiles **lst, void (*del)(void *))
 void	ft_cleanup_exit(t_ms *ms, int ex)
 {
 	rl_clear_history();
+	parser_destroy(&ms->parser);
 	ft_clean_be(ms);
 	free(ms->be);
 	ms->be = NULL;

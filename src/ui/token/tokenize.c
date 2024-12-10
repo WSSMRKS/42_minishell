@@ -118,7 +118,10 @@ static void	handle_space_and_comment(t_str_slice *inp, t_vec *tokens)
 static void	tokens_reset_current_line(t_vec *tokens, t_str_slice *err_input)
 {
 	while (tokens->len && ((t_token *)vec_get_last(tokens))->type != TK_NL)
+	{
+		free_token(vec_get_last(tokens));
 		vec_remove_last(tokens);
+	}
 	while (err_input->len && *err_input->str != '\n')
 		strsl_move_inplace(err_input, 1);
 }
