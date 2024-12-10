@@ -93,19 +93,6 @@ static void	str_unescape_chars2(t_str *str)
 	}
 }
 
-bool	char_is_escaped(const char *str, size_t i)
-{
-	size_t	escaped;
-
-	escaped = 0;
-	while (i > 0 && str[i - 1] == '\\')
-	{
-		escaped++;
-		i--;
-	}
-	return (escaped % 2);
-}
-
 static void	str_expand_vars2(t_str *str, t_stab_st *st, int last_ret)
 {
 	t_str	var_str;

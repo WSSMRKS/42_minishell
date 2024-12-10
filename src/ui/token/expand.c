@@ -16,6 +16,19 @@ static void	strip_empty_word_tokens(t_vec *tokens)
 	}
 }
 
+bool	char_is_escaped(const char *str, size_t i)
+{
+	size_t	escaped;
+
+	escaped = 0;
+	while (i > 0 && str[i - 1] == '\\')
+	{
+		escaped++;
+		i--;
+	}
+	return (escaped % 2);
+}
+
 static void	str_expand_vars(t_str *str, t_stab_st *st, int last_ret)
 {
 	t_str	var_str;
@@ -28,7 +41,7 @@ static void	str_expand_vars(t_str *str, t_stab_st *st, int last_ret)
 	while (i < str->len)
 	{
 		buf = cstr_mut(str);
-		if (buf[i] == '$' && (i == 0 || buf[i - 1] != '\\'))
+		if (buf[i] == '$' && !char_is_escaped(cstr_ref(str), i))
 		{
 			var_str = str_clone_from(cstr_slice(&buf[i+1], var_len(&buf[i], &var_size) - 1));
 			if (var_size == 0)
