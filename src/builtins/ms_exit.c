@@ -16,7 +16,6 @@ int	ft_exit(t_ms *ms, t_cmd_list *curr)
 {
 	int		ex;
 
-	ex = g_signal;
 	if (curr->cmd.words->next != NULL)
 	{
 		if (!strsl_atoi(cstr_view(curr->cmd.words->next->word), base10(), &ex, OFB_ERROR))
@@ -32,6 +31,6 @@ int	ft_exit(t_ms *ms, t_cmd_list *curr)
 	ft_close_all_fds(ms);
 	ft_clear_ast(ms);
 	ft_clear_be(ms);
-	ft_cleanup_exit(ms, ex);
+	ft_cleanup_exit(ms, ex + g_signal);
 	return (0);
 }
