@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_executor3.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
+/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/07 23:40:05 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/12/10 12:54:52 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	ft_execute(t_ms *ms, t_cmd_list *curr, int *i)
 	{
 		if (ms->be->redir_err == 0)
 		{
-			g_signal = ft_builtin(ms, curr, i);
+			ms->be->last_ret = ft_builtin(ms, curr, i);
 			dup2(ms->be->saved_std[0], STDIN_FILENO);
 			dup2(ms->be->saved_std[1], STDOUT_FILENO);
 		}
@@ -46,7 +46,6 @@ void	ft_execute(t_ms *ms, t_cmd_list *curr, int *i)
 void	handle_sigint_exec(int sig)
 {
 	(void)sig;
-	printf("\n");
 }
 
 void	ft_fork(t_ms *ms, t_cmd_list *curr, int *i)

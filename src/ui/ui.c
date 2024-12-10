@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ui.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
+/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/08 00:58:35 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/12/10 12:32:52 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,10 @@ static int	get_last_ret(void *data)
 
 	ms = (t_ms *)data;
 	(void) ms;
-	return (g_signal);
+	if (g_signal != 0)
+		return (g_signal);
+	else
+		return (ms->be->last_ret);
 }
 
 static bool	cmdlist_has_heredoc(t_cmd_list *cmds)
@@ -150,18 +153,6 @@ void handle_sigint(int sig) {
 	rl_redisplay();
 }
 
-// Signal handler for SIGCHLD (when child processes exit)
-void handle_sigchld(int sig) {
-    (void) sig;
-	int status;
-    pid_t pid;
-
-    // Wait for all child processes that have exited
-    while ((pid = waitpid(-1, &status, WNOHANG)) > 0) {
-        printf("\nChild process %d terminated\n", pid);
-    }
-}
-
 void	repl(int argc, char **argv, char **envp)
 {
 	t_ms		ms;
@@ -179,13 +170,8 @@ void	repl(int argc, char **argv, char **envp)
 		sa_int.sa_flags = SA_RESTART; // Restart interrupted system calls
 		sigemptyset(&sa_int.sa_mask); // Don't block additional signals
 		sigaction(SIGINT, &sa_int, NULL);
-		// // Install the SIGCHLD handler
-		// struct sigaction sa_chld;
-		// sa_chld.sa_handler = &handle_sigchld;
-		// sa_chld.sa_flags = SA_RESTART;
-		// sigemptyset(&sa_chld.sa_mask);
-		// sigaction(SIGCHLD, &sa_chld, NULL);
-		g_signal = 0;
+		if (g_signal != 0)
+			g_signal = 0;
 		status = parse_next_command(&ms.parser, &ms.cmds);
 		if (status == MS_EOF)
 			break ;
