@@ -1,74 +1,6 @@
 #include "../../../headers/minishell.h"
+#include <stdbool.h>
 #include <stdio.h>
-
-/// @brief
-/// @param inp
-/// @param tokens
-/// @return -1 for syntax error, 0 for false, 1 for true
-static int	handle_quoted(t_str_slice *inp, t_vec *tokens)
-{
-	size_t	len;
-
-	if (*inp->str == DOUBLE_QUO)
-	{
-		if (!bounded_token_len(inp->str, DOUBLE_QUO, &len))
-			return (-1);
-		vec_push_tk(tokens, tk_dquote(cstr_slice(inp->str, len)));
-	}
-	else if (*inp->str == SINGLE_QUO)
-	{
-		if (!bounded_token_len(inp->str, SINGLE_QUO, &len))
-			return (-1);
-		vec_push_tk(tokens, tk_lit(cstr_slice(inp->str, len)));
-	}
-	else
-		return (false);
-	strsl_move_inplace(inp, len);
-	return (true);
-}
-
-static bool	handle_word_or_op(t_str_slice *inp, t_vec *tokens)
-{
-	t_str_slice		word;
-	t_op_ty	op;
-
-	word = cstr_slice(inp->str, word_len(inp->str, 0));
-	if (str_starts_with_op(*inp, &op))
-	{
-		vec_push_tk(tokens, tk_op(op));
-		word.len = ft_strlen(op_str(op));
-	}
-	else if (word.len)
-		vec_push_tk(tokens, tk_word(word));
-	else
-		return (false);
-	strsl_move_inplace(inp, word.len);
-	return (true);
-}
-
-static void	handle_space_and_comment(t_str_slice *inp, t_vec *tokens)
-{
-	while (*inp->str == ' ' || *inp->str == '\t' || *inp->str == '\n')
-	{
-		if (*inp->str == '\n')
-			vec_push_tk(tokens, (t_token){.type = TK_NL});
-		else
-			vec_push_tk(tokens, (t_token){.type = TK_SEPERATOR});
-		inp->str++;
-		inp->len--;
-	}
-	if (tokens->len == 0
-		|| ((t_token*)vec_get_last(tokens))->type == TK_NL
-		|| ((t_token*)vec_get_last(tokens))->type == TK_SEPERATOR
-		|| ((t_token*)vec_get_last(tokens))->type == TK_OPERATOR)
-		strsl_move_inplace(inp, comment_len(inp->str));
-}
-
-// IMPORTANT FOR REPL AND NEWLINE TOKEN
-// In repl have parser_state, if last token is newline,
-// get another line of input and then continue parsing
-// with a special merge of the tokens but without
-// the newline token which was there before
 
 /// prints
 /// ```
@@ -103,6 +35,81 @@ static void	span_printerr(t_str_slice s, size_t err_i, const char *err)
 	ft_putchar_fd('\n', STDERR);
 	vec_destroy(&lines, NULL);
 }
+
+/// @brief
+/// @param inp
+/// @param tokens
+/// @return -1 for syntax error, 0 for false, 1 for true
+static int	handle_quoted(t_str_slice *inp, t_vec *tokens)
+{
+	size_t	len;
+
+	if (*inp->str == DOUBLE_QUO)
+	{
+		if (!bounded_token_len(inp->str, DOUBLE_QUO, &len))
+			return (-1);
+		vec_push_tk(tokens, tk_dquote(cstr_slice(inp->str, len)));
+	}
+	else if (*inp->str == SINGLE_QUO)
+	{
+		if (!bounded_token_len(inp->str, SINGLE_QUO, &len))
+			return (-1);
+		vec_push_tk(tokens, tk_lit(cstr_slice(inp->str, len)));
+	}
+	else
+		return (false);
+	strsl_move_inplace(inp, len);
+	return (true);
+}
+
+static bool	handle_word_or_op(t_str_slice *inp, t_vec *tokens)
+{
+	t_str_slice		word;
+	t_op_ty	op;
+	bool	ok;
+
+	ok = true;
+	word = cstr_slice(inp->str, word_len(inp->str, 0));
+	if (str_starts_with_op(*inp, &op))
+	{
+		if ((op == OP_APPEND && inp->str[2] == '>')
+			|| (op == OP_PIPE && inp->str[1] == '|')
+			|| (op == OP_HEREDOC && inp->str[2] == '<'))
+			ok = false;
+		vec_push_tk(tokens, tk_op(op));
+		word.len = ft_strlen(op_str(op));
+	}
+	else if (word.len)
+		vec_push_tk(tokens, tk_word(word));
+	else
+		return (false);
+	strsl_move_inplace(inp, word.len);
+	return (ok);
+}
+
+static void	handle_space_and_comment(t_str_slice *inp, t_vec *tokens)
+{
+	while (*inp->str == ' ' || *inp->str == '\t' || *inp->str == '\n')
+	{
+		if (*inp->str == '\n')
+			vec_push_tk(tokens, (t_token){.type = TK_NL});
+		else
+			vec_push_tk(tokens, (t_token){.type = TK_SEPERATOR});
+		inp->str++;
+		inp->len--;
+	}
+	if (tokens->len == 0
+		|| ((t_token*)vec_get_last(tokens))->type == TK_NL
+		|| ((t_token*)vec_get_last(tokens))->type == TK_SEPERATOR
+		|| ((t_token*)vec_get_last(tokens))->type == TK_OPERATOR)
+		strsl_move_inplace(inp, comment_len(inp->str));
+}
+
+// IMPORTANT FOR REPL AND NEWLINE TOKEN
+// In repl have parser_state, if last token is newline,
+// get another line of input and then continue parsing
+// with a special merge of the tokens but without
+// the newline token which was there before
 
 /// @brief Sets the input cursor to the start of next line or the end and
 /// and removes the last few gathered tokens after the last newline
@@ -153,19 +160,18 @@ bool	tokenize(t_str_slice inp, t_vec *out)
 		if (!inp.len)
 			break ;
 		ok = handle_quoted(&inp, out);
-		if (ok == 1)
-			continue ;
 		if (ok == -1)
 		{
 			span_printerr(inp_start, inp_start.len - inp.len,
 				"unclosed quotes");
 			tokens_reset_current_line(out, &inp);
-			continue;
 		}
-		else if (handle_word_or_op(&inp, out))
-			continue ;
-		ft_putendl_fd("minishell tokenization: unknown error", STDERR);
-		return (false);
+		else if (ok != 1 && !handle_word_or_op(&inp, out))
+		{
+			span_printerr(inp_start, inp_start.len - inp.len,
+				"unexpected character");
+			tokens_reset_current_line(out, &inp);
+		}
 	}
 	return (true);
 }
