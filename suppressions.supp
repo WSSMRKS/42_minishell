@@ -7,16 +7,6 @@
 	...
 }
 
-
-{
-	<parser>
-	Memcheck:Leak
-	...
-	fun:parse_next_command
-	...
-	...
-}
-
 {
 	<readline>
 	Memcheck:Leak
