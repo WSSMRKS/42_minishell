@@ -12,28 +12,6 @@
 
 #include "../../headers/minishell.h"
 
-static int	ft_validate_num(char *input)
-{
-	int	i;
-
-	i = 0;
-	while (input && input[i])
-	{
-		if ((i == 0 && input[i] == '-')
-			|| (input[i] >= '0' && input[i] <= '9'))
-			i++;
-		else
-		{
-			ft_printf_fd(2, "exit: %s: not a valid argument\n", input);
-			return (EIO);
-		}
-	}
-	if (i < 10)
-		return (0);
-	else
-		return (EIO);
-}
-
 int	ft_exit(t_ms *ms, t_cmd_list *curr)
 {
 	int		ex;
@@ -41,10 +19,11 @@ int	ft_exit(t_ms *ms, t_cmd_list *curr)
 	ex = g_signal;
 	if (curr->cmd.words->next != NULL)
 	{
-		if (ft_validate_num(curr->cmd.words->next->word) == 0)
-			ex = ft_atoi(curr->cmd.words->next->word);
-		else
+		if (!strsl_atoi(cstr_view(curr->cmd.words->next->word), base10(), &ex, OFB_ERROR))
+		{
+			ft_printf_fd(2, "exit: %s: not a valid argument\n", curr->cmd.words->next->word);
 			return (EIO);
+		}
 	}
 	if (isatty(STDIN_FILENO))
 		ft_printf("exit\n");
