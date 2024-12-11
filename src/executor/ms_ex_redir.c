@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/11 14:18:42 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/11 15:48:01 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	ft_infile(t_ms *ms, t_list_redir *rd)
 	fdin = open(rd->target.filename, O_RDONLY);
 	if (fdin < 0)
 	{
-		ft_printf_fd(2, "%s: %s\n", rd->target.filename, strerror(errno));
+		ft_printf_fd(2, "minishell: %s: %s\n", rd->target.filename,
+			strerror(errno));
 		if (ms->cmds->cmd.builtin == 0)
 		{
 			ft_close_all_fds(ms);
