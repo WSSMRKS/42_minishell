@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
+/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/08 01:54:03 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/12/11 11:53:53 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,8 @@ char			**ft_grab_envp(char **envp);
 void			ft_init_ms(t_ms *ms);
 void			ft_reinit_be(t_ms *ms);
 void			ft_init_be(t_ms *ms, int argc, char **argv, char **envp);
+char			**ft_split_path(char **paths);
+
 
 /* ms_ui */
 
@@ -158,6 +160,8 @@ void			ft_add_val(t_ms *ms, char *env);
 char			*ft_lookup_key(t_stab_st *stab_lvl, char *key);
 char			*ft_validate_var(char *key);
 void			ft_upd_shlvl(t_ms *ms);
+char			**ft_grab_path(t_ms *ms);
+
 
 
 

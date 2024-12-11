@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_cleanup_utils2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:15 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/11 02:52:23 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/11 11:58:36 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	ft_clear_be(t_ms *ms)
 	free(ms->be->child_ret);
 	ms->be->nb_cmds = 0;
 	ms->be->child_ret = NULL;
+	ft_free_2d(ms->be->path);
+	ms->be->path = NULL;
 }
 
 void	ft_clean_be(t_ms *ms)
