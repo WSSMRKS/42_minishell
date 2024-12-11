@@ -150,11 +150,16 @@ size_t	var_len(const char *str, size_t *out)
 	if (*str != '$')
 		return (0);
 	len = 1;
-	while (str[len] && (ft_isalnum(str[len]) || str[len] == '_'))
-		len++;
+	if (!ft_isdigit(str[len]))
+	{
+		while (str[len] && (ft_isalnum(str[len]) || str[len] == '_'))
+			len++;
+	}
 	if (len == 1)
 	{
 		if (str[len] == '?')
+			len = 2;
+		else if (ft_isdigit(str[len]))
 			len = 2;
 		else
 			len = 0;
