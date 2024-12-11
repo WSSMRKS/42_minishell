@@ -189,6 +189,8 @@ void	repl(int argc, char **argv, char **envp)
 	}
 	if (status == MS_EOF && isatty(STDIN))
 		ft_printf("exit\n");
-	get_next_line_finish(STDIN);
-	ft_cleanup_exit(&ms, 0);
+	if (g_signal)
+		ft_cleanup_exit(&ms, g_signal);
+	else
+		ft_cleanup_exit(&ms, ms.be->last_ret);
 }

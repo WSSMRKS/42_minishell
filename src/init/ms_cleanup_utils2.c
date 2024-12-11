@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_cleanup_utils2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 12:23:15 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/04 19:35:40 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/11 01:11:26 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void	ft_delfree_hdgb(t_list_hdfiles **lst, void (*del)(void *))
 void	ft_cleanup_exit(t_ms *ms, int ex)
 {
 	rl_clear_history();
+	get_next_line_finish(STDIN);
 	parser_destroy(&ms->parser);
 	ft_clean_be(ms);
 	free(ms->be);

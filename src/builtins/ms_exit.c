@@ -14,15 +14,18 @@
 
 int	ft_exit(t_ms *ms, t_cmd_list *curr)
 {
-	int		ex;
+	int	ex;
 
-	ex = g_signal;
+	if (g_signal)
+		ex = g_signal;
+	else
+		ex = ms->be->last_ret;
 	if (curr->cmd.words->next != NULL)
 	{
 		if (!strsl_atoi(cstr_view(curr->cmd.words->next->word), base10(), &ex, OFB_ERROR))
 		{
 			ft_printf_fd(2, "exit: %s: not a valid argument\n", curr->cmd.words->next->word);
-			return (EIO);
+			ex = 255;
 		}
 	}
 	if (isatty(STDIN_FILENO))
