@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_executor3.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/10 12:54:52 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/11 01:03:05 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	ft_execute(t_ms *ms, t_cmd_list *curr, int *i)
 	{
 		ft_close_all_fds(ms);
 		if (curr->cmd.builtin == true)
-			ft_builtin(ms, curr, i);
+			ft_builtin(ms, curr, i); // TODO/FIXME: SUS, what about saving the return value to last_ret?
 		else
 			ft_ms_execve(ms, curr);
 	}

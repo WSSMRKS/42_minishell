@@ -3,38 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ms_executor2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/08 00:13:42 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/12/11 01:04:49 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
-
-void	ft_create_argv(t_cmd_list *curr)
-{
-	t_list_words	*words;
-	char			**argv;
-	int				i;
-
-	words = curr->cmd.words;
-	i = 0;
-	while (words)
-	{
-		i++;
-		words = words->next;
-	}
-	argv = ft_calloc(sizeof(char *), i + 1);
-	words = curr->cmd.words;
-	i = 0;
-	while (words)
-	{
-		argv[i++] = ft_strdup(words->word);
-		words = words->next;
-	}
-	curr->cmd.argv = argv;
-}
 
 void	ft_safe_std(t_ms *ms)
 {
@@ -86,5 +62,4 @@ void	ft_ex_prep(t_ms *ms, t_cmd_list *curr, int *i)
 		exit(EXIT_FAILURE);
 	}
 	ft_redir_handler(ms, curr, *i);
-	ft_create_argv(curr);
 }
