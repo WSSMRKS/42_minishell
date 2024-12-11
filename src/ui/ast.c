@@ -1,4 +1,5 @@
 #include "../../headers/minishell.h"
+#include <stddef.h>
 
 void	free_ast(void *ast_node)
 {
@@ -91,6 +92,15 @@ bool	try_add_operator(t_vec *tokens, size_t *i, t_vec *ast)
 	return (false);
 }
 
+static void	tokens_free_range(t_vec *tokens, size_t start, size_t end)
+{
+	while (start < end)
+	{
+		free_token(vec_get_at(tokens, start));
+		start++;
+	}
+}
+
 // handle and remove any TK_CONTINUE_NL tokens before using this function
 // postprocess by removing any commands that are not first and are not preceded by PIPE
 // the input tokens array will be cleared if done, otherwise there are more
@@ -105,8 +115,8 @@ bool	tokens_to_ast(t_vec *tokens, t_vec *out)
 	{
 		if (((t_token*)vec_get_at(tokens, i))->type == TK_NL)
 		{
+			tokens_free_range(tokens, 0, i + 1);
 			vec_remove_range(tokens, 0, i + 1);
-			// TODO free in range before removing
 			return (true);
 		}
 		if (!try_add_command(tokens, &i, out)

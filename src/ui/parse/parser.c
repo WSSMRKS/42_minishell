@@ -15,7 +15,7 @@ static void	print_all_tokens(t_vec *tokens)
 
 void	parser_destroy(t_parser *p)
 {
-	vec_destroy(&p->tokens, NULL);
+	vec_destroy(&p->tokens, free_token);
 	str_destroy(&p->last_input);
 }
 
