@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/06 11:46:05 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/11 12:02:52 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,4 +113,18 @@ void	ft_upd_shlvl(t_ms *ms)
 		ft_upd_stab_val(ms->be->global_stabs, "SHLVL", shlvl);
 		free(shlvl);
 	}
+}
+
+char	**ft_grab_path(t_ms *ms)
+{
+	char	*path;
+	char	**paths;
+
+	paths = NULL;
+	path = ft_lookup_stab(ms->be->global_stabs, "PATH");
+	if (path != 0)
+		paths = ft_split(path, ':');
+	if (paths == NULL)
+		return (NULL);
+	return (ft_split_path(paths));
 }
