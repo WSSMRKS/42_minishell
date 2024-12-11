@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/10 12:34:30 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/11 16:25:31 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ void	ft_back_end(t_ms *ms)
 		ft_here_doc(ms);
 	if (ms->cmds)
 	{
-		// printf("g_signal = %d\n", g_signal);
 		ft_execution(ms);
 		ft_close_all_fds(ms);
 		if (!ms->cmds->cmd.builtin || ms->be->nb_cmds > 1)

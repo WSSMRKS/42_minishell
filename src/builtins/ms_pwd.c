@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 15:49:59 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/11 14:02:41 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/11 16:19:07 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,3 @@ No such file or directory\n");
 	ft_memset(ms->be->cwd, '\0', PATH_MAX);
 	return (0);
 }
-

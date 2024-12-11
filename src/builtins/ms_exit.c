@@ -6,11 +6,21 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 15:49:59 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/06 16:22:04 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/11 16:19:21 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
+
+static void	ft_exit_exit(t_ms *ms, int ex)
+{
+	close(ms->be->saved_std[0]);
+	close(ms->be->saved_std[1]);
+	ft_close_all_fds(ms);
+	ft_clear_ast(ms);
+	ft_clear_be(ms);
+	ft_cleanup_exit(ms, ex);
+}
 
 int	ft_exit(t_ms *ms, t_cmd_list *curr)
 {
@@ -22,9 +32,11 @@ int	ft_exit(t_ms *ms, t_cmd_list *curr)
 		ex = ms->be->last_ret;
 	if (curr->cmd.words->next != NULL)
 	{
-		if (!strsl_atoi(cstr_view(curr->cmd.words->next->word), base10(), &ex, OFB_ERROR))
+		if (!strsl_atoi(cstr_view(curr->cmd.words->next->word), base10(),
+				&ex, OFB_ERROR))
 		{
-			ft_printf_fd(2, "exit: %s: not a valid argument\n", curr->cmd.words->next->word);
+			ft_printf_fd(2, "exit: %s: not a valid argument\n",
+				curr->cmd.words->next->word);
 			ex = 2;
 		}
 		else if (curr->cmd.words->next->next != NULL)
@@ -35,11 +47,6 @@ int	ft_exit(t_ms *ms, t_cmd_list *curr)
 	}
 	if (isatty(STDIN_FILENO))
 		ft_printf("exit\n");
-	close(ms->be->saved_std[0]);
-	close(ms->be->saved_std[1]);
-	ft_close_all_fds(ms);
-	ft_clear_ast(ms);
-	ft_clear_be(ms);
-	ft_cleanup_exit(ms, ex);
+	ft_exit_exit(ms, ex);
 	return (0);
 }

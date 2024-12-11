@@ -6,12 +6,11 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 19:05:44 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/11 11:52:09 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/11 17:14:28 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
-
 
 char	**ft_split_path(char **paths)
 {
@@ -68,6 +67,8 @@ void	ft_reinit_be(t_ms *ms)
 	ms->be->garbage->heredoc = NULL;
 	ms->be->garbage->nb_heredocs = 0;
 	ms->be->redir_err = 0;
+	ms->be->saved_std[0] = 0;
+	ms->be->saved_std[1] = 0;
 	ms->be->path = ft_grab_path(ms);
 	i = 0;
 	curr = ms->cmds;
@@ -106,5 +107,7 @@ void	ft_init_be(t_ms *ms, int argc, char **argv, char **envp)
 	ms->be->global_stabs = NULL;
 	ms->be->last_ret = 0;
 	ms->be->redir_err = 0;
+	ms->be->saved_std[0] = 0;
+	ms->be->saved_std[1] = 0;
 	ft_init_stab(ms);
 }
