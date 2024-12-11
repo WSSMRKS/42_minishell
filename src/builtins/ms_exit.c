@@ -25,7 +25,12 @@ int	ft_exit(t_ms *ms, t_cmd_list *curr)
 		if (!strsl_atoi(cstr_view(curr->cmd.words->next->word), base10(), &ex, OFB_ERROR))
 		{
 			ft_printf_fd(2, "exit: %s: not a valid argument\n", curr->cmd.words->next->word);
-			ex = 255;
+			ex = 2;
+		}
+		else if (curr->cmd.words->next->next != NULL)
+		{
+			ft_printf_fd(2, "exit: too many arguments\n");
+			ex = 1;
 		}
 	}
 	if (isatty(STDIN_FILENO))
