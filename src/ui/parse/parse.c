@@ -241,7 +241,7 @@ void	debug_print_simple_com(int fd, t_simple_com *cmd, bool parser)
 		dprintf(fd, "│  └─ NULL\n");
 
 	// Print redirections
-	dprintf(fd, "└─ Redirections:\n");
+	dprintf(fd, "└─ Redirections:\n"); // [ ] TODO remove all forbidden functions
 	redir_ptr = cmd->redir;
 	while (redir_ptr)
 	{
@@ -272,5 +272,5 @@ void	debug_print_simple_com(int fd, t_simple_com *cmd, bool parser)
 		dprintf(fd, "   │  └─ Rightmost: %d\n", redir_ptr->rightmost);
 		redir_ptr = redir_ptr->next;
 	}
-	fflush(0);
+	fflush(0); // [ ] TODO Forbidden function!!
 }

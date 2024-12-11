@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 15:49:59 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/11 13:36:11 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/11 16:10:27 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,3 @@ int	ft_cd(t_ms *ms, t_cmd_list *curr)
 	ft_memset(ms->be->cwd, '\0', PATH_MAX);
 	return (0);
 }
-

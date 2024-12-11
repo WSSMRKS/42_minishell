@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 23:52:06 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/10 13:07:26 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/11 16:25:12 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,15 @@
 // 	ms->be->last_ret = ms->be->child_ret[ms->be->nb_cmds - 1];
 // }
 
+static void	ft_status_error(t_ms *ms, int status, int i)
+{
+	ms->be->child_ret[i] = 128 + WTERMSIG(status);
+	if (ms->be->child_ret[i] == 131)
+		printf("Quit (core dumped)\n");
+	if (ms->be->child_ret[i] == 130)
+		printf("\n");
+}
+
 void	ft_wait_error(t_ms *ms)
 {
 	int		status;
@@ -49,19 +58,12 @@ void	ft_wait_error(t_ms *ms)
 				if (WIFEXITED(status))
 					ms->be->child_ret[i] = WEXITSTATUS(status);
 				else if (WIFSIGNALED(status))
-				{
-					ms->be->child_ret[i] = 128 + WTERMSIG(status);
-					if (ms->be->child_ret[i] == 131)
-						printf("Quit (core dumped)\n");
-					if (ms->be->child_ret[i] == 130)
-						printf("\n");
-				}
+					ft_status_error(ms, status, i);
 				break ;
 			}
 		}
 	}
 	if (pid == -1 && errno != ECHILD)
 		perror("waitpid error");
-	// printf("last return value : %d", ms->be->child_ret[ms->be->nb_cmds - 1]);
 	ms->be->last_ret = ms->be->child_ret[ms->be->nb_cmds - 1];
 }

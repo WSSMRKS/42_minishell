@@ -29,13 +29,13 @@ bool	char_is_escaped(const char *str, size_t i)
 	return (escaped % 2);
 }
 
-static void	str_expand_vars(t_str *str, t_stab_st *st, int last_ret)
+void	str_expand_vars(t_str *str, t_stab_st *st, int last_ret)
 {
 	t_str	var_str;
 	size_t	var_size;
 	size_t	i;
 	char	*buf;
-	t_str_slice var;
+	t_str_slice	var;
 
 	i = 0;
 	while (i < str->len)

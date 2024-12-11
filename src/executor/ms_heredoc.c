@@ -6,13 +6,11 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/10 13:07:11 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/11 16:43:11 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
-#include <stdbool.h>
-#include <stddef.h>
 
 char	*ft_search_tmp(void)
 {
@@ -74,111 +72,6 @@ char	*ft_tmp_name(t_ms *ms, int *fd)
 	return (filename);
 }
 
-// for double quotes only unescape <‘$’, ‘"’, ‘\’, newline>.
-static void	str_unescape_chars2(t_str *str)
-{
-	size_t	i;
-	char	*buf;
-
-	i = 0;
-	while (true)
-	{
-		buf = cstr_mut(str);
-		if (buf[i] == 0)
-			break ;
-		if (buf[i] == '\\' && buf[i + 1] != 0
-			&& ft_strchr("\\$", buf[i + 1]))
-			str_remove(str, i);
-		i++;
-	}
-}
-
-static void	str_expand_vars2(t_str *str, t_stab_st *st, int last_ret)
-{
-	t_str	var_str;
-	size_t	var_size;
-	size_t	i;
-	char	*buf;
-	t_str_slice var;
-
-	i = 0;
-	while (i < str->len)
-	{
-		buf = cstr_mut(str);
-		if (buf[i] == '$' && !char_is_escaped(cstr_ref(str), i))
-		{
-			var_str = str_clone_from(cstr_slice(&buf[i+1], var_len(&buf[i], &var_size) - 1));
-			if (var_size == 0)
-			{
-				i++;
-				continue;
-			}
-			str_remove_range(str, i, i + var_size);
-			if (strsl_eq(str_view(&var_str), cstr_slice("?", 1)))
-				str_insert_itoa(last_ret, base10(), str, i);
-			else
-			{
-				var = cstr_view(ft_lookup_stab(st, (char *)cstr_ref(&var_str)));
-				if (var.str)
-				{
-					str_insertstr(str, i, var);
-					i += var.len;
-				}
-			}
-			str_destroy(&var_str);
-		}
-		else
-			i++;
-	}
-}
-
-/// Returns NULL if there was a malloc error
-char	*ft_hd_var_expansion(t_ms *ms, char *l)
-{
-	t_str	wrapped;
-
-	wrapped = str_from2(l);
-	str_expand_vars2(&wrapped, ms->be->global_stabs, g_signal);
-	str_unescape_chars2(&wrapped);
-	return (cstr_take(&wrapped));
-}
-
-void	ft_hd_input(t_list_redir *cl, t_ms *ms)
-{
-	char		*l;
-	int			l_nb;
-	int			ldel;
-	int			fd;
-
-	l_nb = 0;
-	fd = -1;
-	ldel = ft_strlen(cl->hd_del);
-	while (true && g_signal != 130)
-	{
-		l = readline("> ");
-		if (!cl->target.filename)
-			cl->target.filename = ft_tmp_name(ms, &fd);
-		if (g_signal == 130)
-			break ;
-		if (!l && ft_printf_fd(2, "minishell: warning: here-document at line %d \
-delimited by end-of-file (wanted `%s')\n", l_nb, cl->hd_del) != 0)
-			break ;
-		if (ft_strncmp(cl->hd_del, l, ldel) == 0 && (int) ft_strlen(l) == ldel)
-			break ;
-		l = ft_hd_var_expansion(ms, l);
-		if (l == NULL || ft_putstr_fd(l, fd) < 0 || ft_putstr_fd("\n", fd) < 0)
-		{
-			free(l);
-			exit(errno);
-		}
-		l_nb++;
-		free(l);
-		l = NULL;
-	}
-	free(l);
-	close(fd);
-}
-
 void	handle_sigint_hd(int sig)
 {
 	(void)sig;
@@ -209,9 +102,7 @@ void	ft_here_doc(t_ms *ms)
 		while (cmd_list->cmd.heredoc && curr_redir != NULL && g_signal != 130)
 		{
 			if (curr_redir->instruction == redir_here_doc)
-			{
 				ft_hd_input(curr_redir, ms);
-			}
 			curr_redir = curr_redir->next;
 		}
 		cmd_list = cmd_list->next;
