@@ -20,7 +20,7 @@ int	ft_pwd(t_ms *ms, t_cmd_list *curr)
 		return (1);
 	}
 	ms->be->cwd = getcwd(ms->be->cwd, PATH_MAX);
-	printf("%s\n", ms->be->cwd);
+	ft_printf("%s\n", ms->be->cwd);
 	ft_memset(ms->be->cwd, '\0', PATH_MAX);
 	return (0);
 }

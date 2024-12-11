@@ -84,9 +84,9 @@ static void	ft_print_alpha(t_ms *ms)
 	while (sorted_array[i])
 	{
 		if (ft_lookup_stab(ms->be->global_stabs, sorted_array[i]) == NULL)
-			printf("declare -x %s\n", sorted_array[i]);
+			ft_printf("declare -x %s\n", sorted_array[i]);
 		else
-			printf("declare -x %s=\"%s\"\n", sorted_array[i],
+			ft_printf("declare -x %s=\"%s\"\n", sorted_array[i],
 				ft_lookup_stab(ms->be->global_stabs, sorted_array[i]));
 		i++;
 	}

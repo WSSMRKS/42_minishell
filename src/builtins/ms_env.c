@@ -33,7 +33,7 @@ int	ft_env(t_ms *ms, t_cmd_list *curr)
 			while (entry)
 			{
 				if (entry->val != NULL)
-					printf("%s=%s\n", entry->key, entry->val);
+					ft_printf("%s=%s\n", entry->key, entry->val);
 				entry = entry->next;
 			}
 		}

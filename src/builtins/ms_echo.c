@@ -30,11 +30,11 @@ int	ft_echo(t_ms *ms, t_cmd_list *curr)
 	while (words)
 	{
 		if (i++ != 0)
-			printf(" ");
-		printf("%s", words->word);
+			ft_printf(" ");
+		ft_printf("%s", words->word);
 		words = words->next;
 	}
 	if (newline == true)
-		printf("\n");
+		ft_printf("\n");
 	return (0);
 }
