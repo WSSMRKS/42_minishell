@@ -138,7 +138,7 @@ void			repl(int argc, char **argv, char **envp);
 
 void			ft_init_stab(t_ms *ms);
 void			ft_free_stab(t_stab_st *stab_stack);
-void			ft_add_global_val(t_ms *ms, char *env);
+bool			ft_add_global_val(t_ms *ms, char *env);
 void			ft_add_local_val(t_ms *ms, char *env);
 int				ft_rem_fr_stab(t_stab_st *stab_lvl, char *key);
 char			*ft_lookup_stab(t_stab_st *stab_lvl, char *key);

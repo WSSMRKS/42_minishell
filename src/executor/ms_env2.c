@@ -52,7 +52,7 @@ void	ft_extr_key_val(char *env, char **key, char **val)
 ///        global symbol table.
 /// @param ms Pointer to the main structure containing global states.
 /// @param env The environmental variable string to be added.
-void	ft_add_global_val(t_ms *ms, char *env)
+bool	ft_add_global_val(t_ms *ms, char *env)
 {
 	char		*key;
 	char		*val;
@@ -64,7 +64,7 @@ void	ft_add_global_val(t_ms *ms, char *env)
 	{
 		free(key);
 		free(val);
-		return ;
+		return (false);
 	}
 	if (ft_lookup_key(ms->be->global_stabs, key) != NULL)
 	{
@@ -73,6 +73,7 @@ void	ft_add_global_val(t_ms *ms, char *env)
 	}
 	else
 		ft_add_to_stab(ms, ms->be->global_stabs, key, val);
+	return (true);
 }
 
 /// @brief Add a new key-value pair to the symbol table.

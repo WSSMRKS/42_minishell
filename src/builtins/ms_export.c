@@ -11,18 +11,22 @@
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
+#include <stdbool.h>
 
-static int	ft_add_vars(t_ms *ms, t_cmd_list *curr)
+static bool	ft_add_vars(t_ms *ms, t_cmd_list *curr)
 {
 	t_list_words	*words;
+	bool			ok;
 
 	words = curr->cmd.words->next;
+	ok = true;
 	while (words)
 	{
-		ft_add_global_val(ms, words->word);
+		if (!ft_add_global_val(ms, words->word))
+			ok = false;
 		words = words->next;
 	}
-	return (0);
+	return (ok);
 }
 
 static void	ft_extract_keys(t_ms *ms, int lvl, char **sorted_array)
@@ -97,7 +101,10 @@ int	ft_export(t_ms *ms, t_cmd_list *curr)
 {
 	(void) curr;
 	if (curr->cmd.words->next != NULL)
-		ft_add_vars(ms, curr);
+	{
+		if (!ft_add_vars(ms, curr))
+			return (1);
+	}
 	else
 		ft_print_alpha(ms);
 	return (0);

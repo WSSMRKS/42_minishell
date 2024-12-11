@@ -66,7 +66,8 @@ void	ft_back_end(t_ms *ms)
 		// printf("g_signal = %d\n", g_signal);
 		ft_execution(ms);
 		ft_close_all_fds(ms);
-		ft_wait_error(ms);
+		if (!ms->cmds->cmd.builtin || ms->be->nb_cmds > 1)
+			ft_wait_error(ms);
 		ft_clear_ast(ms);
 	}
 	ft_clear_be(ms);
