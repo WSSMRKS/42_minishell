@@ -97,7 +97,7 @@ typedef struct s_ast {
 	};
 }	t_ast;
 
-bool		tokenize(t_str_slice inp, t_vec *out);
+bool		tokenize(t_str_slice inp, t_vec *out, bool *syntax_err);
 void		expand_vars(t_vec *tokens, t_stab_st *st, int last_ret);
 bool		char_is_escaped(const char *str, size_t i);
 void		unescape_chars(t_vec *tokens);

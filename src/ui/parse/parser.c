@@ -56,7 +56,9 @@ static t_ms_status	read_tokens(t_parser *p)
 {
 	char	*inp;
 	t_vec	tmp_tokens;
+	bool	syntax_err;
 
+	syntax_err = false;
 	inp = p->read_input(false, p->data);
 	str_cat(&p->last_input, cstr_view(inp));
 	while (true)
@@ -67,10 +69,12 @@ static t_ms_status	read_tokens(t_parser *p)
 				return (MS_EOF);
 			break;
 		}
-		if (!tokenize(cstr_view(inp), &tmp_tokens))
+		if (!tokenize(cstr_view(inp), &tmp_tokens, &syntax_err))
 		{
 			// TODO handle error
 		}
+		if (syntax_err)
+			((t_ms *)p->data)->be->last_ret = 2;
 		DBG_PARSER(ft_putstr_fd("[DBG_PARSE] TEMP TOKENS:\n", STDERR));
 		DBG_PARSER(print_all_tokens(&tmp_tokens));
 		free(inp);
@@ -220,7 +224,6 @@ static bool	is_op_without_arg_at(t_vec *ast, size_t i)
 	return (op->op.arg == NULL);
 }
 
-// throw error when two pipes next to each other
 static bool	ast_has_integrity(t_vec *ast)
 {
 	size_t	i;
@@ -262,6 +265,7 @@ t_ms_status	parse_next_command(t_parser *p, t_cmd_list	**out)
 	if (!ast_has_integrity(&ast))
 	{
 		vec_destroy(&ast, free_ast);
+		((t_ms *)p->data)->be->last_ret = 2;
 		return (MS_OK);
 	}
 	else

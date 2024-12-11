@@ -150,7 +150,7 @@ static void	tokens_reset_current_line(t_vec *tokens, t_str_slice *err_input)
 /// WORD: (myfile)
 ///
 /// returns false if unknown error without clearing the out vec
-bool	tokenize(t_str_slice inp, t_vec *out)
+bool	tokenize(t_str_slice inp, t_vec *out, bool *syntax_err)
 {
 	t_str_slice	inp_start;
 	int		ok;
@@ -168,12 +168,14 @@ bool	tokenize(t_str_slice inp, t_vec *out)
 			span_printerr(inp_start, inp_start.len - inp.len,
 				"unclosed quotes");
 			tokens_reset_current_line(out, &inp);
+			*syntax_err = true;
 		}
 		else if (ok != 1 && !handle_word_or_op(&inp, out))
 		{
 			span_printerr(inp_start, inp_start.len - inp.len,
 				"unexpected character");
 			tokens_reset_current_line(out, &inp);
+			*syntax_err = true;
 		}
 	}
 	return (true);
