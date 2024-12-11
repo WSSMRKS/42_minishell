@@ -67,20 +67,29 @@ int	redirect_stdin(int argc, char **argv)
     return (1);
 }
 
+void	put_cmd_to_stdin(char *cmd)
+{
+	int	pipes[2];
+
+	if (pipe(pipes) == -1)
+		return ;
+	dup2(pipes[0], STDIN);
+	close(pipes[0]);
+	ft_putstr_fd(cmd, pipes[1]);
+	close(pipes[1]);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
-	int	file_in;
-
 	if (signal(SIGQUIT, SIG_IGN)) {
 		perror("signal");
 		exit(EXIT_FAILURE);
 	}
-	file_in = redirect_stdin(argc, argv);
-	if (file_in == -1)
-		return (1);
-	if (argc > 1 && file_in == 0)
+	if (argc >= 3 && !ft_strncmp(argv[1], "-c", 3))
+		put_cmd_to_stdin(argv[2]);
+	else if (argc > 1)
 	{
-		ft_printf("Input arguments not supported, use Bash ;)\n");
+		ft_printf_fd(STDOUT, "Usage: %s -c <command>\n", argv[0]);
 		return (1);
 	}
 	repl(argc, argv, envp);
