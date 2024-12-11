@@ -3,8 +3,7 @@ ls -l | grep .txt | wc -l
 
 # Test pipe with line continuation
 ls -l |
-grep .txt |
-wc -l
+grep .txt | wc -l
 
 echo pattern >> input.txt
 echo Pattern >> input.txt
@@ -67,10 +66,7 @@ echo $?
 # echo $?
 
 # Test complex combinations
-echo "Running in $PWD" > output.txt |
-cat -n output.txt |
-grep "Running" > \
-final.txt
+echo "Running in $PWD" > output.txt | cat -n output.txt | grep "Running" > final.txt
 
 # Test escaped quotes
 echo "\"Quoted text\""
@@ -94,10 +90,7 @@ cat < input.txt > output.txt
 
 # Test combinations of all features
 export FILENAME="test.txt"
-echo "Processing file: $FILENAME" |
-grep ":" > \
-"${FILENAME}.processed" 2> \
-error.log
+echo "Processing file: $FILENAME" | grep ":" > "${FILENAME}.processed" 2> error.log
 
 # Test escaping within quotes
 echo "Escaped \"quote\" within quotes"
@@ -108,10 +101,7 @@ export VAR="$HOME/path with spaces/\$special*chars"
 echo "$VAR"
 
 # Test complex pipe scenarios with redirections
-cat < input.txt |
-grep "pattern" |
-sed 's/old/new/' > \
-output.txt
+cat < input.txt |grep "pattern" | sed 's/old/new/' > output.txt
 
 # Test line continuation
 echo first line \

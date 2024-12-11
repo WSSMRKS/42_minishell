@@ -102,9 +102,14 @@ size_t	bounded_token_len(const char *str, char bounds, size_t *out)
 /// if the first character is '#' the rest of the string is treated as comment and should be thrown out
 size_t	comment_len(const char *str)
 {
+	size_t	i;
+
+	i = 0;
 	if (*str != '#')
 		return (0);
-	return (ft_strlen(str));
+	while (str[i] && str[i] != '\n')
+		i++;
+	return (i);
 }
 
 /// @brief Gets the length of a word delimited by is_word_delimiter.
