@@ -1,40 +1,44 @@
 
 #include "../../../headers/minishell.h"
 
-// token at i == string (command exe), rest every token = one argument except for when token == operator
-// returns false if there was a mem error, true otherwise
-bool	try_add_command(t_vec *tokens, size_t *i, t_vec *ast)
+bool	add_token_to_args(t_token *tk, t_vec *args)
 {
 	char	*tmp;
+
+	if (!token_has_str(tk))
+		return (false);
+	tmp = cstr_take(&tk->str);
+	if (tmp == NULL)
+	{
+		args->mem_err = true;
+		return (false);
+	}
+	else if (!vec_push(args, &tmp))
+	{
+		free(tmp);
+		return (false);
+	}
+	return (true);
+}
+
+// token at i == string (command exe), rest every token = one argument except for when token == operator
+// returns false if there was a mem error, true otherwise
+bool	try_add_command(t_vec *tk, size_t *i, t_vec *ast)
+{
 	t_vec	args;
 	t_ast	ast_cmd;
-	t_token	*token;
 
 	ast_cmd = (t_ast){.ty = AST_CMD, .cmd = NULL};
 	args = vec_empty(sizeof(char *));
-	while (*i < tokens->len)
-	{
-		token = vec_get_at(tokens, *i);
-		if (!token_has_str(token))
-			break ;
-		tmp = cstr_take(&token->str);
-		if (tmp == NULL)
-		{
-			vec_destroy(&args, iter_ptr_free);
-			return (false);
-		}
-		if (!vec_push(&args, &tmp))
-		{
-			free(tmp);
-			vec_destroy(&args, iter_ptr_free);
-			return (false);
-		}
+	while (*i < tk->len && add_token_to_args(vec_get_at(tk, *i), &args))
 		(*i)++;
+	vec_push_null(&args);
+	if (args.mem_err)
+	{
+		vec_destroy(&args, iter_ptr_free);
+		return (false);
 	}
-	if (args.len == 0)
-		return (true);
-	if (vec_push_null(&args))
-		ast_cmd.cmd = vec_take(&args);
+	ast_cmd.cmd = vec_take(&args);
 	if (ast_cmd.cmd == NULL)
 	{
 		vec_destroy(&args, iter_ptr_free);
