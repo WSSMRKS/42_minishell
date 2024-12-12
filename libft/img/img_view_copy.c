@@ -55,6 +55,7 @@ void	imgview_copy(t_imgview src, t_imgview dest)
 void	imgview_copy_scaled(t_imgview src, t_imgview dest, size_t scale)
 {
 	t_upoint	pt;
+	uint32_t	src_px;
 
 	dest.urect = urect_at(dest.from, u32min(dest.width, src.width * scale),
 			u32min(dest.height, src.height * scale));
@@ -64,8 +65,8 @@ void	imgview_copy_scaled(t_imgview src, t_imgview dest, size_t scale)
 		pt.x = 0;
 		while (pt.x < dest.width)
 		{
-			*imgview_pixel(dest, pt
-				) = *imgview_pixel(src, upoint_div(pt, scale));
+			src_px = *imgview_pixel(src, upoint_div(pt, scale));
+			*imgview_pixel(dest, pt) = src_px;
 			pt.x++;
 		}
 		pt.y++;
