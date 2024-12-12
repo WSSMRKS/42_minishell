@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/11 16:25:31 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/12 21:19:52 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@ void	ft_execution(t_ms *ms)
 	i = 0;
 	while (curr)
 	{
+		if (curr->cmd.redir != NULL
+			&& curr->cmd.redir->instruction == redir_here_doc && g_signal != 0)
+			break ;
 		ft_is_builtin(curr, ms);
 		ft_fork(ms, curr, &i);
 		curr = curr->next;
