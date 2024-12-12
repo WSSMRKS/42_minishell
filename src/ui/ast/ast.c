@@ -44,6 +44,8 @@ bool	try_add_command(t_vec *tk, size_t *i, t_vec *ast)
 	args = vec_empty(sizeof(char *));
 	while (*i < tk->len && add_token_to_args(vec_get_at(tk, *i), &args))
 		(*i)++;
+	if (args.len == 0)
+		return (true);
 	vec_push_null(&args);
 	if (args.mem_err)
 	{
