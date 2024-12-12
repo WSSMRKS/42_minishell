@@ -13,10 +13,10 @@
 #ifndef TOKENIZATION_H
 # define TOKENIZATION_H
 
-#include "../headers/minishell.h"
+# include "../headers/minishell.h"
 
-# define SINGLE_QUO '\''
-# define DOUBLE_QUO '"'
+# define SINGLE_QUO 39
+# define DOUBLE_QUO 34
 
 typedef enum e_op_ty
 {
