@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 15:49:59 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/11 16:19:21 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/12 19:32:31 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 static void	ft_exit_exit(t_ms *ms, int ex)
 {
-	close(ms->be->saved_std[0]);
-	close(ms->be->saved_std[1]);
+	if (ms->be->saved_std[0] != 0)
+		close(ms->be->saved_std[0]);
+	if (ms->be->saved_std[0] != 0)
+		close(ms->be->saved_std[1]);
 	ft_close_all_fds(ms);
 	ft_clear_ast(ms);
 	ft_clear_be(ms);

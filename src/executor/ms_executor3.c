@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_executor3.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/11 02:52:04 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/12 19:33:05 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void	ft_execute(t_ms *ms, t_cmd_list *curr, int *i)
 {
 	if (ms->be->child_pids[*i] == 0)
 	{
-		ft_close_all_fds(ms);
+		if (curr->cmd.builtin_nr != 7)
+			ft_close_all_fds(ms);
 		if (curr->cmd.builtin)
 			ft_builtin(ms, curr, i);
 		else
@@ -38,8 +39,10 @@ void	ft_execute(t_ms *ms, t_cmd_list *curr, int *i)
 			dup2(ms->be->saved_std[0], STDIN_FILENO);
 			dup2(ms->be->saved_std[1], STDOUT_FILENO);
 		}
-		close(ms->be->saved_std[0]);
-		close(ms->be->saved_std[1]);
+		if (ms->be->saved_std[0] != 0)
+			close(ms->be->saved_std[0]);
+		if (ms->be->saved_std[0] != 0)
+			close(ms->be->saved_std[1]);
 	}
 }
 
