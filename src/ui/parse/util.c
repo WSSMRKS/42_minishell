@@ -56,7 +56,7 @@ static bool	is_op_without_arg_at(t_vec *ast, size_t i)
 	return (op->op.arg == NULL);
 }
 
-bool	ast_has_integrity(t_vec *ast)
+bool	ast_has_integrity(t_parser *p, t_vec *ast)
 {
 	size_t	i;
 	bool	ok;
@@ -72,6 +72,11 @@ bool	ast_has_integrity(t_vec *ast)
 			ok = false;
 		}
 		i++;
+	}
+	if (!ok)
+	{
+		vec_destroy(ast, free_ast);
+		((t_ms *)p->data)->be->last_ret = 2;
 	}
 	return (ok);
 }

@@ -1,7 +1,7 @@
 #include "../../../headers/minishell.h"
 
 bool	last_tk_is_continue_nl(t_vec *tokens);
-bool	ast_has_integrity(t_vec *ast);
+bool	ast_has_integrity(t_parser *p, t_vec *ast);
 
 void	parser_destroy(t_parser *p)
 {
@@ -92,12 +92,8 @@ t_ms_status	parse_next_command(t_parser *p, t_cmd_list	**out)
 		vec_destroy(&ast, free_ast);
 		return (MS_ERROR);
 	}
-	if (!ast_has_integrity(&ast))
-	{
-		vec_destroy(&ast, free_ast);
-		((t_ms *)p->data)->be->last_ret = 2;
+	if (!ast_has_integrity(p, &ast))
 		return (MS_OK);
-	}
 	if (p->tokens.len == 0)
 		vec_destroy(&p->tokens, free_token);
 	*out = ast_to_commands(&ast);

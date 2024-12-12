@@ -11,36 +11,32 @@ static void	skip_pipe(t_ast *ast, size_t *i, size_t len)
 		(*i)++;
 }
 
-t_simple_com	com_from_ast(t_ast *ast, size_t *i, size_t len)
+static void	com_from_ast(t_ast *ast, size_t *i, size_t len, t_simple_com *cmd)
 {
-	t_simple_com	cmd;
-
-	cmd = (t_simple_com){0};
 	while (*i < len && (ast[*i].ty != AST_OP || ast[*i].op.ty != OP_PIPE))
 	{
 		if (ast[*i].ty == AST_CMD)
 		{
-			cmd.words = word_list_from_argv(ast[*i].cmd);
-			if (cmd.words == NULL)
+			cmd->words = word_list_from_argv(ast[*i].cmd);
+			if (cmd->words == NULL)
 			{
-				free_simple_com(&cmd);
-				return ((t_simple_com){0});
+				free_simple_com(cmd);
+				return ;
 			}
-			cmd.argv = ast[*i].cmd;
+			cmd->argv = ast[*i].cmd;
 			ast[*i].cmd = NULL;
 		}
 		else if (ast[*i].ty == AST_OP)
 		{
-			if (!add_redirection(&cmd, &ast[*i].op))
+			if (!add_redirection(cmd, &ast[*i].op))
 			{
-				free_simple_com(&cmd);
-				return ((t_simple_com){0});
+				free_simple_com(cmd);
+				return ;
 			}
 		}
 		(*i)++;
 	}
-	post_process_cmd(&cmd);
-	return (cmd);
+	post_process_cmd(cmd);
 }
 
 /// input: ast with minimum one item
@@ -64,7 +60,7 @@ t_cmd_list	*ast_to_commands(t_vec *ast)
 			current = ft_calloc(sizeof(t_cmd_list), 1);
 			head = current;
 		}
-		current->cmd = com_from_ast(vec_get(ast), &i, ast->len);
+		com_from_ast(vec_get(ast), &i, ast->len, &current->cmd);
 		skip_pipe(vec_get(ast), &i, ast->len);
 		if (current->cmd.words == NULL && current->cmd.redir == NULL)
 			free_list_cmds(&head);
