@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:41:22 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/12 20:16:38 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/12 20:27:16 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ bool	ft_add_global_val(t_ms *ms, char *env)
 	{
 		ft_upd_stab_val(ms->be->global_stabs, key, val);
 		free(key);
+		free(val);
 	}
 	else
 		ft_add_to_stab(ms, ms->be->global_stabs, key, val);
