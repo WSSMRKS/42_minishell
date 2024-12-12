@@ -115,27 +115,16 @@ typedef struct s_vec
 {
 	union
 	{
-		/// @brief Small vec buffer.
-		/// @warning May only be modified/read directly if 'heap' = false.
 		char		_small_buf[FT_SMALL_VEC];
 		struct
 		{
-			/// @brief Heap allocated vec buffer.
-			/// @warning May only be modified/read directly if 'heap' = true.
 			char	*_large_buf;
-			/// @brief Capacity of the heap vec buffer (number of elements).
-			/// @warning May only be modified/read directly if 'heap' = true.
-			/// Use 'vec_capacity()' instead for a safe read.
 			size_t	_capacity;
 		};
 	};
-	/// @brief Length of the vec.
 	size_t			len;
-	/// @brief Size of a single element in the vec.
 	size_t			element_size: sizeof(size_t) * 8 - 2;
-	/// @brief Heap flag.
 	size_t			heap: 1;
-	/// @brief Memory error flag.
 	size_t			mem_err: 1;
 }					t_vec;
 
@@ -173,25 +162,15 @@ typedef struct s_str
 {
 	union
 	{
-		/// @brief Small string buffer.
-		/// @warning May only be modified/read directly if 'heap' = false.
 		char		_small_str[FT_SMALL_STR];
 		struct
 		{
-			/// @brief Heap allocated string buffer.
-			/// @warning May only be modified/read directly if 'heap' = true.
 			char	*_large_str;
-			/// @brief Capacity of the heap string buffer.
-			/// @warning May only be modified/read directly if 'heap' = true.
-			/// Use 'str_capacity()' instead for a safe read.
 			size_t	_capacity;
 		};
 	};
-	/// @brief Length of the string.
 	size_t			len: sizeof(size_t) * 8 - 2;
-	/// @brief Heap flag.
 	size_t			heap: 1;
-	/// @brief Memory error flag.
 	size_t			mem_err: 1;
 }					t_str;
 
@@ -201,9 +180,7 @@ typedef struct s_str
 /// @warning A stringview's null-terminater is not guaranteed to be at str[len].
 typedef struct s_str_slice
 {
-	/// @brief Pointer to the start of the string view.
 	const char		*str;
-	/// @brief Length of the string view.
 	size_t			len;
 }					t_str_slice;
 
@@ -273,7 +250,6 @@ typedef union s_urect
 
 typedef struct s_img
 {
-	/// Pixels
 	uint32_t					*px;
 	size_t						px_len;
 	union

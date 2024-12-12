@@ -24,7 +24,6 @@ typedef int32_t	(*t_comparator)(const void *a, const void *b);
 typedef struct s_qsort_state
 {
 	t_comparator	cmp;
-	/// @brief Clone of the pivot element. (temp alloc)
 	void			*pivot;
 	size_t			element_size;
 }					t_qsort_state;
