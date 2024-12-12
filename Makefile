@@ -13,10 +13,14 @@ CC = cc
 SRC_FILES = \
 	ui/token/expand.c \
 	ui/token/token.c \
+	ui/token/token_scan.c \
+	ui/token/token_util.c \
 	ui/token/tokenize.c \
 	ui/token/util.c \
 	ui/token/unescape.c \
 	ui/token/normalize.c \
+	ui/token/normalize2.c \
+	ui/token/span_printerr.c \
 	ui/parse/parse.c \
 	ui/parse/parser.c \
 	ui/parse/parser_impl.c \

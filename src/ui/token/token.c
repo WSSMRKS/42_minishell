@@ -28,12 +28,3 @@ t_token	tk_dquote(t_str_slice quoted)
 	quoted.str += 1;
 	return ((t_token){.type = TK_DQUOTE, .str = str_clone_from(quoted)});
 }
-
-void	free_token(void *token)
-{
-	t_token	*tk;
-
-	tk = token;
-	if (tk->type != TK_OPERATOR)
-		str_destroy(&tk->str);
-}

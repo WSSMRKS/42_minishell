@@ -1,40 +1,6 @@
 #include "../../../headers/minishell.h"
-#include <stdbool.h>
-#include <stdio.h>
 
-/// prints
-/// ```
-/// minishell syntax error: <error message>\n
-/// echo hello "world\n
-///            ^
-/// ```
-/// input is allowed to be multiline, though only the affected line will print
-static void	span_printerr(t_str_slice s, size_t err_i, const char *err)
-{
-	size_t	i;
-	t_vec	lines;
-
-	ft_printf_fd(STDERR, "minishell syntax error: %s\n", err);
-	lines = strsl_split(s, cstr_slice("\n", 1));
-	if (lines.mem_err)
-		return ;
-	i = 0;
-	while (i < lines.len)
-	{
-		s = *(t_str_slice *)vec_get_at(&lines, i++);
-		if (err_i < s.len)
-		{
-			ft_putstrsl_fd(s, STDERR);
-			write(STDERR, "\n", 1);
-			break ;
-		}
-		err_i -= s.len + 1;
-	}
-	ft_putfill_fd(' ', STDERR, err_i);
-	ft_putchar_fd('^', STDERR);
-	ft_putchar_fd('\n', STDERR);
-	vec_destroy(&lines, NULL);
-}
+void	span_printerr(t_str_slice s, size_t err_i, const char *err);
 
 /// @brief
 /// @param inp
@@ -69,7 +35,7 @@ static bool	handle_word_or_op(t_str_slice *inp, t_vec *tokens)
 	bool	ok;
 
 	ok = true;
-	word = cstr_slice(inp->str, word_len(inp->str, 0));
+	word = cstr_slice(inp->str, word_len(*inp));
 	if (str_starts_with_op(*inp, &op))
 	{
 		if ((op == OP_APPEND && inp->str[2] == '>')
@@ -115,7 +81,7 @@ static void	handle_space_and_comment(t_str_slice *inp, t_vec *tokens)
 /// and removes the last few gathered tokens after the last newline
 /// @param tokens
 /// @param err_input
-static void	tokens_reset_current_line(t_vec *tokens, t_str_slice *err_input)
+static void	tokens_reset_current_line(t_vec *tokens, t_str_slice *err_input, bool *syntax_err)
 {
 	while (tokens->len && ((t_token *)vec_get_last(tokens))->type != TK_NL)
 	{
@@ -124,6 +90,7 @@ static void	tokens_reset_current_line(t_vec *tokens, t_str_slice *err_input)
 	}
 	while (err_input->len && *err_input->str != '\n')
 		strsl_move_inplace(err_input, 1);
+	*syntax_err = true;
 }
 
 /// @brief Tokenizes the input string.
@@ -167,15 +134,13 @@ bool	tokenize(t_str_slice inp, t_vec *out, bool *syntax_err)
 		{
 			span_printerr(inp_start, inp_start.len - inp.len,
 				"unclosed quotes");
-			tokens_reset_current_line(out, &inp);
-			*syntax_err = true;
+			tokens_reset_current_line(out, &inp, syntax_err);
 		}
 		else if (ok != 1 && !handle_word_or_op(&inp, out))
 		{
 			span_printerr(inp_start, inp_start.len - inp.len,
 				"unexpected character");
-			tokens_reset_current_line(out, &inp);
-			*syntax_err = true;
+			tokens_reset_current_line(out, &inp, syntax_err);
 		}
 	}
 	return (true);
