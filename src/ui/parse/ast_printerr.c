@@ -26,6 +26,13 @@ static void	str_push_ast(t_str *str, t_ast *ast, bool first)
 	}
 }
 
+static void	print_err(t_str *ast_line, t_str *err_line, const char *err)
+{
+	ft_printf_fd(STDERR, "minishell syntax error: %s\n", err);
+	ft_putendl_fd(cstr_ref(ast_line), STDERR);
+	ft_putendl_fd(cstr_ref(err_line), STDERR);
+}
+
 void	ast_printerr(t_vec *ast, size_t err_i, const char *err)
 {
 	size_t	i;
@@ -49,11 +56,7 @@ void	ast_printerr(t_vec *ast, size_t err_i, const char *err)
 			str_push_ast(&ast_line, vec_get_at(ast, i), i == 0);
 		i++;
 	}
-	str_push(&ast_line, '\n');
-	str_push(&err_line, '\n');
-	ft_printf_fd(STDERR, "minishell syntax error: %s\n", err);
-	write(STDERR, cstr_ref(&ast_line), ast_line.len);
-	write(STDERR, cstr_ref(&err_line), err_line.len);
+	print_err(&ast_line, &err_line, err);
 	str_destroy(&ast_line);
 	str_destroy(&err_line);
 }

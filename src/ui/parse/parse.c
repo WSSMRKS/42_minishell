@@ -52,7 +52,7 @@ t_cmd_list	*ast_to_commands(t_vec *ast)
 
 	head = NULL;
 	i = 0;
-	while (i < ast->len)
+	while (i < ast->len && (i == 0 || head != NULL))
 	{
 		if (head != NULL)
 		{
@@ -67,10 +67,7 @@ t_cmd_list	*ast_to_commands(t_vec *ast)
 		current->cmd = com_from_ast(vec_get(ast), &i, ast->len);
 		skip_pipe(vec_get(ast), &i, ast->len);
 		if (current->cmd.words == NULL && current->cmd.redir == NULL)
-		{
 			free_list_cmds(&head);
-			return (NULL);
-		}
 	}
 	return (head);
 }

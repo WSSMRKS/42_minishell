@@ -29,7 +29,7 @@ SRC_FILES = \
 	ui/parse/util.c \
 	ui/parse/util2.c \
 	ui/ast/ast.c \
-	ui/ast/ast2.c \
+	ui/ast/free_ast.c \
 	ui/prompt.c \
 	ui/ui.c \
 	main/minishell.c \
