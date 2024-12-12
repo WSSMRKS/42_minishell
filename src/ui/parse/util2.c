@@ -12,14 +12,13 @@ t_list_words *word_list_from_argv(char **cmd)
 	i = 0;
 	while (cmd[i])
 	{
-		tmp = malloc(sizeof(t_list_words));
+		tmp = ft_calloc(sizeof(t_list_words), 1);
 		if (!tmp)
 		{
 			free_list_words(&head);
 			return (NULL);
 		}
 		tmp->word = ft_strdup(cmd[i]);
-		tmp->next = NULL;
 		if (!head)
 			head = tmp;
 		else

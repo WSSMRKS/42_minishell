@@ -16,17 +16,27 @@ static void	strip_empty_word_tokens(t_vec *tokens)
 	}
 }
 
-bool	char_is_escaped(const char *str, size_t i)
+static void	insert_var(t_stab_st *st, t_str *var_str, t_str *str, size_t i)
 {
-	size_t	escaped;
+	t_str_slice	var;
 
-	escaped = 0;
-	while (i > 0 && str[i - 1] == '\\')
+	var = cstr_view(ft_lookup_stab(st, (char *)cstr_ref(var_str)));
+	if (var.str)
 	{
-		escaped++;
-		i--;
+		str_insertstr(str, i, var);
+		i += var.len;
 	}
-	return (escaped % 2);
+}
+
+static void	get_var_and_del_chars(t_str *str, size_t *var_size, t_str *var_str, size_t i)
+{
+	char	*buf;
+
+	buf = cstr_mut(str);
+	*var_str = str_clone_from(cstr_slice(&buf[i+1],
+				usizemax(var_len(&buf[i], var_size), 1) - 1));
+	if (var_size != 0)
+		str_remove_range(str, i, i + *var_size);
 }
 
 void	str_expand_vars(t_str *str, t_stab_st *st, int last_ret)
@@ -34,33 +44,22 @@ void	str_expand_vars(t_str *str, t_stab_st *st, int last_ret)
 	t_str	var_str;
 	size_t	var_size;
 	size_t	i;
-	char	*buf;
-	t_str_slice	var;
 
 	i = 0;
 	while (i < str->len)
 	{
-		buf = cstr_mut(str);
-		if (buf[i] == '$' && !char_is_escaped(cstr_ref(str), i))
+		if (cstr_mut(str)[i] == '$' && !char_is_escaped(cstr_ref(str), i))
 		{
-			var_str = str_clone_from(cstr_slice(&buf[i+1], var_len(&buf[i], &var_size) - 1));
+			get_var_and_del_chars(str, &var_size, &var_str, i);
 			if (var_size == 0)
 			{
 				i++;
 				continue;
 			}
-			str_remove_range(str, i, i + var_size);
 			if (strsl_eq(str_view(&var_str), cstr_slice("?", 1)))
 				str_insert_itoa(last_ret, base10(), str, i);
 			else
-			{
-				var = cstr_view(ft_lookup_stab(st, (char *)cstr_ref(&var_str)));
-				if (var.str)
-				{
-					str_insertstr(str, i, var);
-					i += var.len;
-				}
-			}
+				insert_var(st, &var_str, str, i);
 			str_destroy(&var_str);
 		}
 		else

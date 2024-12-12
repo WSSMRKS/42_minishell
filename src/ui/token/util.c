@@ -80,3 +80,16 @@ const char	*op_str(t_op_ty op)
 
 	return (OP_STR[op]);
 }
+
+bool	char_is_escaped(const char *str, size_t i)
+{
+	size_t	escaped;
+
+	escaped = 0;
+	while (i > 0 && str[i - 1] == '\\')
+	{
+		escaped++;
+		i--;
+	}
+	return (escaped % 2);
+}

@@ -11,7 +11,9 @@ void	free_token(void *token)
 
 bool	token_has_str(t_token *token)
 {
-	return (token->type == TK_DQUOTE || token->type == TK_LITERAL || token->type == TK_WORD);
+	return (token->type == TK_DQUOTE
+		|| token->type == TK_LITERAL
+		|| token->type == TK_WORD);
 }
 
 void	vec_push_tk(t_vec *vec, t_token tk)

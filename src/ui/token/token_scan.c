@@ -63,7 +63,8 @@ size_t	word_len(t_str_slice s)
 			len += 2;
 		}
 		else if (!is_word_delimiter(s.str[len])
-			&& !str_starts_with_op(cstr_slice(&s.str[len], usizemin(s.len - len, 2)), 0))
+			&& !str_starts_with_op(cstr_slice(&s.str[len],
+				usizemin(s.len - len, 2)), 0))
 			len++;
 		else
 			break ;
