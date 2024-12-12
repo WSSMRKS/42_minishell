@@ -78,9 +78,11 @@ void	ft_fork(t_ms *ms, t_cmd_list *curr, int *i)
 
 void	ft_is_builtin(t_cmd_list *curr, t_ms *ms)
 {
-	int		i;
-	int		len;
+	int	i;
+	int	len;
 
+	if (curr->cmd.words == NULL)
+		return ;
 	i = -1;
 	while (ms->cmds->cmd.words && ms->be->builtins[++i])
 	{
