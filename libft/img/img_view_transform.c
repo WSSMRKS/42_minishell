@@ -18,6 +18,7 @@ void	imgview_flip_h(t_imgview img)
 {
 	t_upoint	pt;
 	uint32_t	tmp;
+	uint32_t	tmp2;
 	uint32_t	x;
 
 	pt.y = 0;
@@ -28,7 +29,8 @@ void	imgview_flip_h(t_imgview img)
 		{
 			x = img.width - pt.x - 1;
 			tmp = *imgview_pixel(img, pt);
-			*imgview_pixel(img, pt) = *imgview_pixel(img, upoint(x, pt.y));
+			tmp2 = *imgview_pixel(img, upoint(x, pt.y));
+			*imgview_pixel(img, pt) = tmp2;
 			*imgview_pixel(img, upoint(x, pt.y)) = tmp;
 			pt.x++;
 		}
@@ -42,6 +44,7 @@ void	imgview_flip_v(t_imgview img)
 {
 	t_upoint	pt;
 	uint32_t	tmp;
+	uint32_t	tmp2;
 	uint32_t	y;
 
 	pt.x = 0;
@@ -52,7 +55,8 @@ void	imgview_flip_v(t_imgview img)
 		{
 			y = img.height - pt.y - 1;
 			tmp = *imgview_pixel(img, pt);
-			*imgview_pixel(img, pt) = *imgview_pixel(img, upoint(pt.x, y));
+			tmp2 = *imgview_pixel(img, upoint(pt.x, y));
+			*imgview_pixel(img, pt) = tmp2;
 			*imgview_pixel(img, upoint(pt.x, y)) = tmp;
 			pt.y++;
 		}
@@ -63,6 +67,7 @@ void	imgview_flip_v(t_imgview img)
 void	imgview_rotate90(t_imgview src, t_imgview dest)
 {
 	t_upoint	pt;
+	uint32_t	src_px;
 
 	src.urect = urect_at(src.from, u32min(src.width, dest.height),
 			u32min(src.height, dest.width));
@@ -72,9 +77,8 @@ void	imgview_rotate90(t_imgview src, t_imgview dest)
 		pt.x = 0;
 		while (pt.x < src.width)
 		{
-			*imgview_pixel(dest,
-				upoint(pt.y, src.width - pt.x - 1)
-				) = *imgview_pixel(src, pt);
+			src_px = *imgview_pixel(src, pt);
+			*imgview_pixel(dest, upoint(pt.y, src.width - pt.x - 1)) = src_px;
 			pt.x++;
 		}
 		pt.y++;
@@ -84,6 +88,7 @@ void	imgview_rotate90(t_imgview src, t_imgview dest)
 void	imgview_rotate180(t_imgview src, t_imgview dest)
 {
 	t_upoint	pt;
+	uint32_t	src_px;
 
 	pt.y = 0;
 	while (pt.y < src.height)
@@ -91,9 +96,9 @@ void	imgview_rotate180(t_imgview src, t_imgview dest)
 		pt.x = 0;
 		while (pt.x < src.width)
 		{
+			src_px = *imgview_pixel(src, pt);
 			*imgview_pixel(dest,
-				upoint(src.width - pt.x - 1, src.height - pt.y - 1)
-				) = *imgview_pixel(src, pt);
+				upoint(src.width - pt.x - 1, src.height - pt.y - 1)) = src_px;
 			pt.x++;
 		}
 		pt.y++;
@@ -103,6 +108,7 @@ void	imgview_rotate180(t_imgview src, t_imgview dest)
 void	imgview_rotate270(t_imgview src, t_imgview dest)
 {
 	t_upoint	pt;
+	uint32_t	src_px;
 
 	src.urect = urect_at(src.from, u32min(src.width, dest.height),
 			u32min(src.height, dest.width));
@@ -112,9 +118,9 @@ void	imgview_rotate270(t_imgview src, t_imgview dest)
 		pt.x = 0;
 		while (pt.x < src.width)
 		{
+			src_px = *imgview_pixel(src, pt);
 			*imgview_pixel(dest,
-				upoint(src.height - pt.y - 1, pt.x)
-				) = *imgview_pixel(src, pt);
+				upoint(src.height - pt.y - 1, pt.x)) = src_px;
 			pt.x++;
 		}
 		pt.y++;
