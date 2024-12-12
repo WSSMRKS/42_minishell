@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_executor3.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 18:15:36 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/11 02:52:04 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/12 13:38:23 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	ft_is_builtin(t_cmd_list *curr, t_ms *ms)
 	int		len;
 
 	i = -1;
-	while (ms->cmds->cmd.words && ms->be->builtins[++i])
+	while (curr->cmd.words && ms->be->builtins[++i])
 	{
 		len = ft_strlen(ms->be->builtins[i]);
 		if (ft_strncmp(curr->cmd.words->word, ms->be->builtins[i], len) == 0
