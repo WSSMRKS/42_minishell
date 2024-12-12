@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 05:06:08 by dkoca             #+#    #+#             */
-/*   Updated: 2024/12/12 12:00:02 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/12 19:14:53 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,14 @@ typedef struct s_token
 	t_token_ty	type;
 }				t_token;
 
-typedef enum	e_ast_ty {
+typedef enum e_ast_ty
+{
 	AST_CMD,
 	AST_OP
 }	t_ast_ty;
 
-typedef struct	s_op {
+typedef struct s_op
+{
 	t_op_ty	ty;
 	char	*arg;
 }			t_op;
