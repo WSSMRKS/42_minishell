@@ -10,63 +10,32 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef	TOKENIZATION_H
-# define	TOKENIZATION_H
+#ifndef TOKENIZATION_H
+# define TOKENIZATION_H
 
 #include "../headers/minishell.h"
-
-// int current_command_line_count;
-
-// /* The number of lines in a command saved while we run parse_and_execute */
-// int saved_command_line_count;
-
-// /* The token that currently denotes the end of parse. */
-// int shell_eof_token;
-
-// /* The token currently being read. */
-// int current_token;
-
-// int last_was_backslash;
-
-
-// {"&", 1},
-// {";", 1},
-// {"&&", 2},
-// {"||", 2},
-
-/*
-Explicit null arguments ("" or '') are retained and passed to commands as empty strings.
-
-Unquoted implicit null arguments, resulting from the expansion of parameters that have no vals, are removed.
-
-If a parameter with no val is expanded within double quotes, a null argument results and is retained and passed to a command as an empty string.
-When a quoted null argument appears as part of a word whose expansion is non-null, the null argument is removed.
-That is, the word -d'' becomes -d after word splitting and null argument removal.
-
-Note that if no expansion occurs, no splitting is performed.
-*/
 
 # define SINGLE_QUO '\''
 # define DOUBLE_QUO '"'
 
 typedef enum e_op_ty
 {
-	OP_PIPE,			// CMD1 | CMD2 (PIPE)
-	OP_REDIRECT,		// > ARG (OUTFILE)
-	OP_INP_REDIRECT,	// < ARG (INFILE)
-	OP_APPEND,			// >> ARG (APPEND)
-	OP_HEREDOC			// << ARG (HEREDOC)
+	OP_PIPE,
+	OP_REDIRECT,
+	OP_INP_REDIRECT,
+	OP_APPEND,
+	OP_HEREDOC
 }	t_op_ty;
 
 typedef enum e_token_ty
 {
-	TK_SEPERATOR,		// space or tab
-	TK_WORD,			// string
-	TK_LITERAL,			// 'string'
-	TK_DQUOTE,			// "string"
-	TK_OPERATOR,		// | > < >> <<
-	TK_CONTINUE_NL,		// \ (indicating line continuation) -- UNSUPPORTED
-	TK_NL,				// \n (indicating another command following)
+	TK_SEPERATOR,
+	TK_WORD,
+	TK_LITERAL,
+	TK_DQUOTE,
+	TK_OPERATOR,
+	TK_CONTINUE_NL,
+	TK_NL,
 }	t_token_ty;
 
 typedef struct s_token

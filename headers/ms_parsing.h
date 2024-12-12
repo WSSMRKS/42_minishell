@@ -51,7 +51,6 @@ typedef enum e_redir_type
 {
 	redir_append,
 	redir_here_doc,
-	//redir_hd_quotes,
 	redir_infile,
 	redir_outfile,
 }	t_redir_type;
@@ -59,21 +58,21 @@ typedef enum e_redir_type
 typedef struct s_list_redir
 {
 	struct s_list_redir	*next;
-	t_redir_type		instruction;	/* what is to be done*/
-	t_redir_aim			target;	/* fd or variable to be redirected */
-	char				*hd_del; /* EOF token string, after << */
-	bool				rightmost;	/* valid redirection indicator*/
+	t_redir_type		instruction;
+	t_redir_aim			target;
+	char				*hd_del;
+	bool				rightmost;
 }						t_list_redir;
 
 typedef struct s_simple_com
 {
 	bool			heredoc: 1;
 	bool			builtin: 1;
-	t_list_words	*words; // Null if no command
-	t_list_redir	*redir; // Null if no redirection
-	char			**argv; // Null if no command
+	t_list_words	*words;
+	t_list_redir	*redir;
+	char			**argv;
 	int				builtin_nr;
-	int				prio_in; // 0 = no_infiles, 1 = infiles_present; (init to 0)
+	int				prio_in;
 }	t_simple_com;
 
 typedef struct s_cmd_list
