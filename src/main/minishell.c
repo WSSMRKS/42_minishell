@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
+/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 11:17:01 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/07 23:46:43 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/12/12 12:02:17 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_ms	ms;
 
-	if (signal(SIGQUIT, SIG_IGN)) {
+	if (signal(SIGQUIT, SIG_IGN))
+	{
 		perror("signal");
 		exit(EXIT_FAILURE);
 	}

@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 15:50:51 by maweiss           #+#    #+#             */
-/*   Updated: 2024/11/27 13:05:43 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/12 11:55:24 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 # define MS_EXECUTOR_H
 # include "minishell.h"
 
-typedef struct s_be {
-	t_garbage		*garbage;		/*clear after every execution, realloc after every execution*/
+typedef struct s_be
+{
+	t_garbage		*garbage;		/*clear and realloc after every execution*/
 	int				argc;
 	char			**argv;			/*no need to free*/
 	char			**envp;			/*no need to free*/
@@ -24,13 +25,13 @@ typedef struct s_be {
 	int				nb_cmds;		/*clear after every execution*/
 	int				pipes[2][2];	/*reinit after every execution*/
 	int				saved_std[2];	/*close after every execution*/
-	int				*child_pids;	/*clear after every execution, realloc after every execution*/
+	int				*child_pids;	/*clear and realloc after every execution*/
 	int				*child_ret;		/*return vals of the childs*/
 	int				last_ret;		/*return val of the last command*/
 	char			**builtins;		/*clear at exit*/
 	char			*cwd;			/*clear at exit*/
-	t_stab_st	*global_stabs;
-	t_stab		*alphabetic_vars;
+	t_stab_st		*global_stabs;
+	t_stab			*alphabetic_vars;
 }				t_be;
 
 #endif

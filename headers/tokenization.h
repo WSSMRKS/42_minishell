@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wssmrks <wssmrks@student.42.fr>            +#+  +:+       +#+        */
+/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 05:06:08 by dkoca             #+#    #+#             */
-/*   Updated: 2024/12/08 16:22:50 by wssmrks          ###   ########.fr       */
+/*   Updated: 2024/12/12 12:00:02 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,14 +108,13 @@ t_cmd_list	*ast_to_commands(t_vec *ast);
 void		free_token(void *token);
 void		free_ast(void *ast_node);
 
-t_token	tk_empty(t_token_ty ty);
-t_token	tk_word(t_str_slice word);
-t_token	tk_op(t_op_ty op);
-t_token	tk_lit(t_str_slice quoted);
-t_token	tk_dquote(t_str_slice quoted);
-void	vec_push_tk(t_vec *vec, t_token tk);
-bool	token_has_str(t_token *token);
-
+t_token		tk_empty(t_token_ty ty);
+t_token		tk_word(t_str_slice word);
+t_token		tk_op(t_op_ty op);
+t_token		tk_lit(t_str_slice quoted);
+t_token		tk_dquote(t_str_slice quoted);
+void		vec_push_tk(t_vec *vec, t_token tk);
+bool		token_has_str(t_token *token);
 void		strsl_trim_start_delim(t_str_slice *s);
 size_t		bounded_token_len(const char *str, char bounds, size_t *out);
 size_t		word_len(t_str_slice s);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 04:25:43 by kwurster          #+#    #+#             */
-/*   Updated: 2024/12/12 04:25:44 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/12 12:04:22 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static t_ms_status	read_tokens(t_parser *p)
 		{
 			if (p->tokens.len == 0)
 				return (MS_EOF);
-			break;
+			break ;
 		}
 		if (!tokenize(cstr_view(inp), &tmp_tokens, &syntax_err))
 		{
@@ -71,7 +71,7 @@ static t_ms_status	read_tokens(t_parser *p)
 		}
 		vec_destroy(&tmp_tokens, NULL);
 		if (!last_tk_is_continue_nl(&p->tokens))
-			break;
+			break ;
 		else if (cstr_ref(&p->last_input)[p->last_input.len - 1] == '\\')
 			str_pop(&p->last_input);
 		ft_putendl_fd("minishell syntax error:", STDERR);

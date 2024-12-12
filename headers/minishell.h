@@ -6,7 +6,7 @@
 /*   By: maweiss <maweiss@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:42:03 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/11 16:30:27 by maweiss          ###   ########.fr       */
+/*   Updated: 2024/12/12 12:01:54 by maweiss          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,7 @@ in minishell.h */
 # include "ms_executor.h"
 # include "tokenization.h"
 
-
-
-extern int g_signal;
+extern int	g_signal;
 
 /* minishell struct. Main struct that is passed throughout the whole program.
 	global flags: 1 = heredoc present	*/
@@ -61,8 +59,8 @@ typedef struct s_ms
 	t_be		*be;
 }				t_ms;
 
-t_parser	ms_parser_init(t_ms *ms);
-char		*get_prompt(t_ms *ms);
+t_parser		ms_parser_init(t_ms *ms);
+char			*get_prompt(t_ms *ms);
 
 /* ms_cleanup_utils */
 
@@ -125,7 +123,6 @@ void			ft_reinit_be(t_ms *ms);
 void			ft_init_be(t_ms *ms, int argc, char **argv, char **envp);
 char			**ft_split_path(char **paths);
 
-
 /* ms_ui */
 
 void			repl(t_ms *ms);
@@ -156,10 +153,6 @@ char			*ft_validate_var(char *key);
 void			ft_upd_shlvl(t_ms *ms);
 char			**ft_grab_path(t_ms *ms);
 
-
-
-
-
 /* ms_builtins*/
 
 int				ft_echo(t_ms *ms, t_cmd_list *curr);
@@ -171,7 +164,6 @@ int				ft_env(t_ms *ms, t_cmd_list *curr);
 int				ft_exit(t_ms *ms, t_cmd_list *curr);
 int				ft_status(t_ms *ms, t_cmd_list *curr);
 int				ft_resize(t_ms *ms, t_cmd_list *curr);
-
 
 /* ms_parse */
 // int parse(t_token *tokens);
