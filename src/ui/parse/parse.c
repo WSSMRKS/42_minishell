@@ -12,7 +12,8 @@
 
 #include "../../../headers/minishell.h"
 
-t_list_words	*word_list_from_argv(char **cmd);
+bool			add_argv(char ***dst, char ***argv);
+bool			add_word_list(t_list_words **head, char **cmd);
 bool			add_redirection(t_simple_com *cmd, t_op *op);
 /// set flags like heredoc, redir->rightmost, ...
 void			post_process_cmd(t_simple_com *cmd);
@@ -29,14 +30,12 @@ static void	com_from_ast(t_ast *ast, size_t *i, size_t len, t_simple_com *cmd)
 	{
 		if (ast[*i].ty == AST_CMD)
 		{
-			cmd->words = word_list_from_argv(ast[*i].cmd);
-			if (cmd->words == NULL)
+			if (!add_word_list(&cmd->words, ast[*i].cmd)
+				|| !add_argv(&cmd->argv, &ast[*i].cmd))
 			{
 				free_simple_com(cmd);
 				return ;
 			}
-			cmd->argv = ast[*i].cmd;
-			ast[*i].cmd = NULL;
 		}
 		else if (ast[*i].ty == AST_OP)
 		{

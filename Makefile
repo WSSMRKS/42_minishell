@@ -28,6 +28,7 @@ SRC_FILES = \
 	ui/parse/parser_impl.c \
 	ui/parse/util.c \
 	ui/parse/util2.c \
+	ui/parse/util3.c \
 	ui/ast/ast.c \
 	ui/ast/free_ast.c \
 	ui/prompt.c \

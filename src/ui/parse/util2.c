@@ -12,7 +12,7 @@
 
 #include "../../../headers/minishell.h"
 
-t_list_words	*word_list_from_argv(char **cmd)
+static t_list_words	*word_list_from_argv(char **cmd)
 {
 	t_list_words	*head;
 	t_list_words	*current;
@@ -41,30 +41,22 @@ t_list_words	*word_list_from_argv(char **cmd)
 	return (head);
 }
 
-// set flags like heredoc, redir->rightmost, ...
-void	post_process_cmd(t_simple_com *cmd)
+bool	add_word_list(t_list_words **head, char **cmd)
 {
-	t_list_redir	*redir;
-	t_list_redir	*last_in;
-	t_list_redir	*last_out;
+	t_list_words	*words;
+	t_list_words	*tmp;
 
-	redir = cmd->redir;
-	last_in = NULL;
-	last_out = NULL;
-	while (redir)
+	words = word_list_from_argv(cmd);
+	if (!words)
+		return (false);
+	if (*head == NULL)
+		*head = words;
+	else
 	{
-		if (redir->instruction == redir_here_doc)
-			cmd->heredoc = 1;
-		if (redir->instruction == redir_infile
-			|| redir->instruction == redir_here_doc)
-			last_in = redir;
-		else if (redir->instruction == redir_outfile
-			|| redir->instruction == redir_append)
-			last_out = redir;
-		redir = redir->next;
+		tmp = *head;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = words;
 	}
-	if (last_in)
-		last_in->rightmost = true;
-	if (last_out)
-		last_out->rightmost = true;
+	return (true);
 }
