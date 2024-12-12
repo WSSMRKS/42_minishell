@@ -1,17 +1,4 @@
 #include "../../../headers/minishell.h"
-#include <stdbool.h>
-#include <stdio.h>
-
-static void	print_all_tokens(t_vec *tokens)
-{
-	for (size_t i = 0; i < tokens->len; i++)
-	{
-		t_token *token = vec_get_at(tokens, i);
-		token_print(token, STDERR);
-		if (!write(STDERR, "\n", 1))
-			perror("write error");
-	}
-}
 
 void	parser_destroy(t_parser *p)
 {
@@ -75,17 +62,11 @@ static t_ms_status	read_tokens(t_parser *p)
 		}
 		if (syntax_err)
 			((t_ms *)p->data)->be->last_ret = 2;
-		DBG_PARSER(ft_putstr_fd("[DBG_PARSE] TEMP TOKENS:\n", STDERR));
-		DBG_PARSER(print_all_tokens(&tmp_tokens));
 		free(inp);
 		if (tmp_tokens.mem_err)
 			return (MS_ERROR);
 		expand_vars(&tmp_tokens, p->get_stab(p->data), p->get_last_ret(p->data));
-		DBG_PARSER(ft_putstr_fd("[DBG_PARSE] TEMP TOKENS EXPANDED:\n", STDERR));
-		DBG_PARSER(print_all_tokens(&tmp_tokens));
 		unescape_chars(&tmp_tokens);
-		DBG_PARSER(ft_putstr_fd("[DBG_PARSE] TEMP TOKENS UNESCAPED:\n", STDERR));
-		DBG_PARSER(print_all_tokens(&tmp_tokens));
 		vec_pushvec(&p->tokens, &tmp_tokens);
 		if (p->tokens.mem_err)
 		{
@@ -105,11 +86,7 @@ static t_ms_status	read_tokens(t_parser *p)
 		inp = p->read_input(false, p->data);
 		str_cat(&p->last_input, cstr_view(inp));
 	}
-	DBG_PARSER(ft_putstr_fd("[DBG_PARSE] ALL TOKENS:\n", STDERR));
-	DBG_PARSER(print_all_tokens(&p->tokens));
 	tokens_normalize(&p->tokens);
-	DBG_PARSER(ft_putstr_fd("[DBG_PARSE] ALL TOKENS NORMALIZED:\n", STDERR));
-	DBG_PARSER(print_all_tokens(&p->tokens));
 	return (MS_OK);
 }
 
@@ -137,24 +114,6 @@ static void	str_push_ast(t_str *str, t_ast *ast, bool first)
 		str_pushstr(str, cstr_view(ast->cmd[i]));
 		i++;
 	}
-}
-
-static void	ast_printstr(t_vec *ast)
-{
-	size_t	i;
-	t_str	ast_line;
-
-	i = 0;
-	ast_line = str_empty();
-	while (i < ast->len)
-	{
-		str_push_ast(&ast_line, vec_get_at(ast, i), i == 0);
-		i++;
-	}
-	write(2, "[DBG] parsed AST: ", 18);
-	write(2, cstr_ref(&ast_line), ast_line.len);
-	write(2, "\n", 1);
-	str_destroy(&ast_line);
 }
 
 static void	ast_printerr(t_vec *ast, size_t err_i, const char *err)
@@ -268,8 +227,6 @@ t_ms_status	parse_next_command(t_parser *p, t_cmd_list	**out)
 		((t_ms *)p->data)->be->last_ret = 2;
 		return (MS_OK);
 	}
-	else
-		DEBUG(ast_printstr(&ast));
 	if (p->tokens.len == 0)
 		vec_destroy(&p->tokens, free_token);
 	*out = ast_to_commands(&ast);

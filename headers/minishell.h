@@ -25,16 +25,6 @@ in minishell.h */
 # define WHITE   "\001\033[37m\002"
 # define RESET   "\001\033[0m\002"
 
-# ifndef DEBUG_ON
-#  define DEBUG_ON 0
-# endif
-
-# ifdef DEBUG_ON
-#  define DEBUG(x) if(DEBUG_ON) {x;}
-# else
-#  define DEBUG(x)
-# endif
-
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -70,6 +60,9 @@ typedef struct s_ms
 	bool		global_flags;
 	t_be		*be;
 }				t_ms;
+
+t_parser	ms_parser_init(t_ms *ms);
+char		*get_prompt(t_ms *ms);
 
 /* ms_cleanup_utils */
 
@@ -135,7 +128,7 @@ char			**ft_split_path(char **paths);
 
 /* ms_ui */
 
-void			repl(int argc, char **argv, char **envp);
+void			repl(t_ms *ms);
 
 /* ms_env */
 

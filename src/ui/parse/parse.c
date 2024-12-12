@@ -67,10 +67,7 @@ static bool	add_redirection(t_simple_com *cmd, t_op *op)
 	t_list_redir	*redir;
 
 	if (op->ty == OP_PIPE)
-	{
-		perror("Pipe operator not supported in create_redirection");
 		return (false);
-	}
 	redir = ft_calloc(sizeof(t_list_redir), 1);
 	if (!redir)
 		return (false);
@@ -182,7 +179,6 @@ t_cmd_list	*ast_to_commands(t_vec *ast)
 		}
 		current->cmd = com_from_ast(vec_get(ast), &i, ast->len);
 		skip_pipe(vec_get(ast), &i, ast->len);
-		DEBUG(debug_print_simple_com(STDERR, &current->cmd, true))
 		if (current->cmd.words == NULL && current->cmd.redir == NULL)
 		{
 			free_list_cmds(&head);
@@ -190,87 +186,4 @@ t_cmd_list	*ast_to_commands(t_vec *ast)
 		}
 	}
 	return (head);
-}
-
-#include <stdio.h>
-
-void	debug_print_simple_com(int fd, t_simple_com *cmd, bool parser)
-{
-	t_list_words *word_ptr;
-	t_list_redir *redir_ptr;
-	int i;
-
-	if (!cmd)
-	{
-		dprintf(fd, "NULL simple command\n");
-		return;
-	}
-
-	// Print flags and builtin info
-	dprintf(fd, "Simple Command:\n");
-	dprintf(fd, "├─ Heredoc flag: %d\n", cmd->heredoc);
-	if (!parser)
-	{
-		dprintf(fd, "├─ Builtin flag: %d\n", cmd->builtin);
-		dprintf(fd, "├─ Builtin number: %d\n", cmd->builtin_nr);
-		dprintf(fd, "├─ Priority in: %d\n", cmd->prio_in);
-	}
-	// dprintf(fd, "├─ Priority out: %d\n", cmd->prio_out);
-
-	// Print words list
-	dprintf(fd, "├─ Words:\n");
-	word_ptr = cmd->words;
-	while (word_ptr)
-	{
-		dprintf(fd, "│  ├─ '%s'\n", word_ptr->word);
-		word_ptr = word_ptr->next;
-	}
-
-	// Print argv array
-	dprintf(fd, "├─ Argv:\n");
-	if (cmd->argv)
-	{
-		i = 0;
-		while (cmd->argv[i])
-		{
-			dprintf(fd, "│  ├─ [%d]: '%s'\n", i, cmd->argv[i]);
-			i++;
-		}
-	}
-	else
-		dprintf(fd, "│  └─ NULL\n");
-
-	// Print redirections
-	dprintf(fd, "└─ Redirections:\n"); // [ ] TODO remove all forbidden functions
-	redir_ptr = cmd->redir;
-	while (redir_ptr)
-	{
-		dprintf(fd, "   ├─ Type: ");
-		switch (redir_ptr->instruction)
-		{
-			case redir_append:
-				dprintf(fd, "APPEND\n");
-				break;
-			case redir_here_doc:
-				dprintf(fd, "HEREDOC\n");
-				break;
-			case redir_infile:
-				dprintf(fd, "INFILE\n");
-				break;
-			case redir_outfile:
-				dprintf(fd, "OUTFILE\n");
-				break;
-		}
-		if (redir_ptr->target.filename)
-		{
-			if (!parser)
-				dprintf(fd, "   │  ├─ Target FD: %d\n", redir_ptr->target.fd);
-			dprintf(fd, "   │  └─ Filename: %s\n", redir_ptr->target.filename);
-		}
-		if (redir_ptr->hd_del)
-			dprintf(fd, "   │  └─ Heredoc delimiter: %s\n", redir_ptr->hd_del);
-		dprintf(fd, "   │  └─ Rightmost: %d\n", redir_ptr->rightmost);
-		redir_ptr = redir_ptr->next;
-	}
-	fflush(0); // [ ] TODO Forbidden function!!
 }

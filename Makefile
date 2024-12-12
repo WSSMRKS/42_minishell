@@ -19,7 +19,10 @@ SRC_FILES = \
 	ui/token/normalize.c \
 	ui/parse/parse.c \
 	ui/parse/parser.c \
-	ui/ast.c \
+	ui/parse/parser_impl.c \
+	ui/ast/ast.c \
+	ui/ast/ast2.c \
+	ui/prompt.c \
 	ui/ui.c \
 	main/minishell.c \
 	init/ms_cleanup_utils.c \

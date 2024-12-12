@@ -56,6 +56,7 @@ void	ft_init_ms(t_ms *ms)
 {
 	ms->global_flags = 0;
 	ms->cmds = NULL;
+	ms->parser = ms_parser_init(ms);
 }
 
 void	ft_reinit_be(t_ms *ms)
