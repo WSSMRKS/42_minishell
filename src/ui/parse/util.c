@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 04:25:46 by kwurster          #+#    #+#             */
-/*   Updated: 2024/12/12 04:25:47 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/12 04:39:08 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	ast_printerr(t_vec *ast, size_t err_i, const char *err);
 
 bool	last_tk_is_continue_nl(t_vec *tokens)
 {
-	t_vec	tokens_clone;
+	t_vec		tokens_clone;
 	t_token_ty	last;
 
 	tokens_clone = vec_clone(tokens);
@@ -28,7 +28,7 @@ bool	last_tk_is_continue_nl(t_vec *tokens)
 		vec_destroy(&tokens_clone, NULL);
 		return (false);
 	}
-	last = ((t_token*)vec_get_last(&tokens_clone))->type;
+	last = ((t_token *)vec_get_last(&tokens_clone))->type;
 	vec_destroy(&tokens_clone, NULL);
 	return (last == TK_CONTINUE_NL);
 }

@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 04:25:56 by kwurster          #+#    #+#             */
-/*   Updated: 2024/12/12 04:25:57 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/12 04:31:21 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ void	remove_redundant_separators(t_vec *tokens)
 	}
 }
 
-// chained tokens of kind TOKEN_WORD, TOKEN_LITERAL, TOKEN_DQUOTE -> single WORD token
+// chained tokens of kind TOKEN_WORD, TOKEN_LITERAL, TOKEN_DQUOTE
+// -> single WORD token
 void	merge_chained_word_tokens(t_vec *tokens)
 {
 	t_token	*token;

@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 04:25:31 by kwurster          #+#    #+#             */
-/*   Updated: 2024/12/12 04:25:32 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/12 04:29:44 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 static t_redir_type	op_to_redir(t_op op)
 {
 	static const t_redir_type	redir_map[] = {
-		[OP_REDIRECT] = redir_outfile,
-		[OP_INP_REDIRECT] = redir_infile,
-		[OP_APPEND] = redir_append,
-		[OP_HEREDOC] = redir_here_doc,
+	[OP_REDIRECT] = redir_outfile,
+	[OP_INP_REDIRECT] = redir_infile,
+	[OP_APPEND] = redir_append,
+	[OP_HEREDOC] = redir_here_doc,
 	};
 
 	return (redir_map[op.ty]);

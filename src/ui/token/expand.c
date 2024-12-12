@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 04:25:53 by kwurster          #+#    #+#             */
-/*   Updated: 2024/12/12 04:25:54 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/12 04:38:29 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,13 @@ static void	insert_var(t_stab_st *st, t_str *var_str, t_str *str, size_t i)
 	}
 }
 
-static void	get_var_and_del_chars(t_str *str, size_t *var_size, t_str *var_str, size_t i)
+static void	get_var_and_del_chars(t_str *str, size_t *var_size,
+	t_str *var_str, size_t i)
 {
 	char	*buf;
 
 	buf = cstr_mut(str);
-	*var_str = str_clone_from(cstr_slice(&buf[i+1],
+	*var_str = str_clone_from(cstr_slice(&buf[i +1],
 				usizemax(var_len(&buf[i], var_size), 1) - 1));
 	if (var_size != 0)
 		str_remove_range(str, i, i + *var_size);
@@ -66,7 +67,7 @@ void	str_expand_vars(t_str *str, t_stab_st *st, int last_ret)
 			if (var_size == 0)
 			{
 				i++;
-				continue;
+				continue ;
 			}
 			if (strsl_eq(str_view(&var_str), cstr_slice("?", 1)))
 				str_insert_itoa(last_ret, base10(), str, i);

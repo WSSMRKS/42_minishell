@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 04:26:12 by kwurster          #+#    #+#             */
-/*   Updated: 2024/12/12 04:26:13 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/12 04:38:21 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ static int	handle_quoted(t_str_slice *inp, t_vec *tokens)
 
 static bool	handle_word_or_op(t_str_slice *inp, t_vec *tokens)
 {
-	t_str_slice		word;
-	t_op_ty	op;
-	bool	ok;
+	t_str_slice	word;
+	t_op_ty		op;
+	bool		ok;
 
 	ok = true;
 	word = cstr_slice(inp->str, word_len(*inp));
@@ -93,7 +93,8 @@ static void	handle_space_and_comment(t_str_slice *inp, t_vec *tokens)
 /// and removes the last few gathered tokens after the last newline
 /// @param tokens
 /// @param err_input
-static void	tokens_reset_current_line(t_vec *tokens, t_str_slice *err_input, bool *syntax_err)
+static void	tokens_reset_current_line(t_vec *tokens, t_str_slice *err_input,
+	bool *syntax_err)
 {
 	while (tokens->len && ((t_token *)vec_get_last(tokens))->type != TK_NL)
 	{
@@ -106,11 +107,11 @@ static void	tokens_reset_current_line(t_vec *tokens, t_str_slice *err_input, boo
 }
 
 /// @brief Tokenizes the input string.
-/// @param inp The input string.
-/// @return A vector of tokenized strings (t_token).
+/// @return false if unknown error without clearing the out vec
 /// Example input and output:
 ///
-/// You entered: (mycmd "hello"world"" wooord "'mystring' with space" $HOME 'bla'>myfile)
+/// You entered:
+/// (mycmd "hello"world"" wooord "'mystring' with space" $HOME 'bla'>myfile)
 /// tokens: 15
 /// WORD: (mycmd)
 /// SEP : ()
@@ -127,12 +128,10 @@ static void	tokens_reset_current_line(t_vec *tokens, t_str_slice *err_input, boo
 /// LIT : (bla)
 /// OP  : (>)
 /// WORD: (myfile)
-///
-/// returns false if unknown error without clearing the out vec
 bool	tokenize(t_str_slice inp, t_vec *out, bool *syntax_err)
 {
 	t_str_slice	inp_start;
-	int		ok;
+	int			ok;
 
 	inp_start = inp;
 	*out = vec_empty(sizeof(t_token));

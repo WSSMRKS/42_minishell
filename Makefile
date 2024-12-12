@@ -32,6 +32,7 @@ SRC_FILES = \
 	ui/ast/free_ast.c \
 	ui/prompt.c \
 	ui/ui.c \
+	ui/ui_util.c \
 	main/minishell.c \
 	init/ms_cleanup_utils.c \
 	init/ms_cleanup_utils2.c \

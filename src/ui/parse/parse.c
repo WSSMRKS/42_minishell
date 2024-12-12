@@ -6,16 +6,16 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 04:25:35 by kwurster          #+#    #+#             */
-/*   Updated: 2024/12/12 04:25:36 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/12 04:30:09 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../headers/minishell.h"
 
-t_list_words *word_list_from_argv(char **cmd);
-bool	add_redirection(t_simple_com *cmd, t_op *op);
-// set flags like heredoc, redir->rightmost, ...
-void	post_process_cmd(t_simple_com *cmd);
+t_list_words	*word_list_from_argv(char **cmd);
+bool			add_redirection(t_simple_com *cmd, t_op *op);
+/// set flags like heredoc, redir->rightmost, ...
+void			post_process_cmd(t_simple_com *cmd);
 
 static void	skip_pipe(t_ast *ast, size_t *i, size_t len)
 {

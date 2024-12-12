@@ -6,13 +6,13 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 04:25:49 by kwurster          #+#    #+#             */
-/*   Updated: 2024/12/12 04:25:50 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/12 04:39:25 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../headers/minishell.h"
 
-t_list_words *word_list_from_argv(char **cmd)
+t_list_words	*word_list_from_argv(char **cmd)
 {
 	t_list_words	*head;
 	t_list_words	*current;
@@ -55,9 +55,11 @@ void	post_process_cmd(t_simple_com *cmd)
 	{
 		if (redir->instruction == redir_here_doc)
 			cmd->heredoc = 1;
-		if (redir->instruction == redir_infile || redir->instruction == redir_here_doc)
+		if (redir->instruction == redir_infile
+			|| redir->instruction == redir_here_doc)
 			last_in = redir;
-		else if (redir->instruction == redir_outfile || redir->instruction == redir_append)
+		else if (redir->instruction == redir_outfile
+			|| redir->instruction == redir_append)
 			last_out = redir;
 		redir = redir->next;
 	}

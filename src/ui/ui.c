@@ -6,25 +6,13 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 15:10:30 by maweiss           #+#    #+#             */
-/*   Updated: 2024/12/12 04:26:35 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/12 04:37:58 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/minishell.h"
 
-static bool	cmdlist_has_heredoc(t_cmd_list *cmds)
-{
-	t_cmd_list	*curr;
-
-	curr = cmds;
-	while (curr)
-	{
-		if (curr->cmd.heredoc)
-			return (true);
-		curr = curr->next;
-	}
-	return (false);
-}
+bool	cmdlist_has_heredoc(t_cmd_list *cmds);
 
 static t_ms_status	evaluate(t_ms *ms)
 {
@@ -38,12 +26,11 @@ static t_ms_status	evaluate(t_ms *ms)
 }
 
 // Signal handler for SIGINT (Ctrl+C)
-static void handle_sigint(int sig) {
+static void	handle_sigint(int sig)
+{
 	(void) sig;
 	g_signal = 128 + SIGINT;
-	// printf("\nCaught signal %d (SIGINT), ignoring Ctrl+C\n", sig);
-	printf("\n");
-	// Re-prompt the user after ignoring SIGINT
+	ft_printf("\n");
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();

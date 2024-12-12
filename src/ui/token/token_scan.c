@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 04:26:05 by kwurster          #+#    #+#             */
-/*   Updated: 2024/12/12 04:26:06 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/12 04:32:00 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ size_t	bounded_token_len(const char *str, char bounds, size_t *out)
 	return (0);
 }
 
-/// if the first character is '#' the rest of the string is treated as comment and should be thrown out
+/// if the first character is '#' the rest of the string
+/// is treated as comment and should be thrown out
 size_t	comment_len(const char *str)
 {
 	size_t	i;
@@ -70,13 +71,13 @@ size_t	word_len(t_str_slice s)
 			{
 				if (len == 0)
 					len++;
-				break;
+				break ;
 			}
 			len += 2;
 		}
 		else if (!is_word_delimiter(s.str[len])
 			&& !str_starts_with_op(cstr_slice(&s.str[len],
-				usizemin(s.len - len, 2)), 0))
+					usizemin(s.len - len, 2)), 0))
 			len++;
 		else
 			break ;

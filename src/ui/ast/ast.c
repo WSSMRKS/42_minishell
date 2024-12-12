@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 04:25:17 by kwurster          #+#    #+#             */
-/*   Updated: 2024/12/12 04:25:19 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/12 04:29:14 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ bool	add_token_to_args(t_token *tk, t_vec *args)
 	return (true);
 }
 
-// token at i == string (command exe), rest every token = one argument except for when token == operator
+// token at i == string (command exe), rest every token = one argument
+// except for when token == operator
 // returns false if there was a mem error, true otherwise
 bool	try_add_command(t_vec *tk, size_t *i, t_vec *ast)
 {
@@ -100,7 +101,7 @@ static void	tokens_free_range(t_vec *tokens, size_t start, size_t end)
 }
 
 // handle and remove any TK_CONTINUE_NL tokens before using this function
-// postprocess by removing any commands that are not first and are not preceded by PIPE
+// postprocess by removing any cmds that arent first and arent preceded by PIPE
 // the input tokens array will be cleared if done, otherwise there are more
 // commands left to be parsed for which this function should be called again
 bool	tokens_to_ast(t_vec *tokens, t_vec *out)
@@ -111,7 +112,7 @@ bool	tokens_to_ast(t_vec *tokens, t_vec *out)
 	i = 0;
 	while (i < tokens->len)
 	{
-		if (((t_token*)vec_get_at(tokens, i))->type == TK_NL)
+		if (((t_token *)vec_get_at(tokens, i))->type == TK_NL)
 		{
 			tokens_free_range(tokens, 0, i + 1);
 			vec_remove_range(tokens, 0, i + 1);

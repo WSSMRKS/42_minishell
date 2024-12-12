@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 04:26:19 by kwurster          #+#    #+#             */
-/*   Updated: 2024/12/12 04:26:20 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/12 04:35:28 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,19 @@ void	strsl_trim_start_delim(t_str_slice *s)
 bool	str_is_operator(t_str_slice str, t_op_ty *out)
 {
 	size_t						i;
-	static const t_str_slice	OPERATORS[] = {
-    [OP_PIPE]={"|", 1},
-    [OP_REDIRECT]={">", 1},
-    [OP_INP_REDIRECT]={"<", 1},
-    [OP_APPEND]={">>", 2},
-    [OP_HEREDOC]={"<<", 2},
-    {NULL, 0}
+	static const t_str_slice	operators[] = {
+	[OP_PIPE] = {"|", 1},
+	[OP_REDIRECT] = {">", 1},
+	[OP_INP_REDIRECT] = {"<", 1},
+	[OP_APPEND] = {">>", 2},
+	[OP_HEREDOC] = {"<<", 2},
+	{NULL, 0}
 	};
 
 	i = 0;
-	while (OPERATORS[i].str)
+	while (operators[i].str)
 	{
-		if (strsl_eq(str, OPERATORS[i]))
+		if (strsl_eq(str, operators[i]))
 		{
 			if (out)
 				*out = (t_op_ty)i;
@@ -57,22 +57,22 @@ bool	str_is_operator(t_str_slice str, t_op_ty *out)
 
 bool	str_starts_with_op(t_str_slice str, t_op_ty *out)
 {
-	size_t						i;
-	static const t_op_ty	OPERATORS[5] = {
-	OP_APPEND,
-	OP_HEREDOC,
-	OP_PIPE,
-	OP_REDIRECT,
-	OP_INP_REDIRECT
+	size_t					i;
+	static const t_op_ty	operators[5] = {
+		OP_APPEND,
+		OP_HEREDOC,
+		OP_PIPE,
+		OP_REDIRECT,
+		OP_INP_REDIRECT
 	};
 
 	i = 0;
 	while (i < 5)
 	{
-		if (strsl_starts_with(str, cstr_view(op_str(OPERATORS[i]))))
+		if (strsl_starts_with(str, cstr_view(op_str(operators[i]))))
 		{
 			if (out)
-				*out = OPERATORS[i];
+				*out = operators[i];
 			return (true);
 		}
 		i++;
@@ -82,15 +82,15 @@ bool	str_starts_with_op(t_str_slice str, t_op_ty *out)
 
 const char	*op_str(t_op_ty op)
 {
-	static const char	*OP_STR[] = {
-		[OP_PIPE]="|",
-		[OP_REDIRECT]=">",
-		[OP_INP_REDIRECT]="<",
-		[OP_APPEND]=">>",
-		[OP_HEREDOC]="<<",
+	static const char	*op_str[] = {
+	[OP_PIPE] = "|",
+	[OP_REDIRECT] = ">",
+	[OP_INP_REDIRECT] = "<",
+	[OP_APPEND] = ">>",
+	[OP_HEREDOC] = "<<",
 	};
 
-	return (OP_STR[op]);
+	return (op_str[op]);
 }
 
 bool	char_is_escaped(const char *str, size_t i)

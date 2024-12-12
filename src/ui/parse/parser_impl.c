@@ -6,13 +6,13 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 04:25:40 by kwurster          #+#    #+#             */
-/*   Updated: 2024/12/12 04:25:41 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/12 04:38:45 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../headers/minishell.h"
 
-static char *read_input(bool append_mode, void *data)
+static char	*read_input(bool append_mode, void *data)
 {
 	char		*prompt;
 	char		*input;

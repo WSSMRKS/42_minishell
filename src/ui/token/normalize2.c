@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 04:25:59 by kwurster          #+#    #+#             */
-/*   Updated: 2024/12/12 04:26:00 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/12 04:31:43 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ bool	is_redundant_separator(t_vec *tokens, size_t i);
 void	remove_dup_seperators(t_vec *tokens);
 
 // repeating seperators -> single seperator
-// remove seperator before or after one of [TOKEN_OPERATOR, TOKEN_CONTINUE_NL, TOKEN_NL]
-// chained tokens of kind TOKEN_WORD, TOKEN_LITERAL, TOKEN_DQUOTE -> single WORD token
+// remove seperator before or after
+// one of [TOKEN_OPERATOR, TOKEN_CONTINUE_NL, TOKEN_NL]
+// chained tokens of kind TOKEN_WORD, TOKEN_LITERAL, TOKEN_DQUOTE
+// -> single WORD token
 void	tokens_normalize(t_vec *tokens)
 {
 	remove_dup_seperators(tokens);
