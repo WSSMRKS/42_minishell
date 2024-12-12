@@ -12,21 +12,6 @@
 
 #include "../../../headers/minishell.h"
 
-/// @brief If the last token is word(\), replace the token with newline().
-/// @param tokens The token vector.
-static void	handle_continue_nl_token(t_vec *tokens)
-{
-	t_token	*token;
-
-	token = vec_get_last(tokens);
-	if (token && token->type == TK_WORD && token->str.len == 1
-		&& cstr_ref(&token->str)[0] == '\\')
-	{
-		vec_remove_last(tokens);
-		vec_push_tk(tokens, tk_empty(TK_CONTINUE_NL));
-	}
-}
-
 // for double quotes only unescape <‘$’, ‘"’, ‘\’, newline>.
 static void	str_unescape_chars(t_str *str, t_token_ty tk_ty)
 {
@@ -51,7 +36,6 @@ void	unescape_chars(t_vec *tokens)
 	t_token	*token;
 	size_t	i;
 
-	handle_continue_nl_token(tokens);
 	i = 0;
 	while (i < tokens->len)
 	{

@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 #include "../../../headers/minishell.h"
+#include <stdbool.h>
 
-bool	last_tk_is_continue_nl(t_vec *tokens);
 bool	ast_has_integrity(t_parser *p, t_vec *ast);
 
 void	parser_destroy(t_parser *p)
@@ -35,54 +35,47 @@ t_parser	parser_init(void *data, t_read_input read_input,
 	return (p);
 }
 
+static bool	add_tokens(t_parser *p, char *inp)
+{
+	t_vec	tmp_tokens;
+	bool	syntax_err;
+	bool	parse_err;
+
+	syntax_err = false;
+	parse_err = !tokenize(cstr_view(inp), &tmp_tokens, &syntax_err);
+	free(inp);
+	if (tmp_tokens.mem_err)
+		return (false);
+	if (syntax_err || parse_err)
+		((t_ms *)p->data)->be->last_ret = 2;
+	if (parse_err)
+		return (true);
+	expand_vars(&tmp_tokens, p->get_stab(p->data), p->get_last_ret(p->data));
+	unescape_chars(&tmp_tokens);
+	vec_pushvec(&p->tokens, &tmp_tokens);
+	if (p->tokens.mem_err)
+	{
+		vec_destroy(&tmp_tokens, free_token);
+		return (false);
+	}
+	vec_destroy(&tmp_tokens, NULL);
+	tokens_normalize(&p->tokens);
+	return (true);
+}
+
 static t_ms_status	read_tokens(t_parser *p)
 {
 	char	*inp;
-	t_vec	tmp_tokens;
-	bool	syntax_err;
 
-	syntax_err = false;
 	inp = p->read_input(false, p->data);
 	str_cat(&p->last_input, cstr_view(inp));
-	while (true)
+	if (!inp)
 	{
-		if (!inp)
-		{
-			if (p->tokens.len == 0)
-				return (MS_EOF);
-			break ;
-		}
-		if (!tokenize(cstr_view(inp), &tmp_tokens, &syntax_err))
-		{
-			// TODO handle error
-		}
-		if (syntax_err)
-			((t_ms *)p->data)->be->last_ret = 2;
-		free(inp);
-		if (tmp_tokens.mem_err)
-			return (MS_ERROR);
-		expand_vars(&tmp_tokens, p->get_stab(p->data), p->get_last_ret(p->data));
-		unescape_chars(&tmp_tokens);
-		vec_pushvec(&p->tokens, &tmp_tokens);
-		if (p->tokens.mem_err)
-		{
-			vec_destroy(&tmp_tokens, free_token);
-			return (MS_ERROR);
-		}
-		vec_destroy(&tmp_tokens, NULL);
-		if (!last_tk_is_continue_nl(&p->tokens))
-			break ;
-		else if (cstr_ref(&p->last_input)[p->last_input.len - 1] == '\\')
-			str_pop(&p->last_input);
-		ft_putendl_fd("minishell syntax error:", STDERR);
-		ft_putendl_fd("Multiline commands (e.g. via line continuation)"
-		" are unsupported", STDERR);
-		vec_clear(&p->tokens);
-		str_clear(&p->last_input);
-		inp = p->read_input(false, p->data);
-		str_cat(&p->last_input, cstr_view(inp));
+		if (p->tokens.len == 0)
+			return (MS_EOF);
+		return (MS_OK);
 	}
-	tokens_normalize(&p->tokens);
+	add_tokens(p, inp);
 	return (MS_OK);
 }
 
