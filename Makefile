@@ -21,9 +21,13 @@ SRC_FILES = \
 	ui/token/normalize.c \
 	ui/token/normalize2.c \
 	ui/token/span_printerr.c \
+	ui/parse/ast_printerr.c \
 	ui/parse/parse.c \
+	ui/parse/parse_redir.c \
 	ui/parse/parser.c \
 	ui/parse/parser_impl.c \
+	ui/parse/util.c \
+	ui/parse/util2.c \
 	ui/ast/ast.c \
 	ui/ast/ast2.c \
 	ui/prompt.c \
