@@ -66,6 +66,7 @@ HEADER_FILES = minishell.h \
 	ms_garbage.h \
 	ms_stab.h \
 	tokenizer.h
+
 SRC = $(addprefix $(SRCDIR), $(SRC_FILES))
 HEADERS = $(addprefix $(HDRDIR), $(HEADER_FILES))
 
@@ -80,16 +81,11 @@ SRC_OBJ = $(SRC:.c=.o)
 # Targets #
 all: $(NAME)	# Compile the entire project including bonus.
 
-debug: COMPILE_FLAGS = -Werror -Wall -Wextra -g3 -DDEBUG_ON=1
-debug: $(NAME)
-
 $(NAME): $(LIBFT_SRC) $(SRC_OBJ) # Compile mandatory part. # maybe need? -L$(LIBFTDIR) -lft
 	$(CC) $(SRC_OBJ) $(LIBFT_SRC) $(COMPILE_OPTIONS) -o $(NAME)
 
-$(LIBFT_SRC): # Download and Compile libft
+$(LIBFT_SRC): # Compile libft
 	$(MAKE) all -C $(LIBFTDIR) CFLAGS='$(COMPILE_FLAGS)'
-
-exes: $(NAME) clean # Compile all project parts including bonus clean up after compilation.
 
 # clean, fclean, re
 clean:	# Clean project folders, leave executables.
@@ -104,36 +100,5 @@ fclean: clean	# Fully clean project folders.
 re: fclean	# Recompile whole project.
 	$(MAKE) all
 
-name: # print project name #
-	@echo "$(NAME)"
-
-supps: all
-	./create_rl_suppressions.sh
-
-exv: all
-	valgrind --suppressions=suppressions.supp --track-fds=yes --leak-check=full --show-leak-kinds=all ./minishell
-
-exvs: all
-	valgrind --suppressions=suppressions.supp --gen-suppressions=all --leak-check=full --show-leak-kinds=all ./minishell
-
-exval: all
-	valgrind --leak-check=full --show-leak-kinds=all ./minishell
-
-ex: all
-	./minishell
-
-help:	# Print this helpful message
-	@awk 'BEGIN { \
-	FS = ":.*#"; printf "Usage:\n\tmake <target>\n\nTargets:\n"; } \
-	/^[a-zA-Z_0-9-]+:.*?#/ { \
-	printf "%-16s%s\n", $$1, $$2 } ' Makefile
-# Syntax for this to work: target:	# Description
-
-pargs:
-	gcc src/debug/print_args.c -o pargs
-
-retval: $(LIBFT_SRC)
-	$(CC) src/debug/retval.c $(LIBFT_SRC) -o retval
-
-.PHONY: all fclean clean re name help exes exv exvs exval ex pargs supps
+.PHONY: all fclean clean re
 .NOTPARALLEL: $(LIBFT_SRC)
