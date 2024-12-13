@@ -6,7 +6,7 @@
 /*   By: kwurster <kwurster@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 04:25:49 by kwurster          #+#    #+#             */
-/*   Updated: 2024/12/12 23:17:00 by kwurster         ###   ########.fr       */
+/*   Updated: 2024/12/13 11:21:40 by kwurster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ bool	add_argv(char ***dst, char ***argv)
 		if (!combine_argv(dst, argv))
 			return (false);
 	}
-	return true;
+	return (true);
 }
 
 // set flags like heredoc, redir->rightmost, ...
